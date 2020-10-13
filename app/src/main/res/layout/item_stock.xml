@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="stock"
+            type="com.example.mandiexe.models.response.StockResponse" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/space"
+        android:background="@color/white"
+        android:elevation="@dimen/space">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TableRow
+                    android:layout_margin="@dimen/space"
+                    android:padding="@dimen/space">
+
+                    <TextView
+                        style="@style/styleTextViewHeadingItem"
+                        android:text="@string/crop"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        style="@style/styleTextViewHeadingItem"
+                        android:text="@={stock.crop}"
+                        tools:text="@tools:sample/full_names" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_margin="@dimen/space"
+                    android:padding="@dimen/space">
+
+                    <TextView
+                        style="@style/styleTextViewHeadingItem"
+                        android:text="@string/quantity"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        style="@style/styleTextViewHeadingItem"
+                        android:text="@={stock.quantity}"
+                        tools:text="@tools:sample/full_names" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_margin="@dimen/space"
+                    android:padding="@dimen/space">
+
+                    <TextView
+                        style="@style/styleTextViewHeadingItem"
+                        android:text="@string/location"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        style="@style/styleTextViewHeadingItem"
+                        android:text="@={stock.location.toString()}"
+                        tools:text="@tools:sample/full_names" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_margin="@dimen/space"
+                    android:padding="@dimen/space">
+
+                    <TextView
+                        style="@style/styleTextViewHeadingItem"
+                        android:text="@string/price"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        style="@style/styleTextViewHeadingItem"
+                        android:text="@={stock.price}"
+                        tools:text="@tools:sample/full_names" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_margin="@dimen/space"
+                    android:padding="@dimen/space">
+
+                    <TextView
+                        style="@style/styleTextViewHeadingItem"
+                        android:text="@string/expected_ready"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        style="@style/styleTextViewHeadingItem"
+                        android:text="@={stock.readyDate.toGMTString()}"
+                        tools:text="@tools:sample/full_names" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_margin="@dimen/space"
+                    android:padding="@dimen/space">
+
+                    <TextView
+                        style="@style/styleTextViewHeadingItem"
+                        android:text="@string/date_posted"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        style="@style/styleTextViewHeadingItem"
+                        android:text="@={stock.postedDate.toGMTString()}"
+                        tools:text="@tools:sample/full_names" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_margin="@dimen/space"
+                    android:padding="@dimen/space">
+
+                    <TextView
+                        style="@style/styleTextViewHeadingItem"
+                        android:text="@string/contact"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        style="@style/styleTextViewHeadingItem"
+                        android:text="@={stock.contactOwner.name}"
+                        tools:text="@tools:sample/full_names" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_arrow_forward" />
+
+                </TableRow>
+
+
+            </TableLayout>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
