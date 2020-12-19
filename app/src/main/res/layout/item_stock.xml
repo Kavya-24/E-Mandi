@@ -238,7 +238,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_stock_expiration" />
 
             <TextView
-                android:id="@+id/tv_stoc_last_upadted"
+                android:id="@+id/tv_stock_last_upadted"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space_half"
