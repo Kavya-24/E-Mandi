@@ -1,6 +1,7 @@
 package com.example.mandiexe.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,18 @@ import com.google.android.material.tabs.TabLayout.TabLayoutOnPageChangeListener
 class HomeFragment : Fragment() {
 
     private val homeViewModel: HomeViewModel by viewModels()
+    private lateinit var root: View
+    private lateinit var tabLayout: TabLayout
+    private lateinit var viewPager: ViewPager
+    private val TAG = HomeFragment::class.java.simpleName
+
+    override fun onResume() {
+        super.onResume()
+        Log.e(TAG, "In on resume")
+        updateViews()
+
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,18 +38,20 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
+        root = inflater.inflate(R.layout.fragment_home, container, false)
 
-        val tabLayout = root.findViewById<View>(R.id.tabs) as TabLayout
+        tabLayout = root.findViewById<View>(R.id.tabs) as TabLayout
 
-        val viewPager = root.findViewById<View>(R.id.viewpager) as ViewPager
+        viewPager = root.findViewById<View>(R.id.viewpager) as ViewPager
 
-        // mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        // mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        updateViews()
+
+        return root
+    }
+
+    private fun updateViews() {
         val mLayoutManager = LinearLayoutManager(activity)
         mLayoutManager.orientation = LinearLayoutManager.VERTICAL
-        //mRecyclerView.setLayoutManager(mLayoutManager);
-        //mRecyclerView.setLayoutManager(mLayoutManager);
         viewPager.adapter =
             context?.let {
                 com.example.mandiexe.adapter.PagerAdapter(
@@ -57,7 +72,7 @@ class HomeFragment : Fragment() {
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
 
-
-        return root
     }
+
+
 }

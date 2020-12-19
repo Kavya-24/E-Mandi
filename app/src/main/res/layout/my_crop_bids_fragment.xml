@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary">
+        android:background="@color/green_50">
 
         <!--        <TableLayout-->
         <!--            android:layout_width="match_parent"-->
@@ -56,12 +56,12 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_home"
+                style="@style/styleRv"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                style="@style/styleRv"
                 tools:listitem="@layout/item_stock" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
@@ -79,21 +79,30 @@
 
         <ProgressBar
             android:id="@+id/pb_home"
+            style="@style/styleProgressBar"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            style="@style/styleProgressBar"
             app:layout_constraintTop_toTopOf="parent" />
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_add_my_stock"
+            style="@style/styleProgressBar"
             android:layout_margin="@dimen/space"
             android:src="@drawable/ic_add"
-            android:tint="@color/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="parent"
-            style="@style/styleProgressBar"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_search_a_stock"
+            style="@style/styleProgressBar"
+            android:layout_margin="@dimen/space"
+            android:src="@drawable/ic_search_black_24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/fab_add_my_stock" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

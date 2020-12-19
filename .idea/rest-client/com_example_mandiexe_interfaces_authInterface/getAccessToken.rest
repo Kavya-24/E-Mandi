@@ -1,0 +1,10 @@
+POST
+{BASE_URL}/api/user/accessToken
+
+# Headers
+@Content-Type: application/json
+
+# Body
+{
+  "CASE_INSENSITIVE_ORDER": "{CASE_INSENSITIVE_ORDER}"
+}
