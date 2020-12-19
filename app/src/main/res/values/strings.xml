@@ -23,4 +23,17 @@
     <string name="contact">Contact</string>
     <string name="crop_value">crop_value</string>
     <string name="location_value">Location</string>
+    <string name="which_crop">Which Crop</string>
+
+
+    <string name="str_my_crops">My crops</string>
+    <string name="str_my_req">Requirements</string>
+    <string name="crop_type">Crop Type</string>
+    <string name="expiration_date">Expiration date</string>
+    <string name="estimated_time_of_completion">Estimated time of completion</string>
+    <string name="offer_price">Offer Price</string>
+    <string name="rs">Rs</string>
+    <string name="available_for_bidding">Available for bidding</string>
+    <string name="expDate">Expiration date of bid</string>
+    <string name="add_stock">Add stock</string>
 </resources>

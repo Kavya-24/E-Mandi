@@ -38,7 +38,12 @@ class HomeFragment : Fragment() {
         //mRecyclerView.setLayoutManager(mLayoutManager);
         //mRecyclerView.setLayoutManager(mLayoutManager);
         viewPager.adapter =
-            com.example.mandiexe.adapter.PagerAdapter(fragmentManager, tabLayout.tabCount)
+            context?.let {
+                com.example.mandiexe.adapter.PagerAdapter(
+                    fragmentManager, tabLayout.tabCount,
+                    it
+                )
+            }
 
         viewPager.addOnPageChangeListener(TabLayoutOnPageChangeListener(tabLayout))
         tabLayout.setupWithViewPager(viewPager)

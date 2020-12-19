@@ -9,4 +9,6 @@
     <dimen name="space_5x">40</dimen>
     <dimen name="space_3x">24dp</dimen>
     <dimen name="space_half">4dp</dimen>
+    <dimen name="space_8x">64dp</dimen>
+    <dimen name="space_2x">16dp</dimen>
 </resources>

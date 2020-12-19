@@ -23,4 +23,24 @@
         <item name="android:layout_weight">1</item>
     </style>
 
+    <style name="styleProgressBar">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="styleRv">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_margin">@dimen/space</item>
+        <item name="android:scrollbars">vertical</item>
+    </style>
+
+    <style name="OutlinedTextBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">@dimen/space</item>
+        <item name="android:padding">@dimen/space</item>
+    </style>
+
+
 </resources>

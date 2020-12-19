@@ -9,10 +9,10 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.mandiexe.R
 import com.example.mandiexe.viewmodels.StockViewModel
 
-class StockFragment : Fragment() {
+class RequirementFragment : Fragment() {
 
     companion object {
-        fun newInstance() = StockFragment()
+        fun newInstance() = RequirementFragment()
     }
 
     private lateinit var viewModel: StockViewModel
@@ -21,7 +21,7 @@ class StockFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.stock_fragment, container, false)
+        return inflater.inflate(R.layout.requirement_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

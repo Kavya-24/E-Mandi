@@ -4,69 +4,65 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.PriceFragment">
+    tools:context=".ui.home.MyCropBidsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorPrimary">
 
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent">
+        <!--        <TableLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            app:layout_constraintTop_toTopOf="parent">-->
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/space"
-                android:background="@color/white"
-                android:padding="@dimen/space_half">
+        <!--            <TableRow-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_margin="@dimen/space"-->
+        <!--                android:background="@color/white"-->
+        <!--                android:padding="@dimen/space_half">-->
 
 
-                <Spinner android:id="@+id/spinner_crop" />
+        <!--                <Spinner android:id="@+id/spinner_crop" />-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/crop_value" />
+        <!--                <TextView-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:text="@string/crop_value" />-->
 
-                <Spinner android:id="@+id/spinner_location" />
+        <!--                <Spinner android:id="@+id/spinner_location" />-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/location_value" />
+        <!--                <TextView-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:text="@string/location_value" />-->
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:paddingStart="@dimen/space"
-                    android:paddingEnd="@dimen/space"
-                    android:src="@drawable/ic_sort" />
-            </TableRow>
-        </TableLayout>
+        <!--                <ImageView-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_weight="2"-->
+        <!--                    android:paddingStart="@dimen/space"-->
+        <!--                    android:paddingEnd="@dimen/space"-->
+        <!--                    android:src="@drawable/ic_sort" />-->
+        <!--            </TableRow>-->
+        <!--        </TableLayout>-->
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swl_price_fragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/space_5x">
+            android:layout_height="match_parent">
 
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_home"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_margin="@dimen/space"
-                android:scrollbars="vertical"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:listitem="@layout/item_price" />
+                style="@style/styleRv"
+                tools:listitem="@layout/item_stock" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -83,22 +79,20 @@
 
         <ProgressBar
             android:id="@+id/pb_home"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            style="@style/styleProgressBar"
             app:layout_constraintTop_toTopOf="parent" />
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_add_market_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/fab_add_my_stock"
             android:layout_margin="@dimen/space"
             android:src="@drawable/ic_add"
             android:tint="@color/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="parent"
+            style="@style/styleProgressBar"
             app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
