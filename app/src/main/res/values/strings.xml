@@ -40,4 +40,7 @@
     <string name="quantity2">Quantity:</string>
     <string name="_12_4_2005">12/4/2005</string>
     <string name="_1234">1234</string>
+    <string name="error_please_check_internet">Please check your internet connection</string>
+    <string name="error_request_timed_out">Request timed out</string>
+    <string name="error_something_went_wrong">Something went wrong</string>
 </resources>
