@@ -36,4 +36,8 @@
     <string name="available_for_bidding">Available for bidding</string>
     <string name="expDate">Expiration date of bid</string>
     <string name="add_stock">Add stock</string>
+    <string name="_0_kg">0 kg</string>
+    <string name="quantity2">Quantity:</string>
+    <string name="_12_4_2005">12/4/2005</string>
+    <string name="_1234">1234</string>
 </resources>
