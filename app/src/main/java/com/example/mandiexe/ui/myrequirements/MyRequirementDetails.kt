@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
 import com.example.mandiexe.R
 import com.example.mandiexe.viewmodels.MyRequirementDetailsViewModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
@@ -53,6 +54,7 @@ class MyRequirementDetails : Fragment() {
 
         root.findViewById<MaterialButton>(R.id.mtb_bid).setOnClickListener {
             //## Send crop item
+            root.findNavController().navigate(R.id.action_myRequirementDetails_to_bidFragment)
         }
 
         root.findViewById<ImageView>(R.id.iv_req_call_buyer).setOnClickListener {
