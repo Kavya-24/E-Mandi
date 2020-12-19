@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_nav_home_to_addStock"
             app:destination="@id/addStock" />
+        <action
+            android:id="@+id/action_nav_home_to_myBidDetails"
+            app:destination="@id/myBidDetails" />
     </fragment>
 
     <fragment
@@ -58,5 +61,19 @@
             android:id="@+id/action_mapActivity_to_addStock"
             app:destination="@id/addStock" />
 
+    </fragment>
+    <fragment
+        android:id="@+id/bidHistory"
+        android:name="com.example.mandiexe.ui.mybids.BidHistory"
+        android:label="bid_history_fragment"
+        tools:layout="@layout/bid_history_fragment" />
+    <fragment
+        android:id="@+id/myBidDetails"
+        android:name="com.example.mandiexe.ui.mybids.MyBidDetails"
+        android:label="my_bid_details_fragment"
+        tools:layout="@layout/my_bid_details_fragment">
+        <action
+            android:id="@+id/action_myBidDetails_to_bidHistory"
+            app:destination="@id/bidHistory" />
     </fragment>
 </navigation>

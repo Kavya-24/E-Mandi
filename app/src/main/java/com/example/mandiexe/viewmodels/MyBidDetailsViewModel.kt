@@ -1,4 +1,4 @@
-package com.example.mandiexe.ui.mybids
+package com.example.mandiexe.viewmodels
 
 import androidx.lifecycle.ViewModel
 

@@ -53,7 +53,6 @@ class AddStock : Fragment() {
     private lateinit var tilEst: TextInputLayout
     private lateinit var tilExp: TextInputLayout
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -143,6 +142,7 @@ class AddStock : Fragment() {
         ivLocation.setOnClickListener {
             //Start an activity
             root.findNavController().navigate(R.id.action_addStock_to_mapActivity)
+
 
         }
 

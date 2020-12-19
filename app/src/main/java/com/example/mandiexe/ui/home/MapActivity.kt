@@ -66,6 +66,7 @@ class MapActivity : Fragment() {
 
             val bundle = bundleOf("fetchedLocation" to fetchedLocation)
             root.findNavController().navigate(R.id.action_mapActivity_to_addStock, bundle)
+            onDestroy()
         }
         return root
     }
@@ -196,6 +197,8 @@ class MapActivity : Fragment() {
                     }
 
                 })
+            } else {
+                fetchedLocation = "Not found"
             }
         }
 
