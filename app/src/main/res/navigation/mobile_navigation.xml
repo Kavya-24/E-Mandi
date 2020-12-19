@@ -64,7 +64,7 @@
     </fragment>
     <fragment
         android:id="@+id/bidHistory"
-        android:name="com.example.mandiexe.ui.mybids.BidHistory"
+        android:name="com.example.mandiexe.ui.home.BidHistory"
         android:label="bid_history_fragment"
         tools:layout="@layout/bid_history_fragment" />
     <fragment

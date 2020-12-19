@@ -8,7 +8,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".ui.mybids.BidHistory">
+        tools:context=".ui.home.BidHistory">
 
         <TextView
             android:id="@+id/tv_bid_history_crop_name"
