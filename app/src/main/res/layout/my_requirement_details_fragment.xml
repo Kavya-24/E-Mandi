@@ -143,24 +143,45 @@
             app:layout_constraintStart_toEndOf="@id/tv_requirement_detail_current_bid"
             app:layout_constraintTop_toBottomOf="@id/tv_requirement_detail_init_date" />
 
-        <!--        Add graph-->
+        <!--        //##Add contact-->
+        <TextView
+            android:id="@+id/tv_req_details_buyer_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/space"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_requirement_detail_my_bid"
+            tools:text="@tools:sample/full_names" />
+
+        <ImageView
+            android:id="@+id/iv_req_call_buyer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_call_black_24dp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_req_details_buyer_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_req_details_buyer_name" />        <!--        Add graph-->
+
+
         <com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
-            android:id="@+id/chartView_details"
+            android:id="@+id/chartView_req"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/space"
-            app:layout_constraintTop_toBottomOf="@id/tv_requirement_detail_my_bid">
+            app:layout_constraintTop_toBottomOf="@id/tv_req_details_buyer_name">
 
         </com.github.aachartmodel.aainfographics.aachartcreator.AAChartView>
 
         <TextView
-            android:id="@+id/tv_view_bid_history_stocks"
+            android:id="@+id/tv_view_bid_history_requirement"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/space"
             android:gravity="center"
             android:text="@string/view_bid_history"
-            app:layout_constraintTop_toBottomOf="@id/chartView_details" />
+            app:layout_constraintTop_toBottomOf="@id/chartView_req" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/mtb_cancel_bid"
@@ -170,7 +191,7 @@
             app:backgroundTint="@color/red_A700"
             app:layout_constraintEnd_toStartOf="@id/mtb_bid"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_view_bid_history_stocks" />
+            app:layout_constraintTop_toBottomOf="@id/tv_view_bid_history_requirement" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/mtb_bid"
@@ -180,6 +201,6 @@
             app:backgroundTint="@color/green_A700"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/mtb_cancel_bid"
-            app:layout_constraintTop_toBottomOf="@id/tv_view_bid_history_stocks" />
+            app:layout_constraintTop_toBottomOf="@id/tv_view_bid_history_requirement" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

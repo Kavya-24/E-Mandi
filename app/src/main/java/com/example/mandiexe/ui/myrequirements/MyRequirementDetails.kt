@@ -1,13 +1,15 @@
 package com.example.mandiexe.ui.myrequirements
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.findNavController
 import com.example.mandiexe.R
 import com.example.mandiexe.viewmodels.MyRequirementDetailsViewModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
@@ -33,16 +35,16 @@ class MyRequirementDetails : Fragment() {
     ): View? {
         root = inflater.inflate(R.layout.my_requirement_details_fragment, container, false)
 
-        aaChartView = root.findViewById<AAChartView>(R.id.chartView_details)
+        aaChartView = root.findViewById<AAChartView>(R.id.chartView_req)
         args = requireArguments()
 
 
         initViews()
 
         //initViews
-        root.findViewById<TextView>(R.id.tv_view_bid_history_stocks).setOnClickListener {
+        root.findViewById<TextView>(R.id.tv_view_bid_history_requirement).setOnClickListener {
             //##Send the crop object
-            root.findNavController().navigate(R.id.action_myBidDetails_to_bidHistory)
+
 
         }
         root.findViewById<MaterialButton>(R.id.mtb_cancel_bid).setOnClickListener {
@@ -51,6 +53,11 @@ class MyRequirementDetails : Fragment() {
 
         root.findViewById<MaterialButton>(R.id.mtb_bid).setOnClickListener {
 
+        }
+
+        root.findViewById<ImageView>(R.id.iv_req_call_buyer).setOnClickListener {
+            val i = Intent(Intent.ACTION_CALL, Uri.parse("number"))
+            startActivity(i)
         }
 
 
@@ -64,7 +71,7 @@ class MyRequirementDetails : Fragment() {
 
     private fun initViews() {
 
-        //Set the above 7 entities wrt root
+        //Set the above 8 entities wrt root
         createGraph()
     }
 

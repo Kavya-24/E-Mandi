@@ -76,4 +76,13 @@
             android:id="@+id/action_myBidDetails_to_bidHistory"
             app:destination="@id/bidHistory" />
     </fragment>
+    <fragment
+        android:id="@+id/myRequirementDetails"
+        android:name="com.example.mandiexe.ui.myrequirements.MyRequirementDetails"
+        android:label="MyRequirementDetails"
+        tools:layout="@layout/my_requirement_details_fragment">
+        <action
+            android:id="@+id/action_myRequirementDetails_to_bidHistory"
+            app:destination="@id/bidHistory" />
+    </fragment>
 </navigation>
