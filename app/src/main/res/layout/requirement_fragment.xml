@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.MyCropBidsFragment">
+    tools:context=".ui.mybids.MyCropBidsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary">
+        android:background="@color/green_50">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swl_stock_fragment"
@@ -18,14 +18,14 @@
 
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_stock"
+                android:id="@+id/rv_requirement"
+                style="@style/styleRv"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                style="@style/styleRv"
-                tools:listitem="@layout/item_stock" />
+                tools:listitem="@layout/item_requirement" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -41,20 +41,20 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ProgressBar
-            android:id="@+id/pb_stock"
+            android:id="@+id/pb_requirement"
+            style="@style/styleProgressBar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            style="@style/styleProgressBar"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_add_stock"
+            android:id="@+id/fab_add_requirement"
+            style="@style/styleProgressBar"
             android:layout_margin="@dimen/space"
             android:src="@drawable/ic_add"
             android:tint="@color/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="parent"
-            style="@style/styleProgressBar"
             app:layout_constraintEnd_toEndOf="parent" />
 
 

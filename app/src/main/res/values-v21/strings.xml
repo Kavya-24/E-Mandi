@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cropQuanityError">This can not be zero</string>
+    <string name="offerPriceError">This can not be zero</string>
+    <string name="etEstError">Add an estimated time of completion</string>
+</resources>

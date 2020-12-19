@@ -13,11 +13,14 @@
         <action
             android:id="@+id/action_nav_home_to_addStock"
             app:destination="@id/addStock" />
+        <action
+            android:id="@+id/action_nav_home_to_myBidDetails"
+            app:destination="@id/myBidDetails" />
     </fragment>
 
     <fragment
         android:id="@+id/nav_my_crops"
-        android:name="com.example.mandiexe.ui.home.MyCropBidsFragment"
+        android:name="com.example.mandiexe.ui.mybids.MyCropBidsFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/my_crop_bids_fragment" />
 
@@ -34,11 +37,60 @@
         tools:layout="@layout/fragment_slideshow" />
     <fragment
         android:id="@+id/addStock"
-        android:name="com.example.mandiexe.ui.home.AddStock"
+        android:name="com.example.mandiexe.ui.mybids.AddStock"
         android:label="AddStock"
         tools:layout="@layout/add_stock_fragment">
         <action
             android:id="@+id/action_addStock_to_nav_home"
             app:destination="@id/nav_home" />
+        <action
+            android:id="@+id/action_addStock_to_mapActivity"
+            app:destination="@id/mapActivity" />
+        <argument
+            android:name="fetchedLocation"
+            app:argType="string"
+            app:nullable="true" />
+
     </fragment>
+    <fragment
+        android:id="@+id/mapActivity"
+        android:name="com.example.mandiexe.ui.home.MapActivity"
+        android:label="Map"
+        tools:layout="@layout/map_fragment">
+        <action
+            android:id="@+id/action_mapActivity_to_addStock"
+            app:destination="@id/addStock" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/bidHistory"
+        android:name="com.example.mandiexe.ui.home.BidHistory"
+        android:label="bid_history_fragment"
+        tools:layout="@layout/bid_history_fragment" />
+    <fragment
+        android:id="@+id/myBidDetails"
+        android:name="com.example.mandiexe.ui.mybids.MyBidDetails"
+        android:label="my_bid_details_fragment"
+        tools:layout="@layout/my_bid_details_fragment">
+        <action
+            android:id="@+id/action_myBidDetails_to_bidHistory"
+            app:destination="@id/bidHistory" />
+    </fragment>
+    <fragment
+        android:id="@+id/myRequirementDetails"
+        android:name="com.example.mandiexe.ui.myrequirements.MyRequirementDetails"
+        android:label="MyRequirementDetails"
+        tools:layout="@layout/my_requirement_details_fragment">
+        <action
+            android:id="@+id/action_myRequirementDetails_to_bidHistory"
+            app:destination="@id/bidHistory" />
+        <action
+            android:id="@+id/action_myRequirementDetails_to_bidFragment"
+            app:destination="@id/bidFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bidFragment"
+        android:name="com.example.mandiexe.ui.myrequirements.BidFragment"
+        android:label="BidFragment"
+        tools:layout="@layout/bid_fragment" />
 </navigation>

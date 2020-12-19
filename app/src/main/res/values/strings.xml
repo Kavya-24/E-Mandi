@@ -43,4 +43,42 @@
     <string name="error_please_check_internet">Please check your internet connection</string>
     <string name="error_request_timed_out">Request timed out</string>
     <string name="error_something_went_wrong">Something went wrong</string>
+    <string name="you_are_here">You are here</string>
+    <string name="maddress_and_lorem">mAddress and Lorem</string>
+    <string name="multi">This is my home number \n It is GNoida \n OkaY</string>
+    <string name="cropNameError">Add crop name</string>
+    <string name="cropTypeError">Please specify a type</string>
+    <string name="cropQuanityError">This can not be zero</string>
+    <string name="offerPriceError">This can not be zero</string>
+    <string name="etEstError">Add an estimated time of completion</string>
+    <string name="addressError">Location can not be empty</string>
+    <string name="expError">Add an expiration date of the bid</string>
+    <string name="date_of_start">Date of start</string>
+    <string name="view_bid_history">View bid history</string>
+    <string name="cancel_stock">Cancel Stock</string>
+    <string name="_918">918</string>
+    <string name="hello_world_person">Hello World Person</string>
+    <string name="rs_45602">Rs 45602</string>
+    <string name="rank">Rank</string>
+    <string name="name">Name</string>
+    <string name="date">Date</string>
+    <string name="price_rs">Price(Rs)</string>
+    <string name="cancel_bid">Cancel bid</string>
+    <string name="bid">Bid</string>
+    <string name="emptyBidError">Bid price can not be empty</string>
+    <string name="lesserBidError">Place a lower value in the bid</string>
+
+
+    <!--    //Crop name-->
+    <string-array name="arr_crop_names">
+        <item>Rice</item>
+        <item>Wheat</item>
+        <item>Maize</item>
+        <item>Barley</item>
+        <item>Potato</item>
+        <item>Tomato</item>
+        <item>Onion</item>
+        <item>Sugarcane</item>
+
+    </string-array>
 </resources>

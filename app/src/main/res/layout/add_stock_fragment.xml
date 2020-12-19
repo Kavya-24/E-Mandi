@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".ui.home.AddStock">
+        tools:context=".ui.mybids.AddStock">
 
         <com.google.android.material.textfield.TextInputLayout
 
@@ -22,6 +22,9 @@
 
             <AutoCompleteTextView
                 android:id="@+id/actv_which_crop"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space_half"
@@ -40,6 +43,9 @@
 
             <AutoCompleteTextView
                 android:id="@+id/actv_crop_type"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space_half"
@@ -56,6 +62,7 @@
             android:layout_margin="@dimen/space"
             android:hint="@string/quantity"
             android:orientation="horizontal"
+            app:endIconMode="none"
             app:layout_constraintEnd_toStartOf="@id/tilQUnit"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tilCropType">
@@ -79,14 +86,17 @@
             android:hint="@string/crop_type"
             android:orientation="horizontal"
             android:padding="@dimen/space_half"
-            app:layout_constraintBottom_toTopOf="@id/tilEstDate"
+            app:layout_constraintBottom_toBottomOf="@id/tilQuantity"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilCropType">
+            app:layout_constraintTop_toTopOf="@id/tilQuantity">
 
 
             <AutoCompleteTextView
                 android:id="@+id/actv_quantity_unit"
                 android:layout_width="match_parent"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="false"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space_half"
                 android:inputType="none" />
@@ -117,6 +127,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/space"
             android:hint="@string/offer_price"
+            app:endIconMode="none"
+            app:errorEnabled="false"
             android:orientation="horizontal"
             app:layout_constraintEnd_toStartOf="@id/tilQUnit"
             app:layout_constraintStart_toStartOf="parent"
@@ -143,26 +155,38 @@
             app:layout_constraintStart_toStartOf="@id/tilQUnit"
             app:layout_constraintTop_toBottomOf="@id/tilEstDate" />
 
-        <TextView
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tv_address"
+            style="@style/OutlinedTextBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/space"
-            android:maxLines="4"
-            android:textSize="18sp"
+            android:orientation="horizontal"
+            app:endIconMode="none"
             app:layout_constraintEnd_toStartOf="@id/tilQUnit"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilOfferPrice"
-            tools:text="@tools:sample/lorem" />
+            app:layout_constraintTop_toBottomOf="@id/tilOfferPrice">
+
+
+            <EditText
+                android:id="@+id/actv_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:text="@string/multi" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <ImageView
             android:id="@+id/iv_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/space"
+            android:padding="@dimen/space"
             android:src="@drawable/ic_location_on_black_24dp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_address"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilOfferPrice" />
+            app:layout_constraintTop_toTopOf="@id/tv_address" />
 
 
         <Switch
@@ -170,7 +194,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/space"
+            android:checked="true"
             android:enabled="true"
+            android:padding="@dimen/space"
             android:text="@string/available_for_bidding"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_address" />
@@ -197,6 +223,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/space"
             android:text="@string/add_stock"
+            android:id="@+id/mtb_add_stock"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tilExpDate" />

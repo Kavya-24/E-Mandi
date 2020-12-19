@@ -1,24 +1,20 @@
 package com.example.mandiexe.adapter
 
-
 /*
-class MyBidsAdapter(val itemClick: OnMyStockClickListener) :
-    RecyclerView.Adapter<MyBidsAdapter.MyViewHolder>() {
+class MyBidHistory(val itemClick: OnBidHistoryClickListener) :
+    RecyclerView.Adapter<MyBidHistory.MyViewHolder>() {
 
 
     //Initialize an empty list of the dataclass T
-    //var lst: List<T> = listOf()
+    cvar lst: List<T> = listOf()
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         //Use other items you want the layout to inflate
-        val CROP_NAME = itemView.findViewById<TextView>(R.id.tv_stock_crop_name)
-        val CROP_TYPE = itemView.findViewById<TextView>(R.id.tv_stock_crop_type)
-        val CROP_QUANTITY = itemView.findViewById<TextView>(R.id.tv_stock_quantity)
-        val CROP_EXP = itemView.findViewById<TextView>(R.id.tv_stock_expiration)
-        val CROP_CURRENT_BID = itemView.findViewById<TextView>(R.id.tv_stock_current_bid)
-        val CROP_IOP = itemView.findViewById<TextView>(R.id.tv_stock_initial_offer_price)
-        val CROP_LAST_UPDATED = itemView.findViewById<TextView>(R.id.tv_stock_last_upadted)
+        val RANK = itemView.findViewById<TextView>(R.id.item_history_rank)
+        val NAME = itemView.findViewById<TextView>(R.id.item_history_name)
+        val TIME = itemView.findViewById<TextView>(R.id.item_history_time)
+        val AMOUNT = itemView.findViewById<TextView>(R.id.item_history_amount)
 
 
         //Bind a single item
@@ -26,9 +22,15 @@ class MyBidsAdapter(val itemClick: OnMyStockClickListener) :
             with(_listItem) {
 
 
-                NAME.text =
+                RANK.text =
                     _listItem.(//Add the paramter from list object-data-class you want to add)
                             )
+                NAME.text = _listItem.()
+
+                TIME.text = _listItem.()
+
+                AMOUNT.text = _listItem.()
+
 
                 itemView.setOnClickListener {
                     itemClick.clickThisItem(_listItem)
@@ -45,8 +47,8 @@ class MyBidsAdapter(val itemClick: OnMyStockClickListener) :
 
         val view =
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_stock, parent, false)
-        return MyBidsAdapter.MyViewHolder(view)
+                .inflate(R.layout.item_bid_history, parent, false)
+        return MyBidHistory.MyViewHolder(view)
 
     }
 
@@ -64,8 +66,8 @@ class MyBidsAdapter(val itemClick: OnMyStockClickListener) :
 }
 
 
-interface OnMyStockClickListener {
-    fun viewMyStockDetails(_listItem: T)
+interface OnBidHistoryClickListener {
+    fun viewBidDetails(_listItem: T)
 }
 
 */
