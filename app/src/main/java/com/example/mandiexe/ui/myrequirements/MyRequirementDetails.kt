@@ -52,7 +52,7 @@ class MyRequirementDetails : Fragment() {
         }
 
         root.findViewById<MaterialButton>(R.id.mtb_bid).setOnClickListener {
-
+            //## Send crop item
         }
 
         root.findViewById<ImageView>(R.id.iv_req_call_buyer).setOnClickListener {
