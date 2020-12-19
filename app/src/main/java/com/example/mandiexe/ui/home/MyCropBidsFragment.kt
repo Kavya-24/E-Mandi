@@ -27,7 +27,10 @@ class MyCropBidsFragment : Fragment() {
 
 
         root.findViewById<FloatingActionButton>(R.id.fab_add_my_stock).setOnClickListener {
+
+
             root.findNavController().navigate(R.id.action_nav_home_to_addStock)
+            onDestroy()
         }
 
 

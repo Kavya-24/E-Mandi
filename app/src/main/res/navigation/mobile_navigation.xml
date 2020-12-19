@@ -15,6 +15,11 @@
             app:destination="@id/addStock" />
     </fragment>
 
+    <fragment
+        android:id="@+id/nav_my_crops"
+        android:name="com.example.mandiexe.ui.home.MyCropBidsFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/my_crop_bids_fragment" />
 
     <fragment
         android:id="@+id/nav_gallery"
@@ -31,5 +36,9 @@
         android:id="@+id/addStock"
         android:name="com.example.mandiexe.ui.home.AddStock"
         android:label="AddStock"
-        tools:layout="@layout/add_stock_fragment" />
+        tools:layout="@layout/add_stock_fragment">
+        <action
+            android:id="@+id/action_addStock_to_nav_home"
+            app:destination="@id/nav_home" />
+    </fragment>
 </navigation>

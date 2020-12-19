@@ -37,6 +37,7 @@ class AddStock : Fragment() {
     ): View? {
         root = inflater.inflate(R.layout.add_stock_fragment, container, false)
 
+
         //UI Init
         etEst = root.findViewById(R.id.etEstDate)
         etExp = root.findViewById(R.id.etExpDate)
@@ -120,5 +121,6 @@ class AddStock : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(AddStockViewModel::class.java)
     }
+
 
 }
