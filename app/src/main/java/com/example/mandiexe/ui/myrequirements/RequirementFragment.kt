@@ -1,4 +1,4 @@
-package com.example.mandiexe.ui.home
+package com.example.mandiexe.ui.myrequirements
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,18 +16,23 @@ class RequirementFragment : Fragment() {
     }
 
     private lateinit var viewModel: StockViewModel
+    private lateinit var root: View
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.requirement_fragment, container, false)
+        root = inflater.inflate(R.layout.requirement_fragment, container, false)
+
+        //Get the items from retrofit call and paged adapter
+
+        return root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(StockViewModel::class.java)
-        // TODO: Use the ViewModel
+
     }
 
 }

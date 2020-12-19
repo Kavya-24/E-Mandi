@@ -19,18 +19,19 @@ class MyCropBidsFragment : Fragment() {
 
     private lateinit var viewModel: PriceViewModel
     private lateinit var root: View
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         root = inflater.inflate(R.layout.my_crop_bids_fragment, container, false)
 
+        //Get the items from normal adapter
 
         root.findViewById<FloatingActionButton>(R.id.fab_add_my_stock).setOnClickListener {
 
-
             root.findNavController().navigate(R.id.action_nav_home_to_addStock)
-            onDestroy()
+
         }
 
 
@@ -40,7 +41,6 @@ class MyCropBidsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(PriceViewModel::class.java)
-        // TODO: Use the ViewModel
     }
 
 }

@@ -1,4 +1,4 @@
-package com.example.mandiexe.ui.home
+package com.example.mandiexe.ui.mybids
 
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener

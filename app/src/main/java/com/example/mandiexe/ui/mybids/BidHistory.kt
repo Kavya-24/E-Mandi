@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.example.mandiexe.R
+import com.example.mandiexe.viewmodels.BidHistoryViewModel
 
 class BidHistory : Fragment() {
 

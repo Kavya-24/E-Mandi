@@ -55,7 +55,7 @@
 
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_home"
+                android:id="@+id/rv_my_stocks"
                 style="@style/styleRv"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -78,7 +78,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ProgressBar
-            android:id="@+id/pb_home"
+            android:id="@+id/pb_my_crops"
             style="@style/styleProgressBar"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"

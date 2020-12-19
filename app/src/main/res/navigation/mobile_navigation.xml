@@ -37,7 +37,7 @@
         tools:layout="@layout/fragment_slideshow" />
     <fragment
         android:id="@+id/addStock"
-        android:name="com.example.mandiexe.ui.home.AddStock"
+        android:name="com.example.mandiexe.ui.mybids.AddStock"
         android:label="AddStock"
         tools:layout="@layout/add_stock_fragment">
         <action
