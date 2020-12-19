@@ -53,6 +53,7 @@
     <string name="etEstError">Add an estimated time of completion</string>
     <string name="addressError">Location can not be empty</string>
     <string name="expError">Add an expiration date of the bid</string>
+    <string name="date_of_start">Date of start</string>
 
 
     <!--    //Crop name-->

@@ -1,4 +1,4 @@
-package com.example.mandiexe.ui.home
+package com.example.mandiexe.ui.mybids
 
 import android.os.Bundle
 import android.view.LayoutInflater
