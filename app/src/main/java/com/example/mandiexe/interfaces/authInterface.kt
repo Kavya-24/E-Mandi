@@ -8,11 +8,15 @@ import retrofit2.http.POST
 interface authInterface {
 
 
+    //Get access token
     @POST("api/user/accessToken")
     fun getAccessToken(
         //USe Refresh token here            //Passed as String
         @Body refreshToken: String
     ): Call<LoginResponse>
+
+
+
 
 
 }
