@@ -43,4 +43,7 @@
     <string name="error_please_check_internet">Please check your internet connection</string>
     <string name="error_request_timed_out">Request timed out</string>
     <string name="error_something_went_wrong">Something went wrong</string>
+    <string name="you_are_here">You are here</string>
+    <string name="maddress_and_lorem">mAddress and Lorem</string>
+    <string name="multi">This is my home number \n It is GNoida \n OkaY</string>
 </resources>

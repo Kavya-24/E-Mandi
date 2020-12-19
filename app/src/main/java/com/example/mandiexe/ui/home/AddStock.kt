@@ -3,12 +3,15 @@ package com.example.mandiexe.ui.home
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
 import com.example.mandiexe.R
 import com.example.mandiexe.viewmodels.AddStockViewModel
 import java.text.SimpleDateFormat
@@ -26,10 +29,13 @@ class AddStock : Fragment() {
     private lateinit var viewModel: AddStockViewModel
     private lateinit var root: View
     private val myCalendar = Calendar.getInstance()
+    private val TAG = AddStock::class.java.simpleName
 
     //UI variables
     private lateinit var etEst: EditText
     private lateinit var etExp: EditText
+    private lateinit var ivLocation: ImageView
+    private lateinit var etAddress: EditText
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +47,17 @@ class AddStock : Fragment() {
         //UI Init
         etEst = root.findViewById(R.id.etEstDate)
         etExp = root.findViewById(R.id.etExpDate)
+        ivLocation = root.findViewById(R.id.iv_location)
+        etAddress = root.findViewById(R.id.actv_address)
 
+
+        //The address will either be preset or will come as an argument from Map Activity
+        if (arguments != null) {
+            //Set the address in the box trimmed
+            etAddress.setText(requireArguments().getString("fetchedLocation").toString())
+
+            Log.e(TAG, "Argument str is" + etAddress.text.toString())
+        }
 
         //Date Instance
         val dateEst =
@@ -91,7 +107,11 @@ class AddStock : Fragment() {
             }
         }
 
+        ivLocation.setOnClickListener {
+            //Start an activity
+            root.findNavController().navigate(R.id.action_addStock_to_mapActivity)
 
+        }
 
 
 
@@ -120,6 +140,7 @@ class AddStock : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(AddStockViewModel::class.java)
+
     }
 
 
