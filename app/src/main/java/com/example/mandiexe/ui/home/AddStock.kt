@@ -7,10 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AutoCompleteTextView
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Switch
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
@@ -85,6 +82,8 @@ class AddStock : Fragment() {
         tilExp = root.findViewById(R.id.tilExpDate)
 
 
+        //Populate views
+        setUpCropNameSpinner()
         //The address will either be preset or will come as an argument from Map Activity
         if (arguments != null) {
             //Set the address in the box trimmed
@@ -157,6 +156,15 @@ class AddStock : Fragment() {
             }
         }
 
+        tilName.setOnClickListener {
+            setUpCropNameSpinner()
+        }
+
+        cropName.setOnClickListener {
+            setUpCropNameSpinner()
+        }
+
+
         root.findViewById<MaterialButton>(R.id.mtb_add_stock).setOnClickListener {
             if (isValidate()) {
 
@@ -164,6 +172,27 @@ class AddStock : Fragment() {
         }
 
         return root
+
+    }
+
+    private fun setUpCropNameSpinner() {
+
+        //Crop names
+
+        val array: Array<String> = resources.getStringArray(R.array.arr_crop_names)
+        val adapter: ArrayAdapter<String>? = context?.let {
+            ArrayAdapter<String>(
+                it, android.R.layout.simple_spinner_item,
+                array
+            )
+        }
+        cropName.setAdapter(adapter)
+        cropName.onItemClickListener =
+            AdapterView.OnItemClickListener { parent, arg1, position, id ->
+
+                cropName.setText(array[position])
+            }
+
 
     }
 

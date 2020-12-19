@@ -53,4 +53,18 @@
     <string name="etEstError">Add an estimated time of completion</string>
     <string name="addressError">Location can not be empty</string>
     <string name="expError">Add an expiration date of the bid</string>
+
+
+    <!--    //Crop name-->
+    <string-array name="arr_crop_names">
+        <item>Rice</item>
+        <item>Wheat</item>
+        <item>Maize</item>
+        <item>Barley</item>
+        <item>Potato</item>
+        <item>Tomato</item>
+        <item>Onion</item>
+        <item>Sugarcane</item>
+
+    </string-array>
 </resources>

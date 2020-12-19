@@ -22,6 +22,9 @@
 
             <AutoCompleteTextView
                 android:id="@+id/actv_which_crop"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space_half"
@@ -40,6 +43,9 @@
 
             <AutoCompleteTextView
                 android:id="@+id/actv_crop_type"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space_half"
@@ -56,6 +62,7 @@
             android:layout_margin="@dimen/space"
             android:hint="@string/quantity"
             android:orientation="horizontal"
+            app:endIconMode="none"
             app:layout_constraintEnd_toStartOf="@id/tilQUnit"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tilCropType">
@@ -87,6 +94,9 @@
             <AutoCompleteTextView
                 android:id="@+id/actv_quantity_unit"
                 android:layout_width="match_parent"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="false"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space_half"
                 android:inputType="none" />
@@ -117,6 +127,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/space"
             android:hint="@string/offer_price"
+            app:endIconMode="none"
+            app:errorEnabled="false"
             android:orientation="horizontal"
             app:layout_constraintEnd_toStartOf="@id/tilQUnit"
             app:layout_constraintStart_toStartOf="parent"
@@ -150,6 +162,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/space"
             android:orientation="horizontal"
+            app:endIconMode="none"
             app:layout_constraintEnd_toStartOf="@id/tilQUnit"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tilOfferPrice">
@@ -181,6 +194,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/space"
+            android:checked="true"
             android:enabled="true"
             android:padding="@dimen/space"
             android:text="@string/available_for_bidding"
@@ -189,7 +203,6 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilExpDate"
-            android:visibility="gone"
             style="@style/OutlinedTextBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
