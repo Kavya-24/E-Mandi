@@ -79,9 +79,9 @@
             android:hint="@string/crop_type"
             android:orientation="horizontal"
             android:padding="@dimen/space_half"
-            app:layout_constraintBottom_toTopOf="@id/tilEstDate"
+            app:layout_constraintBottom_toBottomOf="@id/tilQuantity"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilCropType">
+            app:layout_constraintTop_toTopOf="@id/tilQuantity">
 
 
             <AutoCompleteTextView
@@ -182,12 +182,14 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/space"
             android:enabled="true"
+            android:padding="@dimen/space"
             android:text="@string/available_for_bidding"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_address" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilExpDate"
+            android:visibility="gone"
             style="@style/OutlinedTextBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -208,6 +210,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/space"
             android:text="@string/add_stock"
+            android:id="@+id/mtb_add_stock"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tilExpDate" />

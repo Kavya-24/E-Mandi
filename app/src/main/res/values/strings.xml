@@ -46,4 +46,11 @@
     <string name="you_are_here">You are here</string>
     <string name="maddress_and_lorem">mAddress and Lorem</string>
     <string name="multi">This is my home number \n It is GNoida \n OkaY</string>
+    <string name="cropNameError">Add crop name</string>
+    <string name="cropTypeError">Please specify a type</string>
+    <string name="cropQuanityError">This can not be zero</string>
+    <string name="offerPriceError">This can not be zero</string>
+    <string name="etEstError">Add an estimated time of completion</string>
+    <string name="addressError">Location can not be empty</string>
+    <string name="expError">Add an expiration date of the bid</string>
 </resources>
