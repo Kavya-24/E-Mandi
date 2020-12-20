@@ -18,7 +18,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="LockedOrientationActivity"
         tools:replace="android:icon">
-        <activity android:name=".ui.authUi.LoginActivity"></activity>
+        <activity android:name=".ui.authUi.LoginActivity" />
         <activity android:name=".ui.authUi.SplashActivity" /> <!-- Maps -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -34,6 +34,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".ui.home.MapActivity" />
+
+
     </application>
 
 </manifest>

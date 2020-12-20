@@ -40,26 +40,10 @@
         android:name="com.example.mandiexe.ui.mybids.AddStock"
         android:label="AddStock"
         tools:layout="@layout/add_stock_fragment">
-        <action
-            android:id="@+id/action_addStock_to_nav_home"
-            app:destination="@id/nav_home" />
-        <action
-            android:id="@+id/action_addStock_to_mapActivity"
-            app:destination="@id/mapActivity" />
         <argument
             android:name="fetchedLocation"
             app:argType="string"
             app:nullable="true" />
-
-    </fragment>
-    <fragment
-        android:id="@+id/mapActivity"
-        android:name="com.example.mandiexe.ui.home.MapActivity"
-        android:label="Map"
-        tools:layout="@layout/map_fragment">
-        <action
-            android:id="@+id/action_mapActivity_to_addStock"
-            app:destination="@id/addStock" />
 
     </fragment>
     <fragment

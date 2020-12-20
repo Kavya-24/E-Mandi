@@ -2,6 +2,7 @@ package com.example.mandiexe.ui.mybids
 
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,8 +11,8 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.findNavController
 import com.example.mandiexe.R
+import com.example.mandiexe.ui.home.MapActivity
 import com.example.mandiexe.viewmodels.AddStockViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
@@ -52,6 +53,9 @@ class AddStock : Fragment() {
     private lateinit var tilAddress: TextInputLayout
     private lateinit var tilEst: TextInputLayout
     private lateinit var tilExp: TextInputLayout
+
+
+    private val RC_MAP_STOCK_ADD = 111
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -140,9 +144,10 @@ class AddStock : Fragment() {
         }
 
         ivLocation.setOnClickListener {
-            //Start an activity
-            root.findNavController().navigate(R.id.action_addStock_to_mapActivity)
 
+            //Start an activity
+            val i = Intent(requireContext(), MapActivity::class.java)
+            startActivityForResult(i, RC_MAP_STOCK_ADD)
 
         }
 
@@ -289,5 +294,17 @@ class AddStock : Fragment() {
 
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        //Get the map data result
+        Log.e(
+            TAG,
+            "In activty result and req is $requestCode and res $resultCode and data is ${
+                data?.getStringExtra("fetchedLocation").toString()
+            }"
+        )
+        etAddress.setText(data?.getStringExtra("fetchedLocation").toString())
+
+
+    }
 
 }

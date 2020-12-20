@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">E-Mandi</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -77,7 +77,7 @@
     <string name="area">Area</string>
     <string name="emptyName">Name can not be empty</string>
     <string name="invalidName">Invalid name</string>
-    <string name="emptyAreaError">Area can not be empty</string>
+    <string name="emptyAreaError" tools:ignore="MissingTranslation">Area can not be empty</string>
 
 
     <!--    //Crop name-->
