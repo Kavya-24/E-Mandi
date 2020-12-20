@@ -15,9 +15,13 @@ object PreferenceUtil {
     private const val ID = "_id"
     private const val NAME = "name"
     private val PHONE = "phone"
+
+    private val AREA_UNIT = "area_unit"
+    private val QUANTITY_UNIT = "quantity_unit"
     private val LANGUAGE = "language"
 
     private val HAS_SEEN_WALKTHROUGH = "hasSeenWalkthrough"
+
 
     var _id: String?
         get() = pm.getString(ID, "")
@@ -43,6 +47,20 @@ object PreferenceUtil {
             pm.edit().putString(PHONE, value).apply()
         }
 
+    var area_unit: String?
+        get() = pm.getString(PHONE, "bigha")
+        set(value) {
+            pm.edit().putString(PHONE, value).apply()
+        }
+
+
+    var quantity_unit: String?
+        get() = pm.getString(QUANTITY_UNIT, "kg")
+        set(value) {
+            pm.edit().putString(QUANTITY_UNIT, value).apply()
+        }
+
+
 
     var hasSeenWalkthrough: Boolean
         get() = pm.getBoolean(HAS_SEEN_WALKTHROUGH, false)
@@ -50,7 +68,9 @@ object PreferenceUtil {
             pm.edit().putBoolean(HAS_SEEN_WALKTHROUGH, value).apply()
         }
 
-
+    /**
+    Language Preference
+     */
     fun setLanguageFromPreference(mLocale: String) {
         val pref = PreferenceUtil
         pref.language = mLocale
@@ -60,6 +80,35 @@ object PreferenceUtil {
         val pref = PreferenceUtil
         return (pref.language)
     }
+
+
+    /**
+    Area Preference
+     */
+    fun setAreaUnitFromPreference(aUnit: String) {
+        val pref = PreferenceUtil
+        pref.language = aUnit
+    }
+
+    fun getAreaUnitFromPreference(): String? {
+        val pref = PreferenceUtil
+        return (pref.area_unit)
+    }
+
+
+    /**
+    Quantity Preference
+     */
+    fun setQuanitityUnitFromPreference(qUnit: String) {
+        val pref = PreferenceUtil
+        pref.language = qUnit
+    }
+
+    fun getQuanitityUnitFromPreference(): String? {
+        val pref = PreferenceUtil
+        return (pref.quantity_unit)
+    }
+
 
 
     /*fun setUserFromPreference(user: ProfileResponse.Profile) {
