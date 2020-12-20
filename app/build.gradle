@@ -176,5 +176,7 @@ dependencies {
     //Graphs
     implementation 'com.github.AAChartModel:AAChartCore-Kotlin:-SNAPSHOT'
 
+    //OTP Library
+    implementation 'com.github.aabhasr1:OtpView:v1.1.2-ktx' // kotlin
 
 }

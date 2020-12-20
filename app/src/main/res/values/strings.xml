@@ -74,6 +74,8 @@
     <string name="next">Next</string>
     <string name="phone_number">Phone number</string>
     <string name="get_otp">get otp</string>
+    <string name="verify_otp">Verify OTP</string>
+    <string name="invalidOtp">Invalid OTP</string>
 
 
     <!--    //Crop name-->

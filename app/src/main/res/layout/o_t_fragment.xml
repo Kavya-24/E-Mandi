@@ -1,13 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/container_frag_otp"
+    android:layout_margin="@dimen/space"
     tools:context=".ui.authUi.OTPFragment">
 
-    <TextView
+    <in.aabhasjindal.otptextview.OtpTextView
+        android:id="@+id/otpView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
+        android:layout_height="40dp"
+        android:layout_marginTop="@dimen/space_3x"
+        android:textColor="@color/black"
+        app:bar_enabled="true"
+        app:bar_height="2dp"
+        app:box_margin="@dimen/space"
+        app:height="@dimen/space_5x"
+        app:hide_otp="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:length="6"
+        app:otp="124905"
+        app:otp_text_size="24sp"
+        app:width="@dimen/space_5x" />
 
-</FrameLayout>
+    <ProgressBar
+        android:id="@+id/pb_otp_verify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/mtb_verify_otp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_4x"
+        android:text="@string/verify_otp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/otpView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
