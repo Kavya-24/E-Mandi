@@ -11,6 +11,9 @@
         android:label="@string/menu_home"
         tools:layout="@layout/login_fragment">
 
+        <action
+            android:id="@+id/action_nav_login_to_OTPFragment"
+            app:destination="@id/nav_otp" />
     </fragment>
     <fragment
         android:id="@+id/nav_language"
@@ -21,5 +24,19 @@
             android:id="@+id/action_nav_language_to_nav_login"
             app:destination="@id/nav_login" />
     </fragment>
+    <fragment
+        android:id="@+id/nav_otp"
+        android:name="com.example.mandiexe.ui.authUi.OTPFragment"
+        android:label="o_t_fragment"
+        tools:layout="@layout/o_t_fragment">
+        <action
+            android:id="@+id/action_nav_otp_to_nav_signup"
+            app:destination="@id/nav_signup" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_signup"
+        android:name="com.example.mandiexe.ui.authUi.SignUpFragment"
+        android:label="sign_up_fragment"
+        tools:layout="@layout/sign_up_fragment" />
 
 </navigation>

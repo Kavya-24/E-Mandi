@@ -74,4 +74,6 @@
     <string name="verify_otp">OTP যাচাই করুন</string>
     <string name="invalidOtp">অবৈধ OTP.</string>
     <string name="invalidPhoneError">অচল ফোন নম্বর</string>
+    <string name="address">Address</string>
+    <string name="area">Area</string>
 </resources>

@@ -74,4 +74,6 @@
     <string name="verify_otp">OTP को सत्यापित करें</string>
     <string name="invalidOtp">अमान्य ओटीपी</string>
     <string name="invalidPhoneError">अवैध फोन नंबर</string>
+    <string name="address">Address</string>
+    <string name="area">Area</string>
 </resources>

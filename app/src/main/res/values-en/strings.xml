@@ -74,4 +74,6 @@
     <string name="verify_otp">Verify OTP</string>
     <string name="invalidOtp">Invalid OTP</string>
     <string name="invalidPhoneError">Invalid phone number</string>
+    <string name="address">Address</string>
+    <string name="area">Area</string>
 </resources>
