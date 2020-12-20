@@ -11,11 +11,13 @@ import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.mandiexe.R
+import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -43,10 +45,24 @@ class MapActivity : AppCompatActivity() {
     private lateinit var fab: FloatingActionButton
     private var fetchedLocation: String = ""
 
+    private val pref = PreferenceUtil
+    private var args: Bundle? = null
+
+    private var fromSignUp = false
+    lateinit var d: androidx.appcompat.app.AlertDialog.Builder
+    lateinit var tempRef: androidx.appcompat.app.AlertDialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.map_fragment)
 
+
+        args = intent?.getBundleExtra("bundle")
+
+        if (args != null) {
+            //Then this is from signUp
+            fromSignUp = true
+        }
 
         fab = findViewById(R.id.fav_check_map)
 
@@ -59,11 +75,60 @@ class MapActivity : AppCompatActivity() {
         getPermissions()
 
         fab.setOnClickListener {
-
+            if (fromSignUp) {
+                createDialog()
+            }
             //Get the location
-            onBackPressed()
+            else {
+                onBackPressed()
+            }
         }
 
+
+    }
+
+    private fun createDialog() {
+
+        d = androidx.appcompat.app.AlertDialog.Builder(this)
+        val v = layoutInflater.inflate(R.layout.layout_new_user_confirmation, null)
+        d.setView(v)
+
+
+        val tvName = v.findViewById<TextView>(R.id.tv_new_user_name)
+        val tvAddress = v.findViewById<TextView>(R.id.tv_new_user_address)
+
+        tvName.text = args?.getString("NAME")
+        if (fetchedLocation == "" || fetchedLocation == "Not found") {
+            tvAddress.text = args?.getString("ADDRESS_USER")
+        } else {
+            tvAddress.text = fetchedLocation
+        }
+
+
+        //Positive and negative buttons
+
+        //Create observer on Text
+
+        d.setPositiveButton("Register", { mDialogInterface, mInt ->
+
+            createUser()
+
+
+        })
+        d.setNegativeButton(resources.getString(R.string.cancel), { _, _ ->
+
+        })
+        d.create()
+
+        tempRef = d.create()
+        d.show()
+
+
+    }
+
+    private fun createUser() {
+        tempRef.dismiss()
+        //Create a new user call
 
     }
 
@@ -213,7 +278,8 @@ class MapActivity : AppCompatActivity() {
         var theAddress = ""
 
         //##Get location
-        val geocoder = Geocoder(this, Locale.getDefault())
+        val locale = Locale(pref.getLanguageFromPreference() ?: "en")
+        val geocoder = Geocoder(this, locale)
         try {
             val addresses: List<Address> =
                 geocoder.getFromLocation(latLang.latitude, latLang.longitude, 1)

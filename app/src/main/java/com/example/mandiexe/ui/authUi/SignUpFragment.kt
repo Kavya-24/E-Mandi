@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.example.mandiexe.R
@@ -38,6 +39,9 @@ class SignUpFragment : Fragment() {
 
     private val RC_MAP_SIGNUP = 111
 
+    //A special code to tell it that this is from SignUp and it need to create dialog
+    private val mapFromSignUp = "10"
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -67,6 +71,16 @@ class SignUpFragment : Fragment() {
 
     private fun goToMapActivity() {
         val i = Intent(requireContext(), MapActivity::class.java)
+        val b = bundleOf(
+            "RC" to mapFromSignUp,
+            "NAME" to etName.text.toString(),
+            "AREA" to etArea.text.toString(),
+            "AREA_UNIT" to etAreaUnit.text.toString(),
+            "ADDRESS_USER" to etAddress.text.toString()
+        )
+
+
+        i.putExtra("bundle", b)
         startActivityForResult(i, RC_MAP_SIGNUP)
     }
 
