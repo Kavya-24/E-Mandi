@@ -15,6 +15,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.mandiexe.utils.ExternalUtils.setAppLocale
+import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManager
@@ -31,8 +33,11 @@ class MainActivity : AppCompatActivity() {
     private var appUpdateManager: AppUpdateManager? = null
     private var RC_APP_UPDATE = 1249
 
+    private val pref = PreferenceUtil
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setAppLocale(pref.getLanguageFromPreference(), this)
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -40,6 +45,7 @@ class MainActivity : AppCompatActivity() {
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
+
         val navController = findNavController(R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -63,12 +69,6 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    //Recreate activity
-    private fun restartActivity() {
-        val intent = intent
-        finish()
-        startActivity(intent)
-    }
 
 
     //App Update

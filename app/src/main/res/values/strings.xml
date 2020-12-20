@@ -79,6 +79,7 @@
     <string name="invalidName">Invalid name</string>
     <string name="emptyAreaError" tools:ignore="MissingTranslation">Area can not be empty</string>
     <string name="cancel" tools:ignore="MissingTranslation">Cancel</string>
+    <string name="Login" tools:ignore="MissingTranslation">Login</string>
 
 
     <!--    //Crop name-->

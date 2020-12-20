@@ -2,9 +2,12 @@ package com.example.mandiexe.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import android.util.DisplayMetrics
 import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.mandiexe.R
@@ -87,6 +90,21 @@ object ExternalUtils {
             }
         }
         return true
+    }
+
+    fun setAppLocale(languageFromPreference: String?, context: Context) {
+        if (languageFromPreference != null) {
+
+            val resources: Resources = context.resources
+            val dm: DisplayMetrics = resources.displayMetrics
+            val config: Configuration = resources.configuration
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                config.setLocale(Locale(languageFromPreference.toLowerCase()))
+            } else {
+                config.locale = Locale(languageFromPreference.toLowerCase())
+            }
+            resources.updateConfiguration(config, dm)
+        }
     }
 
 }

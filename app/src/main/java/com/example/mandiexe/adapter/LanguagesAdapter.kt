@@ -3,11 +3,10 @@ package com.example.mandiexe.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
 import com.example.mandiexe.models.body.LanguageBody
+import com.google.android.material.button.MaterialButton
 
 class LanguagesAdapter(
     val itemClick: OnMyLanguageListener
@@ -21,20 +20,19 @@ class LanguagesAdapter(
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         //Use other items you want the layout to inflate
-        val LANGUAGE_NAME = itemView.findViewById<TextView>(R.id.tv_language)
-        val CARD = itemView.findViewById<CardView>(R.id.cardLanguage)
+        val CARD = itemView.findViewById<MaterialButton>(R.id.mtb_item_language)
 
 
         //Bind a single item
         fun bindPost(_listItem: LanguageBody, itemClick: OnMyLanguageListener, position: Int) {
             with(_listItem) {
 
-
-                LANGUAGE_NAME.text = _listItem.language
+                CARD.text = _listItem.language
 
                 itemView.setOnClickListener {
 
-                    CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.white))
+                    CARD.setBackgroundColor(itemView.context.resources.getColor(R.color.colorPrimaryDark))
+
                     itemClick.selectLanguage(_listItem, position)
                 }
 
@@ -71,7 +69,6 @@ class LanguagesAdapter(
 
 interface OnMyLanguageListener {
     fun selectLanguage(_listItem: LanguageBody, position: Int)
-
 
 
 }
