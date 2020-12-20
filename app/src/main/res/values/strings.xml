@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Mandi.exe</string>
+    <string name="app_name">E-Mandi</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -67,6 +67,13 @@
     <string name="bid">Bid</string>
     <string name="emptyBidError">Bid price can not be empty</string>
     <string name="lesserBidError">Place a lower value in the bid</string>
+    <string name="Language">Language</string>
+    <string name="choose_language">Choose Language</string>
+    <string name="english">English</string>
+    <string name="hindi">Hindi</string>
+    <string name="next">Next</string>
+    <string name="phone_number">Phone number</string>
+    <string name="get_otp">get otp</string>
 
 
     <!--    //Crop name-->
