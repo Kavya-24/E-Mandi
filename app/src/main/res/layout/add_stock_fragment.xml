@@ -22,9 +22,6 @@
 
             <AutoCompleteTextView
                 android:id="@+id/actv_which_crop"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space_half"
@@ -43,9 +40,6 @@
 
             <AutoCompleteTextView
                 android:id="@+id/actv_crop_type"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space_half"
@@ -94,11 +88,10 @@
             <AutoCompleteTextView
                 android:id="@+id/actv_quantity_unit"
                 android:layout_width="match_parent"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="false"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space_half"
+                android:clickable="true"
+                android:focusable="true"
                 android:inputType="none" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -127,9 +120,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/space"
             android:hint="@string/offer_price"
+            android:orientation="horizontal"
             app:endIconMode="none"
             app:errorEnabled="false"
-            android:orientation="horizontal"
             app:layout_constraintEnd_toStartOf="@id/tilQUnit"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tilEstDate">
@@ -219,11 +212,11 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/mtb_add_stock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/space"
             android:text="@string/add_stock"
-            android:id="@+id/mtb_add_stock"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tilExpDate" />

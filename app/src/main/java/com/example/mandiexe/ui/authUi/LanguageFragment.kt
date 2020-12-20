@@ -112,15 +112,12 @@ class LanguageFragment : Fragment(), OnMyLanguageListener {
         }
 
         val navController = Navigation.findNavController(root)
-        Log.e(TAG, "Nav controller is " + navController.toString())
-
         navController.navigate(R.id.action_nav_language_to_nav_login)
 
     }
 
     private fun recreateModel(s: String) {
 
-        Log.e(TAG, "In recreate modle")
         context?.let { LocaleHelper.onAttach(it, s) }
         activity?.recreate()
 

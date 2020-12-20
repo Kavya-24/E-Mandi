@@ -16,7 +16,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.mandiexe.MainActivity
 import com.example.mandiexe.R
+import com.example.mandiexe.utils.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -54,8 +56,10 @@ class MapActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setAppLocale(pref.getLanguageFromPreference().toString(), this)
         setContentView(R.layout.map_fragment)
 
+        setAppLocale(pref.getLanguageFromPreference().toString(), this)
 
         args = intent?.getBundleExtra("bundle")
 
@@ -66,7 +70,6 @@ class MapActivity : AppCompatActivity() {
 
         fab = findViewById(R.id.fav_check_map)
 
-        Log.e(TAG, "In on create and suppor" + supportMapFragment.toString())
 
         supportMapFragment =
             supportFragmentManager.findFragmentById(R.id.frag_map) as SupportMapFragment
@@ -109,15 +112,15 @@ class MapActivity : AppCompatActivity() {
 
         //Create observer on Text
 
-        d.setPositiveButton("Register", { mDialogInterface, mInt ->
+        d.setPositiveButton("Register") { _, _ ->
 
             createUser()
 
 
-        })
-        d.setNegativeButton(resources.getString(R.string.cancel), { _, _ ->
+        }
+        d.setNegativeButton(resources.getString(R.string.cancel)) { _, _ ->
 
-        })
+        }
         d.create()
 
         tempRef = d.create()
@@ -129,6 +132,14 @@ class MapActivity : AppCompatActivity() {
     private fun createUser() {
         tempRef.dismiss()
         //Create a new user call
+
+        /**
+         * Test
+         */
+        val i = Intent(this, MainActivity::class.java)
+        i.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+        i.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(i)
 
     }
 
@@ -211,17 +222,14 @@ class MapActivity : AppCompatActivity() {
     private fun getLocationInMap() {
 
         val task: Task<Location> = client.lastLocation
-        Log.e(TAG, "In locate map and task is " + task.toString())
 
         task.addOnSuccessListener { mLocation ->
 
-            Log.e(TAG, "In task and location is mLocato" + mLocation.toString())
             if (mLocation != null) {
                 supportMapFragment.getMapAsync(object : OnMapReadyCallback {
 
                     override fun onMapReady(gMap: GoogleMap?) {
                         //Initialize a latitude and longitude
-                        Log.e(TAG, "In map ready")
                         val latitudeLongitude = LatLng(mLocation.latitude, mLocation.longitude)
                         val marker = MarkerOptions().position(latitudeLongitude)
                             .title(resources.getString(R.string.you_are_here))
@@ -234,7 +242,6 @@ class MapActivity : AppCompatActivity() {
                             //Mark this as the current location
                             fetchedLocation = getAddress(latitudeLongitude)
 
-                            Log.e(TAG, "In map not null and now location is " + fetchedLocation)
                         } else {
                             Toast.makeText(
                                 this@MapActivity,
@@ -246,7 +253,6 @@ class MapActivity : AppCompatActivity() {
                         gMap?.setOnMapClickListener { newLatLong ->
                             //Create a new marker
 
-                            Log.e(TAG, "New posit is " + newLatLong.toString())
                             gMap.clear()
                             val newMarker = MarkerOptions()
                             newMarker.position(newLatLong)
@@ -258,7 +264,6 @@ class MapActivity : AppCompatActivity() {
 
                             //Update the location
                             fetchedLocation = getAddress(newLatLong)
-                            Log.e(TAG, "New addresss is " + fetchedLocation)
 
 
                         }
@@ -278,7 +283,9 @@ class MapActivity : AppCompatActivity() {
         var theAddress = ""
 
         //##Get location
-        val locale = Locale(pref.getLanguageFromPreference() ?: "en")
+        val locale = Locale(pref.getLanguageFromPreference().toString())
+        Log.e(TAG, " fjf " + pref.getLanguageFromPreference() + " ")
+
         val geocoder = Geocoder(this, locale)
         try {
             val addresses: List<Address> =

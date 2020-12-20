@@ -8,6 +8,11 @@
     android:layout_margin="@dimen/space"
     tools:context=".ui.authUi.OTPFragment">
 
+    <View
+        android:id="@+id/v"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_8x"
+        app:layout_constraintTop_toTopOf="parent" />
     <in.aabhasjindal.otptextview.OtpTextView
         android:id="@+id/otpView"
         android:layout_width="wrap_content"
@@ -16,7 +21,7 @@
         app:height="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/v"
         app:otp_box_background="@drawable/square_util"
         app:otp_text_size="24dp"
         app:bar_enabled="true"

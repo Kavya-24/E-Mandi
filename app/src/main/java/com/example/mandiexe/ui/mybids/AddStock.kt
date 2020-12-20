@@ -192,11 +192,6 @@ class AddStock : Fragment() {
             )
         }
         cropName.setAdapter(adapter)
-        cropName.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, arg1, position, id ->
-
-                cropName.setText(array[position])
-            }
 
 
     }

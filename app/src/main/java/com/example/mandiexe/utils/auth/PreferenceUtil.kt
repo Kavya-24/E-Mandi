@@ -48,9 +48,9 @@ object PreferenceUtil {
         }
 
     var area_unit: String?
-        get() = pm.getString(PHONE, "bigha")
+        get() = pm.getString(AREA_UNIT, "bigha")
         set(value) {
-            pm.edit().putString(PHONE, value).apply()
+            pm.edit().putString(AREA_UNIT, value).apply()
         }
 
 
@@ -87,7 +87,7 @@ object PreferenceUtil {
      */
     fun setAreaUnitFromPreference(aUnit: String) {
         val pref = PreferenceUtil
-        pref.language = aUnit
+        pref.area_unit = aUnit
     }
 
     fun getAreaUnitFromPreference(): String? {
@@ -101,7 +101,7 @@ object PreferenceUtil {
      */
     fun setQuanitityUnitFromPreference(qUnit: String) {
         val pref = PreferenceUtil
-        pref.language = qUnit
+        pref.quantity_unit = qUnit
     }
 
     fun getQuanitityUnitFromPreference(): String? {

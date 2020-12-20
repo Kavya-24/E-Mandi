@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.mandiexe.R
 import com.example.mandiexe.utils.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.auth.PreferenceUtil
@@ -21,6 +22,12 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         val navControllerLogin = findNavController(R.id.nav_host_fragment_login)
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.nav_language, R.id.nav_login, R.id.nav_otp, R.id.nav_signup
+            )
+        )
+        setupActionBarWithNavController(navControllerLogin, appBarConfiguration)
 
 
 

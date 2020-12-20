@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/nav_login"
         android:name="com.example.mandiexe.ui.authUi.LoginFragment"
-        android:label="@string/Login"
+        android:label="@string/app_name"
         tools:layout="@layout/login_fragment">
 
         <action
@@ -18,7 +18,7 @@
     <fragment
         android:id="@+id/nav_language"
         android:name="com.example.mandiexe.ui.authUi.LanguageFragment"
-        android:label="@string/Language"
+        android:label="@string/app_name"
         tools:layout="@layout/language_fragment">
         <action
             android:id="@+id/action_nav_language_to_nav_login"
@@ -27,7 +27,7 @@
     <fragment
         android:id="@+id/nav_otp"
         android:name="com.example.mandiexe.ui.authUi.OTPFragment"
-        android:label="o_t_fragment"
+        android:label="@string/app_name"
         tools:layout="@layout/o_t_fragment">
         <action
             android:id="@+id/action_nav_otp_to_nav_signup"
@@ -36,7 +36,7 @@
     <fragment
         android:id="@+id/nav_signup"
         android:name="com.example.mandiexe.ui.authUi.SignUpFragment"
-        android:label="sign_up_fragment"
+        android:label="@string/app_name"
         tools:layout="@layout/sign_up_fragment" />
 
 </navigation>

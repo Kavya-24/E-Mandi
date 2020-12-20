@@ -37,8 +37,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setAppLocale(pref.getLanguageFromPreference(), this)
+        setAppLocale(pref.getLanguageFromPreference().toString(), this)
         setContentView(R.layout.activity_main)
+
+        setAppLocale(pref.getLanguageFromPreference().toString(), this)
+
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 

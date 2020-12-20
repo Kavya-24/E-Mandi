@@ -3,17 +3,19 @@ package com.example.mandiexe.ui.authUi
 import `in`.aabhasjindal.otptextview.OTPListener
 import `in`.aabhasjindal.otptextview.OtpTextView
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
 import com.example.mandiexe.R
+import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.viewmodels.OTViewModel
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.o_t_fragment.*
 
 
 class OTPFragment : Fragment() {
@@ -74,10 +76,10 @@ class OTPFragment : Fragment() {
         var isValid = true
         if (mOtp.length < 6) {
             isValid = false
-            Snackbar.make(
-                container_frag_otp,
+            Toast.makeText(
+                context,
                 resources.getString(R.string.invalidOtp),
-                Snackbar.LENGTH_LONG
+                Toast.LENGTH_LONG
             ).show()
         }
 
@@ -89,7 +91,11 @@ class OTPFragment : Fragment() {
     private fun verifyOtp() {
 
         //Make a call to find wheather this is correct or not
-
+        /**
+         * Test
+         */
+        Log.e("OTP", PreferenceUtil.getLanguageFromPreference().toString())
+        root.findNavController().navigate(R.id.action_nav_otp_to_nav_signup)
 
     }
 
