@@ -1,5 +1,6 @@
 package com.example.mandiexe.ui.authUi
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.example.mandiexe.R
+import com.example.mandiexe.ui.home.MapActivity
 import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.viewmodels.SignUpViewModel
 import com.google.android.material.textfield.TextInputLayout
@@ -34,6 +36,7 @@ class SignUpFragment : Fragment() {
     private lateinit var etArea: EditText
     private lateinit var etAreaUnit: AutoCompleteTextView
 
+    private val RC_MAP_SIGNUP = 111
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,8 +66,10 @@ class SignUpFragment : Fragment() {
     }
 
     private fun goToMapActivity() {
-
+        val i = Intent(requireContext(), MapActivity::class.java)
+        startActivityForResult(i, RC_MAP_SIGNUP)
     }
+
 
     private fun isValidate(): Boolean {
         var isValid = true
