@@ -10,22 +10,19 @@
 
     <in.aabhasjindal.otptextview.OtpTextView
         android:id="@+id/otpView"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="@dimen/space_3x"
-        android:textColor="@color/black"
-        app:bar_enabled="true"
-        app:bar_height="2dp"
-        app:box_margin="@dimen/space"
-        app:height="@dimen/space_5x"
-        app:hide_otp="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        app:height="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:otp_box_background="@drawable/square_util"
+        app:otp_text_size="24dp"
+        app:bar_enabled="true"
+        app:bar_height="2dp"
         app:length="6"
-        app:otp="124905"
-        app:otp_text_size="24sp"
-        app:width="@dimen/space_5x" />
+        app:width="40dp" />
 
     <ProgressBar
         android:id="@+id/pb_otp_verify"

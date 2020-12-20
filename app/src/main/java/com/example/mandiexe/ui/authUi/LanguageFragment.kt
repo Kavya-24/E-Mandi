@@ -48,7 +48,7 @@ class LanguageFragment : Fragment(), OnMyLanguageListener {
 
         //Set the toolbar language
         //(activity as AppCompatActivity).supportActionBar?.title =
-        //  resources.getString(R.string.app_name)
+        //+  resources.getString(R.string.app_name)
 
         createLanguageList()
 
