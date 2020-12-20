@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardLanguage"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/space"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    app:strokeColor="@color/colorPrimaryDark"
+    app:strokeWidth="2dp"
+    android:elevation="@dimen/space"
+    app:cardBackgroundColor="@color/wildColor"
+    app:cardCornerRadius="@dimen/space_half"
+    app:layout_constraintTop_toBottomOf="@id/v">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/space_half">
+
+        <TextView
+            android:id="@+id/tv_language"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/space_half"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="@string/english"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+
+</com.google.android.material.card.MaterialCardView>

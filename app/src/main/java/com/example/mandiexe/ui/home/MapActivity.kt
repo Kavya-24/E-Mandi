@@ -3,22 +3,21 @@ package com.example.mandiexe.ui.home
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
 import com.example.mandiexe.R
+import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -31,7 +30,7 @@ import com.google.android.gms.tasks.Task
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.*
 
-class MapActivity : Fragment() {
+class MapActivity : AppCompatActivity() {
 
     companion object {
         fun newInstance() = MapActivity()
@@ -41,40 +40,102 @@ class MapActivity : Fragment() {
     private lateinit var client: FusedLocationProviderClient
     private lateinit var root: View
     private val permissionRequestCode = 1234
+    private val RESULT_OK = 111
     private val TAG = MapActivity::class.java.simpleName
     private lateinit var fab: FloatingActionButton
-    private lateinit var fetchedLocation: String
+    private var fetchedLocation: String = ""
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    private val pref = PreferenceUtil
+    private var args: Bundle? = null
 
-        root = inflater.inflate(R.layout.map_fragment, container, false)
-        fab = root.findViewById(R.id.fav_check_map)
+    private var fromSignUp = false
+    lateinit var d: androidx.appcompat.app.AlertDialog.Builder
+    lateinit var tempRef: androidx.appcompat.app.AlertDialog
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.map_fragment)
+
+
+        args = intent?.getBundleExtra("bundle")
+
+        if (args != null) {
+            //Then this is from signUp
+            fromSignUp = true
+        }
+
+        fab = findViewById(R.id.fav_check_map)
 
         Log.e(TAG, "In on create and suppor" + supportMapFragment.toString())
 
         supportMapFragment =
-            childFragmentManager.findFragmentById(R.id.frag_map) as SupportMapFragment
-        client = context?.let { LocationServices.getFusedLocationProviderClient(it) }!!
+            supportFragmentManager.findFragmentById(R.id.frag_map) as SupportMapFragment
+        client = this.let { LocationServices.getFusedLocationProviderClient(it) }!!
 
         getPermissions()
 
         fab.setOnClickListener {
-
-            val bundle = bundleOf("fetchedLocation" to fetchedLocation)
-            root.findNavController().navigate(R.id.action_mapActivity_to_addStock, bundle)
-            onDestroy()
+            if (fromSignUp) {
+                createDialog()
+            }
+            //Get the location
+            else {
+                onBackPressed()
+            }
         }
-        return root
+
+
+    }
+
+    private fun createDialog() {
+
+        d = androidx.appcompat.app.AlertDialog.Builder(this)
+        val v = layoutInflater.inflate(R.layout.layout_new_user_confirmation, null)
+        d.setView(v)
+
+
+        val tvName = v.findViewById<TextView>(R.id.tv_new_user_name)
+        val tvAddress = v.findViewById<TextView>(R.id.tv_new_user_address)
+
+        tvName.text = args?.getString("NAME")
+        if (fetchedLocation == "" || fetchedLocation == "Not found") {
+            tvAddress.text = args?.getString("ADDRESS_USER")
+        } else {
+            tvAddress.text = fetchedLocation
+        }
+
+
+        //Positive and negative buttons
+
+        //Create observer on Text
+
+        d.setPositiveButton("Register", { mDialogInterface, mInt ->
+
+            createUser()
+
+
+        })
+        d.setNegativeButton(resources.getString(R.string.cancel), { _, _ ->
+
+        })
+        d.create()
+
+        tempRef = d.create()
+        d.show()
+
+
+    }
+
+    private fun createUser() {
+        tempRef.dismiss()
+        //Create a new user call
+
     }
 
 
     private fun makeRequest() {
         ActivityCompat.requestPermissions(
-            context as Activity,
+            this as Activity,
             arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
             permissionRequestCode
         )
@@ -90,7 +151,7 @@ class MapActivity : Fragment() {
         when (requestCode) {
             permissionRequestCode ->
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(context, "Permission denied by user", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Permission denied by user", Toast.LENGTH_SHORT).show()
 
                 } else {
                     getLocationInMap()
@@ -106,13 +167,15 @@ class MapActivity : Fragment() {
 
         Log.e(TAG, "In get permissions")
         val p = this.let {
-            context?.let { it1 ->
+            this.let { it1 ->
                 ContextCompat.checkSelfPermission(
                     it1,
                     android.Manifest.permission.ACCESS_FINE_LOCATION
                 )
             }
         }
+
+
         if (p == PackageManager.PERMISSION_GRANTED) {
             //Go to it
 
@@ -121,17 +184,17 @@ class MapActivity : Fragment() {
 
         if (p != PackageManager.PERMISSION_GRANTED) {
             //Not permitted
-            Toast.makeText(context, "Permissions needed", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Permissions needed", Toast.LENGTH_SHORT).show()
 
 
         }
         if (ActivityCompat.shouldShowRequestPermissionRationale(
-                context as Activity,
+                this as Activity,
                 android.Manifest.permission.ACCESS_FINE_LOCATION
             )
         ) {
             //Tell user what we are going to do with this permission
-            val b = AlertDialog.Builder(context)
+            val b = AlertDialog.Builder(this)
             b.setMessage("Permission to access location")
             b.setTitle("Permission required")
             b.setPositiveButton("Ok") { dialog: DialogInterface?, which: Int ->
@@ -148,14 +211,17 @@ class MapActivity : Fragment() {
     private fun getLocationInMap() {
 
         val task: Task<Location> = client.lastLocation
+        Log.e(TAG, "In locate map and task is " + task.toString())
 
         task.addOnSuccessListener { mLocation ->
 
+            Log.e(TAG, "In task and location is mLocato" + mLocation.toString())
             if (mLocation != null) {
                 supportMapFragment.getMapAsync(object : OnMapReadyCallback {
 
                     override fun onMapReady(gMap: GoogleMap?) {
                         //Initialize a latitude and longitude
+                        Log.e(TAG, "In map ready")
                         val latitudeLongitude = LatLng(mLocation.latitude, mLocation.longitude)
                         val marker = MarkerOptions().position(latitudeLongitude)
                             .title(resources.getString(R.string.you_are_here))
@@ -168,9 +234,10 @@ class MapActivity : Fragment() {
                             //Mark this as the current location
                             fetchedLocation = getAddress(latitudeLongitude)
 
+                            Log.e(TAG, "In map not null and now location is " + fetchedLocation)
                         } else {
                             Toast.makeText(
-                                context,
+                                this@MapActivity,
                                 "Unable to open maps",
                                 Toast.LENGTH_SHORT
                             ).show()
@@ -179,6 +246,7 @@ class MapActivity : Fragment() {
                         gMap?.setOnMapClickListener { newLatLong ->
                             //Create a new marker
 
+                            Log.e(TAG, "New posit is " + newLatLong.toString())
                             gMap.clear()
                             val newMarker = MarkerOptions()
                             newMarker.position(newLatLong)
@@ -190,6 +258,8 @@ class MapActivity : Fragment() {
 
                             //Update the location
                             fetchedLocation = getAddress(newLatLong)
+                            Log.e(TAG, "New addresss is " + fetchedLocation)
+
 
                         }
 
@@ -208,7 +278,8 @@ class MapActivity : Fragment() {
         var theAddress = ""
 
         //##Get location
-        val geocoder = Geocoder(context, Locale.getDefault())
+        val locale = Locale(pref.getLanguageFromPreference() ?: "en")
+        val geocoder = Geocoder(this, locale)
         try {
             val addresses: List<Address> =
                 geocoder.getFromLocation(latLang.latitude, latLang.longitude, 1)
@@ -221,6 +292,18 @@ class MapActivity : Fragment() {
         }
 
         return theAddress
+    }
+
+    override fun onBackPressed() {
+
+        val bundle = Bundle()
+
+        bundle.putString("fetchedLocation", fetchedLocation)
+        Log.e(TAG, "In back pressed and address is " + fetchedLocation.toString())
+        val mIntent = Intent()
+        mIntent.putExtras(bundle)
+        setResult(RESULT_OK, mIntent)
+        super.onBackPressed()
     }
 
 }

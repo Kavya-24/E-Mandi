@@ -3,4 +3,7 @@
     <string name="cropQuanityError">This can not be zero</string>
     <string name="offerPriceError">This can not be zero</string>
     <string name="etEstError">Add an estimated time of completion</string>
+    <string name="address">Address</string>
+    <string name="area">Area</string>
+    <string name="emptyName">Name can not be empty</string>
 </resources>
