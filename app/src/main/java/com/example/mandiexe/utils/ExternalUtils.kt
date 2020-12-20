@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeoutException
 
-class ExternalUtils {
+object ExternalUtils {
 
     //##Access network state
     @RequiresApi(Build.VERSION_CODES.M)
@@ -78,5 +78,15 @@ class ExternalUtils {
 
     }
 
+    fun validateName(string: String): Boolean {
+        //Check if the name has only alphabets and not special characters or numbers
+
+        for (c in string) {
+            if (c !in 'A'..'Z' && c !in 'a'..'z' && c != ' ') {
+                return false
+            }
+        }
+        return true
+    }
 
 }

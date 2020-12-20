@@ -75,6 +75,9 @@
     <string name="invalidPhoneError">Invalid phone number</string>
     <string name="address">Address</string>
     <string name="area">Area</string>
+    <string name="emptyName">Name can not be empty</string>
+    <string name="invalidName">Invalid name</string>
+    <string name="emptyAreaError">Area can not be empty</string>
 
 
     <!--    //Crop name-->
