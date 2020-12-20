@@ -26,7 +26,7 @@ class LanguagesAdapter(
 
 
         //Bind a single item
-        fun bindPost(_listItem: LanguageBody, itemClick: OnMyLanguageListener) {
+        fun bindPost(_listItem: LanguageBody, itemClick: OnMyLanguageListener, position: Int) {
             with(_listItem) {
 
 
@@ -35,7 +35,7 @@ class LanguagesAdapter(
                 itemView.setOnClickListener {
 
                     CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.white))
-                    itemClick.selectLanguage(_listItem)
+                    itemClick.selectLanguage(_listItem, position)
                 }
 
 
@@ -61,7 +61,7 @@ class LanguagesAdapter(
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
-        holder.bindPost(lst[position], itemClick)
+        holder.bindPost(lst[position], itemClick, position)
 
     }
 
@@ -70,5 +70,8 @@ class LanguagesAdapter(
 
 
 interface OnMyLanguageListener {
-    fun selectLanguage(_listItem: LanguageBody)
+    fun selectLanguage(_listItem: LanguageBody, position: Int)
+
+
+
 }

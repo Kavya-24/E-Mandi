@@ -63,6 +63,14 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
+    //Recreate activity
+    private fun restartActivity() {
+        val intent = intent
+        finish()
+        startActivity(intent)
+    }
+
+
     //App Update
     private fun updateApp() {
 
