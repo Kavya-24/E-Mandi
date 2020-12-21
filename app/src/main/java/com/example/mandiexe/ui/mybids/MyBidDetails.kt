@@ -33,10 +33,12 @@ class MyBidDetails : Fragment() {
     ): View? {
         root = inflater.inflate(R.layout.my_bid_details_fragment, container, false)
         aaChartView = root.findViewById<AAChartView>(R.id.chartView_details)
+
         args = requireArguments()
 
+        //This gets an id as the argument and makes a call from it
+        makeCall()
 
-        initViews()
 
         //initViews
         root.findViewById<TextView>(R.id.tv_view_bid_history_stocks).setOnClickListener {
@@ -46,10 +48,27 @@ class MyBidDetails : Fragment() {
         }
 
         root.findViewById<MaterialButton>(R.id.mtb_cancel_stock).setOnClickListener {
+            cancelStock()
+        }
 
+
+        root.findViewById<MaterialButton>(R.id.mtb_modify_stock).setOnClickListener {
+            modifyStock()
         }
 
         return root
+    }
+
+    private fun makeCall() {
+
+    }
+
+    private fun cancelStock() {
+
+    }
+
+    private fun modifyStock() {
+
     }
 
     private fun initViews() {

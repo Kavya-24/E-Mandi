@@ -124,6 +124,7 @@
     <string name="initPrice">Ask Price of Crop:</string>
     <string name="myBidPrice" tools:ignore="MissingTranslation">Price you are adding</string>
     <string name="noChangeInBid">No chnage in bid</string>
+    <string name="modifyStock">Modify stock</string>
 
 
 </resources>
