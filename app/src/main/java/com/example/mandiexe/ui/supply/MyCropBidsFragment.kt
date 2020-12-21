@@ -1,4 +1,4 @@
-package com.example.mandiexe.ui.mybids
+package com.example.mandiexe.ui.supply
 
 import android.os.Bundle
 import android.util.Log

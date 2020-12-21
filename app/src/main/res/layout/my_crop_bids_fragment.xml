@@ -5,7 +5,7 @@
     android:id="@+id/container_my_crops"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.mybids.MyCropBidsFragment">
+    tools:context=".ui.supply.MyCropBidsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

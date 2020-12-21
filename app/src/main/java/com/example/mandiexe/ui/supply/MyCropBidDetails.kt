@@ -1,4 +1,4 @@
-package com.example.mandiexe.ui.mybids
+package com.example.mandiexe.ui.supply
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,10 +16,10 @@ import com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
 import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
 import com.google.android.material.button.MaterialButton
 
-class MyBidDetails : Fragment() {
+class MyCropBidDetails : Fragment() {
 
     companion object {
-        fun newInstance() = MyBidDetails()
+        fun newInstance() = MyCropBidDetails()
     }
 
     private lateinit var viewModel: MyBidDetailsViewModel
@@ -31,7 +31,7 @@ class MyBidDetails : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        root = inflater.inflate(R.layout.my_bid_details_fragment, container, false)
+        root = inflater.inflate(R.layout.my_crop_bid_details_fragment, container, false)
         aaChartView = root.findViewById<AAChartView>(R.id.chartView_details)
 
         args = requireArguments()

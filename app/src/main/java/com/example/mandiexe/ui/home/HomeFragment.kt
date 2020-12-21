@@ -11,8 +11,8 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
 import com.example.mandiexe.R
-import com.example.mandiexe.ui.mybids.MyCropBidsFragment
 import com.example.mandiexe.ui.myrequirements.RequirementFragment
+import com.example.mandiexe.ui.supply.MyCropBidsFragment
 import com.example.mandiexe.viewmodels.HomeViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener

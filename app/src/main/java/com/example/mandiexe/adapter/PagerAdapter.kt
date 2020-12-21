@@ -5,8 +5,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.example.mandiexe.R
-import com.example.mandiexe.ui.mybids.MyCropBidsFragment
 import com.example.mandiexe.ui.myrequirements.RequirementFragment
+import com.example.mandiexe.ui.supply.MyCropBidsFragment
 
 
 class PagerAdapter(fm: FragmentManager?, var mNumOfTabs: Int, context: Context) :
