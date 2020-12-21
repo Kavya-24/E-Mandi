@@ -50,6 +50,8 @@ class MainActivity : AppCompatActivity(), Communicator {
     private var searchQuery = ""
     private lateinit var searchView: android.widget.SearchView
     private var mAdapter: SimpleCursorAdapter? = null
+    private val ACTION_VOICE_SEARCH = "com.google.android.gms.actions.SEARCH_ACTION"
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

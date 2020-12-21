@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
 import com.example.mandiexe.R
 import com.example.mandiexe.viewmodels.StockViewModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class RequirementFragment : Fragment() {
 
@@ -25,6 +27,11 @@ class RequirementFragment : Fragment() {
         root = inflater.inflate(R.layout.requirement_fragment, container, false)
 
         //Get the items from retrofit call and paged adapter
+
+
+        root.findViewById<FloatingActionButton>(R.id.fab_add_requirement).setOnClickListener {
+            root.findNavController().navigate(R.id.action_nav_home_to_addRequirement)
+        }
 
         return root
     }

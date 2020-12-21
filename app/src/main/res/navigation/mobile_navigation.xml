@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_nav_home_to_nav_my_crops2"
             app:destination="@id/nav_my_crops2" />
+        <action
+            android:id="@+id/action_nav_home_to_addRequirement"
+            app:destination="@id/addRequirement" />
     </fragment>
 
     <fragment
@@ -103,4 +106,9 @@
             android:id="@+id/action_viewPagerFragment_to_nav_add_stock_2"
             app:destination="@id/nav_add_stock_2" />
     </fragment>
+    <fragment
+        android:id="@+id/addRequirement"
+        android:name="com.example.mandiexe.ui.myrequirements.AddRequirement"
+        android:label="@string/searchBuyers"
+        tools:layout="@layout/add_requirement_fragment" />
 </navigation>

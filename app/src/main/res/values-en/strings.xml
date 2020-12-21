@@ -84,4 +84,5 @@
     <string name="search">Search</string>
     <string name="searchHint">Search crop</string>
     <string name="details">Details</string>
+    <string name="searchBuyers">Search buyers</string>
 </resources>
