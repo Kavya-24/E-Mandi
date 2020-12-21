@@ -2,9 +2,11 @@ package com.example.mandiexe.ui.authUi
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import androidx.core.os.bundleOf
@@ -13,7 +15,9 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.mandiexe.R
 import com.example.mandiexe.ui.home.MapActivity
 import com.example.mandiexe.utils.ExternalUtils
+import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.viewmodels.SignUpViewModel
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
 
 class SignUpFragment : Fragment() {
@@ -41,6 +45,8 @@ class SignUpFragment : Fragment() {
 
     //A special code to tell it that this is from SignUp and it need to create dialog
     private val mapFromSignUp = "10"
+    private val pref = PreferenceUtil
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,14 +65,44 @@ class SignUpFragment : Fragment() {
         etArea = root.findViewById(R.id.etArea)
         etAreaUnit = root.findViewById(R.id.actv_area_unit)
 
-        if (isValidate()) {
-            //valid details
-            goToMapActivity()
 
+        //Populate units
+        populateAreaUnit()
+
+        tilAUnit.setOnClickListener {
+            etAreaUnit.showDropDown()
+        }
+
+        etAreaUnit.setOnClickListener {
+            etAreaUnit.showDropDown()
+        }
+
+        root.findViewById<MaterialButton>(R.id.mtb_sign_up).setOnClickListener {
+            if (isValidate()) {
+                //valid details
+                //Save the prefered unit
+                pref.setAreaUnitFromPreference(etArea.text.toString())
+                goToMapActivity()
+
+            }
         }
 
 
         return root
+    }
+
+    private fun populateAreaUnit() {
+
+        etAreaUnit.setText(resources.getString(R.string.bigha))
+        val array: Array<String> = resources.getStringArray(R.array.arr_area_units)
+        val adapter: ArrayAdapter<String>? = context?.let {
+            ArrayAdapter<String>(
+                it, android.R.layout.simple_spinner_item,
+                array
+            )
+        }
+        etAreaUnit.setAdapter(adapter)
+
     }
 
     private fun goToMapActivity() {
@@ -81,6 +117,7 @@ class SignUpFragment : Fragment() {
 
 
         i.putExtra("bundle", b)
+        Log.e("SIGN", PreferenceUtil.getLanguageFromPreference().toString())
         startActivityForResult(i, RC_MAP_SIGNUP)
     }
 

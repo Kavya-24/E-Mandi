@@ -10,6 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <ProgressBar
+            android:id="@+id/pb_my_crops_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/tv_stock_detail_crop_name"
             android:layout_width="match_parent"
@@ -151,11 +160,22 @@
             android:id="@+id/mtb_cancel_stock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/red_A700"
             android:text="@string/cancel_stock"
             app:backgroundTint="@color/red_A700"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/mtb_modify_stock"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_view_bid_history_stocks" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/mtb_modify_stock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/modifyStock"
+            app:backgroundTint="@color/green_A700"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/mtb_cancel_stock"
+            app:layout_constraintTop_toBottomOf="@id/tv_view_bid_history_stocks" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

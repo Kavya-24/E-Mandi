@@ -19,6 +19,8 @@ class MyBidsAdapter(val itemClick: OnMyStockClickListener) :
         val CROP_CURRENT_BID = itemView.findViewById<TextView>(R.id.tv_stock_current_bid)
         val CROP_IOP = itemView.findViewById<TextView>(R.id.tv_stock_initial_offer_price)
         val CROP_LAST_UPDATED = itemView.findViewById<TextView>(R.id.tv_stock_last_upadted)
+        val CROP_DELTA = itemView.findViewById<TextView>(R.id.tv_my_req_delta)
+        val CROP_CHANGE = itemView.findViewById<ImageView>(R.id.iv_req_image)
 
 
         //Bind a single item

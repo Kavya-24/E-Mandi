@@ -78,4 +78,20 @@
     <string name="area">Area</string>
     <string name="emptyName">Name can not be empty</string>
     <string name="invalidName">Invalid name</string>
+    <string name="changeCurrentLanguage">Change the language</string>
+    <string name="helpForPage">Get a walkthrough</string>
+    <string name="Notifications">Notifications</string>
+    <string name="search">Search</string>
+    <string name="searchHint">Search crop</string>
+    <string name="details">Details</string>
+    <string name="searchBuyers">Search buyers</string>
+    <string name="delta">delta</string>
+    <string name="modifyBid">Modify bid</string>
+    <string name="myBid">My bid</string>
+    <string name="bidAPrice">Enter price</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="tvDesc">Please note the following changes before adding the bid</string>
+    <string name="initPrice">Ask Price of Crop</string>
+    <string name="noChangeInBid">No chnage in bid</string>
+    <string name="modifyStock">Modify stock</string>
 </resources>

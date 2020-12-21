@@ -13,8 +13,8 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
-    val url = "xxx"
-    val TAG = RetrofitClient::class.java.simpleName
+    private val url = "xxx"
+    private val TAG = RetrofitClient::class.java.simpleName
 
 
     private fun okhttpClient(context: Context): OkHttpClient {

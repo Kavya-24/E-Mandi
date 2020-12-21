@@ -1,17 +1,16 @@
 package com.example.mandiexe.ui.authUi
 
-import android.app.Activity
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat.recreate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
@@ -19,6 +18,7 @@ import com.example.mandiexe.adapter.LanguagesAdapter
 import com.example.mandiexe.adapter.OnMyLanguageListener
 import com.example.mandiexe.models.body.LanguageBody
 import com.example.mandiexe.utils.ApplicationUtils
+import com.example.mandiexe.utils.LocaleHelper
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.viewmodels.LanguageViewModel
 import java.util.*
@@ -34,6 +34,8 @@ class LanguageFragment : Fragment(), OnMyLanguageListener {
     private lateinit var root: View
     private var pref = PreferenceUtil
 
+    private val TAG = LanguageFragment::class.java.simpleName
+
     //To be replaced by rv of languge
     //Default will be english
 
@@ -43,12 +45,13 @@ class LanguageFragment : Fragment(), OnMyLanguageListener {
     ): View? {
         root = inflater.inflate(R.layout.language_fragment, container, false)
 
-        loadLocales()
 
         //Set the toolbar language
-        (activity as AppCompatActivity).supportActionBar?.title =
-            resources.getString(R.string.app_name)
+        //(activity as AppCompatActivity).supportActionBar?.title =
+        //+  resources.getString(R.string.app_name)
+
         createLanguageList()
+
 
 
 
@@ -82,30 +85,44 @@ class LanguageFragment : Fragment(), OnMyLanguageListener {
 
     override fun selectLanguage(_listItem: LanguageBody, position: Int) {
         //Use keys
+
+        Log.e(TAG, "In selectLanguage")
+
         when (position) {
 
             0 -> {
                 setLocale("en")
                 //Recreate
-                recreate(context as Activity)
+                recreateModel("en")
             }
             1 -> {
                 setLocale("hi")
-                recreate(context as Activity)
+                recreateModel("hi")
             }
             2 -> {
                 setLocale("bn")
-                recreate(context as Activity)
+                recreateModel("bn")
             }
 
             else -> {
                 setLocale("en")
-                recreate(context as Activity)
+                recreateModel("en")
             }
 
         }
 
+        val navController = Navigation.findNavController(root)
+        navController.navigate(R.id.action_nav_language_to_nav_login)
+
     }
+
+    private fun recreateModel(s: String) {
+
+        context?.let { LocaleHelper.onAttach(it, s) }
+        activity?.recreate()
+
+    }
+
 
     private fun setLocale(s: String) {
         val locale = Locale(s)
@@ -121,6 +138,8 @@ class LanguageFragment : Fragment(), OnMyLanguageListener {
         //Save data to the shared preference
         pref.setLanguageFromPreference(s)
 
+
+        Log.e(TAG, "In set local" + pref.getLanguageFromPreference().toString())
         //Now for the system
         val editor: SharedPreferences.Editor = context?.getSharedPreferences(
             "Settings",
@@ -128,17 +147,6 @@ class LanguageFragment : Fragment(), OnMyLanguageListener {
         )!!.edit()
         editor.putString("My_Lang", s)
         editor.apply()
-
-
-    }
-
-    private fun loadLocales() {
-
-        val lang = pref.getLanguageFromPreference()
-        val sharedPref = context?.getSharedPreferences("Settings", Activity.MODE_PRIVATE)
-        val langSystem = sharedPref?.getString("My_Lang", "")
-
-        setLocale(langSystem ?: "en")
 
 
     }

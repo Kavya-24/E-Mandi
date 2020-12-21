@@ -8,6 +8,7 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
 import com.example.mandiexe.R
 import com.example.mandiexe.viewmodels.LoginViewModel
 import com.google.android.material.button.MaterialButton
@@ -55,6 +56,11 @@ class LoginFragment : Fragment() {
 
     private fun getOTP() {
         //Calls for getting otp
+        /**Test
+         **/
+
+        root.findViewById<ProgressBar>(R.id.pb_login).visibility = View.GONE
+        root.findNavController().navigate(R.id.action_nav_login_to_OTPFragment)
     }
 
     private fun isValidate(): Boolean {

@@ -1,11 +1,17 @@
 package com.example.mandiexe.utils
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import android.util.DisplayMetrics
 import android.util.Log
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
 import com.example.mandiexe.R
 import retrofit2.HttpException
@@ -80,13 +86,41 @@ object ExternalUtils {
 
     fun validateName(string: String): Boolean {
         //Check if the name has only alphabets and not special characters or numbers
-
-        for (c in string) {
-            if (c !in 'A'..'Z' && c !in 'a'..'z' && c != ' ') {
-                return false
-            }
-        }
+//
+//        for (c in string) {
+//            if (c !in 'A'..'Z' && c !in 'a'..'z' && c != ' ') {
+//                return false
+//            }
+//        }
         return true
+    }
+
+    fun setAppLocale(languageFromPreference: String?, context: Context) {
+        if (languageFromPreference != null) {
+
+            val resources: Resources = context.resources
+            val dm: DisplayMetrics = resources.displayMetrics
+            val config: Configuration = resources.configuration
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                config.setLocale(Locale(languageFromPreference.toLowerCase()))
+            } else {
+                config.locale = Locale(languageFromPreference.toLowerCase())
+            }
+            resources.updateConfiguration(config, dm)
+        }
+    }
+
+
+    fun hideKeyboard(activity: Activity, context: Context) {
+        val imm: InputMethodManager =
+            context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        //Find the currently focused view, so we can grab the correct window token from it.
+        var view: View? = activity.currentFocus
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = View(activity)
+        }
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
 }
