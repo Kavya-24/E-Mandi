@@ -50,8 +50,9 @@ class MapActivity : AppCompatActivity() {
     private var args: Bundle? = null
 
     private var fromSignUp = false
-    lateinit var d: androidx.appcompat.app.AlertDialog.Builder
-    lateinit var tempRef: androidx.appcompat.app.AlertDialog
+
+    private lateinit var d: androidx.appcompat.app.AlertDialog.Builder
+    private lateinit var tempRef: androidx.appcompat.app.AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

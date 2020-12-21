@@ -16,4 +16,9 @@
     <string name="delta">delta</string>
     <string name="modifyBid">Modify bid</string>
     <string name="myBid">My bid</string>
+    <string name="bidAPrice">Enter price</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="tvDesc">Please note the following changes before adding the bid</string>
+    <string name="initPrice">Ask Price of Crop</string>
+    <string name="noChangeInBid">No chnage in bid</string>
 </resources>
