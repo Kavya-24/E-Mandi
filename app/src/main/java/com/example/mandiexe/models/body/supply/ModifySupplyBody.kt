@@ -13,6 +13,12 @@ data class ModifySupplyBody(
         @Json(name = "askPrice")
         val askPrice: Int, // 12000
         @Json(name = "variety")
-        val variety: String // common
+        val variety: String, // common
+        @Json(name = "description")
+        val description: String,
+        @Json(name = "expiry")
+        val expiry: String,
+        @Json(name = "dateOfHarvest")
+        val dateOfHarvest: String
     )
 }

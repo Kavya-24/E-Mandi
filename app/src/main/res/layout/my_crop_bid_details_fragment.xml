@@ -2,8 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:id="@+id/container_crop_bids_details"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.supply.MyCropBidDetails">
 
@@ -43,6 +43,17 @@
             tools:text="Basmati" />
 
         <TextView
+            android:id="@+id/tv_stock_detail_crop_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space"
+            android:layout_marginTop="@dimen/space_half"
+            android:maxLines="4"
+            android:text="@string/description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_stock_detail_crop_type" />
+
+        <TextView
             android:id="@+id/tv_stock_detail_quantity"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -50,7 +61,7 @@
             android:text="@string/quantity2"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_stock_detail_crop_type" />
+            app:layout_constraintTop_toBottomOf="@id/tv_stock_detail_crop_description" />
 
         <TextView
             android:id="@+id/ans_detail_crop_quanity"

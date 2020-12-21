@@ -99,4 +99,6 @@
     <string name="supplyUpdated">Crop updated successfully</string>
     <string name="cancelStock">Cancel crop</string>
     <string name="no">No</string>
+    <string name="description">Description</string>
+    <string name="modifyCrop">Modify crop</string>
 </resources>
