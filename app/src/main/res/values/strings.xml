@@ -115,6 +115,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" tools:ignore="MissingTranslation">Hello blank fragment</string>
     <string name="searchBuyers">Search buyers</string>
+    <string name="delta">delta</string>
 
 
 </resources>

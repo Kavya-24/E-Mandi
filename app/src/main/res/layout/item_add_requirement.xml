@@ -135,7 +135,7 @@
             <!--        </LinearLayout>-->
 
             <TextView
-                android:id="@+id/tv_requirement_crop_name"
+                android:id="@+id/tv_add_requirement_crop_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space"
@@ -147,13 +147,13 @@
 
 
             <TextView
-                android:id="@+id/tv_requirement_crop_location"
+                android:id="@+id/tv_add_requirement_crop_location"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/space"
                 android:layout_marginTop="@dimen/space_half"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_requirement_crop_name"
+                app:layout_constraintTop_toBottomOf="@id/tv_add_requirement_crop_name"
                 tools:text="Bihta, Amhara" />
 
             <ImageView
@@ -162,7 +162,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space"
                 android:src="@drawable/ic_above"
-                app:layout_constraintBottom_toBottomOf="@id/tv_requirement_crop_name"
+                app:layout_constraintBottom_toBottomOf="@id/tv_add_requirement_crop_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -174,19 +174,19 @@
                 android:text="@string/delta"
                 android:textColor="@color/green_A700"
                 android:textSize="24sp"
-                app:layout_constraintBottom_toBottomOf="@id/tv_requirement_crop_location"
+                app:layout_constraintBottom_toBottomOf="@id/tv_add_requirement_crop_location"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_req_image" />
 
             <TextView
-                android:id="@+id/tv_requirement_quantity"
+                android:id="@+id/tv_add_requirement_quantity"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space"
                 android:text="@string/quantity2"
                 android:textSize="24sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_requirement_crop_location" />
+                app:layout_constraintTop_toBottomOf="@id/tv_add_requirement_crop_location" />
 
             <TextView
                 android:id="@+id/ans_crop_quanity"
@@ -195,19 +195,19 @@
                 android:layout_marginStart="@dimen/space"
                 android:text="@string/_0_kg"
                 android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="@id/tv_requirement_quantity"
-                app:layout_constraintStart_toEndOf="@id/tv_requirement_quantity"
-                app:layout_constraintTop_toTopOf="@id/tv_requirement_quantity" />
+                app:layout_constraintBottom_toBottomOf="@id/tv_add_requirement_quantity"
+                app:layout_constraintStart_toEndOf="@id/tv_add_requirement_quantity"
+                app:layout_constraintTop_toTopOf="@id/tv_add_requirement_quantity" />
 
             <TextView
-                android:id="@+id/tv_requirement_expiration"
+                android:id="@+id/tv_add_requirement_expiration"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space"
                 android:text="@string/expiration_date"
                 android:textSize="24sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_requirement_quantity" />
+                app:layout_constraintTop_toBottomOf="@id/tv_add_requirement_quantity" />
 
             <TextView
                 android:id="@+id/ans_crop_exp"
@@ -216,12 +216,12 @@
                 android:layout_marginStart="@dimen/space"
                 android:text="@string/_12_4_2005"
                 android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="@id/tv_requirement_expiration"
-                app:layout_constraintStart_toEndOf="@id/tv_requirement_expiration"
-                app:layout_constraintTop_toTopOf="@id/tv_requirement_expiration" />
+                app:layout_constraintBottom_toBottomOf="@id/tv_add_requirement_expiration"
+                app:layout_constraintStart_toEndOf="@id/tv_add_requirement_expiration"
+                app:layout_constraintTop_toTopOf="@id/tv_add_requirement_expiration" />
 
             <TextView
-                android:id="@+id/tv_requirement_current_bid"
+                android:id="@+id/tv_add_requirement_current_bid"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space_half"
@@ -230,13 +230,13 @@
                 android:textColor="@android:color/holo_green_dark"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@id/tv_requirement_initial_offer_price"
+                app:layout_constraintEnd_toStartOf="@id/tv_add_requirement_initial_offer_price"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_requirement_expiration" />
+                app:layout_constraintTop_toBottomOf="@id/tv_add_requirement_expiration" />
 
             <TextView
-                android:id="@+id/tv_requirement_initial_offer_price"
+                android:id="@+id/tv_add_requirement_initial_offer_price"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space_half"
@@ -247,32 +247,18 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toEndOf="@id/tv_requirement_current_bid"
-                app:layout_constraintTop_toBottomOf="@id/tv_requirement_expiration" />
+                app:layout_constraintStart_toEndOf="@id/tv_add_requirement_current_bid"
+                app:layout_constraintTop_toBottomOf="@id/tv_add_requirement_expiration" />
+
 
             <TextView
-                android:id="@+id/tv_requirement_my_bid"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/space_half"
-                android:gravity="center"
-                android:text="@string/_1234"
-                android:textColor="@android:color/holo_red_light"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@id/tv_requirement_current_bid"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toStartOf="@id/tv_requirement_current_bid"
-                app:layout_constraintTop_toBottomOf="@id/tv_requirement_current_bid" />
-
-            <TextView
-                android:id="@+id/tv_requirement_last_upadted"
+                android:id="@+id/tv_add_requirement_last_upadted"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space_half"
                 android:gravity="end"
                 android:text="@string/_12_4_2005"
-                app:layout_constraintTop_toBottomOf="@id/tv_requirement_my_bid" />
+                app:layout_constraintTop_toBottomOf="@id/tv_add_requirement_current_bid" />
 
             <View
                 android:layout_width="match_parent"
