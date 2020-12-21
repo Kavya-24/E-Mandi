@@ -116,6 +116,8 @@
     <string name="hello_blank_fragment" tools:ignore="MissingTranslation">Hello blank fragment</string>
     <string name="searchBuyers">Search buyers</string>
     <string name="delta">delta</string>
+    <string name="modifyBid">Modify bid</string>
+    <string name="myBid">My bid: </string>
 
 
 </resources>

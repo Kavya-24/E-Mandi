@@ -11,14 +11,17 @@ import android.widget.CursorAdapter
 import android.widget.ProgressBar
 import android.widget.SearchView
 import android.widget.SimpleCursorAdapter
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
+import com.example.mandiexe.adapter.OnItemClickListenerAddReq
+import com.example.mandiexe.models.requirements.AddRequirementResponse
 import com.example.mandiexe.viewmodels.AddRequirementViewModel
 
 
-class AddRequirement : Fragment() {
+class AddRequirement : Fragment(), OnItemClickListenerAddReq {
 
     companion object {
         fun newInstance() = AddRequirement()
@@ -134,6 +137,15 @@ class AddRequirement : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(AddRequirementViewModel::class.java)
+    }
+
+    override fun onItemClicked(_listItem: AddRequirementResponse) {
+        //Open Card of the requirement
+        val bundle = bundleOf(
+
+        )
+
+
     }
 
 }

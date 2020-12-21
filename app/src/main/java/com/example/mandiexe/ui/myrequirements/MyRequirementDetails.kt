@@ -62,8 +62,16 @@ class MyRequirementDetails : Fragment() {
             startActivity(i)
         }
 
+        root.findViewById<TextView>(R.id.tv_view_bid_history_requirement).setOnClickListener {
+            viewBidHistory()
+        }
+
 
         return root
+    }
+
+    private fun viewBidHistory() {
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

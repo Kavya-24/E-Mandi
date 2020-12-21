@@ -110,5 +110,18 @@
         android:id="@+id/addRequirement"
         android:name="com.example.mandiexe.ui.myrequirements.AddRequirement"
         android:label="@string/searchBuyers"
-        tools:layout="@layout/add_requirement_fragment" />
+        tools:layout="@layout/add_requirement_fragment">
+        <action
+            android:id="@+id/action_addRequirement_to_openNewRequirementFragment"
+            app:destination="@id/openNewRequirementFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/openNewRequirementFragment"
+        android:name="com.example.mandiexe.ui.myrequirements.OpenNewRequirementFragment"
+        android:label="OpenNewRequirementFragment"
+        tools:layout="@layout/open_new_requirement_fragment">
+        <action
+            android:id="@+id/action_openNewRequirementFragment_to_bidFragment"
+            app:destination="@id/bidFragment" />
+    </fragment>
 </navigation>
