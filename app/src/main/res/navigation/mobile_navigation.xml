@@ -11,21 +11,25 @@
         android:label="@string/app_name"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_nav_home_to_addStock"
-            app:destination="@id/addStock" />
+            android:id="@+id/action_nav_home_to_nav_add_stock_2"
+            app:destination="@id/nav_add_stock_2" />
         <action
-            android:id="@+id/action_nav_home_to_myBidDetails"
-            app:destination="@id/myBidDetails" />
+            android:id="@+id/action_nav_home_to_requirementFragment"
+            app:destination="@id/requirementFragment" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_my_crops2"
+            app:destination="@id/nav_my_crops2" />
     </fragment>
 
     <fragment
-        android:id="@+id/nav_my_crops"
+        android:id="@+id/nav_my_crops2"
         android:name="com.example.mandiexe.ui.mybids.MyCropBidsFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/my_crop_bids_fragment">
+
         <action
-            android:id="@+id/action_nav_my_crops_to_addStock"
-            app:destination="@id/addStock" />
+            android:id="@+id/action_nav_my_crops2_to_myBidDetails"
+            app:destination="@id/myBidDetails" />
     </fragment>
 
     <fragment
@@ -40,7 +44,7 @@
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
     <fragment
-        android:id="@+id/addStock"
+        android:id="@+id/nav_add_stock_2"
         android:name="com.example.mandiexe.ui.mybids.AddStock"
         android:label="AddStock"
         tools:layout="@layout/add_stock_fragment">
@@ -81,4 +85,22 @@
         android:name="com.example.mandiexe.ui.myrequirements.BidFragment"
         android:label="BidFragment"
         tools:layout="@layout/bid_fragment" />
+    <fragment
+        android:id="@+id/requirementFragment"
+        android:name="com.example.mandiexe.ui.myrequirements.RequirementFragment"
+        android:label="RequirementFragment"
+        tools:layout="@layout/requirement_fragment">
+        <action
+            android:id="@+id/action_requirementFragment_to_myRequirementDetails"
+            app:destination="@id/myRequirementDetails" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewPagerFragment"
+        android:name="com.example.mandiexe.ui.home.ViewPagerFragment"
+        android:label="ViewPagerFragment"
+        tools:layout="@layout/viewpager_fragment">
+        <action
+            android:id="@+id/action_viewPagerFragment_to_nav_add_stock_2"
+            app:destination="@id/nav_add_stock_2" />
+    </fragment>
 </navigation>

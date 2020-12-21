@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.example.mandiexe.R
 import com.example.mandiexe.ui.home.MapActivity
 import com.example.mandiexe.viewmodels.AddStockViewModel
@@ -302,4 +303,14 @@ class AddStock : Fragment() {
 
     }
 
+    override fun onDestroy() {
+
+        //Now we need to destroy this fragment and on resume of home, go to remove views
+        Log.e(TAG, "In on destroy")
+        val navController = findNavController()
+        navController.navigateUp()
+
+
+        super.onDestroy()
+    }
 }

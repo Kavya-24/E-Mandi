@@ -87,6 +87,7 @@
     <string name="search">Search</string>
     <string name="bigha" translatable="false">Bigha</string>
     <string name="searchHint">Search crop</string>
+    <string name="details">Details</string>
 
 
     <!--    //Crop name-->
@@ -110,6 +111,9 @@
         <item>Bigha</item>
 
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment" tools:ignore="MissingTranslation">Hello blank fragment</string>
 
 
 </resources>

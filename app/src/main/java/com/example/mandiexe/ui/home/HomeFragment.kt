@@ -6,10 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
 import com.example.mandiexe.R
+import com.example.mandiexe.ui.mybids.MyCropBidsFragment
+import com.example.mandiexe.ui.myrequirements.RequirementFragment
 import com.example.mandiexe.viewmodels.HomeViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
@@ -24,11 +27,37 @@ class HomeFragment : Fragment() {
     private lateinit var viewPager: ViewPager
     private val TAG = HomeFragment::class.java.simpleName
 
+
+    private fun openFragment(fragment: Fragment) {
+
+        val transaction = childFragmentManager.beginTransaction()
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+        transaction.replace(R.id.frame_main, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
+
+
+    //Get Frag
+    private fun getFragment(position: Int): Fragment {
+        return when (position) {
+            1 -> RequirementFragment()
+            else -> MyCropBidsFragment()
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         Log.e(TAG, "In on resume")
-//        updateViews()
 
+
+        viewPager.currentItem = tabLayout.selectedTabPosition
+
+        when (tabLayout.selectedTabPosition) {
+            1 -> openFragment(RequirementFragment())
+            else -> openFragment(MyCropBidsFragment())
+
+        }
 
     }
 
@@ -50,6 +79,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun updateViews() {
+
         val mLayoutManager = LinearLayoutManager(activity)
         mLayoutManager.orientation = LinearLayoutManager.VERTICAL
         viewPager.adapter =
@@ -66,6 +96,7 @@ class HomeFragment : Fragment() {
         tabLayout.setOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 viewPager.currentItem = tab.position
+                openFragment(getFragment(tab.position))
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {}
