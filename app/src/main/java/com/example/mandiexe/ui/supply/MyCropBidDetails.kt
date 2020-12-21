@@ -1,20 +1,26 @@
 package com.example.mandiexe.ui.supply
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import com.example.mandiexe.R
-import com.example.mandiexe.viewmodels.MyBidDetailsViewModel
+import com.example.mandiexe.models.body.supply.DeleteSupplyBody
+import com.example.mandiexe.models.responses.supply.DeleteSupplyResponse
+import com.example.mandiexe.viewmodels.MyCropBidDetailsViewModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
 import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.my_crop_bid_details_fragment.*
 
 class MyCropBidDetails : Fragment() {
 
@@ -22,10 +28,13 @@ class MyCropBidDetails : Fragment() {
         fun newInstance() = MyCropBidDetails()
     }
 
-    private lateinit var viewModel: MyBidDetailsViewModel
+    private lateinit var viewModelCrop: MyCropBidDetailsViewModel
     private lateinit var root: View
     private lateinit var aaChartView: AAChartView
     private lateinit var args: Bundle
+
+
+    //SessionManagers
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,10 +70,50 @@ class MyCropBidDetails : Fragment() {
 
     private fun makeCall() {
 
+
     }
 
     private fun cancelStock() {
 
+        val dialog = AlertDialog.Builder(context)
+        dialog.setTitle(resources.getString(R.string.cancelStock))
+        dialog.setPositiveButton(resources.getString(R.string.cancelStock), { _, _ ->
+            confirmCancel()
+        })
+        dialog.setNegativeButton(resources.getString(R.string.no), { _, _ ->
+
+        })
+
+        dialog.create()
+        dialog.show()
+
+
+    }
+
+    private fun confirmCancel() {
+        val body = args.getString("SUPPLY_ID")?.let { DeleteSupplyBody(it) }
+
+        if (body != null) {
+            viewModelCrop.cancelFunction(body).observe(viewLifecycleOwner, Observer { mResponse ->
+
+                //Check with the sucessful of it
+                if (viewModelCrop.successfulCancel.value == false) {
+                    createSnackbar(viewModelCrop.messageCancel.value)
+                } else {
+                    manageCancelResponses(mResponse)
+                }
+            })
+        }
+
+
+    }
+
+    private fun createSnackbar(value: String?) {
+        Snackbar.make(container_crop_bids_details, value.toString(), Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun manageCancelResponses(mResponse: DeleteSupplyResponse?) {
+        onDestroy()
     }
 
     private fun modifyStock() {
@@ -79,7 +128,7 @@ class MyCropBidDetails : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MyBidDetailsViewModel::class.java)
+        viewModelCrop = ViewModelProviders.of(this).get(MyCropBidDetailsViewModel::class.java)
     }
 
     private fun createGraph() {

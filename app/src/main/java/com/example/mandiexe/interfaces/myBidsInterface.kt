@@ -7,6 +7,7 @@ import com.example.mandiexe.models.body.bid.ViewParticularBidBody
 import com.example.mandiexe.models.responses.bids.*
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
@@ -16,6 +17,7 @@ interface myBidsInterface {
     @Headers("Content-Type:application/json")
     @POST("/api/farmer/bidhistory")
     fun getFarmerBidHistoryGlobal(
+        @Header("Authorization") accessToken: String?
     ): Call<FarmerBidHistoryGlobalResponse>
 
 
@@ -23,13 +25,15 @@ interface myBidsInterface {
     @Headers("Content-Type:application/json")
     @POST("/api/farmer/bids")
     fun getFarmerDemands(
+        @Header("Authorization") accessToken: String?
     ): Call<FarmerBidsResponse>
 
     //View a particular bid
     @Headers("Content-Type:application/json")
     @POST("/api/farmer/bid/view")
     fun getFarmerViewParticularBid(
-        @Body mViewBidBody: ViewParticularBidBody
+        @Body mViewBidBody: ViewParticularBidBody,
+        @Header("Authorization") accessToken: String?
     ): Call<ViewParticularBidResponse>
 
 
@@ -37,7 +41,8 @@ interface myBidsInterface {
     @Headers("Content-Type:application/json")
     @POST("/api/farmer/bid/update")
     fun getFarmerUpdateBid(
-        @Body mUpdateBidBody: UpdateBidBody
+        @Body mUpdateBidBody: UpdateBidBody,
+        @Header("Authorization") accessToken: String?
     ): Call<UpdateBidBody>
 
 
@@ -45,7 +50,8 @@ interface myBidsInterface {
     @Headers("Content-Type:application/json")
     @POST("/api/farmer/bid/delete")
     fun getFarmerDeleteBid(
-        @Body mDeleteBidBody: DeletBidBody
+        @Body mDeleteBidBody: DeletBidBody,
+        @Header("Authorization") accessToken: String?
     ): Call<DeleteBidResponse>
 
 
@@ -53,7 +59,8 @@ interface myBidsInterface {
     @Headers("Content-Type:application/json")
     @POST("/api/farmer/bid/add")
     fun getFarmerAddBid(
-        @Body mAddBidBody: AddBidBody
+        @Body mAddBidBody: AddBidBody,
+        @Header("Authorization") accessToken: String?
     ): Call<AddBidResponse>
 
 

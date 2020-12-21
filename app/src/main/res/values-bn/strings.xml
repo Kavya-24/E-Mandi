@@ -95,4 +95,8 @@
     <string name="initPrice">Ask Price of Crop</string>
     <string name="noChangeInBid">No chnage in bid</string>
     <string name="modifyStock">Modify stock</string>
+    <string name="supplyDeleted">Crop deleted successfully</string>
+    <string name="supplyUpdated">Crop updated successfully</string>
+    <string name="cancelStock">Cancel crop</string>
+    <string name="no">No</string>
 </resources>
