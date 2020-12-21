@@ -27,7 +27,7 @@ class HomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         Log.e(TAG, "In on resume")
-        updateViews()
+//        updateViews()
 
 
     }

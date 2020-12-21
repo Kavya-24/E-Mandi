@@ -22,7 +22,11 @@
         android:id="@+id/nav_my_crops"
         android:name="com.example.mandiexe.ui.mybids.MyCropBidsFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/my_crop_bids_fragment" />
+        tools:layout="@layout/my_crop_bids_fragment">
+        <action
+            android:id="@+id/action_nav_my_crops_to_addStock"
+            app:destination="@id/addStock" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_gallery"

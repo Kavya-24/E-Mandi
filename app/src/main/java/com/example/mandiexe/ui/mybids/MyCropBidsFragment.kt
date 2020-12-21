@@ -6,10 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.findNavController
 import com.example.mandiexe.R
+import com.example.mandiexe.utils.Communicator
 import com.example.mandiexe.viewmodels.PriceViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+
 
 class MyCropBidsFragment : Fragment() {
 
@@ -19,6 +20,7 @@ class MyCropBidsFragment : Fragment() {
 
     private lateinit var viewModel: PriceViewModel
     private lateinit var root: View
+    private lateinit var comm: Communicator
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,11 +28,15 @@ class MyCropBidsFragment : Fragment() {
     ): View? {
         root = inflater.inflate(R.layout.my_crop_bids_fragment, container, false)
 
+        comm = activity as Communicator
+
         //Get the items from normal adapter
 
         root.findViewById<FloatingActionButton>(R.id.fab_add_my_stock).setOnClickListener {
 
-            root.findNavController().navigate(R.id.action_nav_home_to_addStock)
+            //Use communicators
+            //Replace containers
+
 
         }
 

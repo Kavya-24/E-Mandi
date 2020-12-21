@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/container_my_crops"
     android:layout_height="match_parent"
     tools:context=".ui.mybids.MyCropBidsFragment">
 
@@ -94,14 +95,6 @@
             android:src="@drawable/ic_add"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_search_a_stock"
-            style="@style/styleProgressBar"
-            android:layout_margin="@dimen/space"
-            android:src="@drawable/ic_search_black_24dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/fab_add_my_stock" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

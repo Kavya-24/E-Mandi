@@ -79,4 +79,9 @@
     <string name="area">Area</string>
     <string name="emptyName">Name can not be empty</string>
     <string name="invalidName">Invalid name</string>
+    <string name="changeCurrentLanguage">Change the language</string>
+    <string name="helpForPage">Get a walkthrough</string>
+    <string name="Notifications">Notifications</string>
+    <string name="search">Search</string>
+    <string name="searchHint">Search crop</string>
 </resources>

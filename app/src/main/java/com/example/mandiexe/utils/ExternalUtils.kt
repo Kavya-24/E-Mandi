@@ -1,6 +1,7 @@
 package com.example.mandiexe.utils
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
@@ -9,6 +10,8 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
 import com.example.mandiexe.R
 import retrofit2.HttpException
@@ -105,6 +108,19 @@ object ExternalUtils {
             }
             resources.updateConfiguration(config, dm)
         }
+    }
+
+
+    fun hideKeyboard(activity: Activity, context: Context) {
+        val imm: InputMethodManager =
+            context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        //Find the currently focused view, so we can grab the correct window token from it.
+        var view: View? = activity.currentFocus
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = View(activity)
+        }
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
 }

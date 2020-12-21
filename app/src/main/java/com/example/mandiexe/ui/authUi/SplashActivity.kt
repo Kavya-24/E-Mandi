@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.example.mandiexe.MainActivity
 import com.example.mandiexe.R
+import com.example.mandiexe.ui.home.MainActivity
 import com.example.mandiexe.utils.auth.PreferenceManager
 
 class SplashActivity : AppCompatActivity() {

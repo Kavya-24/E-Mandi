@@ -92,7 +92,7 @@ object PreferenceUtil {
 
     fun getAreaUnitFromPreference(): String? {
         val pref = PreferenceUtil
-        return (pref.area_unit)
+        return pref.area_unit
     }
 
 

@@ -93,7 +93,7 @@ class SignUpFragment : Fragment() {
 
     private fun populateAreaUnit() {
 
-        etAreaUnit.setText(pref.getAreaUnitFromPreference())
+        etAreaUnit.setText(resources.getString(R.string.bigha))
         val array: Array<String> = resources.getStringArray(R.array.arr_area_units)
         val adapter: ArrayAdapter<String>? = context?.let {
             ArrayAdapter<String>(
