@@ -65,7 +65,7 @@ object RetrofitClient {
             .create(authInterface::class.java)
     }
 
-    fun makeCallsForMyCrops(context: Context): myCropInterface {
+    fun makeCallsForMyCrops(context: Context): mySupplyInterface {
 
         //Moshi class
         val moshi = Moshi.Builder()
@@ -77,7 +77,7 @@ object RetrofitClient {
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .client(okhttpClient(context))
-            .build().create(myCropInterface::class.java)
+            .build().create(mySupplyInterface::class.java)
 
     }
 

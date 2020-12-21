@@ -17,7 +17,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
 import com.example.mandiexe.adapter.OnItemClickListenerAddReq
-import com.example.mandiexe.models.requirements.AddRequirementResponse
+import com.example.mandiexe.models.responses.bids.AddRequirementResponse
 import com.example.mandiexe.viewmodels.AddRequirementViewModel
 
 
