@@ -93,6 +93,7 @@ class AddStock : Fragment() {
 
         //Populate views
         setUpCropNameSpinner()
+
         //The address will either be preset or will come as an argument from Map Activity
         if (arguments != null) {
             //Set the address in the box trimmed
@@ -206,17 +207,15 @@ class AddStock : Fragment() {
             cropType.text.toString()
         )
 
-        if (body != null) {
-            viewModel.addFunction(body).observe(viewLifecycleOwner, Observer { mResponse ->
+        viewModel.addFunction(body).observe(viewLifecycleOwner, Observer { mResponse ->
 
-                //Check with the sucessful of it
-                if (viewModel.successful.value == false) {
-                    createSnackbar(viewModel.message.value)
-                } else {
-                    manageStockCreateResponses(mResponse)
-                }
-            })
-        }
+            //Check with the sucessful of it
+            if (viewModel.successful.value == false) {
+                createSnackbar(viewModel.message.value)
+            } else {
+                manageStockCreateResponses(mResponse)
+            }
+        })
 
 
     }

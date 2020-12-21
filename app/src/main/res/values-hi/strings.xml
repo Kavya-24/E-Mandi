@@ -102,4 +102,7 @@
     <string name="description">Description</string>
     <string name="modifyCrop">Modify crop</string>
     <string name="supplyAdded">New crop stock created successfully</string>
+    <string name="couldNotLoad">Could not load stocks</string>
+    <string name="suppliesLoaded">Stocks loaded sucessfully</string>
+    <string name="noSupply">You do not have any supplies as of now.</string>
 </resources>

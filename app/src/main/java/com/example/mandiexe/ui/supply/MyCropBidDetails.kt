@@ -2,6 +2,7 @@ package com.example.mandiexe.ui.supply
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,6 +56,9 @@ class MyCropBidDetails : Fragment() {
     private lateinit var offerPrice: EditText
     private lateinit var desc: EditText
 
+    private var SUPPLY_ID = ""
+    private val TAG = MyCropBidDetails::class.java.simpleName
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -62,8 +66,13 @@ class MyCropBidDetails : Fragment() {
         root = inflater.inflate(R.layout.my_crop_bid_details_fragment, container, false)
         aaChartView = root.findViewById<AAChartView>(R.id.chartView_details)
 
-        args = requireArguments()
 
+        if (arguments != null) {
+            //Set the address in the box trimmed
+            SUPPLY_ID = requireArguments().getString("SUPPLY_ID").toString()
+
+            Log.e(TAG, "Argument str is" + SUPPLY_ID)
+        }
         //This gets an id as the argument and makes a call from it
         makeCall()
 
@@ -110,7 +119,8 @@ class MyCropBidDetails : Fragment() {
     }
 
     private fun confirmCancel() {
-        val body = args.getString("SUPPLY_ID")?.let { DeleteSupplyBody(it) }
+
+        val body = DeleteSupplyBody(SUPPLY_ID)
 
         if (body != null) {
             viewModelCrop.cancelFunction(body).observe(viewLifecycleOwner, Observer { mResponse ->
@@ -185,7 +195,7 @@ class MyCropBidDetails : Fragment() {
             etExp.text.toString(),
             etEst.text.toString()
         )
-        val body = args.getString("SUPPLY_ID")?.let { ModifySupplyBody(it, update) }
+        val body = ModifySupplyBody(SUPPLY_ID, update)
 
         if (body != null) {
             viewModelCrop.updateFunction(body).observe(viewLifecycleOwner, Observer { mResponse ->
