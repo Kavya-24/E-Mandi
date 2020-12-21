@@ -10,13 +10,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.example.mandiexe.R
+import com.example.mandiexe.models.body.supply.AddSupplyBody
+import com.example.mandiexe.models.responses.supply.AddSupplyResponse
 import com.example.mandiexe.ui.home.MapActivity
 import com.example.mandiexe.viewmodels.AddStockViewModel
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.android.synthetic.main.add_stock_fragment.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -174,11 +179,57 @@ class AddStock : Fragment() {
         root.findViewById<MaterialButton>(R.id.mtb_add_stock).setOnClickListener {
             if (isValidate()) {
 
+                createStock()
+
             }
         }
 
         return root
 
+    }
+
+    private fun createStock() {
+
+        val des = root.findViewById<EditText>(R.id.etDescription_add_stock)
+        var str = "NA"
+        if (!des.text.isEmpty()) {
+            str = des.text.toString()
+        }
+
+        val body = AddSupplyBody(
+            offerPrice.text.toString(),
+            cropName.text.toString(),
+            etEst.text.toString(),
+            str,
+            etExp.text.toString(),
+            "0",
+            cropType.text.toString()
+        )
+
+        if (body != null) {
+            viewModel.addFunction(body).observe(viewLifecycleOwner, Observer { mResponse ->
+
+                //Check with the sucessful of it
+                if (viewModel.successful.value == false) {
+                    createSnackbar(viewModel.message.value)
+                } else {
+                    manageStockCreateResponses(mResponse)
+                }
+            })
+        }
+
+
+    }
+
+    private fun manageStockCreateResponses(mResponse: AddSupplyResponse?) {
+        //On creating this stock
+        Toast.makeText(context, resources.getString(R.string.supplyAdded), Toast.LENGTH_SHORT)
+            .show()
+        onDestroy()
+    }
+
+    private fun createSnackbar(value: String?) {
+        Snackbar.make(container_add_stock, value.toString(), Snackbar.LENGTH_SHORT).show()
     }
 
     private fun setUpCropNameSpinner() {

@@ -28,4 +28,5 @@
     <string name="no">No</string>
     <string name="description">Description</string>
     <string name="modifyCrop">Modify crop</string>
+    <string name="supplyAdded">New crop stock created successfully</string>
 </resources>
