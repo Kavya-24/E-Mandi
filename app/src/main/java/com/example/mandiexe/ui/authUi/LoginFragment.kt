@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.ProgressBar
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -13,8 +12,8 @@ import androidx.navigation.findNavController
 import com.example.mandiexe.R
 import com.example.mandiexe.viewmodels.LoginViewModel
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.PhoneAuthProvider
+import com.hbb20.CountryCodePicker
 
 class LoginFragment : Fragment() {
 
@@ -26,10 +25,8 @@ class LoginFragment : Fragment() {
     private lateinit var root: View
 
     //UI elements
-    private lateinit var til: TextInputLayout
-    private lateinit var et: EditText
     private lateinit var btn: MaterialButton
-
+    private lateinit var cpp: CountryCodePicker
     private val TAG = LoginFragment::class.java.simpleName
 
     private var verificationInProgress = false
@@ -44,9 +41,9 @@ class LoginFragment : Fragment() {
         root = inflater.inflate(R.layout.login_fragment, container, false)
 
         //UI init
-        til = root.findViewById(R.id.tilPhoneNumber)
-        et = root.findViewById(R.id.actv_phone_number)
+
         btn = root.findViewById(R.id.mtb_get_otp)
+        cpp = root.findViewById(R.id.countryCodeHolder) as CountryCodePicker
 
 
         root.findViewById<ProgressBar>(R.id.pb_login).visibility = View.GONE
@@ -63,27 +60,19 @@ class LoginFragment : Fragment() {
         return root
     }
 
+    private fun isValidate(): Boolean {
+
+        return cpp.isValidFullNumber
+    }
+
     private fun getOTP() {
 
+        val phNumber = cpp.fullNumberWithPlus
         val bundle = bundleOf(
-            "PHONE" to et.text.toString()
+            "PHONE" to phNumber
         )
         root.findNavController().navigate(R.id.action_nav_login_to_OTPFragment, bundle)
 
-    }
-
-    private fun isValidate(): Boolean {
-        var isTrue = true
-
-        if (et.text.length < 10) {
-            isTrue = false
-            til.error = resources.getString(R.string.invalidPhoneError)
-        } else {
-            til.error = null
-        }
-
-
-        return isTrue
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

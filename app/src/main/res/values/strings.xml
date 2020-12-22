@@ -145,6 +145,12 @@
     <string name="quotaRequest">Quota of requests exceeded</string>
     <string name="loginSuceed">Login successful</string>
     <string name="loginNew">Phone Number not registered.</string>
+    <string name="_91">+91</string>
+    <string name="otpSend">The OTP has been sent to </string>
+    <string name="otpResend">Resend OTP $%d</string>
+    <string name="otpResendInit">Not triggered</string>
+    <string name="resendIn">"Resend OTP in "</string>
+    <string name="invalidCredentials">Invalid Credentials</string>
 
 
 </resources>

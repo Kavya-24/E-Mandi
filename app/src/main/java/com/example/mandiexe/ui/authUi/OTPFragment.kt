@@ -5,12 +5,15 @@ import `in`.aabhasjindal.otptextview.OtpTextView
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -64,10 +67,13 @@ class OTPFragment : Fragment() {
     private val preferenceManager: PreferenceManager = PreferenceManager()
     private val sessionManager: SessionManager = SessionManager(ApplicationUtils.getContext())
 
+    private lateinit var tvTimer: TextView
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         root = inflater.inflate(R.layout.o_t_fragment, container, false)
 
         otpTextView = root.findViewById(R.id.otpView)
@@ -76,6 +82,12 @@ class OTPFragment : Fragment() {
         //Get phone number from arguments
         phoneNumber = arguments?.getString("PHONE")!!
         Log.e(TAG, phoneNumber)
+
+        root.findViewById<TextView>(R.id.tv_phoneNumber).text =
+            resources.getString(R.string.otpSend) + phoneNumber
+
+        tvTimer = root.findViewById<TextView>(R.id.tv_timer_resend)
+
         getOTP()
 
 
@@ -101,11 +113,34 @@ class OTPFragment : Fragment() {
             pb.visibility = View.GONE
         }
 
-
+        if (tvTimer.isVisible) {
+            tvTimer.setOnClickListener {
+                if (tvTimer.text == resources.getString(R.string.otpResend)) {
+                    //resend otp
+                    resendVerificationCode(phoneNumber, resendToken)
+                }
+            }
+        }
 
 
         return root
     }
+
+    private fun resendVerificationCode(
+        phoneNumber: String,
+        token: PhoneAuthProvider.ForceResendingToken?
+    ) {
+        val optionsBuilder = PhoneAuthOptions.newBuilder(auth)
+            .setPhoneNumber(phoneNumber)       // Phone number to verify
+            .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+            .setActivity(context as Activity)                 // Activity (for callback binding)
+            .setCallbacks(callbacks)          // OnVerificationStateChangedCallbacks
+        if (token != null) {
+            optionsBuilder.setForceResendingToken(token) // callback's ForceResendingToken
+        }
+        PhoneAuthProvider.verifyPhoneNumber(optionsBuilder.build())
+    }
+
 
     private fun isValidOtp(): Boolean {
 
@@ -119,15 +154,15 @@ class OTPFragment : Fragment() {
             ).show()
         }
 
-
-
         return isValid
     }
 
     private fun getOTP() {
 
+        Log.e(TAG, "Get otp")
 
         callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+
 
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
 
@@ -138,7 +173,7 @@ class OTPFragment : Fragment() {
                 //     detect the incoming verification SMS and perform verification without
                 //     user action.
                 Log.d(TAG, "onVerificationCompleted:$credential")
-
+                Log.e(TAG, "on ver comp" + credential.toString())
                 signInWithPhoneAuthCredential(credential)
             }
 
@@ -146,7 +181,7 @@ class OTPFragment : Fragment() {
                 // This callback is invoked in an invalid request for verification is made,
                 // for instance if the the phone number format is not valid.
                 Log.w(TAG, "onVerificationFailed", e)
-
+                Log.e(TAG, "on ver failed" + e)
                 if (e is FirebaseAuthInvalidCredentialsException) {
                     ExternalUtils.createSnackbar(
                         resources.getString(R.string.invalidRequest),
@@ -186,11 +221,25 @@ class OTPFragment : Fragment() {
                 // now need to ask the user to enter the code and then construct a credential
                 // by combining the code with a verification ID.
                 Log.d(TAG, "onCodeSent:$verificationId")
-
+                Log.e(TAG, "In code sent")
                 // Save verification ID and resending token so we can use them later
                 storedVerificationId = verificationId
                 resendToken = token
 
+                //After code has been sent
+
+                tvTimer.visibility = View.VISIBLE
+
+                object : CountDownTimer(300000, 1000) {
+                    override fun onTick(millisUntilFinished: Long) {
+                        tvTimer.text =
+                            resources.getString(R.string.resendIn) + millisUntilFinished / 1000
+
+                    }
+
+                    override fun onFinish() {
+                    }
+                }.start()
             }
         }
 
@@ -206,8 +255,6 @@ class OTPFragment : Fragment() {
             .build()
         PhoneAuthProvider.verifyPhoneNumber(options)
 
-        root.findViewById<ProgressBar>(R.id.pb_login).visibility = View.GONE
-
 
     }
 
@@ -219,31 +266,71 @@ class OTPFragment : Fragment() {
 
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
 
-        Log.e(
-            TAG,
-            "In signin with phone auth and auth.uid " + auth.uid.toString() + " " + auth.currentUser?.uid.toString() + " previ is c user id and now cred"
-                    + credential.signInMethod.toString() + credential.smsCode.toString() + credential.provider.toString()
-        )
 
-        //Save this fuid in savedSharedPreference
-        //We have a credential object
-        //Save number in the preference
-        pref.setFUIDFromPreference(auth.currentUser!!.uid)
-        pref.setNumberFromPreference(auth.currentUser!!.phoneNumber!!)
+        var str = ""
+
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener(requireActivity()) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInWithCredential:success")
+
+                    val user = task.result?.user
+
+                    user?.getIdToken(true)?.addOnCompleteListener { mTask ->
+                        if (mTask.isSuccessful) {
+                            val idToken: String? = mTask.result.token
+                            Log.e(TAG, "Token " + idToken)
+
+                            str = idToken!!
+                            // Send token to your backend via HTTPS
+                            // ...
+                        } else {
+                            // Handle error -> task.getException();
+                            createSnackbar(
+                                mTask.exception?.localizedMessage.toString(),
+                                requireContext(),
+                                container_frag_otp
+                            )
+                        }
+                    }
 
 
-        val body = auth.currentUser?.uid?.let { LoginBody(it) }
-        if (body != null) {
-            viewModel.lgnFunction(body).observe(viewLifecycleOwner, Observer { mResponse ->
-                //Check with the sucessful of it
-                if (viewModel.successful.value == false) {
-                    createSnackbar(viewModel.message.value, requireContext(), container_frag_otp)
                 } else {
-                    manageLoginResponse(mResponse)
-                }
+                    // Sign in failed, display a message and update the UI
+                    Log.w(TAG, "signInWithCredential:failure", task.exception)
+                    if (task.exception is FirebaseAuthInvalidCredentialsException) {
+                        // The verification code entered was invalid
+                        createSnackbar(
+                            resources.getString(R.string.invalidCredentials),
+                            requireContext(),
+                            container_frag_otp
+                        )
 
-            })
-        }
+                    } else {
+
+                        createSnackbar(
+                            task.exception?.localizedMessage.toString(),
+                            requireContext(),
+                            container_frag_otp
+                        )
+
+                    }
+                }
+            }
+
+
+        val body = LoginBody(str)
+        viewModel.lgnFunction(body).observe(viewLifecycleOwner, Observer { mResponse ->
+            //Check with the sucessful of it
+            if (viewModel.successful.value == false) {
+                createSnackbar(viewModel.message.value, requireContext(), container_frag_otp)
+            } else {
+                manageLoginResponse(mResponse)
+            }
+
+        })
+
 
     }
 
@@ -255,6 +342,7 @@ class OTPFragment : Fragment() {
                 successLogin(mResponse)
 
             } else if (mResponse.msg == "Phone Number not registered.") {
+
                 root.findNavController().navigate(R.id.action_nav_otp_to_nav_signup)
 
             }

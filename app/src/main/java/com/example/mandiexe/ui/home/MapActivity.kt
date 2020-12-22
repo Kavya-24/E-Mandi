@@ -133,6 +133,7 @@ class MapActivity : AppCompatActivity() {
         tempRef.dismiss()
         //Create a new user call
 
+
         /**
          * Test
          */
