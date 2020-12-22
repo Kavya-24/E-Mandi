@@ -65,13 +65,10 @@ object RetrofitClient {
     fun makeCallsForSupplies(context: Context): mySupplyInterface {
 
         //Moshi class
-        val moshi = Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
-            .build()
 
         return Retrofit.Builder()
             .baseUrl(url)
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .addConverterFactory(MoshiConverterFactory.create())
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .client(okhttpClient(context))
             .build().create(mySupplyInterface::class.java)

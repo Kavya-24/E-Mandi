@@ -68,6 +68,7 @@ object ExternalUtils {
 
     @SuppressLint("SimpleDateFormat")
     fun convertTimeToEpoch(timestamp: String): String {
+
         val calendar = Calendar.getInstance()
         val timezone = TimeZone.getTimeZone("UTC")
         val timeDestinationZone = calendar.timeZone
@@ -137,5 +138,6 @@ object ExternalUtils {
     fun convertObjectToNativeLanguage() {
 
     }
+
 
 }

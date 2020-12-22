@@ -227,7 +227,7 @@ class AddStock : Fragment() {
             if (viewModel.successful.value == false) {
                 createSnackbar(viewModel.message.value)
             } else {
-                manageStockCreateResponses(mResponse)
+                manageStockCreateResponses(viewModel.addStock.value)
             }
         })
 
