@@ -9,9 +9,11 @@ import android.os.Handler
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.CursorAdapter
 import android.widget.SearchView
 import android.widget.SimpleCursorAdapter
+import android.widget.TextView
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -39,6 +41,7 @@ import com.google.android.play.core.install.model.InstallStatus
 class MainActivity : AppCompatActivity(), Communicator {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var navView: NavigationView
 
     //App Update
     private var appUpdateManager: AppUpdateManager? = null
@@ -53,7 +56,6 @@ class MainActivity : AppCompatActivity(), Communicator {
     private val ACTION_VOICE_SEARCH = "com.google.android.gms.actions.SEARCH_ACTION"
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setAppLocale(pref.getLanguageFromPreference().toString(), this)
@@ -65,7 +67,7 @@ class MainActivity : AppCompatActivity(), Communicator {
 
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        val navView: NavigationView = findViewById(R.id.nav_view)
+        navView = findViewById(R.id.nav_view)
 
         val navController = findNavController(R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
@@ -77,6 +79,23 @@ class MainActivity : AppCompatActivity(), Communicator {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        //Update the drawer
+        updateDrawerDetails()
+
+    }
+
+    private fun updateDrawerDetails() {
+
+
+        val NAME = pref.getProfile().name
+        val PHONE = pref.getNumberFromPreference().toString()
+
+        val v: View = navView.getHeaderView(0)
+
+        //Check the presence of the View
+        (v.findViewById<View>(R.id.tv_header_name) as TextView).text = NAME
+        (v.findViewById<View>(R.id.tv_header_number) as TextView).text = PHONE
 
 
     }

@@ -52,12 +52,13 @@
 
             android:id="@+id/tilQuantity"
             style="@style/OutlinedTextBox"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/space"
             android:hint="@string/quantity"
             android:orientation="horizontal"
             app:endIconMode="none"
+            app:layout_constraintEnd_toStartOf="@id/tv_kg"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tilCropType">
 
@@ -69,6 +70,17 @@
                 android:inputType="numberDecimal" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tv_kg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/space"
+            android:text="@string/kg"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@id/tilQuantity"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tilQuantity" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilDescription"
@@ -133,9 +145,9 @@
             android:layout_margin="@dimen/space"
             android:text="@string/rs"
             android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@id/switch_for_bid"
+            app:layout_constraintBottom_toBottomOf="@id/tilOfferPrice"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilEstDate" />
+            app:layout_constraintTop_toTopOf="@id/tilOfferPrice" />
 
         <!--        <com.google.android.material.textfield.TextInputLayout-->
         <!--            android:id="@+id/tv_address"-->

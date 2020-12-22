@@ -55,4 +55,5 @@
     <string name="SignUpSuceed">Registeration successful.</string>
     <string name="signUpSuccess">Registeration successful.</string>
     <string name="failedLogin">Failed to log in. Please try again later.</string>
+    <string name="kg">kg</string>
 </resources>
