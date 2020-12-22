@@ -4,16 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import com.example.mandiexe.R
+import com.example.mandiexe.utils.ExternalUtils.createSnackbar
 import com.example.mandiexe.viewmodels.LoginViewModel
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.PhoneAuthProvider
-import com.hbb20.CountryCodePicker
+import kotlinx.android.synthetic.main.login_fragment.*
 
 class LoginFragment : Fragment() {
 
@@ -26,13 +27,16 @@ class LoginFragment : Fragment() {
 
     //UI elements
     private lateinit var btn: MaterialButton
-    private lateinit var cpp: CountryCodePicker
+
     private val TAG = LoginFragment::class.java.simpleName
 
     private var verificationInProgress = false
     private var storedVerificationId: String? = ""
     private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
     private lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
+
+    private lateinit var etNumber: TextInputEditText
+    private lateinit var etCode: TextInputEditText
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,32 +46,38 @@ class LoginFragment : Fragment() {
 
         //UI init
 
-        btn = root.findViewById(R.id.mtb_get_otp)
-        cpp = root.findViewById(R.id.countryCodeHolder) as CountryCodePicker
+        btn = root.findViewById(R.id.buttonContinue)
+        etNumber = root.findViewById(R.id.editTextPhone)
+        etCode = root.findViewById(R.id.editTextCountryCode)
 
 
-        root.findViewById<ProgressBar>(R.id.pb_login).visibility = View.GONE
         btn.setOnClickListener {
             if (isValidate()) {
-                root.findViewById<ProgressBar>(R.id.pb_login).visibility = View.VISIBLE
                 getOTP()
+            } else {
+                createSnackbar(
+                    resources.getString(R.string.invalidPhoneError),
+                    requireContext(),
+                    long_con
+                )
             }
         }
 
 
-        root.findViewById<ProgressBar>(R.id.pb_login).visibility = View.GONE
 
         return root
     }
 
     private fun isValidate(): Boolean {
 
-        return cpp.isValidFullNumber
+        return !etNumber.text.toString()
+            .isEmpty() && etNumber.text.toString().length == 10 && !etCode.text.toString().isEmpty()
+
     }
 
     private fun getOTP() {
 
-        val phNumber = cpp.fullNumberWithPlus
+        val phNumber = etCode.text.toString() + etNumber.text.toString()
         val bundle = bundleOf(
             "PHONE" to phNumber
         )

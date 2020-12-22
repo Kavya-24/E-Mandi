@@ -1,80 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container_frag_otp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="@dimen/space"
-    tools:context=".ui.authUi.OTPFragment">
+    android:layout_height="wrap_content">
 
-    <View
-        android:id="@+id/v"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/space_8x"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_phoneNumber"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container_frag_otp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/space"
-        android:gravity="center"
-        android:maxLines="2"
-        android:padding="@dimen/space"
-        android:text="@string/otpSend"
-        app:layout_constraintTop_toBottomOf="@id/v" />
+        tools:context=".ui.authUi.OTPFragment">
 
-    <View
-        android:id="@+id/v2"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/space_8x"
-        app:layout_constraintTop_toBottomOf="@id/tv_phoneNumber" />
+        <ImageView
+            android:id="@+id/v"
+            android:layout_width="@dimen/space_200"
+            android:layout_height="@dimen/space_200"
+            android:src="@drawable/otp_image"
+            app:layout_constraintBottom_toTopOf="@id/tv_phoneNumber"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <in.aabhasjindal.otptextview.OtpTextView
-        android:id="@+id/otpView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        app:bar_enabled="true"
-        app:bar_height="2dp"
-        app:height="40dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/v2"
-        app:length="6"
-        app:otp_box_background="@drawable/square_util"
-        app:otp_text_size="24dp"
-        app:width="40dp" />
+        <TextView
+            android:id="@+id/tv_phoneNumber"
+            android:layout_width="381dp"
+            android:layout_height="37dp"
+            android:layout_margin="@dimen/space"
+            android:gravity="center"
+            android:maxLines="2"
+            android:padding="@dimen/space"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="6dp" />
 
-    <TextView
-        android:id="@+id/tv_timer_resend"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/space"
-        android:gravity="end"
-        android:text="@string/otpResendInit"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/otpView" />
 
-    <ProgressBar
-        android:id="@+id/pb_otp_verify"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <in.aabhasjindal.otptextview.OtpTextView
+            android:id="@+id/otpView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            app:bar_enabled="true"
+            app:bar_height="2dp"
+            app:height="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_phoneNumber"
+            app:length="6"
+            app:otp_box_background="@drawable/square_util"
+            app:otp_text_size="24dp"
+            app:width="40dp" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/mtb_verify_otp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/space_4x"
-        android:text="@string/verify_otp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/otpView" />
+        <TextView
+            android:id="@+id/tv_timer_resend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/space"
+            android:gravity="end"
+            android:text="@string/otpResendInit"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/otpView" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ProgressBar
+            android:id="@+id/pb_otp_verify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/mtb_verify_otp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_4x"
+            android:layout_marginBottom="@dimen/space"
+            android:text="@string/verify_otp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/otpView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

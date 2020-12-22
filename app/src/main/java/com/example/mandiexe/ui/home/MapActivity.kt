@@ -10,15 +10,29 @@ import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import com.example.mandiexe.R
+import com.example.mandiexe.models.ProfileObject
+import com.example.mandiexe.models.body.AddressBlock
+import com.example.mandiexe.models.body.authBody.LoginBody
+import com.example.mandiexe.models.body.authBody.SignUpBody
+import com.example.mandiexe.models.responses.auth.LoginResponse
+import com.example.mandiexe.models.responses.auth.SignUpResponse
+import com.example.mandiexe.utils.ApplicationUtils
+import com.example.mandiexe.utils.ExternalUtils
+import com.example.mandiexe.utils.ExternalUtils.createSnackbar
 import com.example.mandiexe.utils.ExternalUtils.setAppLocale
+import com.example.mandiexe.utils.auth.PreferenceManager
 import com.example.mandiexe.utils.auth.PreferenceUtil
+import com.example.mandiexe.utils.auth.SessionManager
+import com.example.mandiexe.viewmodels.MapViewmodel
+import com.example.mandiexe.viewmodels.OTViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -29,6 +43,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.tasks.Task
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.android.synthetic.main.map_fragment.*
 import java.util.*
 
 class MapActivity : AppCompatActivity() {
@@ -39,20 +54,27 @@ class MapActivity : AppCompatActivity() {
 
     private var supportMapFragment = SupportMapFragment()
     private lateinit var client: FusedLocationProviderClient
-    private lateinit var root: View
     private val permissionRequestCode = 1234
     private val RESULT_OK = 111
     private val TAG = MapActivity::class.java.simpleName
     private lateinit var fab: FloatingActionButton
     private var fetchedLocation: String = ""
 
+    private val preferenceManager: PreferenceManager = PreferenceManager()
+    private val sessionManager: SessionManager = SessionManager(ApplicationUtils.getContext())
+
     private val pref = PreferenceUtil
+    private var fetchedAddress: Address = Address(Locale(pref.getLanguageFromPreference()!!))
+    private var body = SignUpBody("", 0, "", "", "", "", "", "", "", "", "", "")
     private var args: Bundle? = null
 
     private var fromSignUp = false
 
     private lateinit var d: androidx.appcompat.app.AlertDialog.Builder
     private lateinit var tempRef: androidx.appcompat.app.AlertDialog
+
+    private val viewModel: MapViewmodel by viewModels()
+    private val viewmodelLogin: OTViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -131,16 +153,173 @@ class MapActivity : AppCompatActivity() {
 
     private fun createUser() {
         tempRef.dismiss()
-        //Create a new user call
+        //Create a new user
+
+        val mCountry = fetchedAddress.countryName
+        val mDistrict = fetchedAddress.subAdminArea
+        val mState = fetchedAddress.adminArea
+        val village = fetchedAddress.locality
+        val mAddress = "$village,$mDistrict"
+        val lat = fetchedAddress.latitude.toString()
+        val long = fetchedAddress.longitude.toString()
+        val token = args?.getString("TOKEN")
+        val name = args?.getString("NAME").toString()
+        val area = args?.getString("AREA").toString().toInt()
+        val area_unit = args?.getString("AREA_UNIT").toString()
+        val phone = args?.getString("PHONE").toString()
+
+        body = SignUpBody(
+            mAddress,
+            area,
+            area_unit,
+            mCountry,
+            mDistrict,
+            lat,
+            long,
+            name,
+            phone,
+            mState,
+            token!!,
+            village
+        )
 
 
-        /**
-         * Test
-         */
-        val i = Intent(this, MainActivity::class.java)
-        i.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
-        i.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        startActivity(i)
+        Log.e(
+            TAG, "Map variates fA line 1 " + fetchedAddress.getAddressLine(0)
+                    + "\nfA l2 " + fetchedAddress.getAddressLine(1)
+                    + "\ncuty locale " + fetchedAddress.locality
+                    + " \n country and sub " + fetchedAddress.countryName + fetchedAddress.subLocality
+                    + "Admin area, sub" + fetchedAddress.adminArea + fetchedAddress.subAdminArea
+        )
+
+        viewModel.signFunction(body).observe(this, Observer { mResponse ->
+            Log.e(TAG, "In vm")
+            if (viewModel.successful.value == false) {
+                ExternalUtils.createSnackbar(
+                    viewModel.message.value,
+                    this,
+                    container_map
+                )
+            } else {
+
+
+                manageSignUpResponse(viewModel.mSignUp.value)
+            }
+
+        })
+
+
+    }
+
+    private fun manageSignUpResponse(value: SignUpResponse?) {
+        if (value != null) {
+            if (value.msg == resources.getString(R.string.signUpSuccess)) {
+                signUpSuccess(value)
+            } else {
+                createSnackbar(value.msg, this, container_map)
+            }
+        }
+    }
+
+    private fun signUpSuccess(response: SignUpResponse) {
+
+        //Set the preferneces here
+
+        //Set phone number
+        pref.setNumberFromPreference(body.phone)
+
+        //Set Address block
+        val addressBlock = AddressBlock(
+            body.district,
+            body.village,
+            body.state,
+            body.country,
+            body.address,
+            body.latitude,
+            body.longitude
+        )
+
+        pref.setAddressFromPreference(addressBlock)
+
+        //Set Area prefernce
+        pref.setAreaUnitFromPreference(body.area_unit)
+
+
+        //Set ProfileObject
+        val profileObject =
+            ProfileObject(body.name, body.area_numerical.toString(), body.area_unit, addressBlock)
+        pref.setProfile(profileObject)
+
+        loginFromSignUp()
+
+
+    }
+
+    private fun loginFromSignUp() {
+        val token = args?.getString("TOKEN")
+        val body = LoginBody(token!!)
+
+        viewmodelLogin.lgnFunction(body).observe(this, Observer { mResponse ->
+
+            Log.e(TAG, "In vm")
+            if (viewmodelLogin.successful.value == false) {
+                createSnackbar(viewmodelLogin.message.value, this, container_map)
+            } else {
+
+
+                manageLoginResponse(viewmodelLogin.mLogin.value, token)
+            }
+
+        })
+
+
+    }
+
+    private fun manageLoginResponse(mResponse: LoginResponse?, token: String) {
+
+        if (mResponse != null) {
+            if (mResponse.msg == "Login successful.") {
+
+                //Set the user details
+                successLogin(mResponse)
+                Log.e(TAG, "In manage login and login succcess")
+
+            }
+        } else {
+            createSnackbar(resources.getString(R.string.failedLogin), this, container_map)
+        }
+    }
+
+    private fun successLogin(response: LoginResponse) {
+        //Set access tokens
+        sessionManager.saveAuth_access_Token(
+            LoginResponse(
+                response.msg,
+                response.user
+            ).user.accessToken
+        )
+
+        sessionManager.saveAuth_refresh_Token(
+            (LoginResponse(
+                response.msg,
+                response.user
+            )).user.refreshToken
+        )
+
+        preferenceManager.putAuthToken(
+            (LoginResponse(
+                response.msg,
+                response.user
+            )).user.accessToken
+        )
+
+        Toast.makeText(this, resources.getString(R.string.loginSuceed), Toast.LENGTH_LONG)
+            .show()
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP and Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        ExternalUtils.hideKeyboard(this, this)
+        startActivity(intent)
+
 
     }
 
@@ -285,7 +464,6 @@ class MapActivity : AppCompatActivity() {
 
         //##Get location
         val locale = Locale(pref.getLanguageFromPreference().toString())
-        Log.e(TAG, " fjf " + pref.getLanguageFromPreference() + " ")
 
         val geocoder = Geocoder(this, locale)
         try {
@@ -294,6 +472,7 @@ class MapActivity : AppCompatActivity() {
             val mAddress = addresses.get(0).getAddressLine(0)
             Log.e(TAG, mAddress.toString())
             theAddress = mAddress
+            fetchedAddress = addresses.get(0)
 
         } catch (e: Exception) {
             return e.message.toString()

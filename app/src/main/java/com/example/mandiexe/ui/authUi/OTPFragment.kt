@@ -3,6 +3,7 @@ package com.example.mandiexe.ui.authUi
 import `in`.aabhasjindal.otptextview.OTPListener
 import `in`.aabhasjindal.otptextview.OtpTextView
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -13,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -85,7 +87,6 @@ class OTPFragment : Fragment() {
 
         root.findViewById<TextView>(R.id.tv_phoneNumber).text =
             resources.getString(R.string.otpSend) + phoneNumber
-
         tvTimer = root.findViewById<TextView>(R.id.tv_timer_resend)
 
         getOTP()
@@ -130,6 +131,7 @@ class OTPFragment : Fragment() {
         phoneNumber: String,
         token: PhoneAuthProvider.ForceResendingToken?
     ) {
+
         val optionsBuilder = PhoneAuthOptions.newBuilder(auth)
             .setPhoneNumber(phoneNumber)       // Phone number to verify
             .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
@@ -139,6 +141,7 @@ class OTPFragment : Fragment() {
             optionsBuilder.setForceResendingToken(token) // callback's ForceResendingToken
         }
         PhoneAuthProvider.verifyPhoneNumber(optionsBuilder.build())
+
     }
 
 
@@ -173,7 +176,7 @@ class OTPFragment : Fragment() {
                 //     detect the incoming verification SMS and perform verification without
                 //     user action.
                 Log.d(TAG, "onVerificationCompleted:$credential")
-                Log.e(TAG, "on ver comp" + credential.toString())
+                Log.e(TAG, "on ver comp " + credential.toString())
                 signInWithPhoneAuthCredential(credential)
             }
 
@@ -181,7 +184,7 @@ class OTPFragment : Fragment() {
                 // This callback is invoked in an invalid request for verification is made,
                 // for instance if the the phone number format is not valid.
                 Log.w(TAG, "onVerificationFailed", e)
-                Log.e(TAG, "on ver failed" + e)
+                Log.e(TAG, "on ver failed " + e)
                 if (e is FirebaseAuthInvalidCredentialsException) {
                     ExternalUtils.createSnackbar(
                         resources.getString(R.string.invalidRequest),
@@ -238,6 +241,7 @@ class OTPFragment : Fragment() {
                     }
 
                     override fun onFinish() {
+                        tvTimer.text = resources.getString(R.string.otpResend)
                     }
                 }.start()
             }
@@ -246,6 +250,7 @@ class OTPFragment : Fragment() {
 
         auth = FirebaseAuth.getInstance()
         auth.useAppLanguage()
+
 
         val options = PhoneAuthOptions.newBuilder(auth)
             .setPhoneNumber(phoneNumber)       // Phone number to verify
@@ -266,7 +271,7 @@ class OTPFragment : Fragment() {
 
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
 
-
+        Log.e(TAG, "In signUpWIth hine Auth")
         var str = ""
 
         auth.signInWithCredential(credential)
@@ -280,9 +285,10 @@ class OTPFragment : Fragment() {
                     user?.getIdToken(true)?.addOnCompleteListener { mTask ->
                         if (mTask.isSuccessful) {
                             val idToken: String? = mTask.result.token
-                            Log.e(TAG, "Token " + idToken)
+                            Log.e(TAG, "Token made " + idToken)
 
                             str = idToken!!
+                            sendLoginRespone(str)
                             // Send token to your backend via HTTPS
                             // ...
                         } else {
@@ -320,30 +326,55 @@ class OTPFragment : Fragment() {
             }
 
 
+    }
+
+    private fun sendLoginRespone(str: String) {
+
+        Log.e(TAG, "In send login")
+        val pd = ProgressDialog(requireContext())
+        pd.setMessage(resources.getString(R.string.loggingIn))
+        pd.show()
+
         val body = LoginBody(str)
+
+
         viewModel.lgnFunction(body).observe(viewLifecycleOwner, Observer { mResponse ->
             //Check with the sucessful of it
+            Log.e(TAG, "In vm")
             if (viewModel.successful.value == false) {
                 createSnackbar(viewModel.message.value, requireContext(), container_frag_otp)
             } else {
-                manageLoginResponse(mResponse)
+
+
+                manageLoginResponse(viewModel.mLogin.value, str)
             }
+
 
         })
 
 
+        pd.dismiss()
+
     }
 
-    private fun manageLoginResponse(mResponse: LoginResponse?) {
+
+    private fun manageLoginResponse(mResponse: LoginResponse?, token: String) {
         if (mResponse != null) {
             if (mResponse.msg == "Login successful.") {
 
                 //Set the user details
                 successLogin(mResponse)
+                Log.e(TAG, "In manage login and login succcess")
 
             } else if (mResponse.msg == "Phone Number not registered.") {
 
-                root.findNavController().navigate(R.id.action_nav_otp_to_nav_signup)
+
+                Log.e(TAG, "In manage login and phone not reg")
+                val bundle = bundleOf(
+                    "TOKEN" to token,
+                    "PHONE" to phoneNumber
+                )
+                root.findNavController().navigate(R.id.action_nav_otp_to_nav_signup, bundle)
 
             }
         }
@@ -372,8 +403,10 @@ class OTPFragment : Fragment() {
             )).user.accessToken
         )
 
-        //Set data in pref
-        //TODO: Set the data for retrieval
+
+        //Set phone
+        pref.setNumberFromPreference(phoneNumber)
+
 
         Toast.makeText(context, resources.getString(R.string.loginSuceed), Toast.LENGTH_LONG)
             .show()
@@ -382,6 +415,13 @@ class OTPFragment : Fragment() {
         hideKeyboard(requireActivity(), requireContext())
         startActivity(intent)
 
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.successful.removeObservers(this)
+        viewModel.successful.value = null
 
     }
 

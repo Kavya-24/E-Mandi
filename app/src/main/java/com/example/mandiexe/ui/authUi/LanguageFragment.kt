@@ -63,9 +63,23 @@ class LanguageFragment : Fragment(), OnMyLanguageListener {
 
         val mLanguages: MutableList<LanguageBody> = mutableListOf()
 
+        //0
         mLanguages.add(LanguageBody("English"))
+
+        //1
         mLanguages.add(LanguageBody("हिंदी"))
+
+        //2
         mLanguages.add(LanguageBody("বাংলা"))
+
+        //3
+        mLanguages.add(LanguageBody("मराठी"))
+
+        //4 Tamil
+        mLanguages.add(LanguageBody("தமிழ்"))
+
+        //5 Telugu
+        mLanguages.add(LanguageBody("తెలుగు"))
 
 
         val rv = root.findViewById<RecyclerView>(R.id.rv_language_main)

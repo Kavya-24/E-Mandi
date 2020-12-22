@@ -5,44 +5,43 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mandiexe.R
 import com.example.mandiexe.interfaces.RetrofitClient
-import com.example.mandiexe.models.body.authBody.LoginBody
-import com.example.mandiexe.models.responses.auth.LoginResponse
+import com.example.mandiexe.models.body.authBody.SignUpBody
+import com.example.mandiexe.models.responses.auth.SignUpResponse
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.ExternalUtils
 import retrofit2.Call
 import retrofit2.Response
 
-class OTViewModel : ViewModel() {
+class MapViewmodel : ViewModel() {
 
     val TAG = OTViewModel::class.java.simpleName
 
     private val context = ApplicationUtils.getContext()
     private val mySupplyService = RetrofitClient.getAuthInstance()
 
-
     //For getting the details of the supply stock
     val successful: MutableLiveData<Boolean> = MutableLiveData()
     var message: MutableLiveData<String> = MutableLiveData()
 
-    var mLogin: MutableLiveData<LoginResponse> = MutableLiveData()
+    var mSignUp: MutableLiveData<SignUpResponse> = MutableLiveData()
 
-    fun lgnFunction(body: LoginBody): MutableLiveData<LoginResponse> {
+    fun signFunction(body: SignUpBody): MutableLiveData<SignUpResponse> {
 
-        Log.e(TAG, "In lgn function")
-        mLogin = mLoginFunction(body)
-        return mLogin
+        Log.e(TAG, "In sign up function")
+        mSignUp = mSignUpFunction(body)
+        return mSignUp
     }
 
 
-    fun mLoginFunction(body: LoginBody): MutableLiveData<LoginResponse> {
+    fun mSignUpFunction(body: SignUpBody): MutableLiveData<SignUpResponse> {
 
         Log.e(TAG, body.toString())
-        mySupplyService.getLogin(
-            mLoginBody = body
+        mySupplyService.getSignUp(
+            mSignUpBody = body
         )
-            .enqueue(object : retrofit2.Callback<LoginResponse> {
+            .enqueue(object : retrofit2.Callback<SignUpResponse> {
 
-                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                override fun onFailure(call: Call<SignUpResponse>, t: Throwable) {
                     successful.value = false
                     message.value = ExternalUtils.returnStateMessageForThrowable(t)
                     //Response is null
@@ -50,8 +49,8 @@ class OTViewModel : ViewModel() {
                 }
 
                 override fun onResponse(
-                    call: Call<LoginResponse>,
-                    response: Response<LoginResponse>
+                    call: Call<SignUpResponse>,
+                    response: Response<SignUpResponse>
                 ) {
 
                     Log.e(
@@ -64,21 +63,17 @@ class OTViewModel : ViewModel() {
                     if (response.isSuccessful) {
 
 
-                        if (response.body()?.msg == "Login successful.") {
+                        if (response.body()?.msg == "Registeration successful.") {
                             successful.value = true
                             message.value =
-                                context.resources.getString(R.string.loginSuceed)
-
-                        } else if (response.body()?.msg == "Phone Number not registered.") {
-                            successful.value = true
-                            message.value = context.resources.getString(R.string.loginNew)
+                                context.resources.getString(R.string.signUpSuccess)
 
                         } else {
                             successful.value = false
                             message.value = response.body()?.msg.toString()
                         }
 
-                        mLogin.value = response.body()!!
+                        mSignUp.value = response.body()!!
 
                     } else {
                         successful.value = false
@@ -88,8 +83,8 @@ class OTViewModel : ViewModel() {
                 }
             })
 
-        Log.e(TAG, " Outside retrofit call and mLogin is " + mLogin.value.toString())
-        return mLogin
+        Log.e(TAG, " Outside retrofit call and mSignUp is " + mSignUp.value.toString())
+        return mSignUp
 
 
     }

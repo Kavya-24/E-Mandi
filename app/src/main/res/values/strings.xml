@@ -103,6 +103,13 @@
 
     </string-array>
 
+    <string-array name="arr_crop_types">
+        <item>Grey Wheat</item>
+        <item>Basmati Rice</item>
+        <item>Kala Chana</item>
+
+    </string-array>
+
 
     <string-array name="arr_area_units">
         <item>Hectare</item>
@@ -147,10 +154,16 @@
     <string name="loginNew">Phone Number not registered.</string>
     <string name="_91">+91</string>
     <string name="otpSend">The OTP has been sent to </string>
-    <string name="otpResend">Resend OTP $%d</string>
+    <string name="otpResend">Resend OTP</string>
     <string name="otpResendInit">Not triggered</string>
     <string name="resendIn">"Resend OTP in "</string>
     <string name="invalidCredentials">Invalid Credentials</string>
+    <string name="addNumber">Add your number</string>
+    <string name="please_enter_your_mobile_number_to_receive_a_verification_code">Please enter your mobile number to receive a verification code</string>
+    <string name="pleaseOtp">.\nPlease enter the OTP here</string>
+    <string name="loggingIn">Logging in</string>
+    <string name="signUpSuccess">Registeration successful.</string>
+    <string name="failedLogin">Failed to log in. Please try again later.</string>
 
 
 </resources>

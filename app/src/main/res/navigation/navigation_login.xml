@@ -41,6 +41,10 @@
         android:id="@+id/nav_signup"
         android:name="com.example.mandiexe.ui.authUi.SignUpFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/sign_up_fragment" />
+        tools:layout="@layout/sign_up_fragment">
+        <argument
+            android:name="TOKEN"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

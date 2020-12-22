@@ -6,5 +6,8 @@
 
 
     <color name="wildColor">#3a91ff</color>
+    <color name="crimson">#990000</color>
+    <color name="darkBlue">#3b558f</color>
+    <color name="useGreen">#26c95c</color>
 
 </resources>
