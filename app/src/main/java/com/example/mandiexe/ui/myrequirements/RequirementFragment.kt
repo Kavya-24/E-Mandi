@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,7 +28,7 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
         fun newInstance() = RequirementFragment()
     }
 
-    private lateinit var viewModel: RequirementsViewmodel
+    private val viewModel: RequirementsViewmodel by viewModels()
     private lateinit var root: View
 
     override fun onCreateView(
@@ -90,12 +90,6 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
                 rv.adapter = adapter
             }
         }
-
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(RequirementsViewmodel::class.java)
 
     }
 

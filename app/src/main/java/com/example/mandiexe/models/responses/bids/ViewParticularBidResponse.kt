@@ -5,7 +5,7 @@ import com.squareup.moshi.Json
 
 data class ViewParticularBidResponse(
     @Json(name = "bid")
-    val bid: Bid,
+    val bid: ViewParticularBidResponse.Bid,
     @Json(name = "msg")
     val msg: String // Bid retrieved successfully.
 ) {
@@ -17,7 +17,7 @@ data class ViewParticularBidResponse(
         @Json(name = "bidder")
         val bidder: Bidder,
         @Json(name = "bids")
-        val bids: List<Bid>,
+        val bids: List<ViewParticularBidResponse.Bid.BidDetail>,
         @Json(name = "currentBid")
         val currentBid: Int, // 8000
         @Json(name = "demand")
@@ -80,7 +80,7 @@ data class ViewParticularBidResponse(
             )
         }
 
-        data class Bid(
+        data class BidDetail(
             @Json(name = "amount")
             val amount: Int, // 10000
             @Json(name = "_id")

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ProgressBar
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
@@ -13,6 +14,7 @@ import com.example.mandiexe.R
 import com.example.mandiexe.viewmodels.LoginViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.auth.PhoneAuthProvider
 
 class LoginFragment : Fragment() {
 
@@ -27,6 +29,13 @@ class LoginFragment : Fragment() {
     private lateinit var til: TextInputLayout
     private lateinit var et: EditText
     private lateinit var btn: MaterialButton
+
+    private val TAG = LoginFragment::class.java.simpleName
+
+    private var verificationInProgress = false
+    private var storedVerificationId: String? = ""
+    private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
+    private lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,12 +64,12 @@ class LoginFragment : Fragment() {
     }
 
     private fun getOTP() {
-        //Calls for getting otp
-        /**Test
-         **/
 
-        root.findViewById<ProgressBar>(R.id.pb_login).visibility = View.GONE
-        root.findNavController().navigate(R.id.action_nav_login_to_OTPFragment)
+        val bundle = bundleOf(
+            "PHONE" to et.text.toString()
+        )
+        root.findNavController().navigate(R.id.action_nav_login_to_OTPFragment, bundle)
+
     }
 
     private fun isValidate(): Boolean {

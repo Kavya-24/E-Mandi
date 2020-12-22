@@ -10,8 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.example.mandiexe.R
 import com.example.mandiexe.models.body.supply.AddSupplyBody
@@ -34,7 +34,7 @@ class AddStock : Fragment() {
         fun newInstance() = AddStock()
     }
 
-    private lateinit var viewModel: AddStockViewModel
+    private val viewModel: AddStockViewModel by viewModels()
     private lateinit var root: View
     private val myCalendar = Calendar.getInstance()
     private val TAG = AddStock::class.java.simpleName
@@ -331,12 +331,6 @@ class AddStock : Fragment() {
         val myFormat = "dd/MM/yyyy" //In which you need put here
         val sdf = SimpleDateFormat(myFormat, Locale.US)
         etExp.setText(sdf.format(myCalendar.time))
-
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(AddStockViewModel::class.java)
 
     }
 

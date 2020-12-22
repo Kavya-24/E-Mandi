@@ -1,6 +1,5 @@
 package com.example.mandiexe.interfaces
 
-import com.example.mandiexe.models.body.authBody.AccessTokenBody
 import com.example.mandiexe.models.body.authBody.LoginBody
 import com.example.mandiexe.models.body.authBody.SignUpBody
 import com.example.mandiexe.models.responses.auth.AccessTokenResponse
@@ -20,7 +19,7 @@ interface authInterface {
     @Headers("Content-Type:application/json")
     fun getAccessToken(
         //USe Refresh token here            //Passed as String
-        @Body mAccessTokenBody: AccessTokenBody
+        @Body refreshToken: String
     ): Call<AccessTokenResponse>
 
 

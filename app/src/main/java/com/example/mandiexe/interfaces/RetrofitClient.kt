@@ -13,7 +13,8 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
-    private val url = "xxx"
+
+    private val url = "https://memej.herokuapp.com/"
     private val TAG = RetrofitClient::class.java.simpleName
 
 

@@ -9,8 +9,8 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,7 +32,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
         fun newInstance() = MySuppliesFragment()
     }
 
-    private lateinit var viewModel: MySuppliesViewmodel
+    private val viewModel: MySuppliesViewmodel by viewModels()
     private lateinit var root: View
     private lateinit var comm: Communicator
 
@@ -107,11 +107,6 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
         }
 
 
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MySuppliesViewmodel::class.java)
     }
 
     override fun viewMyStockDetails(_listItem: FarmerSuppliesResponse.Supply) {

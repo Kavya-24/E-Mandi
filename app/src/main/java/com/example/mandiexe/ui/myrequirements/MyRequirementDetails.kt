@@ -13,8 +13,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.example.mandiexe.R
 import com.example.mandiexe.models.body.bid.DeletBidBody
 import com.example.mandiexe.models.body.bid.UpdateBidBody
@@ -36,7 +36,7 @@ class MyRequirementDetails : Fragment() {
         fun newInstance() = MyRequirementDetails()
     }
 
-    private lateinit var viewModel: MyRequirementDetailsViewModel
+    private val viewModel: MyRequirementDetailsViewModel by viewModels()
     private lateinit var root: View
     private lateinit var aaChartView: AAChartView
     private lateinit var args: Bundle
@@ -218,11 +218,6 @@ class MyRequirementDetails : Fragment() {
 
     private fun viewBidHistory() {
 
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MyRequirementDetailsViewModel::class.java)
     }
 
     private fun initViews() {

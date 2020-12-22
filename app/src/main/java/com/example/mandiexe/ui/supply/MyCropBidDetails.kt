@@ -11,8 +11,8 @@ import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import com.example.mandiexe.R
 import com.example.mandiexe.models.body.supply.DeleteSupplyBody
@@ -37,7 +37,7 @@ class MyCropBidDetails : Fragment() {
         fun newInstance() = MyCropBidDetails()
     }
 
-    private lateinit var viewModelCrop: MyCropBidDetailsViewModel
+    private val viewModelCrop: MyCropBidDetailsViewModel by viewModels()
     private lateinit var root: View
     private lateinit var aaChartView: AAChartView
     private lateinit var args: Bundle
@@ -324,11 +324,6 @@ class MyCropBidDetails : Fragment() {
 
         //Set the above 7 entities wrt root
         createGraph()
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModelCrop = ViewModelProviders.of(this).get(MyCropBidDetailsViewModel::class.java)
     }
 
     private fun createGraph() {

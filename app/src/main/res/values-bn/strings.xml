@@ -111,4 +111,8 @@
     <string name="bidUpdated">Bid updated successfully</string>
     <string name="BidDeleted">Bid deleted successfully.</string>
     <string name="newBidPrice">New bid price</string>
+    <string name="invalidRequest">Request is invalid</string>
+    <string name="quotaRequest">Quota of requests exceeded</string>
+    <string name="loginSuceed">Login successful</string>
+    <string name="loginNew">Phone Number not registered.</string>
 </resources>
