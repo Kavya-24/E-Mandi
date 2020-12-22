@@ -22,11 +22,14 @@
         <action
             android:id="@+id/action_nav_home_to_addRequirement"
             app:destination="@id/addRequirement" />
+        <action
+            android:id="@+id/action_nav_home_to_myBidDetails"
+            app:destination="@id/myBidDetails" />
     </fragment>
 
     <fragment
         android:id="@+id/nav_my_crops2"
-        android:name="com.example.mandiexe.ui.mybids.MyCropBidsFragment"
+        android:name="com.example.mandiexe.ui.supply.MySuppliesFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/my_crop_bids_fragment">
 
@@ -48,7 +51,7 @@
         tools:layout="@layout/fragment_slideshow" />
     <fragment
         android:id="@+id/nav_add_stock_2"
-        android:name="com.example.mandiexe.ui.mybids.AddStock"
+        android:name="com.example.mandiexe.ui.supply.AddStock"
         android:label="AddStock"
         tools:layout="@layout/add_stock_fragment">
         <argument
@@ -64,12 +67,16 @@
         tools:layout="@layout/bid_history_fragment" />
     <fragment
         android:id="@+id/myBidDetails"
-        android:name="com.example.mandiexe.ui.mybids.MyBidDetails"
+        android:name="com.example.mandiexe.ui.supply.MyCropBidDetails"
         android:label="my_bid_details_fragment"
-        tools:layout="@layout/my_bid_details_fragment">
+        tools:layout="@layout/my_crop_bid_details_fragment">
         <action
             android:id="@+id/action_myBidDetails_to_bidHistory"
             app:destination="@id/bidHistory" />
+        <argument
+            android:name="SUPPLY_ID"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/myRequirementDetails"
@@ -87,7 +94,12 @@
         android:id="@+id/bidFragment"
         android:name="com.example.mandiexe.ui.myrequirements.BidFragment"
         android:label="BidFragment"
-        tools:layout="@layout/bid_fragment" />
+        tools:layout="@layout/bid_fragment">
+        <argument
+            android:name="SUPPLY_ID"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
     <fragment
         android:id="@+id/requirementFragment"
         android:name="com.example.mandiexe.ui.myrequirements.RequirementFragment"

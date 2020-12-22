@@ -5,8 +5,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.example.mandiexe.R
-import com.example.mandiexe.ui.mybids.MyCropBidsFragment
 import com.example.mandiexe.ui.myrequirements.RequirementFragment
+import com.example.mandiexe.ui.supply.MySuppliesFragment
 
 
 class PagerAdapter(fm: FragmentManager?, var mNumOfTabs: Int, context: Context) :
@@ -23,9 +23,9 @@ class PagerAdapter(fm: FragmentManager?, var mNumOfTabs: Int, context: Context) 
 
     override fun getItem(position: Int): Fragment {
         return when (position) {
-            0 -> MyCropBidsFragment()
+            0 -> MySuppliesFragment()
             1 -> RequirementFragment()
-            else -> MyCropBidsFragment()
+            else -> MySuppliesFragment()
         }
 
     }

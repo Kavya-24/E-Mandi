@@ -14,6 +14,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
 import com.example.mandiexe.R
+import com.google.android.material.snackbar.Snackbar
 import retrofit2.HttpException
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -110,6 +111,10 @@ object ExternalUtils {
         }
     }
 
+    fun createSnackbar(value: String?, context: Context, container: View) {
+
+        Snackbar.make(container, value.toString(), Snackbar.LENGTH_SHORT).show()
+    }
 
     fun hideKeyboard(activity: Activity, context: Context) {
         val imm: InputMethodManager =
@@ -121,6 +126,16 @@ object ExternalUtils {
             view = View(activity)
         }
         imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    fun getVisibleAddressFromLocationObject(): String {
+        val v = ""
+        return v
+
+    }
+
+    fun convertObjectToNativeLanguage() {
+
     }
 
 }

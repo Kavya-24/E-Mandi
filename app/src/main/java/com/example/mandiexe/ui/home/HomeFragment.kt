@@ -11,8 +11,8 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
 import com.example.mandiexe.R
-import com.example.mandiexe.ui.mybids.MyCropBidsFragment
 import com.example.mandiexe.ui.myrequirements.RequirementFragment
+import com.example.mandiexe.ui.supply.MySuppliesFragment
 import com.example.mandiexe.viewmodels.HomeViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
@@ -42,7 +42,7 @@ class HomeFragment : Fragment() {
     private fun getFragment(position: Int): Fragment {
         return when (position) {
             1 -> RequirementFragment()
-            else -> MyCropBidsFragment()
+            else -> MySuppliesFragment()
         }
     }
 
@@ -55,7 +55,7 @@ class HomeFragment : Fragment() {
 
         when (tabLayout.selectedTabPosition) {
             1 -> openFragment(RequirementFragment())
-            else -> openFragment(MyCropBidsFragment())
+            else -> openFragment(MySuppliesFragment())
 
         }
 

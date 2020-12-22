@@ -94,4 +94,20 @@
     <string name="initPrice">Ask Price of Crop</string>
     <string name="noChangeInBid">No chnage in bid</string>
     <string name="modifyStock">Modify stock</string>
+    <string name="supplyDeleted">Crop deleted successfully</string>
+    <string name="supplyUpdated">Crop updated successfully</string>
+    <string name="cancelStock">Cancel crop</string>
+    <string name="no">No</string>
+    <string name="description">Description</string>
+    <string name="modifyCrop">Modify crop</string>
+    <string name="supplyAdded">New crop stock created successfully</string>
+    <string name="couldNotLoad">Could not load stocks</string>
+    <string name="suppliesLoaded">Stocks loaded sucessfully</string>
+    <string name="noSupply">You do not have any supplies as of now.</string>
+    <string name="demanndLoaded">My demands loaded</string>
+    <string name="noDemand">You do not have any demands</string>
+    <string name="cancelBid">Cancel bid?</string>
+    <string name="bidUpdated">Bid updated successfully</string>
+    <string name="BidDeleted">Bid deleted successfully.</string>
+    <string name="newBidPrice">New bid price</string>
 </resources>

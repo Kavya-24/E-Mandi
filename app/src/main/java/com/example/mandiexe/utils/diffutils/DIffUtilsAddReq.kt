@@ -1,7 +1,7 @@
 package com.example.mandiexe.utils.diffutils
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.mandiexe.models.requirements.AddRequirementResponse
+import com.example.mandiexe.models.responses.bids.AddRequirementResponse
 
 
 class DIffUtilsAddReq : DiffUtil.ItemCallback<AddRequirementResponse>() {

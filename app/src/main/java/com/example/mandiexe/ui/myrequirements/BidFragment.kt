@@ -75,7 +75,7 @@ class BidFragment : Fragment() {
             tvDiffernece.text = "+" + ans.toString()
             tvDiffernece.setTextColor(resources.getColor(R.color.green_A700))
         } else if (ans < 0) {
-            tvDiffernece.text = "-" + ans.toString()
+            tvDiffernece.text = ans.toString()
             tvDiffernece.setTextColor(resources.getColor(R.color.red_A700))
         } else if (ans == 0) {
             tvDiffernece.text = resources.getString(R.string.noChangeInBid)
