@@ -109,4 +109,5 @@
     <string name="cancelBid">Cancel bid?</string>
     <string name="bidUpdated">Bid updated successfully</string>
     <string name="BidDeleted">Bid deleted successfully.</string>
+    <string name="newBidPrice">New bid price</string>
 </resources>

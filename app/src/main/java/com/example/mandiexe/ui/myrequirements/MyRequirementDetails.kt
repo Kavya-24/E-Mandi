@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -16,7 +17,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.mandiexe.R
 import com.example.mandiexe.models.body.bid.DeletBidBody
+import com.example.mandiexe.models.body.bid.UpdateBidBody
 import com.example.mandiexe.models.responses.bids.DeleteBidResponse
+import com.example.mandiexe.models.responses.bids.UpdateBidResponse
 import com.example.mandiexe.utils.ExternalUtils.createSnackbar
 import com.example.mandiexe.viewmodels.MyRequirementDetailsViewModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
@@ -24,6 +27,7 @@ import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
 import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.my_requirement_details_fragment.*
 
 class MyRequirementDetails : Fragment() {
@@ -39,6 +43,9 @@ class MyRequirementDetails : Fragment() {
 
     private var BID_ID = ""
     private val TAG = MyRequirementDetails::class.java.simpleName
+
+    private lateinit var d: androidx.appcompat.app.AlertDialog.Builder
+    private lateinit var tempRef: androidx.appcompat.app.AlertDialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -94,6 +101,68 @@ class MyRequirementDetails : Fragment() {
     }
 
     private fun createModifyBidDialog() {
+        d = androidx.appcompat.app.AlertDialog.Builder(requireContext())
+        val v = layoutInflater.inflate(R.layout.layout_modify_bid, null)
+        d.setView(v)
+
+        val et = v.findViewById<EditText>(R.id.actvEditBid_price)
+        val til = v.findViewById<TextInputLayout>(R.id.tilEditBidOfferPrice)
+
+
+
+
+
+        d.setPositiveButton(resources.getString(R.string.modifyBid)) { _, _ ->
+
+            if (et.text.isEmpty()) {
+                til.error = resources.getString(R.string.offerPriceError)
+            } else {
+                confirmModify(et.text.toString())
+            }
+
+
+        }
+        d.setNegativeButton(resources.getString(R.string.cancel)) { _, _ ->
+
+        }
+        d.create()
+
+        tempRef = d.create()
+        d.show()
+
+
+    }
+
+    private fun confirmModify(newBid: String) {
+        tempRef.dismiss()
+
+        val body = UpdateBidBody(BID_ID, newBid)
+
+        if (body != null) {
+            viewModel.updateFunction(body).observe(viewLifecycleOwner, Observer { mResponse ->
+                //Check with the sucessful of it
+                if (viewModel.successfulUpdate.value == false) {
+                    context?.let {
+                        createSnackbar(
+                            viewModel.messageUpdate.value,
+                            it, container_req_details
+                        )
+                    }
+                } else {
+                    manageModifyResponses(mResponse)
+                }
+            })
+        }
+
+
+    }
+
+    private fun manageModifyResponses(mResponse: UpdateBidResponse?) {
+        Toast.makeText(
+            requireContext(),
+            resources.getString(R.string.bidUpdated),
+            Toast.LENGTH_SHORT
+        ).show()
 
     }
 

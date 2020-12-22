@@ -43,7 +43,7 @@ interface myBidsInterface {
     fun getFarmerUpdateBid(
         @Body mUpdateBidBody: UpdateBidBody,
         @Header("Authorization") accessToken: String?
-    ): Call<UpdateBidBody>
+    ): Call<UpdateBidResponse>
 
 
     //Delete the bid

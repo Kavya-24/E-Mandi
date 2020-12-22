@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.mandiexe.R
 import com.example.mandiexe.interfaces.RetrofitClient
 import com.example.mandiexe.models.body.bid.DeletBidBody
+import com.example.mandiexe.models.body.bid.UpdateBidBody
 import com.example.mandiexe.models.responses.bids.DeleteBidResponse
 import com.example.mandiexe.models.responses.bids.UpdateBidResponse
 import com.example.mandiexe.utils.ApplicationUtils
@@ -95,6 +96,63 @@ class MyRequirementDetailsViewModel : ViewModel() {
 
 
     }
+
+    fun updateFunction(body: UpdateBidBody): MutableLiveData<UpdateBidResponse> {
+
+        modifyBid = updateStockFunction(body)
+        return modifyBid
+    }
+
+
+    fun updateStockFunction(body: UpdateBidBody): MutableLiveData<UpdateBidResponse> {
+
+        mySupplyService.getFarmerUpdateBid(
+            mUpdateBidBody = body,
+            accessToken = "Bearer ${sessionManager.fetchAcessToken()}",
+        )
+            .enqueue(object : retrofit2.Callback<UpdateBidResponse> {
+                override fun onFailure(call: Call<UpdateBidResponse>, t: Throwable) {
+                    successfulUpdate.value = false
+                    messageUpdate.value = ExternalUtils.returnStateMessageForThrowable(t)
+                    //Response is null
+                }
+
+                override fun onResponse(
+                    call: Call<UpdateBidResponse>,
+                    response: Response<UpdateBidResponse>
+                ) {
+
+                    Log.e(
+                        TAG,
+                        response.message() + response.body()?.msg + response.body().toString()
+                    )
+                    if (response.isSuccessful) {
+                        if (response.body()?.msg == "Bid updated successfully.") {
+                            successfulUpdate.value = true
+                            messageUpdate.value =
+                                context.resources.getString(R.string.supplyUpdated)
+                            modifyBid.value = response.body()!!
+
+                        } else {
+                            successfulUpdate.value = false
+                            messageUpdate.value = response.body()?.msg.toString()
+                        }
+
+                    } else {
+                        successfulUpdate.value = false
+                        messageUpdate.value = response.body()?.msg.toString()
+                    }
+
+                }
+            })
+
+
+        return modifyBid
+
+
+    }
+
+
 
 
 }
