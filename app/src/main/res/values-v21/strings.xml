@@ -32,4 +32,6 @@
     <string name="couldNotLoad">Could not load stocks</string>
     <string name="suppliesLoaded">Stocks loaded sucessfully</string>
     <string name="noSupply">You do not have any supplies as of now.</string>
+    <string name="demanndLoaded">My demands loaded</string>
+    <string name="noDemand">You do not have any demands</string>
 </resources>

@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.mandiexe.R
 import com.example.mandiexe.adapter.MySuppliesAdapter
 import com.example.mandiexe.adapter.OnMyStockClickListener
@@ -62,6 +63,11 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
 
         }
 
+        val swl = root.findViewById<SwipeRefreshLayout>(R.id.swl_price_fragment)
+        swl.setOnRefreshListener {
+            loadItems()
+            swl.isRefreshing = false
+        }
 
         return root
     }
