@@ -94,7 +94,12 @@
         android:id="@+id/bidFragment"
         android:name="com.example.mandiexe.ui.myrequirements.BidFragment"
         android:label="BidFragment"
-        tools:layout="@layout/bid_fragment" />
+        tools:layout="@layout/bid_fragment">
+        <argument
+            android:name="SUPPLY_ID"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
     <fragment
         android:id="@+id/requirementFragment"
         android:name="com.example.mandiexe.ui.myrequirements.RequirementFragment"

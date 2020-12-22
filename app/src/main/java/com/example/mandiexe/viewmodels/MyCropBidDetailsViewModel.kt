@@ -134,13 +134,13 @@ class MyCropBidDetailsViewModel : ViewModel() {
                             modifyStock.value = response.body()!!
 
                         } else {
-                            successfulCancel.value = false
-                            messageCancel.value = response.body()?.msg.toString()
+                            successfulUpdate.value = false
+                            messageUpdate.value = response.body()?.msg.toString()
                         }
 
                     } else {
-                        successfulCancel.value = false
-                        messageCancel.value = response.body()?.msg.toString()
+                        successfulUpdate.value = false
+                        messageUpdate.value = response.body()?.msg.toString()
                     }
 
                 }

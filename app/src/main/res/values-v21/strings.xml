@@ -34,4 +34,7 @@
     <string name="noSupply">You do not have any supplies as of now.</string>
     <string name="demanndLoaded">My demands loaded</string>
     <string name="noDemand">You do not have any demands</string>
+    <string name="cancelBid">Cancel bid?</string>
+    <string name="bidUpdated">Bid updated successfully</string>
+    <string name="BidDeleted">Bid deleted successfully.</string>
 </resources>

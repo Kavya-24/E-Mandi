@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/container_req_details"
     android:layout_height="match_parent"
     tools:context=".ui.supply.MyCropBidDetails">
 
@@ -216,12 +217,12 @@
             android:layout_height="wrap_content"
             android:text="@string/cancel_bid"
             app:backgroundTint="@color/red_A700"
-            app:layout_constraintEnd_toStartOf="@id/mtb_bid"
+            app:layout_constraintEnd_toStartOf="@id/mtb_Modify_bid"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_view_bid_history_requirement" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/mtb_bid"
+            android:id="@+id/mtb_Modify_bid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/modifyBid"
