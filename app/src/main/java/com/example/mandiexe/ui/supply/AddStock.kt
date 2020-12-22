@@ -359,6 +359,8 @@ class AddStock : Fragment() {
         Log.e(TAG, "In on destroy")
         val navController = findNavController()
         navController.navigateUp()
+        viewModel.successful.removeObservers(this)
+        viewModel.successful.value = null
 
 
         super.onDestroy()

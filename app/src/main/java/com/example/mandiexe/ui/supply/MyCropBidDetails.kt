@@ -369,4 +369,20 @@ class MyCropBidDetails : Fragment() {
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+        viewModelCrop.successfulSupply.removeObservers(this)
+        viewModelCrop.successfulSupply.value = null
+
+        viewModelCrop.successfulCancel.removeObservers(this)
+        viewModelCrop.successfulCancel.value = null
+
+        viewModelCrop.successfulUpdate.removeObservers(this)
+        viewModelCrop.successfulUpdate.value = null
+
+
+    }
+
+
 }

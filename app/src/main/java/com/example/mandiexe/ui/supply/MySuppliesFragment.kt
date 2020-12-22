@@ -128,7 +128,13 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
         navController.navigate(R.id.action_nav_home_to_myBidDetails, bundle)
 
 
-
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.successful.removeObservers(this)
+        viewModel.successful.value = null
+    }
+
 
 }

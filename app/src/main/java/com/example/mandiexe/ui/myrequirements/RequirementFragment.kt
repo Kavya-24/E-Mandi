@@ -103,4 +103,11 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.successful.removeObservers(this)
+        viewModel.successful.value = null
+    }
+
+
 }

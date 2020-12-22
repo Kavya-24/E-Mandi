@@ -134,5 +134,8 @@ object ExternalUtils {
 
     }
 
+    fun convertObjectToNativeLanguage() {
+
+    }
 
 }

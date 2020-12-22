@@ -269,4 +269,20 @@ class MyRequirementDetails : Fragment() {
 
 
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        viewModel.successfulBid.removeObservers(this)
+        viewModel.successfulBid.value = null
+
+        viewModel.successfulCancel.removeObservers(this)
+        viewModel.successfulCancel.value = null
+
+        viewModel.successfulUpdate.removeObservers(this)
+        viewModel.successfulUpdate.value = null
+
+
+    }
+
 }
