@@ -9,7 +9,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/tilWhichCrop"
+            android:id="@+id/tilEditWhichCrop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/space"
@@ -21,15 +21,15 @@
 
         <com.google.android.material.textfield.TextInputLayout
 
-            android:id="@+id/tilCropType"
+            android:id="@+id/tilEditCropType"
             style="@style/styleTIL"
             android:hint="@string/crop_type"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilWhichCrop">
+            app:layout_constraintTop_toBottomOf="@id/tilEditWhichCrop">
 
 
             <AutoCompleteTextView
-                android:id="@+id/actv_crop_type"
+                android:id="@+id/actvEdit_crop_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space_half"
@@ -39,15 +39,15 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilDescription"
+            android:id="@+id/tilEditDescription"
             style="@style/OutlinedTextBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilCropType">
+            app:layout_constraintTop_toBottomOf="@id/tilEditCropType">
 
             <EditText
-                android:id="@+id/etDescription"
+                android:id="@+id/etEditDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:focusable="false"
@@ -56,15 +56,15 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilEstDate"
+            android:id="@+id/tilEditEstDate"
             style="@style/OutlinedTextBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilDescription">
+            app:layout_constraintTop_toBottomOf="@id/tilEditDescription">
 
             <EditText
-                android:id="@+id/etEstDate"
+                android:id="@+id/etEditEstDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:focusable="false"
@@ -73,7 +73,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
 
-            android:id="@+id/tilOfferPrice"
+            android:id="@+id/tilEditOfferPrice"
             style="@style/OutlinedTextBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -83,11 +83,11 @@
             app:endIconMode="none"
             app:errorEnabled="false"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilEstDate">
+            app:layout_constraintTop_toBottomOf="@id/tilEditEstDate">
 
 
             <EditText
-                android:id="@+id/actv_price"
+                android:id="@+id/actvEdit_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal" />
@@ -96,15 +96,15 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilExpDate"
+            android:id="@+id/tilEditExpDate"
             style="@style/OutlinedTextBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilOfferPrice">
+            app:layout_constraintTop_toBottomOf="@id/tilEditOfferPrice">
 
             <EditText
-                android:id="@+id/etExpDate"
+                android:id="@+id/etEditExpDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space"

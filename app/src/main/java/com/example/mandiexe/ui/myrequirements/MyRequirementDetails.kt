@@ -11,11 +11,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.findNavController
 import com.example.mandiexe.R
 import com.example.mandiexe.models.body.bid.DeletBidBody
 import com.example.mandiexe.models.responses.bids.DeleteBidResponse
@@ -76,12 +74,8 @@ class MyRequirementDetails : Fragment() {
 
             //Send the Bid Uodate body : Modify Bid Body in the bundle
             //Check for bundle in the BIdFragment
-            val bundle = bundleOf(
-                "BID_ID" to BID_ID
+            createModifyBidDialog()
 
-            )
-            root.findNavController()
-                .navigate(R.id.action_myRequirementDetails_to_bidFragment, bundle)
         }
 
 
@@ -97,6 +91,10 @@ class MyRequirementDetails : Fragment() {
 
 
         return root
+    }
+
+    private fun createModifyBidDialog() {
+
     }
 
     private fun cancelBid() {

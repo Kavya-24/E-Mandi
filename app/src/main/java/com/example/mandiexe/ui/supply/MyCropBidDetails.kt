@@ -1,6 +1,7 @@
 package com.example.mandiexe.ui.supply
 
 import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -27,6 +28,8 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.my_crop_bid_details_fragment.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MyCropBidDetails : Fragment() {
 
@@ -55,6 +58,8 @@ class MyCropBidDetails : Fragment() {
     private lateinit var cropType: AutoCompleteTextView
     private lateinit var offerPrice: EditText
     private lateinit var desc: EditText
+
+    private val myCalendar = Calendar.getInstance()
 
     private var SUPPLY_ID = ""
     private val TAG = MyCropBidDetails::class.java.simpleName
@@ -153,20 +158,75 @@ class MyCropBidDetails : Fragment() {
 
 
         //Init views
-        etEst = v.findViewById(R.id.etEstDate)
-        etExp = v.findViewById(R.id.etExpDate)
-        cropType = root.findViewById(R.id.actv_crop_type)
-        offerPrice = root.findViewById(R.id.actv_price)
-        desc = root.findViewById(R.id.etDescription)
-        tilType = root.findViewById(R.id.tilCropType)
-        tilPrice = root.findViewById(R.id.tilOfferPrice)
-        tilEst = root.findViewById(R.id.tilEstDate)
-        tilExp = root.findViewById(R.id.tilExpDate)
+        etEst = v.findViewById(R.id.etEditEstDate)
+        etExp = v.findViewById(R.id.etEditExpDate)
+        cropType = root.findViewById(R.id.actvEdit_crop_type)
+        offerPrice = root.findViewById(R.id.actvEdit_price)
+        desc = root.findViewById(R.id.etEditDescription)
+        tilType = root.findViewById(R.id.tilEditCropType)
+        tilPrice = root.findViewById(R.id.tilEditOfferPrice)
+        tilEst = root.findViewById(R.id.tilEditEstDate)
+        tilExp = root.findViewById(R.id.tilEditExpDate)
+
 
 
         //Positive and negative buttons
 
-        //Create observer on Text
+        //Create observer on Textof dates
+        //Date Instance
+
+        val myFormat = "dd/MM/yyyy" //In which you need put here
+        val sdf = SimpleDateFormat(myFormat, Locale.US)
+
+        val dateEst =
+            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+
+                val now = myCalendar.timeInMillis
+                view.minDate = now
+
+                myCalendar.set(Calendar.YEAR, year)
+                myCalendar.set(Calendar.MONTH, monthOfYear)
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                etEst.setText(sdf.format(myCalendar.time))
+
+            }
+
+        val dateExp =
+            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+
+
+                val now = myCalendar.timeInMillis
+                view.minDate = now
+                myCalendar.set(Calendar.YEAR, year)
+                myCalendar.set(Calendar.MONTH, monthOfYear)
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                etExp.setText(sdf.format(myCalendar.time))
+
+            }
+
+
+        //##Requires N
+        etEst.setOnClickListener {
+            context?.let { it1 ->
+                DatePickerDialog(
+                    it1, dateEst, myCalendar[Calendar.YEAR],
+                    myCalendar[Calendar.MONTH],
+                    myCalendar[Calendar.DAY_OF_MONTH]
+                ).show()
+            }
+        }
+
+        //##Requires N
+        etExp.setOnClickListener {
+            context?.let { it1 ->
+                DatePickerDialog(
+                    it1, dateExp, myCalendar[Calendar.YEAR],
+                    myCalendar[Calendar.MONTH],
+                    myCalendar[Calendar.DAY_OF_MONTH]
+                ).show()
+            }
+        }
+
 
         d.setPositiveButton(resources.getString(R.string.modifyCrop)) { _, _ ->
 
