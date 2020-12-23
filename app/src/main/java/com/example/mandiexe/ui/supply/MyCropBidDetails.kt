@@ -11,6 +11,7 @@ import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -348,7 +349,7 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
     private fun initViews(value: ViewSupplyResponse) {
 
-        //Set the above 7 entities wrt root
+        root.findViewById<ConstraintLayout>(R.id.mLayoutSup).visibility = View.VISIBLE
 
         root.findViewById<ProgressBar>(R.id.pb_my_crops_details).visibility = View.GONE
 

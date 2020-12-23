@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -260,6 +261,8 @@ class MyRequirementDetails : Fragment(), OnBidHistoryClickListener {
 
         //Set the above 8 entities wrt root
         //remove pb
+        //View the root
+        root.findViewById<ConstraintLayout>(R.id.mLayoutReq).visibility = View.VISIBLE
         root.findViewById<ProgressBar>(R.id.pb_my_req_details).visibility = View.GONE
 
 
