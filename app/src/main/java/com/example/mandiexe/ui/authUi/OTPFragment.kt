@@ -3,7 +3,6 @@ package com.example.mandiexe.ui.authUi
 import `in`.aabhasjindal.otptextview.OTPListener
 import `in`.aabhasjindal.otptextview.OtpTextView
 import android.app.Activity
-import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -18,9 +17,9 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.example.mandiexe.R
+import com.example.mandiexe.interfaces.RetrofitClient
 import com.example.mandiexe.models.body.authBody.LoginBody
 import com.example.mandiexe.models.responses.auth.LoginResponse
 import com.example.mandiexe.ui.home.MainActivity
@@ -34,9 +33,12 @@ import com.example.mandiexe.utils.auth.SessionManager
 import com.example.mandiexe.viewmodels.OTViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.FirebaseException
+import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
 import kotlinx.android.synthetic.main.o_t_fragment.*
+import retrofit2.Call
+import retrofit2.Response
 import java.util.concurrent.TimeUnit
 
 
@@ -67,7 +69,9 @@ class OTPFragment : Fragment() {
 
     private val pref = PreferenceUtil
     private val preferenceManager: PreferenceManager = PreferenceManager()
+
     private val sessionManager: SessionManager = SessionManager(ApplicationUtils.getContext())
+    private val mySupplyService = RetrofitClient.getAuthInstance()
 
     private lateinit var tvTimer: TextView
 
@@ -271,27 +275,36 @@ class OTPFragment : Fragment() {
 
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
 
-        Log.e(TAG, "In signUpWIth hine Auth")
+        Log.e(TAG, "In signUpWIth with Auth")
         var str = ""
 
         auth.signInWithCredential(credential)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithCredential:success")
+                    Log.e(
+                        TAG,
+                        "signInWithCredential:success  and task is " + task.result.toString()
+                    )
 
                     val user = task.result?.user
+                    Log.e(TAG, "Firebase user made user" + user.toString())
 
                     user?.getIdToken(true)?.addOnCompleteListener { mTask ->
                         if (mTask.isSuccessful) {
                             val idToken: String? = mTask.result.token
-                            Log.e(TAG, "Token made " + idToken)
+
 
                             str = idToken!!
+                            Log.e(TAG, "Token made " + str)
+
                             sendLoginRespone(str)
+
                             // Send token to your backend via HTTPS
                             // ...
+
                         } else {
+
                             // Handle error -> task.getException();
                             createSnackbar(
                                 mTask.exception?.localizedMessage.toString(),
@@ -313,6 +326,12 @@ class OTPFragment : Fragment() {
                             container_frag_otp
                         )
 
+                    } else if (task.exception is FirebaseNetworkException) {
+                        createSnackbar(
+                            resources.getString(R.string.error_please_check_internet),
+                            requireContext(),
+                            container_frag_otp
+                        )
                     } else {
 
                         createSnackbar(
@@ -331,57 +350,114 @@ class OTPFragment : Fragment() {
     private fun sendLoginRespone(str: String) {
 
         Log.e(TAG, "In send login")
-        val pd = ProgressDialog(requireContext())
-        pd.setMessage(resources.getString(R.string.loggingIn))
-        pd.show()
 
         val body = LoginBody(str)
+        makeCall(body, str)
 
 
-        viewModel.lgnFunction(body).observe(viewLifecycleOwner, Observer { mResponse ->
-            //Check with the sucessful of it
-            Log.e(TAG, "In vm")
-            if (viewModel.successful.value == false) {
-                createSnackbar(viewModel.message.value, requireContext(), container_frag_otp)
-            } else {
+//        viewModel.lgnFunction(body).observe(viewLifecycleOwner, Observer { mResponse ->
+//            if (viewModel.successful.value != null) {
+//
+//                Log.e(TAG, "In sccess true AND its value is " + viewModel.successful.value)
+//                if (viewModel.successful.value!!)
+//                    checkResponse(mResponse, str)
+//                else
+//                    createSnackbar(
+//                        resources.getString(R.string.failedLogin),
+//                        requireContext(),
+//                        container_frag_otp
+//                    )
+//
+//            }
+//
+//        })
 
-
-                manageLoginResponse(viewModel.mLogin.value, str)
-            }
-
-
-        })
-
-
-        pd.dismiss()
 
     }
 
+    private fun makeCall(body: LoginBody, str: String) {
 
-    private fun manageLoginResponse(mResponse: LoginResponse?, token: String) {
-        if (mResponse != null) {
-            if (mResponse.msg == "Login successful.") {
+        var mMessage = ""
+        var mResponse = LoginResponse("", LoginResponse.User("", "", true, "", "", ""))
 
-                //Set the user details
-                successLogin(mResponse)
-                Log.e(TAG, "In manage login and login succcess")
+        mySupplyService.getLogin(
+            mLoginBody = body
+        )
+            .enqueue(object : retrofit2.Callback<LoginResponse> {
 
-            } else if (mResponse.msg == "Phone Number not registered.") {
+                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                    mMessage = ExternalUtils.returnStateMessageForThrowable(t)
+
+                }
+
+                override fun onResponse(
+                    call: Call<LoginResponse>,
+                    response: Response<LoginResponse>
+                ) {
+
+                    Log.e(
+                        TAG,
+                        " In on response " + response.message() + response.body()?.msg + response.body()
+                            .toString() + response.body()?.user.toString()
+                    )
 
 
-                Log.e(TAG, "In manage login and phone not reg")
-                val bundle = bundleOf(
-                    "TOKEN" to token,
-                    "PHONE" to phoneNumber
-                )
-                root.findNavController().navigate(R.id.action_nav_otp_to_nav_signup, bundle)
+                    if (response.isSuccessful) {
 
-            }
+
+                        if (response.body()?.msg == "Login successful.") {
+                            mMessage =
+                                requireContext().resources.getString(R.string.loginSuceed)
+
+                        } else if (response.body()?.msg == "Phone Number not registered.") {
+                            mMessage = requireContext().resources.getString(R.string.loginNew)
+
+                        } else {
+                            mMessage = response.body()?.msg.toString()
+                        }
+
+
+                    } else {
+                        mMessage = response.body()?.msg.toString()
+                    }
+
+                    mResponse = response.body()!!
+                }
+            })
+
+        checkResponse(mResponse, str)
+    }
+
+    private fun checkResponse(mResponse: LoginResponse, str: String) {
+
+        Log.e(TAG, "In check response and message is " + mResponse.msg + mResponse.user)
+
+        if (mResponse.msg == "Phone Number not registered.") {
+
+            //Remove timer
+            val bundle = bundleOf(
+                "TOKEN" to str,
+                "PHONE" to phoneNumber
+            )
+            root.findNavController().navigate(R.id.action_nav_otp_to_nav_signup, bundle)
+
+        } else if (mResponse.msg == "Login successful.") {
+            successLogin(mResponse)
+        } else {
+            createSnackbar(
+                resources.getString(R.string.failedLogin),
+                requireContext(),
+                container_frag_otp
+            )
         }
+
+
     }
+
 
     private fun successLogin(response: LoginResponse) {
 
+        Log.e(TAG, "Success Login and response is " + response.toString())
         sessionManager.saveAuth_access_Token(
             LoginResponse(
                 response.msg,

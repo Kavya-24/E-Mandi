@@ -129,11 +129,6 @@ object ExternalUtils {
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    fun getVisibleAddressFromLocationObject(): String {
-        val v = ""
-        return v
-
-    }
 
     fun convertObjectToNativeLanguage() {
 

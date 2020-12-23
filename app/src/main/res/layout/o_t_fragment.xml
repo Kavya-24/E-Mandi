@@ -24,8 +24,8 @@
 
         <TextView
             android:id="@+id/tv_phoneNumber"
-            android:layout_width="381dp"
-            android:layout_height="37dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/space"
             android:gravity="center"
             android:maxLines="2"

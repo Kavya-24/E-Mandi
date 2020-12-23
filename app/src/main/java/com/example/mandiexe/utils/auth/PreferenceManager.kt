@@ -10,12 +10,14 @@ import com.example.mandiexe.utils.ApplicationUtils
  */
 class PreferenceManager {
 
+
     companion object {
         const val APPLICATION_PREFERENCE = "app-preferences"
         const val AUTH_TOKEN = "auth-token"
     }
 
     private val context: Context = ApplicationUtils.getContext()
+
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences(
         APPLICATION_PREFERENCE, Context.MODE_PRIVATE
     )

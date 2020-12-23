@@ -18,7 +18,6 @@ import com.example.mandiexe.adapter.LanguagesAdapter
 import com.example.mandiexe.adapter.OnMyLanguageListener
 import com.example.mandiexe.models.body.LanguageBody
 import com.example.mandiexe.utils.ApplicationUtils
-import com.example.mandiexe.utils.LocaleHelper
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.viewmodels.LanguageViewModel
 import java.util.*
@@ -118,6 +117,20 @@ class LanguageFragment : Fragment(), OnMyLanguageListener {
                 recreateModel("bn")
             }
 
+            3 -> {
+                setLocale("mr")
+                recreateModel("mr")
+            }
+            4 -> {
+                setLocale("ta")
+                recreateModel("ta")
+            }
+            5 -> {
+                setLocale("te")
+                recreateModel("te")
+            }
+
+
             else -> {
                 setLocale("en")
                 recreateModel("en")
@@ -132,7 +145,9 @@ class LanguageFragment : Fragment(), OnMyLanguageListener {
 
     private fun recreateModel(s: String) {
 
-        context?.let { LocaleHelper.onAttach(it, s) }
+
+        //context?.let { LocaleHelper.onAttach(it, s) }
+
         activity?.recreate()
 
     }

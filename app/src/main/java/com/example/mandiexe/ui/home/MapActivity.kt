@@ -267,7 +267,7 @@ class MapActivity : AppCompatActivity() {
             } else {
 
 
-                manageLoginResponse(viewmodelLogin.mLogin.value, token)
+                // manageLoginResponse(viewmodelLogin.mLogin.value, token)
             }
 
         })

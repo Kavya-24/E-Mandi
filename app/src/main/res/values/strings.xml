@@ -165,6 +165,7 @@
     <string name="signUpSuccess">Registeration successful.</string>
     <string name="failedLogin">Failed to log in. Please try again later.</string>
     <string name="kg">kg</string>
+    <string name="NotFound">Not found</string>
 
 
 </resources>

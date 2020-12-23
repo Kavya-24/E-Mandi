@@ -21,10 +21,11 @@ class OTViewModel : ViewModel() {
 
 
     //For getting the details of the supply stock
-    val successful: MutableLiveData<Boolean> = MutableLiveData()
+    var successful: MutableLiveData<Boolean> = MutableLiveData()
     var message: MutableLiveData<String> = MutableLiveData()
 
-    var mLogin: MutableLiveData<LoginResponse> = MutableLiveData()
+    private var mLogin: MutableLiveData<LoginResponse> = MutableLiveData()
+
 
     fun lgnFunction(body: LoginBody): MutableLiveData<LoginResponse> {
 
@@ -37,16 +38,21 @@ class OTViewModel : ViewModel() {
     fun mLoginFunction(body: LoginBody): MutableLiveData<LoginResponse> {
 
         Log.e(TAG, body.toString())
+
+
         mySupplyService.getLogin(
             mLoginBody = body
         )
             .enqueue(object : retrofit2.Callback<LoginResponse> {
 
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+
                     successful.value = false
                     message.value = ExternalUtils.returnStateMessageForThrowable(t)
                     //Response is null
-                    Log.e(TAG, "In on failed and message {${message.value}} and call is ")
+                    Log.e(TAG, "In on Failure")
+                    mLogin.value
+
                 }
 
                 override fun onResponse(
@@ -57,7 +63,7 @@ class OTViewModel : ViewModel() {
                     Log.e(
                         TAG,
                         " In on response " + response.message() + response.body()?.msg + response.body()
-                            .toString()
+                            .toString() + response.body()?.user.toString()
                     )
 
 
@@ -85,10 +91,12 @@ class OTViewModel : ViewModel() {
                         message.value = response.body()?.msg.toString()
                     }
 
+                    mLogin.value = response.body()
                 }
             })
 
-        Log.e(TAG, " Outside retrofit call and mLogin is " + mLogin.value.toString())
+
+        Log.e(TAG, "Befre retrurning " + mLogin.value)
         return mLogin
 
 

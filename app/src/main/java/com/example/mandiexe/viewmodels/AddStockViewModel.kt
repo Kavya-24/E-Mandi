@@ -54,9 +54,10 @@ class AddStockViewModel : ViewModel() {
 
                     Log.e(
                         TAG,
-                        " In response " + response.message() + response.body()?.msg + response.body()
-                            .toString() + response.code()
+                        " In response " + response.message() + " " + response.body()?.msg + " " + response.body()
+                            .toString() + response.code() + " " + response.errorBody()
                     )
+
                     if (response.isSuccessful) {
                         if (response.body()?.msg == "Supply added successfully.") {
                             successful.value = true

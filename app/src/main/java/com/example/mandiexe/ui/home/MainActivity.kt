@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity(), Communicator {
     private fun updateDrawerDetails() {
 
 
-        val NAME = pref.getProfile().name
+        val NAME = pref.name
         val PHONE = pref.getNumberFromPreference().toString()
 
         val v: View = navView.getHeaderView(0)
