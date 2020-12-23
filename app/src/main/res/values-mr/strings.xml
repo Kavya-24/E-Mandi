@@ -134,4 +134,6 @@
     <string name="failedLogin">लॉग इन करण्यात अयशस्वी. कृपया नंतर पुन्हा प्रयत्न करा.</string>
     <string name="kg">किलो</string>
     <string name="NotFound">सापडले नाही</string>
+    <string name="graphTitle">Bid history</string>
+    <string name="graphError">Graph not available</string>
 </resources>

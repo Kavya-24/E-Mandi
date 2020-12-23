@@ -194,6 +194,9 @@ dependencies {
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-auth-ktx'
 
+    //Graph 2
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
 
 }
 apply plugin: 'com.google.gms.google-services'

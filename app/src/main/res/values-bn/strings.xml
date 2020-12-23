@@ -134,4 +134,6 @@
     <string name="failedLogin">লগ ইন করতে ব্যর্থ। পরে আবার চেষ্টা করুন।</string>
     <string name="kg">কেজি</string>
     <string name="NotFound">পাওয়া যায় না</string>
+    <string name="graphTitle">Bid history</string>
+    <string name="graphError">Graph not available</string>
 </resources>

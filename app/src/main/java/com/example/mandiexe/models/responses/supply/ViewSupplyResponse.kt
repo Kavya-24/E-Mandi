@@ -97,6 +97,7 @@ data class ViewSupplyResponse(
 
         ) {
             data class Bid(
+
                 @Json(name = "amount")
                 val amount: Int, // 900
                 @Json(name = "_id")

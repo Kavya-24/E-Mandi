@@ -22,17 +22,21 @@ import com.example.mandiexe.models.body.supply.ViewSupplyBody
 import com.example.mandiexe.models.responses.supply.DeleteSupplyResponse
 import com.example.mandiexe.models.responses.supply.ModifySupplyResponse
 import com.example.mandiexe.models.responses.supply.ViewSupplyResponse
+import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.viewmodels.MyCropBidDetailsViewModel
-import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
-import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
-import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
+import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.my_crop_bid_details_fragment.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class MyCropBidDetails : Fragment() {
 
@@ -43,6 +47,7 @@ class MyCropBidDetails : Fragment() {
     private val viewModelCrop: MyCropBidDetailsViewModel by viewModels()
     private lateinit var root: View
     private lateinit var aaChartView: AAChartView
+    private lateinit var lineChart: LineChart
     private lateinit var args: Bundle
 
 
@@ -73,8 +78,7 @@ class MyCropBidDetails : Fragment() {
     ): View? {
 
         root = inflater.inflate(R.layout.my_crop_bid_details_fragment, container, false)
-        aaChartView = root.findViewById<AAChartView>(R.id.chartView_details)
-
+        lineChart = root.findViewById(R.id.lineChart)
 
         if (arguments != null) {
             //Set the address in the box trimmed
@@ -143,18 +147,15 @@ class MyCropBidDetails : Fragment() {
 
         val body = DeleteSupplyBody(SUPPLY_ID)
 
-        if (body != null) {
-            viewModelCrop.cancelFunction(body).observe(viewLifecycleOwner, Observer { mResponse ->
-
-                //Check with the sucessful of it
-                if (viewModelCrop.successfulCancel.value == false) {
-                    createSnackbar(viewModelCrop.messageCancel.value)
-                } else {
-                    manageCancelResponses(mResponse)
-                }
-            })
+        val mResponse = viewModelCrop.cancelFunction(body)
+        val success = viewModelCrop.successfulCancel.value
+        if (success != null) {
+            if (success) {
+                manageCancelResponses(mResponse.value)
+            } else {
+                createSnackbar(viewModelCrop.messageCancel.value)
+            }
         }
-
 
     }
 
@@ -366,44 +367,49 @@ class MyCropBidDetails : Fragment() {
         root.findViewById<TextView>(R.id.tv_stock_detail_initial_offer_price).text =
             value.supply.askPrice.toString()
 
-        createGraph()
+        createGraph(value.supply.bids)
     }
 
-    private fun createGraph() {
+    private fun createGraph(item: List<ViewSupplyResponse.Supply.Bid>) {
 
+        //First bid is wrt to the first person
+        //Second bid is wrt to the bids of the parent bid person
+        val entries = ArrayList<Entry>()
 
-        val aaChartModel: AAChartModel = AAChartModel()
-            .chartType(AAChartType.Line)
-            .title("Bid History")
-            .backgroundColor("#4b2b7f")
-            .yAxisTitle(resources.getString(R.string.price))
-            .dataLabelsEnabled(true)
-            .series(
-                arrayOf(
-                    AASeriesElement()
-                        .name("12 Dec")
-                        .data(
-                            arrayOf(
-                                35.7
-                            )
-                        ),
-
-                    AASeriesElement()
-                        .name("13 Dec")
-                        .data(
-                            arrayOf(35.9)
-                        ),
-
-                    AASeriesElement()
-                        .name("18 Dec")
-                        .data(
-                            arrayOf(38.7)
-                        )
+        for (element in item) {
+            for (j in element.bids) {
+                entries.add(
+                    Entry(
+                        ExternalUtils.convertTimeToEpoch(j.timestamp.toString()).toFloat(),
+                        j.amount.toFloat()
+                    )
                 )
-            )
+            }
+        }
 
 
-        aaChartView.aa_drawChartWithChartModel(aaChartModel)
+        val vl = LineDataSet(entries, requireContext().resources.getString(R.string.graphTitle))
+
+
+        vl.setDrawValues(false)
+        vl.setDrawFilled(true)
+        vl.lineWidth = 3f
+        vl.fillColor = requireContext().resources.getColor(R.color.darkBlue)
+        vl.fillAlpha = R.color.red
+
+
+        lineChart.xAxis.labelRotationAngle = 0f
+
+        lineChart.data = LineData(vl)
+
+
+        lineChart.setTouchEnabled(true)
+        lineChart.setPinchZoom(true)
+
+        lineChart.description.text = resources.getString(R.string.graphTitle)
+        lineChart.setNoDataText(resources.getString(R.string.graphError))
+
+        lineChart.animateX(1800, Easing.EaseInExpo)
 
 
     }

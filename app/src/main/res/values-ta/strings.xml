@@ -134,4 +134,6 @@
     <string name="failedLogin"></string>
     <string name="kg"></string>
     <string name="NotFound">கிடைக்கவில்லை</string>
+    <string name="graphTitle">Bid history</string>
+    <string name="graphError">Graph not available</string>
 </resources>
