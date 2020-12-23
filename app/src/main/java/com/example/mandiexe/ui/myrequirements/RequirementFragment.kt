@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -27,6 +28,7 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
     companion object {
         fun newInstance() = RequirementFragment()
     }
+
 
     private val viewModel: RequirementsViewmodel by viewModels()
     private lateinit var root: View
@@ -56,9 +58,11 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
 
     private fun loadRequirements() {
 
+        root.findViewById<ProgressBar>(R.id.pb_requirement).visibility = View.VISIBLE
+
         viewModel.reqFunction().observe(viewLifecycleOwner, Observer { mResponse ->
 
-            //Check with the sucessful of it
+            //Check with the successful of it
             if (viewModel.successful.value == false) {
                 ExternalUtils.createSnackbar(
                     viewModel.message.value,
@@ -69,6 +73,8 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
                 manageReqLoadedResponses(mResponse)
             }
         })
+
+        root.findViewById<ProgressBar>(R.id.pb_requirement).visibility = View.GONE
 
     }
 

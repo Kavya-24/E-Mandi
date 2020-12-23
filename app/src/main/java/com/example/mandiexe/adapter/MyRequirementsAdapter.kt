@@ -38,18 +38,20 @@ class MyRequirementAdapter(val itemClick: OnMyBidClickListener) :
 
                 CROP_NAME.text = _listItem.demand.crop
 
-                //##Add location in the Farmer bids response
-                //CROP_LOCATION.text = ExternalUtils.getVisibleAddressFromLocationObject(_listItem.demand.bidder)
+                //CROP_LOCATION = _listItem.demand.demander.
 
                 CROP_QUANTITY.text = _listItem.qty.toString()
                 CROP_EXP.text = ExternalUtils.convertTimeToEpoch(_listItem.demand.expiry)
-                CROP_CURRENT_BID.text = _listItem.currentBid.toString()
+
+                CROP_CURRENT_BID.text = _listItem.demand.lastBid.toString()
                 CROP_IOP.text = _listItem.demand.offerPrice.toString()
+
+
                 CROP_LAST_UPDATED.text = ExternalUtils.convertTimeToEpoch(_listItem.lastModified)
 
-                //## May have error
-                CROP_MY_BID.text = _listItem.bids[0].amount.toString()
-                val currentBid = _listItem.currentBid
+                CROP_MY_BID.text = _listItem.currentBid.toString()
+
+                val currentBid = _listItem.demand.lastBid
                 val askBid = _listItem.demand.offerPrice
                 val ans = currentBid - askBid
 
