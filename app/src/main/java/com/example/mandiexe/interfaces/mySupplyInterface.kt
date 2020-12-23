@@ -66,7 +66,7 @@ interface mySupplyInterface {
     fun getSearchCropGlobally(
         @Body body: SearchGlobalCropBody,
         @Header("Authorization") accessToken: String?
-    ): Call<ModifySupplyResponse>
+    ): Call<SearchGlobalCropResponse>
 
     //Crop autocomplete
     @Headers("Content-Type:application/json")

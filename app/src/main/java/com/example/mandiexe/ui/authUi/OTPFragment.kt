@@ -374,7 +374,7 @@ class OTPFragment : Fragment() {
 
     private fun makeCall(body: LoginBody, str: String) {
 
-        var mResponse = LoginResponse("", LoginResponse.User("", "", true, "", "", ""))
+        var mResponse = LoginResponse("", LoginResponse.User("", "", true, "", "", ""), "")
 
 
         mySupplyService.getLogin(
@@ -462,21 +462,24 @@ class OTPFragment : Fragment() {
         sessionManager.saveAuth_access_Token(
             LoginResponse(
                 response.msg,
-                response.user
+                response.user,
+                response.error
             ).user.accessToken
         )
 
         sessionManager.saveAuth_refresh_Token(
             (LoginResponse(
                 response.msg,
-                response.user
+                response.user,
+                response.error
             )).user.refreshToken
         )
 
         preferenceManager.putAuthToken(
             (LoginResponse(
                 response.msg,
-                response.user
+                response.user,
+                response.error
             )).user.accessToken
         )
 

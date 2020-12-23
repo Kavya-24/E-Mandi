@@ -59,4 +59,9 @@
     <string name="NotFound">Not found</string>
     <string name="graphTitle">Bid history</string>
     <string name="graphError">Graph not available</string>
+    <string name="howMuchGrown">How much is grown?</string>
+    <string name="InVillage">In Village:</string>
+    <string name="InVDistrict">In district:</string>
+    <string name="InState">In state:</string>
+    <string name="InCountry">In country:</string>
 </resources>

@@ -193,6 +193,7 @@ class AddStock : Fragment() {
     private fun setUpVaietyNameSpinner() {
 
         val array: Array<String> = resources.getStringArray(R.array.arr_crop_types)
+
         val adapter: ArrayAdapter<String>? = context?.let {
             ArrayAdapter<String>(
                 it, android.R.layout.simple_spinner_item,
