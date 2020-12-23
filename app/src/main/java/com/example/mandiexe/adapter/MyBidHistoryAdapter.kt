@@ -1,39 +1,53 @@
 package com.example.mandiexe.adapter
 
-/*
-class MyBidHistory(val itemClick: OnBidHistoryClickListener) :
-    RecyclerView.Adapter<MyBidHistory.MyViewHolder>() {
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.example.mandiexe.R
+import com.example.mandiexe.models.responses.supply.ViewSupplyResponse
+import com.example.mandiexe.utils.ExternalUtils
+
+
+class MyBidHistoryAdapter(val itemClick: OnBidHistoryClickListener) :
+    RecyclerView.Adapter<MyBidHistoryAdapter.MyViewHolder>() {
 
 
     //Initialize an empty list of the dataclass T
-    cvar lst: List<T> = listOf()
+    //A bid list in ascending order
+    var lst: List<ViewSupplyResponse.Supply.Bid.Bid> = listOf()
+
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         //Use other items you want the layout to inflate
         val RANK = itemView.findViewById<TextView>(R.id.item_history_rank)
-        val NAME = itemView.findViewById<TextView>(R.id.item_history_name)
+
+        //val NAME = itemView.findViewById<TextView>(R.id.item_history_name)
         val TIME = itemView.findViewById<TextView>(R.id.item_history_time)
         val AMOUNT = itemView.findViewById<TextView>(R.id.item_history_amount)
 
 
         //Bind a single item
-        fun bindPost(_listItem: T, itemClick: OnItemClickListener) {
+        fun bindPost(
+            _listItem: ViewSupplyResponse.Supply.Bid.Bid,
+            itemClick: OnBidHistoryClickListener,
+            position: Int
+        ) {
             with(_listItem) {
 
 
-                RANK.text =
-                    _listItem.(//Add the paramter from list object-data-class you want to add)
-                            )
-                NAME.text = _listItem.()
+                RANK.text = (position + 1).toString()
 
-                TIME.text = _listItem.()
 
-                AMOUNT.text = _listItem.()
+                TIME.text = _listItem.amount.toString()
+
+                AMOUNT.text = ExternalUtils.convertTimeToEpoch(_listItem.timestamp).toString()
 
 
                 itemView.setOnClickListener {
-                    itemClick.clickThisItem(_listItem)
+                    itemClick.viewBidDetails(_listItem)
                 }
 
 
@@ -48,7 +62,7 @@ class MyBidHistory(val itemClick: OnBidHistoryClickListener) :
         val view =
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_bid_history, parent, false)
-        return MyBidHistory.MyViewHolder(view)
+        return MyBidHistoryAdapter.MyViewHolder(view)
 
     }
 
@@ -59,7 +73,7 @@ class MyBidHistory(val itemClick: OnBidHistoryClickListener) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
-        holder.bindPost(lst[position], itemClick)
+        holder.bindPost(lst[position], itemClick, position)
 
     }
 
@@ -67,7 +81,7 @@ class MyBidHistory(val itemClick: OnBidHistoryClickListener) :
 
 
 interface OnBidHistoryClickListener {
-    fun viewBidDetails(_listItem: T)
+    fun viewBidDetails(_listItem: ViewSupplyResponse.Supply.Bid.Bid)
 }
 
-*/
+

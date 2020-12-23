@@ -51,7 +51,7 @@
     <string name="expError">Add an expiration date of the bid</string>
     <string name="date_of_start">Date of start</string>
     <string name="view_bid_history">View bid history</string>
-    <string name="cancel_stock">Cancel Stock</string>
+    <string name="cancel_stock">Delete Stock</string>
     <string name="_918">918</string>
     <string name="hello_world_person">Hello World Person</string>
     <string name="rs_45602">Rs 45602</string>

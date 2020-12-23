@@ -19,14 +19,14 @@
             android:layout_weight="1"
             android:text="@string/_918" />
 
-        <TextView
-            android:id="@+id/item_history_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_half"
-            android:layout_weight="2.5"
-            android:maxLines="2"
-            android:text="@string/hello_world_person" />
+        <!--        <TextView-->
+        <!--            android:id="@+id/item_history_name"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginStart="@dimen/space_half"-->
+        <!--            android:layout_weight="2.5"-->
+        <!--            android:maxLines="2"-->
+        <!--            android:text="@string/hello_world_person" />-->
 
         <TextView
             android:id="@+id/item_history_time"

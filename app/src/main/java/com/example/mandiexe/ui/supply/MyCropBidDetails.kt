@@ -14,8 +14,11 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
+import com.example.mandiexe.adapter.MyBidHistoryAdapter
+import com.example.mandiexe.adapter.OnBidHistoryClickListener
 import com.example.mandiexe.models.body.supply.DeleteSupplyBody
 import com.example.mandiexe.models.body.supply.ModifySupplyBody
 import com.example.mandiexe.models.body.supply.ViewSupplyBody
@@ -38,7 +41,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MyCropBidDetails : Fragment() {
+class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
     companion object {
         fun newInstance() = MyCropBidDetails()
@@ -93,8 +96,9 @@ class MyCropBidDetails : Fragment() {
 
         //initViews
         root.findViewById<TextView>(R.id.tv_view_bid_history_stocks).setOnClickListener {
-            //##Send the crop object
-            root.findNavController().navigate(R.id.action_myBidDetails_to_bidHistory)
+
+            //Open the history
+            openBidHistory()
 
         }
 
@@ -108,6 +112,12 @@ class MyCropBidDetails : Fragment() {
         }
 
         return root
+    }
+
+    private fun openBidHistory() {
+
+        root.findViewById<RecyclerView>(R.id.rv_bidHistory).visibility = View.VISIBLE
+
     }
 
     private fun makeCall() {
@@ -363,11 +373,30 @@ class MyCropBidDetails : Fragment() {
 
         }
 
+        //Else the color is green
 
         root.findViewById<TextView>(R.id.tv_stock_detail_initial_offer_price).text =
             value.supply.askPrice.toString()
 
+        fillRecyclerView(value.supply.bids)
         createGraph(value.supply.bids)
+    }
+
+    private fun fillRecyclerView(bids: List<ViewSupplyResponse.Supply.Bid>) {
+        val rv = root.findViewById<RecyclerView>(R.id.rv_bidHistory)
+        rv.layoutManager = LinearLayoutManager(context)
+        val adapter = MyBidHistoryAdapter(this)
+
+        //Create list
+        val mBids: MutableList<ViewSupplyResponse.Supply.Bid.Bid> = mutableListOf()
+        for (element in bids) {
+            for (j in element.bids) {
+                mBids.add(j)
+            }
+        }
+
+        adapter.lst = mBids
+        rv.adapter = adapter
     }
 
     private fun createGraph(item: List<ViewSupplyResponse.Supply.Bid>) {
@@ -426,6 +455,11 @@ class MyCropBidDetails : Fragment() {
         viewModelCrop.successfulUpdate.removeObservers(this)
         viewModelCrop.successfulUpdate.value = null
 
+
+    }
+
+    override fun viewBidDetails(_listItem: ViewSupplyResponse.Supply.Bid.Bid) {
+        //The farmer can view the bids from here
 
     }
 
