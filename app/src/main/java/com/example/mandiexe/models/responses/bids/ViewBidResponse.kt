@@ -56,7 +56,7 @@ data class ViewBidResponse(
             val area: Area,
 
             @Json(name = "bids")
-            val bids: List<Any>,
+            val bids: List<ViewBidResponse.Bid.Bid>,
 
             @Json(name = "country")
             val country: String, // ind

@@ -25,6 +25,12 @@
         <action
             android:id="@+id/action_nav_home_to_myBidDetails"
             app:destination="@id/myBidDetails" />
+        <action
+            android:id="@+id/action_nav_home_to_addRequirement2"
+            app:destination="@id/addRequirement" />
+        <action
+            android:id="@+id/action_nav_home_to_myRequirementDetails"
+            app:destination="@id/myRequirementDetails" />
     </fragment>
 
     <fragment
@@ -36,6 +42,9 @@
         <action
             android:id="@+id/action_nav_my_crops2_to_myBidDetails"
             app:destination="@id/myBidDetails" />
+        <action
+            android:id="@+id/action_nav_my_crops2_to_nav_add_stock_2"
+            app:destination="@id/nav_add_stock_2" />
     </fragment>
 
     <fragment
@@ -61,18 +70,10 @@
 
     </fragment>
     <fragment
-        android:id="@+id/bidHistory"
-        android:name="com.example.mandiexe.ui.home.BidHistory"
-        android:label="bid_history_fragment"
-        tools:layout="@layout/bid_history_fragment" />
-    <fragment
         android:id="@+id/myBidDetails"
         android:name="com.example.mandiexe.ui.supply.MyCropBidDetails"
         android:label="my_bid_details_fragment"
         tools:layout="@layout/my_crop_bid_details_fragment">
-        <action
-            android:id="@+id/action_myBidDetails_to_bidHistory"
-            app:destination="@id/bidHistory" />
         <argument
             android:name="SUPPLY_ID"
             app:argType="string"
@@ -83,22 +84,9 @@
         android:name="com.example.mandiexe.ui.myrequirements.MyRequirementDetails"
         android:label="MyRequirementDetails"
         tools:layout="@layout/my_requirement_details_fragment">
-        <action
-            android:id="@+id/action_myRequirementDetails_to_bidHistory"
-            app:destination="@id/bidHistory" />
-        <action
-            android:id="@+id/action_myRequirementDetails_to_bidFragment"
-            app:destination="@id/bidFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/bidFragment"
-        android:name="com.example.mandiexe.ui.myrequirements.BidFragment"
-        android:label="BidFragment"
-        tools:layout="@layout/bid_fragment">
         <argument
-            android:name="SUPPLY_ID"
-            app:argType="string"
-            app:nullable="true" />
+            android:name="BID_ID"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/requirementFragment"
@@ -113,11 +101,7 @@
         android:id="@+id/viewPagerFragment"
         android:name="com.example.mandiexe.ui.home.ViewPagerFragment"
         android:label="ViewPagerFragment"
-        tools:layout="@layout/viewpager_fragment">
-        <action
-            android:id="@+id/action_viewPagerFragment_to_nav_add_stock_2"
-            app:destination="@id/nav_add_stock_2" />
-    </fragment>
+        tools:layout="@layout/viewpager_fragment" />
     <fragment
         android:id="@+id/addRequirement"
         android:name="com.example.mandiexe.ui.myrequirements.AddRequirement"
@@ -131,9 +115,5 @@
         android:id="@+id/openNewRequirementFragment"
         android:name="com.example.mandiexe.ui.myrequirements.OpenNewRequirementFragment"
         android:label="OpenNewRequirementFragment"
-        tools:layout="@layout/open_new_requirement_fragment">
-        <action
-            android:id="@+id/action_openNewRequirementFragment_to_bidFragment"
-            app:destination="@id/bidFragment" />
-    </fragment>
+        tools:layout="@layout/open_new_requirement_fragment" />
 </navigation>

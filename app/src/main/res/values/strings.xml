@@ -59,7 +59,7 @@
     <string name="name">Name</string>
     <string name="date">Date</string>
     <string name="price_rs">Price(Rs)</string>
-    <string name="cancel_bid">Cancel bid</string>
+    <string name="cancel_bid">Delete bid</string>
     <string name="bid">Bid</string>
     <string name="emptyBidError">Bid price can not be empty</string>
     <string name="lesserBidError">Place a lower value in the bid</string>

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -107,6 +108,13 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
     }
 
     override fun viewMyBidDetails(_listItem: FamerBidsResponse.Bid) {
+
+        val bundle = bundleOf(
+            "BID_ID" to _listItem._id
+        )
+
+        root.findNavController()
+            .navigate(R.id.action_nav_home_to_myRequirementDetails, bundle)
 
     }
 

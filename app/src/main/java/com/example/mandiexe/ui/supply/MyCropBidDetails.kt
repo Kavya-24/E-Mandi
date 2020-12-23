@@ -383,6 +383,7 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
     }
 
     private fun fillRecyclerView(bids: List<ViewSupplyResponse.Supply.Bid>) {
+
         val rv = root.findViewById<RecyclerView>(R.id.rv_bidHistory)
         rv.layoutManager = LinearLayoutManager(context)
         val adapter = MyBidHistoryAdapter(this)

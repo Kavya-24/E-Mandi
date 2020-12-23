@@ -82,13 +82,13 @@ class MyCropBidDetailsViewModel : ViewModel() {
                             mSupply.value = response.body()!!
 
                         } else {
-                            successfulCancel.value = false
-                            messageCancel.value = response.body()?.msg.toString()
+                            successfulSupply.value = false
+                            messageSupply.value = response.body()?.msg.toString()
                         }
 
                     } else {
-                        successfulCancel.value = false
-                        messageCancel.value = response.body()?.msg.toString()
+                        successfulSupply.value = false
+                        messageSupply.value = response.body()?.msg.toString()
                     }
 
                     mSupply.value = response.body()
