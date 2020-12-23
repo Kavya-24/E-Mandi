@@ -16,6 +16,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val pref = PreferenceUtil
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setAppLocale(pref.getLanguageFromPreference(), this)
@@ -36,7 +37,6 @@ class LoginActivity : AppCompatActivity() {
 
 
     }
-
 
     override fun onSupportNavigateUp(): Boolean {
         val navControllerLoginActivity = findNavController(R.id.nav_host_fragment_login)

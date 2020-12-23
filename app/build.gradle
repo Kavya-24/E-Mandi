@@ -138,7 +138,7 @@ dependencies {
     /**
      * Moshi external dependencies
      */
-    implementation 'com.squareup.retrofit2:converter-moshi:2.6.0'
+    implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
     implementation "com.squareup.moshi:moshi-adapters:1.5.0"
     implementation "com.squareup.moshi:moshi-kotlin:1.6.0"
     implementation 'com.squareup.moshi:moshi:1.8.0'
@@ -193,7 +193,6 @@ dependencies {
     // Declare the dependency for the Firebase Authentication library
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-auth-ktx'
-
 
 
 }

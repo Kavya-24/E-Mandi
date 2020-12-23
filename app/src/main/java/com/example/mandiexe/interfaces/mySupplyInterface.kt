@@ -14,7 +14,7 @@ interface mySupplyInterface {
 
     //Get the active stocks
     @Headers("Content-Type:application/json")
-    @POST("/api/farmer/supplies")
+    @POST("api/farmer/supplies")
     fun getFarmerActiveSupplies(
         @Header("Authorization") accessToken: String?
     ): Call<FarmerSuppliesResponse>
@@ -22,7 +22,7 @@ interface mySupplyInterface {
 
     //Get the stocks history
     @Headers("Content-Type:application/json")
-    @POST("/api/farmer/history")
+    @POST("api/farmer/history")
     fun getFarmerSupplyHistory(
         @Header("Authorization") accessToken: String?
     ): Call<FarmerHistoryResponse>
@@ -30,7 +30,7 @@ interface mySupplyInterface {
 
     //Add a stock
     @Headers("Content-Type:application/json")
-    @POST("/api/supply/add")
+    @POST("api/supply/add")
     fun getAddSupply(
         @Body mAddSupply: AddSupplyBody,
         @Header("Authorization") accessToken: String?
@@ -38,7 +38,7 @@ interface mySupplyInterface {
 
     //Delete a stock
     @Headers("Content-Type:application/json")
-    @POST("/api/supply/delete")
+    @POST("api/supply/delete")
     fun getDeleteSupply(
         @Body mDeleteSupply: DeleteSupplyBody,
         @Header("Authorization") accessToken: String?
@@ -46,7 +46,7 @@ interface mySupplyInterface {
 
     //Modify a stock
     @Headers("Content-Type:application/json")
-    @POST("/api/supply/update")
+    @POST("api/supply/update")
     fun getModifySupply(
         @Body mModifySupply: ModifySupplyBody,
         @Header("Authorization") accessToken: String?

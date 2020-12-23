@@ -74,6 +74,8 @@ class OTPFragment : Fragment() {
     private val mySupplyService = RetrofitClient.getAuthInstance()
 
     private lateinit var tvTimer: TextView
+    private var mMessage = ""
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -282,10 +284,6 @@ class OTPFragment : Fragment() {
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    Log.e(
-                        TAG,
-                        "signInWithCredential:success  and task is " + task.result.toString()
-                    )
 
                     val user = task.result?.user
                     Log.e(TAG, "Firebase user made user" + user.toString())
@@ -296,7 +294,6 @@ class OTPFragment : Fragment() {
 
 
                             str = idToken!!
-                            Log.e(TAG, "Token made " + str)
 
                             sendLoginRespone(str)
 
@@ -377,15 +374,18 @@ class OTPFragment : Fragment() {
 
     private fun makeCall(body: LoginBody, str: String) {
 
-        var mMessage = ""
         var mResponse = LoginResponse("", LoginResponse.User("", "", true, "", "", ""))
+
 
         mySupplyService.getLogin(
             mLoginBody = body
         )
             .enqueue(object : retrofit2.Callback<LoginResponse> {
 
+
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+
+                    Log.e(TAG, "Throwable message " + t.message + " Cause " + t.cause)
                     mMessage = ExternalUtils.returnStateMessageForThrowable(t)
 
                 }
@@ -409,6 +409,7 @@ class OTPFragment : Fragment() {
                             mMessage =
                                 requireContext().resources.getString(R.string.loginSuceed)
 
+
                         } else if (response.body()?.msg == "Phone Number not registered.") {
                             mMessage = requireContext().resources.getString(R.string.loginNew)
 
@@ -425,10 +426,10 @@ class OTPFragment : Fragment() {
                 }
             })
 
-        checkResponse(mResponse, str)
+        checkResponse(mResponse, str, mMessage)
     }
 
-    private fun checkResponse(mResponse: LoginResponse, str: String) {
+    private fun checkResponse(mResponse: LoginResponse, str: String, message: String) {
 
         Log.e(TAG, "In check response and message is " + mResponse.msg + mResponse.user)
 
@@ -445,7 +446,7 @@ class OTPFragment : Fragment() {
             successLogin(mResponse)
         } else {
             createSnackbar(
-                resources.getString(R.string.failedLogin),
+                message,
                 requireContext(),
                 container_frag_otp
             )

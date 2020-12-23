@@ -14,7 +14,7 @@ interface authInterface {
 
 
     //Get access token
-    @POST("/api/farmer/accesstoken")
+    @POST("api/farmer/accesstoken")
     fun getAccessToken(
         //USe Refresh token here            //Passed as String
         @Body refreshToken: String
@@ -23,6 +23,7 @@ interface authInterface {
 
     //Farmer number login
     //Takes the firebase token
+
     @Headers("Content-Type:application/json")
     @POST("api/farmer/login")
     fun getLogin(
@@ -32,7 +33,7 @@ interface authInterface {
 
     //Farmer SignUp
     @Headers("Content-Type:application/json")
-    @POST("/api/farmer/signup")
+    @POST("api/farmer/signup")
     fun getSignUp(
         @Body mSignUpBody: SignUpBody
     ): Call<SignUpResponse>
@@ -40,10 +41,9 @@ interface authInterface {
 
     //Farmer Profile
     @Headers("Content-Type:application/json")
-    @POST("/api/farmer/profile")
+    @POST("api/farmer/profile")
     fun getFarmerProfile(
     ): Call<FarmerProfileResponse>
-
 
 
 }

@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
 
-    private val url = "http://qme.company:8000/"
+    private val url = "https://qme.company:8000/"
     private val TAG = RetrofitClient::class.java.simpleName
 
     private fun okhttpClient(context: Context): OkHttpClient {
@@ -47,16 +47,10 @@ object RetrofitClient {
 
     fun getAuthInstance(): authInterface {
 
-        val moshi = Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
-            .build()
-
         return Retrofit.Builder()
 
             .baseUrl(url)
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .addCallAdapterFactory(CoroutineCallAdapterFactory())
-            .client(authClient())
+            .addConverterFactory(MoshiConverterFactory.create())
             .build()
             .create(authInterface::class.java)
     }
