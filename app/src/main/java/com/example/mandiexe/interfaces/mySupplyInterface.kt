@@ -1,9 +1,6 @@
 package com.example.mandiexe.interfaces
 
-import com.example.mandiexe.models.body.supply.AddSupplyBody
-import com.example.mandiexe.models.body.supply.DeleteSupplyBody
-import com.example.mandiexe.models.body.supply.ModifySupplyBody
-import com.example.mandiexe.models.body.supply.ViewSupplyBody
+import com.example.mandiexe.models.body.supply.*
 import com.example.mandiexe.models.responses.supply.*
 import retrofit2.Call
 import retrofit2.http.Body
@@ -61,6 +58,23 @@ interface mySupplyInterface {
         @Body mModifySupply: ModifySupplyBody,
         @Header("Authorization") accessToken: String?
     ): Call<ModifySupplyResponse>
+
+
+    //Search a crop and its details
+    @Headers("Content-Type:application/json")
+    @POST("api/farmer/crop/search")
+    fun getSearchCropGlobally(
+        @Body body: SearchGlobalCropBody,
+        @Header("Authorization") accessToken: String?
+    ): Call<ModifySupplyResponse>
+
+    //Crop autocomplete
+    @Headers("Content-Type:application/json")
+    @POST("api/farmer/crop/autocomplete")
+    fun getCropAutoComplete(
+        @Body body: CropSearchAutoCompleteBody,
+        @Header("Authorization") accessToken: String?
+    ): Call<CropSearchAutocompleteResponse>
 
 
 }

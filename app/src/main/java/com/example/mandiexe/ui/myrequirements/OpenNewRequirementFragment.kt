@@ -10,7 +10,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.findNavController
 import com.example.mandiexe.R
 import com.example.mandiexe.viewmodels.OpenNewRequirementViewModel
 import com.google.android.material.button.MaterialButton
@@ -45,7 +44,6 @@ class OpenNewRequirementFragment : Fragment() {
 
         root.findViewById<MaterialButton>(R.id.mtb_bid_new).setOnClickListener {
             //Bid
-            root.findNavController().navigate(R.id.action_openNewRequirementFragment_to_bidFragment)
         }
 
         root.findViewById<TextView>(R.id.tv_view_bid_history_requirement_new).setOnClickListener {

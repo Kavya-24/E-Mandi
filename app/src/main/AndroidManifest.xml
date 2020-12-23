@@ -23,7 +23,9 @@
         android:theme="@style/AppTheme"
         tools:ignore="LockedOrientationActivity"
         tools:replace="android:icon">
-        <activity android:name=".ui.home.SearchResultActivity">
+        <activity
+            android:name=".ui.home.SearchResultActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>

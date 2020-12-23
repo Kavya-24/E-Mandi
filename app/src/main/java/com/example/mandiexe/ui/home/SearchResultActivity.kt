@@ -9,10 +9,19 @@ import com.example.mandiexe.utils.auth.PreferenceUtil
 class SearchResultActivity : AppCompatActivity() {
 
     private val pref = PreferenceUtil
+    private lateinit var args: Bundle
+
+    private var crop = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setAppLocale(pref.getLanguageFromPreference(), this)
         setContentView(R.layout.activity_search_result)
+
+        //Get arugmenent
+        args = intent?.getBundleExtra("bundle")!!
+        crop = args.getString("crop").toString()
+
+
     }
 }
