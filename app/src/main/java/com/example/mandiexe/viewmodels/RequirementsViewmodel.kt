@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mandiexe.R
 import com.example.mandiexe.interfaces.RetrofitClient
-import com.example.mandiexe.models.responses.bids.FarmerBidsResponse
+import com.example.mandiexe.models.responses.bids.FamerBidsResponse
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.utils.auth.SessionManager
@@ -23,30 +23,30 @@ class RequirementsViewmodel : ViewModel() {
     val successful: MutableLiveData<Boolean> = MutableLiveData()
     var message: MutableLiveData<String> = MutableLiveData()
 
-    private var mReq: MutableLiveData<FarmerBidsResponse> = MutableLiveData()
+    private var mReq: MutableLiveData<FamerBidsResponse> = MutableLiveData()
 
-    fun reqFunction(): MutableLiveData<FarmerBidsResponse> {
+    fun reqFunction(): MutableLiveData<FamerBidsResponse> {
 
         mReq = mReqFunction()
         return mReq
     }
 
 
-    fun mReqFunction(): MutableLiveData<FarmerBidsResponse> {
+    fun mReqFunction(): MutableLiveData<FamerBidsResponse> {
 
         mySupplyService.getFarmerDemands(
             accessToken = "Bearer ${sessionManager.fetchAcessToken()}",
         )
-            .enqueue(object : retrofit2.Callback<FarmerBidsResponse> {
-                override fun onFailure(call: Call<FarmerBidsResponse>, t: Throwable) {
+            .enqueue(object : retrofit2.Callback<FamerBidsResponse> {
+                override fun onFailure(call: Call<FamerBidsResponse>, t: Throwable) {
                     successful.value = false
                     message.value = ExternalUtils.returnStateMessageForThrowable(t)
                     //Response is null
                 }
 
                 override fun onResponse(
-                    call: Call<FarmerBidsResponse>,
-                    response: Response<FarmerBidsResponse>
+                    call: Call<FamerBidsResponse>,
+                    response: Response<FamerBidsResponse>
                 ) {
 
                     Log.e(

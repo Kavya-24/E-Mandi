@@ -25,6 +25,9 @@ data class FarmerHistoryResponse(
         @Json(name = "qty")
         val qty: Int, // 1900
         @Json(name = "variety")
-        val variety: String // NA
+        val variety: String,
+        @Json(name = "active")
+        val active: Boolean
+
     )
 }

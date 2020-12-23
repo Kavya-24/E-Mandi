@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
-import com.example.mandiexe.models.responses.bids.FarmerBidsResponse
+import com.example.mandiexe.models.responses.bids.FamerBidsResponse
 import com.example.mandiexe.utils.ExternalUtils
 
 class MyRequirementAdapter(val itemClick: OnMyBidClickListener) :
@@ -15,7 +15,7 @@ class MyRequirementAdapter(val itemClick: OnMyBidClickListener) :
 
 
     //Initialize an empty list of the dataclass T
-    var lst: List<FarmerBidsResponse.Bid> = listOf()
+    var lst: List<FamerBidsResponse.Bid> = listOf()
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -33,7 +33,7 @@ class MyRequirementAdapter(val itemClick: OnMyBidClickListener) :
 
 
         //Bind a single item
-        fun bindPost(_listItem: FarmerBidsResponse.Bid, itemClick: OnMyBidClickListener) {
+        fun bindPost(_listItem: FamerBidsResponse.Bid, itemClick: OnMyBidClickListener) {
             with(_listItem) {
 
                 CROP_NAME.text = _listItem.demand.crop
@@ -107,7 +107,7 @@ class MyRequirementAdapter(val itemClick: OnMyBidClickListener) :
 
 
 interface OnMyBidClickListener {
-    fun viewMyBidDetails(_listItem: FarmerBidsResponse.Bid)
+    fun viewMyBidDetails(_listItem: FamerBidsResponse.Bid)
 }
 
 

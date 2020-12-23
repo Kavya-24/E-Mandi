@@ -16,7 +16,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.mandiexe.R
 import com.example.mandiexe.adapter.MyRequirementAdapter
 import com.example.mandiexe.adapter.OnMyBidClickListener
-import com.example.mandiexe.models.responses.bids.FarmerBidsResponse
+import com.example.mandiexe.models.responses.bids.FamerBidsResponse
 import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.viewmodels.RequirementsViewmodel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -73,7 +73,7 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
     }
 
     @SuppressLint("CutPasteId")
-    private fun manageReqLoadedResponses(mResponse: FarmerBidsResponse?) {
+    private fun manageReqLoadedResponses(mResponse: FamerBidsResponse?) {
         //Create rv
         val rv = root.findViewById<RecyclerView>(R.id.rv_requirement)
         val adapter = MyRequirementAdapter(this)
@@ -93,14 +93,15 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
 
     }
 
-    override fun viewMyBidDetails(_listItem: FarmerBidsResponse.Bid) {
-
-    }
 
     override fun onDestroy() {
         super.onDestroy()
         viewModel.successful.removeObservers(this)
         viewModel.successful.value = null
+    }
+
+    override fun viewMyBidDetails(_listItem: FamerBidsResponse.Bid) {
+
     }
 
 

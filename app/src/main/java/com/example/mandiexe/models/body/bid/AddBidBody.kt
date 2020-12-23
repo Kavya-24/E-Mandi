@@ -7,7 +7,7 @@ data class AddBidBody(
     @Json(name = "bid")
     val bid: String, // 1000000
     @Json(name = "demand_id")
-    val demandId: String, // 5fe0a6e16118640eda871842
+    val demand_id: String, // 5fe0a6e16118640eda871842
     @Json(name = "qty")
     val qty: String // 890
 )

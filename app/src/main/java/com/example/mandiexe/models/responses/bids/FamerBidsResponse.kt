@@ -1,47 +1,35 @@
 package com.example.mandiexe.models.responses.bids
 
 
-import androidx.annotation.NonNull
 import com.squareup.moshi.Json
 
-data class FarmerBidsResponse(
+data class FamerBidsResponse(
     @Json(name = "bids")
-    val bids: List<com.example.mandiexe.models.responses.bids.FarmerBidsResponse.Bid>
+    val bids: List<Bid>
 ) {
     data class Bid(
-
         @Json(name = "active")
         val active: Boolean, // false
-
         @Json(name = "bidDate")
         val bidDate: String, // 2020-12-21T15:53:47.017Z
-
         @Json(name = "bidder")
-        val bidder: String, // 5fdfac963f52f60c2356dcd5// farmer
-
-        @NonNull
+        val bidder: String, // 5fdfac963f52f60c2356dcd5
         @Json(name = "bids")
-        val bids: List<com.example.mandiexe.models.responses.bids.FarmerBidsResponse.Bid.BidDetail>,
-
+        val bids: List<Bid>,
         @Json(name = "currentBid")
         val currentBid: Int, // 10000
-
         @Json(name = "demand")
         val demand: Demand,
-
         @Json(name = "_id")
         val _id: String, // 5fe0c50b6bf4390fd95a1fc5
-
         @Json(name = "lastModified")
         val lastModified: String, // 2020-12-21T15:53:47.017Z
-
         @Json(name = "qty")
         val qty: Int, // 890
-
         @Json(name = "__v")
         val v: Int // 0
     ) {
-        data class BidDetail(
+        data class Bid(
             @Json(name = "amount")
             val amount: Int, // 10000
             @Json(name = "_id")
