@@ -3,6 +3,7 @@ package com.example.mandiexe.interfaces
 import com.example.mandiexe.models.body.supply.AddSupplyBody
 import com.example.mandiexe.models.body.supply.DeleteSupplyBody
 import com.example.mandiexe.models.body.supply.ModifySupplyBody
+import com.example.mandiexe.models.body.supply.ViewSupplyBody
 import com.example.mandiexe.models.responses.supply.*
 import retrofit2.Call
 import retrofit2.http.Body
@@ -18,6 +19,15 @@ interface mySupplyInterface {
     fun getFarmerActiveSupplies(
         @Header("Authorization") accessToken: String?
     ): Call<FarmerSuppliesResponse>
+
+
+    //Get the active stocks
+    @Headers("Content-Type:application/json")
+    @POST("api/supply/view")
+    fun getViewCurrentSupply(
+        @Body body: ViewSupplyBody,
+        @Header("Authorization") accessToken: String?
+    ): Call<ViewSupplyResponse>
 
 
     //Get the stocks history

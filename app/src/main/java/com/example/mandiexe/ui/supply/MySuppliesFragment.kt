@@ -6,11 +6,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -74,15 +74,19 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
 
     private fun loadItems() {
 
-        viewModel.supplyFunction().observe(viewLifecycleOwner, Observer { mResponse ->
+        root.findViewById<ProgressBar>(R.id.pb_my_crops).visibility = View.VISIBLE
 
-            //Check with the sucessful of it
-            if (viewModel.successful.value == false) {
+        val mResponse = viewModel.supplyFunction().value
+        val success = viewModel.successful.value
+        if (success != null) {
+            if (success) {
                 createSnackbar(viewModel.message.value, requireContext(), container_my_crops)
+
             } else {
                 manageStockLoadedResponses(mResponse)
+
             }
-        })
+        }
 
 
     }
@@ -105,6 +109,8 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
                 rv.adapter = adapter
             }
         }
+
+        root.findViewById<ProgressBar>(R.id.pb_my_crops).visibility = View.VISIBLE
 
 
     }

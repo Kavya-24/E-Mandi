@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -17,8 +18,10 @@ import androidx.navigation.findNavController
 import com.example.mandiexe.R
 import com.example.mandiexe.models.body.supply.DeleteSupplyBody
 import com.example.mandiexe.models.body.supply.ModifySupplyBody
+import com.example.mandiexe.models.body.supply.ViewSupplyBody
 import com.example.mandiexe.models.responses.supply.DeleteSupplyResponse
 import com.example.mandiexe.models.responses.supply.ModifySupplyResponse
+import com.example.mandiexe.models.responses.supply.ViewSupplyResponse
 import com.example.mandiexe.viewmodels.MyCropBidDetailsViewModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
@@ -68,6 +71,7 @@ class MyCropBidDetails : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         root = inflater.inflate(R.layout.my_crop_bid_details_fragment, container, false)
         aaChartView = root.findViewById<AAChartView>(R.id.chartView_details)
 
@@ -78,6 +82,7 @@ class MyCropBidDetails : Fragment() {
 
             Log.e(TAG, "Argument str is" + SUPPLY_ID)
         }
+
         //This gets an id as the argument and makes a call from it
         makeCall()
 
@@ -102,6 +107,17 @@ class MyCropBidDetails : Fragment() {
     }
 
     private fun makeCall() {
+
+        val body = ViewSupplyBody(SUPPLY_ID)
+        val mResponse = viewModelCrop.getFunction(body)
+        val success = viewModelCrop.successfulSupply.value
+        if (success != null) {
+            if (!success) {
+                createSnackbar(viewModelCrop.messageCancel.value)
+            } else {
+                mResponse.value?.let { initViews(it) }
+            }
+        }
 
 
     }
@@ -167,7 +183,6 @@ class MyCropBidDetails : Fragment() {
         tilPrice = root.findViewById(R.id.tilEditOfferPrice)
         tilEst = root.findViewById(R.id.tilEditEstDate)
         tilExp = root.findViewById(R.id.tilEditExpDate)
-
 
 
         //Positive and negative buttons
@@ -320,13 +335,42 @@ class MyCropBidDetails : Fragment() {
         return isValid
     }
 
-    private fun initViews() {
+    private fun initViews(value: ViewSupplyResponse) {
 
         //Set the above 7 entities wrt root
+
+        root.findViewById<ProgressBar>(R.id.pb_my_crops_details).visibility = View.GONE
+
+        root.findViewById<TextView>(R.id.tv_stock_detail_crop_name).text = value.supply.crop
+        root.findViewById<TextView>(R.id.tv_stock_detail_crop_type).text = value.supply.variety
+        root.findViewById<TextView>(R.id.tv_stock_detail_crop_description).text =
+            value.supply.description
+
+        root.findViewById<TextView>(R.id.ans_detail_crop_quanity).text = value.supply.qty.toString()
+        root.findViewById<TextView>(R.id.ans_detail_crop_exp).text = value.supply.expiry
+        root.findViewById<TextView>(R.id.ans_detail_init_date).text = value.supply.supplyCreated
+
+        root.findViewById<TextView>(R.id.tv_stock_detail_current_bid).text =
+            value.supply.currentBid.toString()
+        if (value.supply.currentBid < value.supply.askPrice) {
+            root.findViewById<TextView>(R.id.tv_stock_detail_current_bid)
+                .setTextColor(resources.getColor(R.color.red_A700))
+
+        } else if (value.supply.currentBid == value.supply.askPrice) {
+            root.findViewById<TextView>(R.id.tv_stock_detail_current_bid)
+                .setTextColor(resources.getColor(R.color.blue_A700))
+
+        }
+
+
+        root.findViewById<TextView>(R.id.tv_stock_detail_initial_offer_price).text =
+            value.supply.askPrice.toString()
+
         createGraph()
     }
 
     private fun createGraph() {
+
 
         val aaChartModel: AAChartModel = AAChartModel()
             .chartType(AAChartType.Line)

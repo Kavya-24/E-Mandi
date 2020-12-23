@@ -7,8 +7,10 @@ import com.example.mandiexe.R
 import com.example.mandiexe.interfaces.RetrofitClient
 import com.example.mandiexe.models.body.supply.DeleteSupplyBody
 import com.example.mandiexe.models.body.supply.ModifySupplyBody
+import com.example.mandiexe.models.body.supply.ViewSupplyBody
 import com.example.mandiexe.models.responses.supply.DeleteSupplyResponse
 import com.example.mandiexe.models.responses.supply.ModifySupplyResponse
+import com.example.mandiexe.models.responses.supply.ViewSupplyResponse
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.utils.auth.SessionManager
@@ -40,6 +42,64 @@ class MyCropBidDetailsViewModel : ViewModel() {
 
     private var deleteStock: MutableLiveData<DeleteSupplyResponse> = MutableLiveData()
     private var modifyStock: MutableLiveData<ModifySupplyResponse> = MutableLiveData()
+    private var mSupply: MutableLiveData<ViewSupplyResponse> = MutableLiveData()
+
+
+    fun getFunction(body: ViewSupplyBody): MutableLiveData<ViewSupplyResponse> {
+
+        mSupply = supplyStockFunction(body)
+        return mSupply
+    }
+
+    fun supplyStockFunction(body: ViewSupplyBody): MutableLiveData<ViewSupplyResponse> {
+
+        mySupplyService.getViewCurrentSupply(
+
+            body = body,
+            accessToken = "Bearer ${sessionManager.fetchAcessToken()}",
+        )
+            .enqueue(object : retrofit2.Callback<ViewSupplyResponse> {
+                override fun onFailure(call: Call<ViewSupplyResponse>, t: Throwable) {
+                    successfulSupply.value = false
+                    messageSupply.value = ExternalUtils.returnStateMessageForThrowable(t)
+                    //Response is null
+                }
+
+                override fun onResponse(
+                    call: Call<ViewSupplyResponse>,
+                    response: Response<ViewSupplyResponse>
+                ) {
+
+                    Log.e(
+                        TAG,
+                        response.message() + response.body()?.msg + response.body().toString()
+                    )
+                    if (response.isSuccessful) {
+                        if (response.body()?.msg == "Supply retrieved successfully.") {
+                            successfulSupply.value = true
+                            messageSupply.value =
+                                context.resources.getString(R.string.supplyDeleted)
+                            mSupply.value = response.body()!!
+
+                        } else {
+                            successfulCancel.value = false
+                            messageCancel.value = response.body()?.msg.toString()
+                        }
+
+                    } else {
+                        successfulCancel.value = false
+                        messageCancel.value = response.body()?.msg.toString()
+                    }
+
+                    mSupply.value = response.body()
+                }
+            })
+
+
+        return mSupply
+
+
+    }
 
 
     fun cancelFunction(body: DeleteSupplyBody): MutableLiveData<DeleteSupplyResponse> {
@@ -47,7 +107,6 @@ class MyCropBidDetailsViewModel : ViewModel() {
         deleteStock = deleteStockFunction(body)
         return deleteStock
     }
-
 
     fun deleteStockFunction(body: DeleteSupplyBody): MutableLiveData<DeleteSupplyResponse> {
 
