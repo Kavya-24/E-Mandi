@@ -112,13 +112,17 @@ class AddStock : Fragment() {
 //            Log.e(TAG, "Argument str is" + etAddress.text.toString())
 //        }
 
+        // disable dates before today
+
+        // disable dates before today
+        val today = Calendar.getInstance()
+        val now = today.timeInMillis
+
         //Date Instance
         val dateEst =
             OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
 
-                val now = myCalendar.timeInMillis
                 view.minDate = now
-
                 myCalendar.set(Calendar.YEAR, year)
                 myCalendar.set(Calendar.MONTH, monthOfYear)
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
@@ -129,7 +133,6 @@ class AddStock : Fragment() {
             OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
 
 
-                val now = myCalendar.timeInMillis
                 view.minDate = now
                 myCalendar.set(Calendar.YEAR, year)
                 myCalendar.set(Calendar.MONTH, monthOfYear)
