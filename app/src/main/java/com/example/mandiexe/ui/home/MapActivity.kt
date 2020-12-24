@@ -166,7 +166,7 @@ class MapActivity : AppCompatActivity() {
         val name = args?.getString("NAME").toString()
         val area = args?.getString("AREA").toString().toInt()
         val area_unit = args?.getString("AREA_UNIT").toString()
-        val phone = args?.getString("PHONE").toString()
+        val phone = args?.getString("PHONE")!!.drop(2).toString()
 
         body = SignUpBody(
             mAddress,
