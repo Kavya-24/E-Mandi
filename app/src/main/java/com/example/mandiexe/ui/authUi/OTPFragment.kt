@@ -26,6 +26,7 @@ import com.example.mandiexe.ui.home.MainActivity
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.utils.ExternalUtils.createSnackbar
+import com.example.mandiexe.utils.ExternalUtils.createToast
 import com.example.mandiexe.utils.ExternalUtils.hideKeyboard
 import com.example.mandiexe.utils.auth.PreferenceManager
 import com.example.mandiexe.utils.auth.PreferenceUtil
@@ -441,6 +442,11 @@ class OTPFragment : Fragment() {
             val bundle = bundleOf(
                 "TOKEN" to str,
                 "PHONE" to phoneNumber
+            )
+            createToast(
+                resources.getString(R.string.numberVerifed),
+                requireContext(),
+                container_frag_otp
             )
             root.findNavController().navigate(R.id.action_nav_otp_to_nav_signup, bundle)
 

@@ -158,7 +158,7 @@ class MapActivity : AppCompatActivity() {
         val mCountry = fetchedAddress.countryName
         val mDistrict = fetchedAddress.subAdminArea
         val mState = fetchedAddress.adminArea
-        val village = fetchedAddress.locality
+        val village = args?.getString("ADDRESS_USER")!!
         val mAddress = "$village,$mDistrict"
         val lat = fetchedAddress.latitude.toString()
         val long = fetchedAddress.longitude.toString()
@@ -192,22 +192,20 @@ class MapActivity : AppCompatActivity() {
                     + "Admin area, sub" + fetchedAddress.adminArea + fetchedAddress.subAdminArea
         )
 
-        viewModel.signFunction(body).observe(this, Observer { mResponse ->
-            Log.e(TAG, "In vm")
-            if (viewModel.successful.value == false) {
+        val mResponse = viewModel.signFunction(body)
+        val success = viewModel.successful.value
+        val message = viewModel.message
+        if (success != null) {
+            if (success) {
+                manageSignUpResponse(viewModel.mSignUp.value)
+            } else {
                 ExternalUtils.createSnackbar(
-                    viewModel.message.value,
+                    message.value,
                     this,
                     container_map
                 )
-            } else {
-
-
-                manageSignUpResponse(viewModel.mSignUp.value)
             }
-
-        })
-
+        }
 
     }
 
@@ -325,7 +323,6 @@ class MapActivity : AppCompatActivity() {
 
 
     }
-
 
     private fun makeRequest() {
         ActivityCompat.requestPermissions(

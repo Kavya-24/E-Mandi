@@ -14,7 +14,7 @@ import retrofit2.Response
 
 class MapViewmodel : ViewModel() {
 
-    val TAG = OTViewModel::class.java.simpleName
+    val TAG = MapViewmodel::class.java.simpleName
 
     private val context = ApplicationUtils.getContext()
     private val mySupplyService = RetrofitClient.getAuthInstance()
@@ -56,7 +56,8 @@ class MapViewmodel : ViewModel() {
                     Log.e(
                         TAG,
                         " In on response " + response.message() + response.body()?.msg + response.body()
-                            .toString()
+                            .toString() + " \n and header ans" + response.errorBody()
+                            .toString() + "\n" + response.headers()
                     )
 
 
@@ -80,6 +81,7 @@ class MapViewmodel : ViewModel() {
                         message.value = response.body()?.msg.toString()
                     }
 
+                    mSignUp.value = response.body()
                 }
             })
 

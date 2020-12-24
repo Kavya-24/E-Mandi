@@ -119,7 +119,7 @@ class SignUpFragment : Fragment() {
             "NAME" to etName.text.toString(),
             "AREA" to etArea.text.toString(),
             "AREA_UNIT" to etAreaUnit.text.toString(),
-            "ADDRESS_USER" to etAddress.text.toString()
+            "ADDRESS_USER" to etAddress.text.toString()         //This is the village
         )
 
 
