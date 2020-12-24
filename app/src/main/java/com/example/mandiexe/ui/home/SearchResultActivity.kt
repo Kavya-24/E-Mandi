@@ -88,6 +88,5 @@ class SearchResultActivity : AppCompatActivity() {
         val rv = findViewById<RecyclerView>(R.id.rv_youtubeLinks)
         rv.layoutManager = LinearLayoutManager(this)
 
-
     }
 }
