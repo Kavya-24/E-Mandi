@@ -2,13 +2,25 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container_open_new_req"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.supply.MyCropBidDetails">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mLayoutReqOpen"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:visibility="visible">
+
+        <ProgressBar
+            android:id="@+id/pb_new_req_open"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_new_requirement_detail_crop_name"
@@ -42,6 +54,14 @@
             app:layout_constraintTop_toBottomOf="@id/tv_new_requirement_detail_crop_type"
             tools:text="Amhara, Bihta" />
 
+        <TextView
+            android:id="@+id/tv_new_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/space"
+            android:maxLines="4"
+            android:text="@string/maddress_and_lorem"
+            app:layout_constraintTop_toBottomOf="@id/tv_new_requirement_detail_crop_location" />
 
         <TextView
             android:id="@+id/tv_new_requirement_detail_quantity"
@@ -51,10 +71,10 @@
             android:text="@string/quantity2"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_new_requirement_detail_crop_location" />
+            app:layout_constraintTop_toBottomOf="@id/tv_new_description" />
 
         <TextView
-            android:id="@+id/ans_detail_crop_quanity"
+            android:id="@+id/ans_detail_crop_quanity_open_req"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space"
@@ -76,7 +96,7 @@
 
 
         <TextView
-            android:id="@+id/ans_detail_crop_exp"
+            android:id="@+id/ans_detail_crop_exp_open_req"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space"
@@ -98,7 +118,7 @@
 
 
         <TextView
-            android:id="@+id/ans_detail_init_date"
+            android:id="@+id/ans_detail_init_date_open_req"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space"
@@ -176,11 +196,18 @@
             android:text="@string/view_bid_history"
             app:layout_constraintTop_toBottomOf="@id/tv_new_requirement_details_buyer_name" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_bidHistoryOPneReq"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_view_bid_history_requirement_new"
+            tools:listitem="@layout/item_bid_history" />
+
         <View
             android:id="@+id/v2"
             android:layout_width="match_parent"
             android:layout_height="@dimen/space_2x"
-            app:layout_constraintTop_toBottomOf="@id/tv_view_bid_history_requirement_new" />
+            app:layout_constraintTop_toBottomOf="@id/rv_bidHistoryOPneReq" />
 
 
         <com.google.android.material.button.MaterialButton

@@ -173,6 +173,8 @@
     <string name="InVDistrict">In district:</string>
     <string name="InState">In state:</string>
     <string name="InCountry">In country:</string>
+    <string name="currentBid">Current Bid:</string>
+    <string name="successfullBidAdd">Bid added successfully</string>
 
 
 </resources>

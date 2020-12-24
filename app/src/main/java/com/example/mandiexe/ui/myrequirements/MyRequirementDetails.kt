@@ -137,6 +137,7 @@ class MyRequirementDetails : Fragment(), OnBidHistoryClickListener {
     }
 
     private fun createModifyBidDialog() {
+
         d = androidx.appcompat.app.AlertDialog.Builder(requireContext())
         val v = layoutInflater.inflate(R.layout.layout_modify_bid, null)
         d.setView(v)

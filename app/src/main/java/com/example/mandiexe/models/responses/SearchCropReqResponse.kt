@@ -29,7 +29,7 @@ data class SearchCropReqResponse(
         @Json(name = "expiry")
         val expiry: String, // 2021-01-15T18:29:59.000Z
         @Json(name = "_id")
-        val id: String, // 5fe13d964a73f913eb6daf17
+        val _id: String, // 5fe13d964a73f913eb6daf17
         @Json(name = "lastBid")
         val lastBid: List<LastBid>,
         @Json(name = "lastModified")

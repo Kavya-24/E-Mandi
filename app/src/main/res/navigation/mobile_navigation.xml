@@ -115,5 +115,9 @@
         android:id="@+id/openNewRequirementFragment"
         android:name="com.example.mandiexe.ui.myrequirements.OpenNewRequirementFragment"
         android:label="OpenNewRequirementFragment"
-        tools:layout="@layout/open_new_requirement_fragment" />
+        tools:layout="@layout/open_new_requirement_fragment">
+        <argument
+            android:name="BID_ID"
+            app:argType="string" />
+    </fragment>
 </navigation>

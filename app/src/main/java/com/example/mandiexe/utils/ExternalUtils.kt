@@ -12,6 +12,7 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.mandiexe.R
 import com.google.android.material.snackbar.Snackbar
@@ -115,6 +116,10 @@ object ExternalUtils {
     fun createSnackbar(value: String?, context: Context, container: View) {
 
         Snackbar.make(container, value.toString(), Snackbar.LENGTH_SHORT).show()
+    }
+
+    fun createToast(value: String, context: Context, container: View) {
+        Toast.makeText(context, value, Toast.LENGTH_SHORT).show()
     }
 
     fun hideKeyboard(activity: Activity, context: Context) {

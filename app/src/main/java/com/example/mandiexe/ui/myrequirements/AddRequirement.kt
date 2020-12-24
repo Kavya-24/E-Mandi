@@ -14,8 +14,10 @@ import android.widget.CursorAdapter
 import android.widget.ProgressBar
 import android.widget.SearchView
 import android.widget.SimpleCursorAdapter
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
@@ -233,6 +235,13 @@ class AddRequirement : Fragment(), OnNewReqClockListener {
 
     override fun viewAddReqDetails(_listItem: SearchCropReqResponse.Supply) {
 
+        val bundle = bundleOf(
+            "BID_ID" to _listItem._id
+
+        )
+
+        root.findNavController()
+            .navigate(R.id.action_addRequirement_to_openNewRequirementFragment, bundle)
 
     }
 
