@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -197,14 +196,14 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
         //Init views
         val etEst = v.findViewById(R.id.etEditEstDate) as EditText
         val etExp = v.findViewById(R.id.etEditExpDate) as EditText
-        val cropType = root.findViewById(R.id.actvEdit_crop_type) as AutoCompleteTextView
+        val cropType = v.findViewById(R.id.actvEdit_crop_type) as EditText
 
-        val offerPrice = root.findViewById(R.id.actvEdit_price) as EditText
-        val desc = root.findViewById(R.id.etEditDescription) as EditText
-        val tilType = root.findViewById(R.id.tilEditCropType) as TextInputLayout
-        val tilPrice = root.findViewById(R.id.tilEditOfferPrice) as TextInputLayout
-        val tilEst = root.findViewById(R.id.tilEditEstDate) as TextInputLayout
-        val tilExp = root.findViewById(R.id.tilEditExpDate) as TextInputLayout
+        val offerPrice = v.findViewById(R.id.actvEdit_price) as EditText
+        val desc = v.findViewById(R.id.etEditDescription) as EditText
+        val tilType = v.findViewById(R.id.tilEditCropType) as TextInputLayout
+        val tilPrice = v.findViewById(R.id.tilEditOfferPrice) as TextInputLayout
+        val tilEst = v.findViewById(R.id.tilEditEstDate) as TextInputLayout
+        val tilExp = v.findViewById(R.id.tilEditExpDate) as TextInputLayout
 
 
         //Positive and negative buttons
