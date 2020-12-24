@@ -13,10 +13,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.CursorAdapter
-import android.widget.SearchView
-import android.widget.SimpleCursorAdapter
-import android.widget.TextView
+import android.widget.*
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -95,7 +92,12 @@ class MainActivity : AppCompatActivity(), Communicator {
         navView.setupWithNavController(navController)
 
         //Update the drawer
+        //Get the search view
         updateDrawerDetails()
+
+
+        //Search Init
+
 
     }
 
@@ -117,6 +119,7 @@ class MainActivity : AppCompatActivity(), Communicator {
     private fun fetchSuggestions(query: String) {
 
         //This is not yet made
+        Log.e("Main", "In fetch ams query " + query)
         val service = RetrofitClient.makeCallsForSupplies(this)
 
         val body = CropSearchAutoCompleteBody(query)
@@ -128,14 +131,14 @@ class MainActivity : AppCompatActivity(), Communicator {
             override fun onFailure(call: Call<CropSearchAutocompleteResponse>, t: Throwable) {
 
                 val message = ExternalUtils.returnStateMessageForThrowable(t)
-
+                Log.e("Main", "In failure " + message)
             }
 
             override fun onResponse(
                 call: Call<CropSearchAutocompleteResponse>,
                 response: Response<CropSearchAutocompleteResponse>
             ) {
-
+                Log.e("Main", "In search response " + response.body()?.suggestions)
                 if (response.isSuccessful) {
                     val strAr = mutableListOf<String>()
                     for (y: CropSearchAutocompleteResponse.Suggestion in response.body()!!.suggestions) {
@@ -172,34 +175,12 @@ class MainActivity : AppCompatActivity(), Communicator {
             menu.findItem(R.id.action_main_search).actionView as android.widget.SearchView
         searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
 
-
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        when (item.itemId) {
-
-            R.id.action_change_language -> changeLanguage()
-            R.id.action_notification -> showNotification()
-            R.id.action_show_walkthrough -> showWalkthrough()
-            R.id.action_main_search -> searchCrop()
-
-
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
-    private fun searchCrop() {
-
-
         val from = arrayOf("suggestionList")
-        val to = intArrayOf(android.R.id.text1)
+        val to = intArrayOf(R.id.tvSearch)
 
         mAdapter = SimpleCursorAdapter(
             this,
-            android.R.layout.simple_list_item_1,
+            R.layout.item_search,
             null,
             from,
             to,
@@ -207,7 +188,9 @@ class MainActivity : AppCompatActivity(), Communicator {
         )
 
         searchView.suggestionsAdapter = mAdapter
-        searchView.isIconifiedByDefault = false
+        searchView.isIconifiedByDefault = true
+
+        Log.e("Main", "In search")
 
         searchView.setOnSuggestionListener(object : SearchView.OnSuggestionListener {
 
@@ -242,20 +225,50 @@ class MainActivity : AppCompatActivity(), Communicator {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
+                Log.e("Main", "In query change")
                 fetchSuggestions(newText.toString())
                 return false
             }
         })
+
+        val mic = resources.getIdentifier("android:id/search_voice_btn", null, null)
+        val micImage = searchView.findViewById<View>(mic) as ImageView
+        micImage.setOnClickListener {
+            searchCrop()
+        }
 
 
         //Close searchView
         searchView.setOnCloseListener {
             hideKeyboard(this@MainActivity, this@MainActivity)
             searchView.clearFocus()
-            searchView.isIconified = true
+            searchView.isIconified = false
 
             false
         }
+
+
+
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when (item.itemId) {
+
+            R.id.action_change_language -> changeLanguage()
+            R.id.action_notification -> showNotification()
+            R.id.action_show_walkthrough -> showWalkthrough()
+            R.id.action_main_search -> searchCrop()
+
+
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun searchCrop() {
+
 
         val Voiceintent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
         Voiceintent.putExtra(
@@ -333,6 +346,8 @@ class MainActivity : AppCompatActivity(), Communicator {
                 Log.e("Android", "onActivityResult: app download failed")
             }
         } else if (requestCode == VOICE_REC_CODE) {
+
+            Log.e("IN ARC", "")
             if (data != null) {
                 //Put result
                 val res: java.util.ArrayList<String>? =

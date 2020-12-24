@@ -59,25 +59,13 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
     private lateinit var d: androidx.appcompat.app.AlertDialog.Builder
     private lateinit var tempRef: androidx.appcompat.app.AlertDialog
 
-    //Modify stock
-    private lateinit var tilType: TextInputLayout
-    private lateinit var tilEst: TextInputLayout
-    private lateinit var tilPrice: TextInputLayout
-    private lateinit var tilExp: TextInputLayout
-
-
-    private lateinit var etEst: EditText
-    private lateinit var etExp: EditText
-    private lateinit var cropType: AutoCompleteTextView
-    private lateinit var offerPrice: EditText
-    private lateinit var desc: EditText
 
     private val myCalendar = Calendar.getInstance()
     private lateinit var adapter: MyBidHistoryAdapter
 
     private var SUPPLY_ID = ""
     private val TAG = MyCropBidDetails::class.java.simpleName
-
+    private var modifyBody = ModifySupplyBody.Update(0, "", "", "", "")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -201,21 +189,22 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
     private fun modifyStock() {
 
         d = androidx.appcompat.app.AlertDialog.Builder(requireContext())
+
         val v = layoutInflater.inflate(R.layout.layout_modify_supply, null)
         d.setView(v)
 
 
         //Init views
-        etEst = v.findViewById(R.id.etEditEstDate)
-        etExp = v.findViewById(R.id.etEditExpDate)
-        cropType = root.findViewById(R.id.actvEdit_crop_type)
+        val etEst = v.findViewById(R.id.etEditEstDate) as EditText
+        val etExp = v.findViewById(R.id.etEditExpDate) as EditText
+        val cropType = root.findViewById(R.id.actvEdit_crop_type) as AutoCompleteTextView
 
-        offerPrice = root.findViewById(R.id.actvEdit_price)
-        desc = root.findViewById(R.id.etEditDescription)
-        tilType = root.findViewById(R.id.tilEditCropType)
-        tilPrice = root.findViewById(R.id.tilEditOfferPrice)
-        tilEst = root.findViewById(R.id.tilEditEstDate)
-        tilExp = root.findViewById(R.id.tilEditExpDate)
+        val offerPrice = root.findViewById(R.id.actvEdit_price) as EditText
+        val desc = root.findViewById(R.id.etEditDescription) as EditText
+        val tilType = root.findViewById(R.id.tilEditCropType) as TextInputLayout
+        val tilPrice = root.findViewById(R.id.tilEditOfferPrice) as TextInputLayout
+        val tilEst = root.findViewById(R.id.tilEditEstDate) as TextInputLayout
+        val tilExp = root.findViewById(R.id.tilEditExpDate) as TextInputLayout
 
 
         //Positive and negative buttons
@@ -279,7 +268,15 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
         d.setPositiveButton(resources.getString(R.string.modifyCrop)) { _, _ ->
 
             // if (isValidate()) {
+            modifyBody = ModifySupplyBody.Update(
+                offerPrice.text.toString().toInt(),
+                cropType.toString(),
+                desc.text.toString(),
+                ExternalUtils.convertDateToReqForm(etExp.text.toString()),
+                ExternalUtils.convertDateToReqForm(etEst.text.toString())
+            )
             confirmModify()
+
             //}
 
         }
@@ -296,14 +293,7 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
     private fun confirmModify() {
         tempRef.dismiss()
 
-        val update = ModifySupplyBody.Update(
-            offerPrice.text.toString().toInt(),
-            cropType.text.toString(),
-            desc.text.toString(),
-            ExternalUtils.convertDateToReqForm(etExp.text.toString()),
-            ExternalUtils.convertDateToReqForm(etEst.text.toString())
-        )
-        val body = ModifySupplyBody(SUPPLY_ID, update)
+        val body = ModifySupplyBody(SUPPLY_ID, modifyBody)
 
         if (body != null) {
             viewModelCrop.updateFunction(body).observe(viewLifecycleOwner, Observer { mResponse ->
@@ -324,49 +314,49 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
         createSnackbar(mResponse?.msg.toString())
     }
 
-    private fun isValidate(): Boolean {
-
-        var isValid = true
-
-
-        if (cropType.text.isEmpty()) {
-            isValid = false
-            tilType.error = resources.getString(R.string.cropTypeError)
-        } else {
-            tilType.error = null
-        }
-
-
-
-        if (offerPrice.text.isEmpty()) {
-            isValid = false
-            tilPrice.error = resources.getString(R.string.offerPriceError)
-        } else {
-            tilPrice.error = null
-        }
-
-
-        if (etEst.text.isEmpty()) {
-            isValid = false
-            tilEst.error = resources.getString(R.string.etEstError)
-        } else {
-            tilEst.error = null
-        }
-
-
-        if (etExp.text.isEmpty()) {
-            isValid = false
-            tilExp.error = resources.getString(R.string.expError)
-        } else {
-            tilExp.error = null
-        }
-
-
-
-
-
-        return isValid
-    }
+//    private fun isValidate(): Boolean {
+//
+//        var isValid = true
+//
+//
+//        if (cropType.text.isEmpty()) {
+//            isValid = false
+//            tilType.error = resources.getString(R.string.cropTypeError)
+//        } else {
+//            tilType.error = null
+//        }
+//
+//
+//
+//        if (offerPrice.text.isEmpty()) {
+//            isValid = false
+//            tilPrice.error = resources.getString(R.string.offerPriceError)
+//        } else {
+//            tilPrice.error = null
+//        }
+//
+//
+//        if (etEst.text.isEmpty()) {
+//            isValid = false
+//            tilEst.error = resources.getString(R.string.etEstError)
+//        } else {
+//            tilEst.error = null
+//        }
+//
+//
+//        if (etExp.text.isEmpty()) {
+//            isValid = false
+//            tilExp.error = resources.getString(R.string.expError)
+//        } else {
+//            tilExp.error = null
+//        }
+//
+//
+//
+//
+//
+//        return isValid
+//    }
 
     private fun initViews(value: ViewSupplyResponse) {
 

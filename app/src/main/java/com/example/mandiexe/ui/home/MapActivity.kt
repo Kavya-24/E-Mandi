@@ -211,7 +211,8 @@ class MapActivity : AppCompatActivity() {
 
     private fun manageSignUpResponse(value: SignUpResponse?) {
         if (value != null) {
-            if (value.msg == resources.getString(R.string.signUpSuccess)) {
+
+            if (value.msg == "Registeration successful.") {
                 signUpSuccess(value)
             } else {
                 createSnackbar(value.msg, this, container_map)
@@ -260,7 +261,7 @@ class MapActivity : AppCompatActivity() {
 
         Log.e(TAG, "Firebase Token " + token)
 
-        val response =
+
             viewmodelLogin.lgnFunction(body).observe(this, Observer { mResponse ->
 
                 Log.e(TAG, "In vm")
@@ -296,26 +297,18 @@ class MapActivity : AppCompatActivity() {
         //Set access tokens
         Log.e(TAG, "Success Login and response is " + response.toString())
 
-        response.user?.accessToken.let {
-            if (it != null) {
-                sessionManager.saveAuth_access_Token(it)
-            }
-        }
-        response.user?.refreshToken.let {
-            if (it != null) {
-                sessionManager.saveAuth_refresh_Token(it)
-            }
-        }
-        response.user?.accessToken.let {
-            if (it != null) {
-                preferenceManager.putAuthToken(it)
-            }
-        }
+        response.user?.accessToken?.let { sessionManager.saveAuth_access_Token(it) }
+
+        //response?.user?.refreshToken?.let { sessionManager.saveAuth_refresh_Token(it) }
+        response.user?.refreshToken?.let { preferenceManager.putAuthToken(it) }
+
+        Log.e(TAG, "AT: \n" + sessionManager.fetchAcessToken().toString())
+        Log.e(TAG, "RT: \n" + sessionManager.fetchRefreshToken().toString())
+        Log.e(TAG, "PT: \n" + preferenceManager.authToken.toString())
 
         response.user?.phone?.let { pref.setNumberFromPreference(it) }
         pref.name = response.user?.name
 
-        Log.e(TAG, "Success AT " + sessionManager.fetchAcessToken().toString())
 
         Toast.makeText(this, resources.getString(R.string.loginSuceed), Toast.LENGTH_LONG)
             .show()
@@ -497,3 +490,4 @@ class MapActivity : AppCompatActivity() {
     }
 
 }
+

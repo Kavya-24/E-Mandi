@@ -18,9 +18,11 @@ import com.example.mandiexe.R
 import com.google.android.material.snackbar.Snackbar
 import retrofit2.HttpException
 import java.io.IOException
+import java.net.URLEncoder
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeoutException
+
 
 object ExternalUtils {
 
@@ -134,11 +136,6 @@ object ExternalUtils {
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-
-    fun convertObjectToNativeLanguage() {
-
-    }
-
     fun convertDateToReqForm(value: String): String {
 
         val calendar = Calendar.getInstance()
@@ -162,6 +159,34 @@ object ExternalUtils {
         return destFormat.format(convertedDate)
 
 
+    }
+
+    fun translateText(text: String?, srcLanguage: Locale, dstLanguage: Locale): String? {
+
+        var translated: String? = null
+        try {
+
+            val query: String = URLEncoder.encode(text, "UTF-8")
+            val langpair: String = URLEncoder.encode(
+                srcLanguage.language.toString() + "|" + dstLanguage.language, "UTF-8"
+            )
+            val url =
+                "http://mymemory.translated.net/api/get?q=$query&langpair=$langpair"
+
+//            val hc: HttpClient = DefaultHttpClient()
+//            val hg = HttpGet(url)
+//            val hr: HttpResponse = hc.execute(hg)
+//            if (hr.getStatusLine().getStatusCode() === HttpStatus.SC_OK) {
+//                val response = JSONObject(EntityUtils.toString(hr.getEntity()))
+//                translated = response.getJSONObject("responseData").getString("translatedText")
+//            }
+//
+
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return translated
     }
 
 }

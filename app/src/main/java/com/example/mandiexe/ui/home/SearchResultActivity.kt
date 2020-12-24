@@ -1,6 +1,7 @@
 package com.example.mandiexe.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -12,6 +13,7 @@ import com.example.mandiexe.R
 import com.example.mandiexe.interfaces.RetrofitClient
 import com.example.mandiexe.models.body.supply.SearchGlobalCropBody
 import com.example.mandiexe.models.responses.supply.SearchGlobalCropResponse
+import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.utils.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.auth.PreferenceUtil
@@ -25,7 +27,7 @@ class SearchResultActivity : AppCompatActivity() {
     private val pref = PreferenceUtil
     private lateinit var args: Bundle
 
-    private val sessionManager = SessionManager(this)
+    private val sessionManager = SessionManager(ApplicationUtils.getContext())
 
     private var crop = ""
 
@@ -39,8 +41,9 @@ class SearchResultActivity : AppCompatActivity() {
         args = intent?.getBundleExtra("bundle")!!
         crop = args.getString("crop").toString()
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        toolbar.title = crop
+        val toolbar = findViewById<Toolbar>(R.id.tb_searchCrop)
+        toolbar.title = crop.toString()
+
         val back = toolbar.navigationIcon
 
         searchCrops()
@@ -55,6 +58,8 @@ class SearchResultActivity : AppCompatActivity() {
     }
 
     private fun searchCrops() {
+
+        Log.e("SEARCH RES", "Crop" + crop)
 
         findViewById<ProgressBar>(R.id.pb_searchCrop).visibility = View.VISIBLE
         val service = RetrofitClient.makeCallsForSupplies(this)
@@ -91,6 +96,8 @@ class SearchResultActivity : AppCompatActivity() {
     }
 
     private fun loadItemsFunction(response: SearchGlobalCropResponse) {
+
+        Log.e("SEARCH RES", "response " + response.toString())
 
         findViewById<TextView>(R.id.tvInCountry).text = response.country.total.toString()
         findViewById<TextView>(R.id.tvInState).text = response.state.total.toString()
