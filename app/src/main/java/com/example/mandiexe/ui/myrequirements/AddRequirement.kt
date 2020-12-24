@@ -30,6 +30,7 @@ import com.example.mandiexe.models.body.SearchCropReqBody
 import com.example.mandiexe.models.body.supply.CropSearchAutoCompleteBody
 import com.example.mandiexe.models.responses.SearchCropReqResponse
 import com.example.mandiexe.models.responses.supply.CropSearchAutocompleteResponse
+import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.auth.SessionManager
@@ -55,7 +56,7 @@ class AddRequirement : Fragment(), OnNewReqClockListener {
     private lateinit var pb: ProgressBar
     private lateinit var rv: RecyclerView
 
-    private val sessionManager = SessionManager(requireContext())
+    private val sessionManager = SessionManager(ApplicationUtils.getContext())
     private val pref = PreferenceUtil
     val VOICE_REC_CODE = 1234
     private val ACTION_VOICE_SEARCH = "com.google.android.gms.actions.SEARCH_ACTION"
