@@ -2,10 +2,12 @@ package com.example.mandiexe.ui.myrequirements
 
 import android.app.SearchManager
 import android.content.Context
+import android.content.Intent
 import android.database.Cursor
 import android.database.MatrixCursor
 import android.os.Bundle
 import android.provider.BaseColumns
+import android.speech.RecognizerIntent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -29,10 +31,12 @@ import com.example.mandiexe.models.body.supply.CropSearchAutoCompleteBody
 import com.example.mandiexe.models.responses.SearchCropReqResponse
 import com.example.mandiexe.models.responses.supply.CropSearchAutocompleteResponse
 import com.example.mandiexe.utils.ExternalUtils
+import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.auth.SessionManager
 import com.example.mandiexe.viewmodels.AddRequirementViewModel
 import retrofit2.Call
 import retrofit2.Response
+import java.util.*
 
 
 class AddRequirement : Fragment(), OnNewReqClockListener {
@@ -52,7 +56,7 @@ class AddRequirement : Fragment(), OnNewReqClockListener {
     private lateinit var rv: RecyclerView
 
     private val sessionManager = SessionManager(requireContext())
-
+    private val pref = PreferenceUtil
     val VOICE_REC_CODE = 1234
     private val ACTION_VOICE_SEARCH = "com.google.android.gms.actions.SEARCH_ACTION"
 
@@ -137,7 +141,27 @@ class AddRequirement : Fragment(), OnNewReqClockListener {
             }
         })
 
+
+        val Voiceintent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+        Voiceintent.putExtra(
+            RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+        )
+
+        //Put language
+        Voiceintent.putExtra(
+            RecognizerIntent.EXTRA_LANGUAGE,
+            Locale(pref.getLanguageFromPreference() ?: "en")
+        )
+        Voiceintent.putExtra(
+            RecognizerIntent.EXTRA_PROMPT,
+            resources.getString(R.string.searchHead)
+        )
+        startActivityForResult(Voiceintent, VOICE_REC_CODE)
+
+
     }
+
 
     private fun makeCall(txt: String?) {
 
@@ -245,5 +269,19 @@ class AddRequirement : Fragment(), OnNewReqClockListener {
 
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == VOICE_REC_CODE) {
+            if (data != null) {
+                //Put result
+                val res: java.util.ArrayList<String>? =
+                    data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+                searchView.setQuery(res?.get((0)), false)
+
+            }
+        }
+
+    }
 
 }
