@@ -1,8 +1,10 @@
 package com.example.mandiexe.models.responses.supply
 
 
+import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
+@Keep
 data class SearchGlobalCropResponse(
 
     @Json(name = "country")
@@ -30,6 +32,7 @@ data class SearchGlobalCropResponse(
     val village: Village
 
 ) {
+    @Keep
     data class Country(
         @Json(name = "_id")
         val _id: String, // ind
@@ -37,6 +40,7 @@ data class SearchGlobalCropResponse(
         val total: Int // 570
     )
 
+    @Keep
     data class District(
         @Json(name = "_id")
         val _id: String, // del
@@ -44,6 +48,7 @@ data class SearchGlobalCropResponse(
         val total: Int // 670
     )
 
+    @Keep
     data class Link(
         @Json(name = "heading")
         val heading: String, // How to grow wheat?
@@ -51,6 +56,7 @@ data class SearchGlobalCropResponse(
         val url: String // youtube.com
     )
 
+    @Keep
     data class State(
         @Json(name = "_id")
         val _id: String, // del
@@ -58,6 +64,7 @@ data class SearchGlobalCropResponse(
         val total: Int // 670
     )
 
+    @Keep
     data class Village(
         @Json(name = "_id")
         val id: String, // greno

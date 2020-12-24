@@ -134,7 +134,7 @@
     <string name="modifyStock">Modify stock</string>
     <string name="supplyDeleted">Crop deleted successfully</string>
     <string name="supplyUpdated">Crop updated successfully</string>
-    <string name="cancelStock">Cancel crop</string>
+    <string name="cancelStock">Delete crop</string>
     <string name="no">No</string>
     <string name="description">Description</string>
     <string name="modifyCrop">Modify crop</string>
@@ -175,6 +175,11 @@
     <string name="InCountry">In country:</string>
     <string name="currentBid">Current Bid:</string>
     <string name="successfullBidAdd">Bid added successfully</string>
+    <string name="i_also_want_to_grow_crop">I also want to grow crop</string>
+    <string name="village">Village</string>
+    <string name="numberVerifed">Phone number verified</string>
+    <string name="searchHead">Search Crop</string>
+    <string name="emptyRV">No bids found.</string>
 
 
 </resources>

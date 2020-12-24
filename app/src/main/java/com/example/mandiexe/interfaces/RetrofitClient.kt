@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
 
-    private val url = "https://qme.company:8000/"
+    private val url = "http://qme.company:8000/"
     private val TAG = RetrofitClient::class.java.simpleName
 
     private fun okhttpClient(context: Context): OkHttpClient {
@@ -62,7 +62,7 @@ object RetrofitClient {
         return Retrofit.Builder()
             .baseUrl(url)
             .addConverterFactory(MoshiConverterFactory.create())
-            .addCallAdapterFactory(CoroutineCallAdapterFactory())
+            //  .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .client(okhttpClient(context))
             .build().create(mySupplyInterface::class.java)
 

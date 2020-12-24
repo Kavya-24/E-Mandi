@@ -1,24 +1,27 @@
 package com.example.mandiexe.models.body.supply
 
 
+import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
+@Keep
 data class ModifySupplyBody(
-    @Json(name = "supply_id")
+    @field:Json(name = "supply_id")
     val supply_id: String, // 5fdf9eda9318050bc1d3393f
-    @Json(name = "update")
+    @field:Json(name = "update")
     val update: Update
 ) {
+    @Keep
     data class Update(
-        @Json(name = "askPrice")
+        @field:Json(name = "askPrice")
         val askPrice: Int, // 12000
-        @Json(name = "variety")
+        @field:Json(name = "variety")
         val variety: String, // common
-        @Json(name = "description")
+        @field:Json(name = "description")
         val description: String,
-        @Json(name = "expiry")
+        @field:Json(name = "expiry")
         val expiry: String,
-        @Json(name = "dateOfHarvest")
+        @field:Json(name = "dateOfHarvest")
         val dateOfHarvest: String
     )
 }

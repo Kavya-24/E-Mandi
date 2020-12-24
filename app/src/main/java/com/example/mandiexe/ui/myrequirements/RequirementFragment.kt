@@ -64,14 +64,16 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
         viewModel.reqFunction().observe(viewLifecycleOwner, Observer { mResponse ->
 
             //Check with the successful of it
-            if (viewModel.successful.value == false) {
-                ExternalUtils.createSnackbar(
-                    viewModel.message.value,
-                    requireContext(),
-                    container_req
-                )
-            } else {
-                manageReqLoadedResponses(mResponse)
+            if (viewModel.successful.value != null) {
+                if (viewModel.successful.value == false) {
+                    ExternalUtils.createSnackbar(
+                        viewModel.message.value,
+                        requireContext(),
+                        container_req
+                    )
+                } else {
+                    manageReqLoadedResponses(mResponse)
+                }
             }
         })
 

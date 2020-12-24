@@ -16,7 +16,7 @@ class MyBidHistoryAdapter(val itemClick: OnBidHistoryClickListener) :
 
     //Initialize an empty list of the dataclass T
     //A bid list in ascending order
-    var lst: List<ViewSupplyResponse.Supply.Bid.Bid> = listOf()
+    var lst: List<ViewSupplyResponse.Supply.Bid.BidDetails> = listOf()
 
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -31,7 +31,7 @@ class MyBidHistoryAdapter(val itemClick: OnBidHistoryClickListener) :
 
         //Bind a single item
         fun bindPost(
-            _listItem: ViewSupplyResponse.Supply.Bid.Bid,
+            _listItem: ViewSupplyResponse.Supply.Bid.BidDetails,
             itemClick: OnBidHistoryClickListener,
             position: Int
         ) {
@@ -81,7 +81,7 @@ class MyBidHistoryAdapter(val itemClick: OnBidHistoryClickListener) :
 
 
 interface OnBidHistoryClickListener {
-    fun viewBidDetails(_listItem: ViewSupplyResponse.Supply.Bid.Bid)
+    fun viewBidDetails(_listItem: ViewSupplyResponse.Supply.Bid.BidDetails)
 }
 
 

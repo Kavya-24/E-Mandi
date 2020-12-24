@@ -53,6 +53,7 @@ class MyCropBidDetailsViewModel : ViewModel() {
 
     fun supplyStockFunction(body: ViewSupplyBody): MutableLiveData<ViewSupplyResponse> {
 
+
         mySupplyService.getViewCurrentSupply(
 
             body = body,

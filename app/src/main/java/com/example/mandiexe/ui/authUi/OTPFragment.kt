@@ -26,6 +26,7 @@ import com.example.mandiexe.ui.home.MainActivity
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.utils.ExternalUtils.createSnackbar
+import com.example.mandiexe.utils.ExternalUtils.createToast
 import com.example.mandiexe.utils.ExternalUtils.hideKeyboard
 import com.example.mandiexe.utils.auth.PreferenceManager
 import com.example.mandiexe.utils.auth.PreferenceUtil
@@ -352,24 +353,6 @@ class OTPFragment : Fragment() {
         makeCall(body, str)
 
 
-//        viewModel.lgnFunction(body).observe(viewLifecycleOwner, Observer { mResponse ->
-//            if (viewModel.successful.value != null) {
-//
-//                Log.e(TAG, "In sccess true AND its value is " + viewModel.successful.value)
-//                if (viewModel.successful.value!!)
-//                    checkResponse(mResponse, str)
-//                else
-//                    createSnackbar(
-//                        resources.getString(R.string.failedLogin),
-//                        requireContext(),
-//                        container_frag_otp
-//                    )
-//
-//            }
-//
-//        })
-
-
     }
 
     private fun makeCall(body: LoginBody, str: String) {
@@ -406,12 +389,14 @@ class OTPFragment : Fragment() {
 
 
                         if (response.body()?.msg == "Login successful.") {
+                            successLogin(response.body())
                             mMessage =
                                 requireContext().resources.getString(R.string.loginSuceed)
 
 
                         } else if (response.body()?.msg == "Phone Number not registered.") {
                             mMessage = requireContext().resources.getString(R.string.loginNew)
+                            checkResponse(response.body()!!, str, mMessage)
 
                         } else {
                             mMessage = response.body()?.msg.toString()
@@ -432,7 +417,7 @@ class OTPFragment : Fragment() {
     private fun checkResponse(mResponse: LoginResponse, str: String, message: String) {
 
         Log.e(TAG, "In check response and message is " + mResponse.msg + mResponse.user)
-
+        Log.e(TAG, "Firebase Token " + str)
         if (mResponse.msg == "Phone Number not registered.") {
 
             //Remove timer
@@ -440,56 +425,41 @@ class OTPFragment : Fragment() {
                 "TOKEN" to str,
                 "PHONE" to phoneNumber
             )
+            createToast(
+                resources.getString(R.string.numberVerifed),
+                requireContext(),
+                container_frag_otp
+            )
             root.findNavController().navigate(R.id.action_nav_otp_to_nav_signup, bundle)
 
         } else if (mResponse.msg == "Login successful.") {
             successLogin(mResponse)
-        } else {
-            createSnackbar(
-                message,
-                requireContext(),
-                container_frag_otp
-            )
         }
 
 
     }
 
 
-    private fun successLogin(response: LoginResponse) {
+    private fun successLogin(response: LoginResponse?) {
 
         Log.e(TAG, "Success Login and response is " + response.toString())
-        sessionManager.saveAuth_access_Token(
-            LoginResponse(
-                response.msg,
-                response.user,
-                response.error
-            ).user.accessToken
-        )
 
-        sessionManager.saveAuth_refresh_Token(
-            (LoginResponse(
-                response.msg,
-                response.user,
-                response.error
-            )).user.refreshToken
-        )
+        response?.user?.accessToken?.let { sessionManager.saveAuth_access_Token(it) }
 
-        preferenceManager.putAuthToken(
-            (LoginResponse(
-                response.msg,
-                response.user,
-                response.error
-            )).user.accessToken
-        )
+        //response?.user?.refreshToken?.let { sessionManager.saveAuth_refresh_Token(it) }
+        response?.user?.refreshToken?.let { preferenceManager.putAuthToken(it) }
 
+        Log.e(TAG, "AT: \n" + sessionManager.fetchAcessToken().toString())
+        Log.e(TAG, "RT: \n" + sessionManager.fetchRefreshToken().toString())
+        Log.e(TAG, "PT: \n" + preferenceManager.authToken.toString())
 
-        //Set phone
         pref.setNumberFromPreference(phoneNumber)
+        pref.name = response?.user?.name
 
 
         Toast.makeText(context, resources.getString(R.string.loginSuceed), Toast.LENGTH_LONG)
             .show()
+
         val intent = Intent(requireContext(), MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP and Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK)
         hideKeyboard(requireActivity(), requireContext())

@@ -1,30 +1,33 @@
 package com.example.mandiexe.models.responses.supply
 
 
+import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
+@Keep
 data class FarmerSuppliesResponse(
-    @Json(name = "supplies")
+    @field:Json(name = "supplies")
     val supplies: List<Supply>
 ) {
+    @Keep
     data class Supply(
-        @Json(name = "askPrice")
+        @field:Json(name = "askPrice")
         val askPrice: Int, // 21000
-        @Json(name = "crop")
+        @field:Json(name = "crop")
         val crop: String, // Rice
-        @Json(name = "currentBid")
+        @field:Json(name = "currentBid")
         val currentBid: Int, // 0
-        @Json(name = "dateOfHarvest")
+        @field:Json(name = "dateOfHarvest")
         val dateOfHarvest: String, // 2021-12-15T18:29:59.000Z
-        @Json(name = "expiry")
+        @field:Json(name = "expiry")
         val expiry: String, // 2021-01-15T18:29:59.000Z
-        @Json(name = "_id")
+        @field:Json(name = "_id")
         val _id: String, // 5fdfb2c2786e790c4beca341
-        @Json(name = "lastModified")
+        @field:Json(name = "lastModified")
         val lastModified: String, // 2020-12-20T20:23:30.394Z
-        @Json(name = "qty")
+        @field:Json(name = "qty")
         val qty: Int, // 1900
-        @Json(name = "variety")
+        @field:Json(name = "variety")
         val variety: String // NA
     )
 }

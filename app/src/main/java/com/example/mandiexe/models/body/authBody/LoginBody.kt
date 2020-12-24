@@ -5,9 +5,10 @@ import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
 //Replace Json with @field:Json
+
 @Keep
 data class LoginBody(
 
-    @Json(name = "token")
+    @field:Json(name = "token")
     val token: String
 )

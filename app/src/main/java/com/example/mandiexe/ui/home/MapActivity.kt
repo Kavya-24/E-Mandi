@@ -158,7 +158,7 @@ class MapActivity : AppCompatActivity() {
         val mCountry = fetchedAddress.countryName
         val mDistrict = fetchedAddress.subAdminArea
         val mState = fetchedAddress.adminArea
-        val village = fetchedAddress.locality
+        val village = args?.getString("ADDRESS_USER")!!
         val mAddress = "$village,$mDistrict"
         val lat = fetchedAddress.latitude.toString()
         val long = fetchedAddress.longitude.toString()
@@ -166,7 +166,7 @@ class MapActivity : AppCompatActivity() {
         val name = args?.getString("NAME").toString()
         val area = args?.getString("AREA").toString().toInt()
         val area_unit = args?.getString("AREA_UNIT").toString()
-        val phone = args?.getString("PHONE").toString()
+        val phone = args?.getString("PHONE")!!.drop(2).toString()
 
         body = SignUpBody(
             mAddress,
@@ -193,28 +193,32 @@ class MapActivity : AppCompatActivity() {
         )
 
         viewModel.signFunction(body).observe(this, Observer { mResponse ->
-            Log.e(TAG, "In vm")
-            if (viewModel.successful.value == false) {
-                ExternalUtils.createSnackbar(
-                    viewModel.message.value,
-                    this,
-                    container_map
-                )
-            } else {
+            val success = viewModel.successful.value
+            if (success != null) {
+                if (success) {
+                    manageSignUpResponse(viewModel.mSignUp.value)
+                } else {
+                    ExternalUtils.createSnackbar(
+                        viewModel.message.value,
+                        this,
+                        container_map
+                    )
+                }
 
-
-                manageSignUpResponse(viewModel.mSignUp.value)
             }
-
         })
+
 
 
     }
 
     private fun manageSignUpResponse(value: SignUpResponse?) {
         if (value != null) {
-            if (value.msg == resources.getString(R.string.signUpSuccess)) {
+
+            if (value.msg == "Registeration successful.") {
                 signUpSuccess(value)
+            } else if (value.msg == "Farmer already registered.") {
+                loginFromSignUp()
             } else {
                 createSnackbar(value.msg, this, container_map)
             }
@@ -259,6 +263,9 @@ class MapActivity : AppCompatActivity() {
         val token = args?.getString("TOKEN")
         val body = LoginBody(token!!)
 
+        Log.e(TAG, "Firebase Token " + token)
+
+
         viewmodelLogin.lgnFunction(body).observe(this, Observer { mResponse ->
 
             Log.e(TAG, "In vm")
@@ -267,7 +274,7 @@ class MapActivity : AppCompatActivity() {
             } else {
 
 
-                // manageLoginResponse(viewmodelLogin.mLogin.value, token)
+                manageLoginResponse(viewmodelLogin.mLogin.value, token)
             }
 
         })
@@ -292,26 +299,20 @@ class MapActivity : AppCompatActivity() {
 
     private fun successLogin(response: LoginResponse) {
         //Set access tokens
-        sessionManager.saveAuth_access_Token(
-            LoginResponse(
-                response.msg,
-                response.user
-            ).user.accessToken
-        )
+        Log.e(TAG, "Success Login and response is " + response.toString())
 
-        sessionManager.saveAuth_refresh_Token(
-            (LoginResponse(
-                response.msg,
-                response.user
-            )).user.refreshToken
-        )
+        response.user?.accessToken?.let { sessionManager.saveAuth_access_Token(it) }
 
-        preferenceManager.putAuthToken(
-            (LoginResponse(
-                response.msg,
-                response.user
-            )).user.accessToken
-        )
+        //response?.user?.refreshToken?.let { sessionManager.saveAuth_refresh_Token(it) }
+        response.user?.refreshToken?.let { preferenceManager.putAuthToken(it) }
+
+        Log.e(TAG, "AT: \n" + sessionManager.fetchAcessToken().toString())
+        Log.e(TAG, "RT: \n" + sessionManager.fetchRefreshToken().toString())
+        Log.e(TAG, "PT: \n" + preferenceManager.authToken.toString())
+
+        response.user?.phone?.let { pref.setNumberFromPreference(it) }
+        pref.name = response.user?.name
+
 
         Toast.makeText(this, resources.getString(R.string.loginSuceed), Toast.LENGTH_LONG)
             .show()
@@ -322,7 +323,6 @@ class MapActivity : AppCompatActivity() {
 
 
     }
-
 
     private fun makeRequest() {
         ActivityCompat.requestPermissions(
@@ -494,3 +494,4 @@ class MapActivity : AppCompatActivity() {
     }
 
 }
+

@@ -1,53 +1,58 @@
 package com.example.mandiexe.models.responses.auth
 
 
+import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
+@Keep
 data class FarmerProfileResponse(
-    @Json(name = "profile")
+    @field:Json(name = "profile")
     val profile: Profile
 ) {
+    @Keep
     data class Profile(
-        @Json(name = "accountCreated")
+        @field:Json(name = "accountCreated")
         val accountCreated: String, // 2020-12-20T19:57:10.845Z
-        @Json(name = "address")
+        @field:Json(name = "address")
         val address: String, // b381, asia
-        @Json(name = "area")
+        @field:Json(name = "area")
         val area: Area,
-        @Json(name = "country")
+        @field:Json(name = "country")
         val country: String, // ind
-        @Json(name = "district")
+        @field:Json(name = "district")
         val district: String, // del
-        @Json(name = "fuid")
+        @field:Json(name = "fuid")
         val fuid: String, // S2ustzAO4FeFSgCANfZtNRl7iZ42
-        @Json(name = "_id")
+        @field:Json(name = "_id")
         val _id: String, // 5fdfac963f52f60c2356dcd5
-        @Json(name = "location")
+        @field:Json(name = "location")
         val location: Location,
-        @Json(name = "name")
+        @field:Json(name = "name")
         val name: String, // kavya vatsal
-        @Json(name = "phone")
+        @field:Json(name = "phone")
         val phone: String, // +918585992062
-        @Json(name = "refreshToken")
+        @field:Json(name = "refreshToken")
         val refreshToken: String, // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZGZhYzk2M2Y1MmY2MGMyMzU2ZGNkNSIsIm5hbWUiOiJrYXZ5YSB2YXRzYWwiLCJwaG9uZSI6Iis5MTg1ODU5OTIwNjIiLCJpc0Zhcm1lciI6dHJ1ZSwiaWF0IjoxNjA4NDk0MjU1fQ.meAu7wPNDGN-iEJ_aLtq2fvrRi83PwNWAoIeCHzXVTA
-        @Json(name = "state")
+        @field:Json(name = "state")
         val state: String, // del
-        @Json(name = "__v")
+        @field:Json(name = "__v")
         val v: Int, // 0
-        @Json(name = "village")
+        @field:Json(name = "village")
         val village: String // greno
     ) {
+        @Keep
         data class Area(
-            @Json(name = "numerical")
+            @field:Json(name = "numerical")
             val numerical: Int, // 100
-            @Json(name = "unit")
+            @field:Json(name = "unit")
             val unit: String // acre
         )
 
+        @Keep
         data class Location(
-            @Json(name = "coordinates")
+            @field:Json(name = "coordinates")
             val coordinates: List<Double>,
-            @Json(name = "type")
+            @field:Json(name = "type")
             val type: String // Point
         )
     }

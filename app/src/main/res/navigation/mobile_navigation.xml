@@ -72,7 +72,7 @@
     <fragment
         android:id="@+id/myBidDetails"
         android:name="com.example.mandiexe.ui.supply.MyCropBidDetails"
-        android:label="my_bid_details_fragment"
+        android:label="@string/details"
         tools:layout="@layout/my_crop_bid_details_fragment">
         <argument
             android:name="SUPPLY_ID"

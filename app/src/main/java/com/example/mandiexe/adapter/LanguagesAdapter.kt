@@ -31,7 +31,6 @@ class LanguagesAdapter(
 
                 itemView.setOnClickListener {
 
-                    CARD.setBackgroundColor(itemView.context.resources.getColor(R.color.colorPrimaryDark))
 
                     itemClick.selectLanguage(_listItem, position)
                 }

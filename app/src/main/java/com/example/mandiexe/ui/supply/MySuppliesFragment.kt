@@ -11,6 +11,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -76,28 +77,32 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
 
         root.findViewById<ProgressBar>(R.id.pb_my_crops).visibility = View.VISIBLE
 
-        val mResponse = viewModel.supplyFunction().value
-        val success = viewModel.successful.value
-        if (success != null) {
-            if (success) {
-                createSnackbar(viewModel.message.value, requireContext(), container_my_crops)
+        viewModel.supplyFunction().observe(viewLifecycleOwner, Observer { mResponse ->
+            if (viewModel.successful.value != null) {
+                if (viewModel.successful.value!!) {
+                    manageStockLoadedResponses(mResponse)
 
-            } else {
-                manageStockLoadedResponses(mResponse)
+                } else {
+                    createSnackbar(viewModel.message.value, requireContext(), container_my_crops)
 
+                }
             }
-        }
 
+        })
+        'p'
 
     }
 
     @SuppressLint("CutPasteId")
     private fun manageStockLoadedResponses(mResponse: FarmerSuppliesResponse?) {
         //Create rv
+        Log.e("MY Supply", "In manage stock")
+        root.findViewById<ProgressBar>(R.id.pb_my_crops).visibility = View.GONE
         val rv = root.findViewById<RecyclerView>(R.id.rv_my_stocks)
         val adapter = MySuppliesAdapter(this)
 
         if (mResponse != null) {
+            Log.e("I", "In empty list")
             if (mResponse.supplies.isEmpty()) {
                 root.findViewById<AppCompatTextView>(R.id.tvEmptyListCrop).visibility = View.VISIBLE
                 root.findViewById<AppCompatTextView>(R.id.tvEmptyListCrop).text =
@@ -110,7 +115,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
             }
         }
 
-        root.findViewById<ProgressBar>(R.id.pb_my_crops).visibility = View.VISIBLE
+        root.findViewById<ProgressBar>(R.id.pb_my_crops).visibility = View.GONE
 
 
     }
@@ -126,6 +131,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
         )
 
         val supply = _listItem._id
+
         navController.navigate(R.id.action_nav_home_to_myBidDetails, bundle)
 
 

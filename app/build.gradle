@@ -26,9 +26,21 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            //Proguard Techniques
+            minifyEnabled true           //Need to add serialized name annotation if enabled true
+            shrinkResources true
+
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [usesCleartextTraffic: "false"]
         }
+        debug {
+            minifyEnabled false            //Need to add serialized name annotation if enabled true
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            manifestPlaceholders = [usesCleartextTraffic: "true"]
+        }
+
     }
 
     // To inline the bytecode built with JVM target 1.8 into
@@ -196,6 +208,12 @@ dependencies {
 
     //Graph 2
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    //Add the safenyet api
+    implementation 'com.google.android.gms:play-services-safetynet:17.0.0'
+
+    implementation group: 'org.apache.httpcomponents' , name: 'httpclient-android' , version: '4.3.5.1'
+
 
 
 }

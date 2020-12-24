@@ -15,12 +15,16 @@ class TokenAuthenticator(val context: Context) : Authenticator {
     val sessionManager =
         SessionManager(context)
 
+    val preferenceManager: PreferenceManager = PreferenceManager()
+
     @Throws(IOException::class)
     override fun authenticate(route: Route?, response: Response): Request? {
 
-
         val newAccessToken =
-            service.getAccessToken(refreshToken = sessionManager.fetchRefreshToken().toString())
+            service.getAccessToken(refreshToken = preferenceManager.authToken.toString())
+
+//        val newAccessToken =
+//            sessionManager.fetchRefreshToken()?.let { service.getAccessToken(refreshToken = it) }
 
 
         val resp = response.request.newBuilder()
@@ -29,6 +33,8 @@ class TokenAuthenticator(val context: Context) : Authenticator {
 
         Log.e("Token Authenitcation", resp.body.toString() + newAccessToken.toString())
         return resp
+
+
     }
 
     //Store this token as the new values of the refresh and access tokens

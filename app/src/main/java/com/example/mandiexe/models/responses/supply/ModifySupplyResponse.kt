@@ -1,11 +1,13 @@
 package com.example.mandiexe.models.responses.supply
 
 
+import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
+@Keep
 data class ModifySupplyResponse(
-    @Json(name = "msg")
+    @field:Json(name = "msg")
     val msg: String, // Supply updated successfully.
-    @Json(name = "error")
+    @field:Json(name = "error")
     val error: String // Supply updated successfully.
 )

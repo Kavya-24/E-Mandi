@@ -1,34 +1,38 @@
 package com.example.mandiexe.models.responses.bids
 
 
+import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
+@Keep
 data class FarmerBidHistoryGlobalResponse(
-    @Json(name = "bids")
+    @field:Json(name = "bids")
     val bids: List<FarmerBidHistoryGlobalResponse.Bid>
 ) {
+    @Keep
     data class Bid(
-        @Json(name = "active")
+        @field:Json(name = "active")
         val active: Boolean, // false
-        @Json(name = "bidDate")
+        @field:Json(name = "bidDate")
         val bidDate: String, // 2020-12-21T15:53:47.017Z
-        @Json(name = "bidder")
+        @field:Json(name = "bidder")
         val bidder: String, // 5fdfac963f52f60c2356dcd5
-        @Json(name = "bids")
+        @field:Json(name = "bids")
         val bids: List<FarmerBidHistoryGlobalResponse.Bid.BidDetail>,
-        @Json(name = "currentBid")
+        @field:Json(name = "currentBid")
         val currentBid: Int, // 10000
-        @Json(name = "demand")
+        @field:Json(name = "demand")
         val demand: Demand,
-        @Json(name = "_id")
+        @field:Json(name = "_id")
         val _id: String, // 5fe0c50b6bf4390fd95a1fc5
-        @Json(name = "lastModified")
+        @field:Json(name = "lastModified")
         val lastModified: String, // 2020-12-21T15:53:47.017Z
         @Json(name = "qty")
         val qty: Int, // 890
         @Json(name = "__v")
         val v: Int // 0
     ) {
+        @Keep
         data class BidDetail(
             @Json(name = "amount")
             val amount: Int, // 10000
@@ -38,6 +42,7 @@ data class FarmerBidHistoryGlobalResponse(
             val timestamp: String // 2020-12-21T15:53:47.017Z
         )
 
+        @Keep
         data class Demand(
             @Json(name = "active")
             val active: Boolean, // true
