@@ -1,6 +1,8 @@
 package com.example.mandiexe.ui.home
 
 import android.os.Bundle
+import android.view.View
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +16,7 @@ import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.utils.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.auth.SessionManager
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import retrofit2.Call
 import retrofit2.Response
 
@@ -35,15 +38,25 @@ class SearchResultActivity : AppCompatActivity() {
 
         args = intent?.getBundleExtra("bundle")!!
         crop = args.getString("crop").toString()
+
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         toolbar.title = crop
+        val back = toolbar.navigationIcon
 
         searchCrops()
+
+        findViewById<ExtendedFloatingActionButton>(R.id.eFab_grow).setOnClickListener {
+            addStock()
+        }
+    }
+
+    private fun addStock() {
 
     }
 
     private fun searchCrops() {
 
+        findViewById<ProgressBar>(R.id.pb_searchCrop).visibility = View.VISIBLE
         val service = RetrofitClient.makeCallsForSupplies(this)
         val body = SearchGlobalCropBody(crop)
 
@@ -69,7 +82,12 @@ class SearchResultActivity : AppCompatActivity() {
                 }
             })
 
+        findViewById<ProgressBar>(R.id.pb_searchCrop).visibility = View.GONE
+    }
 
+    override fun onBackPressed() {
+        finish()
+        super.onBackPressed()
     }
 
     private fun loadItemsFunction(response: SearchGlobalCropResponse) {

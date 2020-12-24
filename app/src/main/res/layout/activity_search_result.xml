@@ -159,6 +159,19 @@
             android:layout_margin="@dimen/space"
             app:layout_constraintTop_toBottomOf="@id/v" />
 
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/eFab_grow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/i_also_want_to_grow_crop"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/colorPrimary"
+            app:icon="@drawable/ic_add"
+            app:iconTint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

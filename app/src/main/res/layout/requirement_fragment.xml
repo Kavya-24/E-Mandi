@@ -2,9 +2,9 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container_req"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/container_req"
     tools:context=".ui.supply.MySuppliesFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -54,8 +54,10 @@
             android:id="@+id/fab_add_requirement"
             style="@style/styleProgressBar"
             android:layout_margin="@dimen/space"
+            android:backgroundTint="@color/colorPrimary"
             android:src="@drawable/ic_add"
             android:tint="@color/colorPrimaryDark"
+            app:backgroundTint="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 

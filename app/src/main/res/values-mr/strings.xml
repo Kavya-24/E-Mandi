@@ -143,4 +143,5 @@
     <string name="InCountry">In country:</string>
     <string name="currentBid">Current Bid:</string>
     <string name="successfullBidAdd">Bid added successfully</string>
+    <string name="i_also_want_to_grow_crop">I also want to grow crop</string>
 </resources>

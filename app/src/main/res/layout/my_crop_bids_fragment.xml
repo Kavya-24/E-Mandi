@@ -93,7 +93,9 @@
             android:id="@+id/fab_add_my_stock"
             style="@style/styleProgressBar"
             android:layout_margin="@dimen/space"
+            android:backgroundTint="@color/colorPrimary"
             android:src="@drawable/ic_add"
+            app:backgroundTint="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
