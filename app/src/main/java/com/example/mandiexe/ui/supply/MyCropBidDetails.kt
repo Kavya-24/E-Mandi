@@ -27,6 +27,7 @@ import com.example.mandiexe.models.responses.supply.DeleteSupplyResponse
 import com.example.mandiexe.models.responses.supply.ModifySupplyResponse
 import com.example.mandiexe.models.responses.supply.ViewSupplyResponse
 import com.example.mandiexe.utils.ExternalUtils
+import com.example.mandiexe.utils.ExternalUtils.createToast
 import com.example.mandiexe.viewmodels.MyCropBidDetailsViewModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
 import com.github.mikephil.charting.animation.Easing
@@ -72,6 +73,7 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
     private lateinit var desc: EditText
 
     private val myCalendar = Calendar.getInstance()
+    private lateinit var adapter: MyBidHistoryAdapter
 
     private var SUPPLY_ID = ""
     private val TAG = MyCropBidDetails::class.java.simpleName
@@ -118,21 +120,32 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
     private fun openBidHistory() {
 
         root.findViewById<RecyclerView>(R.id.rv_bidHistory).visibility = View.VISIBLE
+        if (adapter.lst.size == 0) {
+            ExternalUtils.createSnackbar(
+                resources.getString(R.string.emptyRV),
+                requireContext(),
+                container_crop_bids_details
+            )
+        }
 
     }
 
     private fun makeCall() {
 
+        Log.e(TAG, SUPPLY_ID + " is supply id")
         val body = ViewSupplyBody(SUPPLY_ID)
-        val mResponse = viewModelCrop.getFunction(body)
-        val success = viewModelCrop.successfulSupply.value
-        if (success != null) {
-            if (!success) {
-                createSnackbar(viewModelCrop.messageCancel.value)
-            } else {
-                mResponse.value?.let { initViews(it) }
+
+        viewModelCrop.getFunction(body).observe(viewLifecycleOwner, Observer { mResponse ->
+            if (viewModelCrop.successfulSupply.value != null) {
+                if (viewModelCrop.successfulSupply.value!!) {
+                    Log.e(TAG, "Response is " + mResponse.toString())
+                    initViews(mResponse)
+                } else {
+                    createSnackbar(viewModelCrop.messageCancel.value)
+                }
             }
-        }
+
+        })
 
 
     }
@@ -159,14 +172,19 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
         val body = DeleteSupplyBody(SUPPLY_ID)
 
         val mResponse = viewModelCrop.cancelFunction(body)
-        val success = viewModelCrop.successfulCancel.value
-        if (success != null) {
-            if (success) {
-                manageCancelResponses(mResponse.value)
-            } else {
-                createSnackbar(viewModelCrop.messageCancel.value)
-            }
-        }
+
+        viewModelCrop.cancelFunction(body).observe(viewLifecycleOwner, Observer { mResponse ->
+            val success = viewModelCrop.successfulCancel.value
+            if (success != null)
+                if (success) {
+                    manageCancelResponses(mResponse)
+                } else {
+                    createSnackbar(viewModelCrop.messageCancel.value)
+
+                }
+
+        })
+
 
     }
 
@@ -175,6 +193,8 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
     }
 
     private fun manageCancelResponses(mResponse: DeleteSupplyResponse?) {
+
+        mResponse?.msg?.let { createToast(it, requireContext(), container_crop_bids_details) }
         onDestroy()
     }
 
@@ -189,6 +209,7 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
         etEst = v.findViewById(R.id.etEditEstDate)
         etExp = v.findViewById(R.id.etEditExpDate)
         cropType = root.findViewById(R.id.actvEdit_crop_type)
+
         offerPrice = root.findViewById(R.id.actvEdit_price)
         desc = root.findViewById(R.id.etEditDescription)
         tilType = root.findViewById(R.id.tilEditCropType)
@@ -279,8 +300,8 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
             offerPrice.text.toString().toInt(),
             cropType.text.toString(),
             desc.text.toString(),
-            etExp.text.toString(),
-            etEst.text.toString()
+            ExternalUtils.convertDateToReqForm(etExp.text.toString()),
+            ExternalUtils.convertDateToReqForm(etEst.text.toString())
         )
         val body = ModifySupplyBody(SUPPLY_ID, update)
 
@@ -350,7 +371,6 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
     private fun initViews(value: ViewSupplyResponse) {
 
         root.findViewById<ConstraintLayout>(R.id.mLayoutSup).visibility = View.VISIBLE
-
         root.findViewById<ProgressBar>(R.id.pb_my_crops_details).visibility = View.GONE
 
         root.findViewById<TextView>(R.id.tv_stock_detail_crop_name).text = value.supply.crop
@@ -359,8 +379,10 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
             value.supply.description
 
         root.findViewById<TextView>(R.id.ans_detail_crop_quanity).text = value.supply.qty.toString()
-        root.findViewById<TextView>(R.id.ans_detail_crop_exp).text = value.supply.expiry
-        root.findViewById<TextView>(R.id.ans_detail_init_date).text = value.supply.supplyCreated
+        root.findViewById<TextView>(R.id.ans_detail_crop_exp).text =
+            ExternalUtils.convertTimeToEpoch(value.supply.expiry)
+        root.findViewById<TextView>(R.id.ans_detail_init_date).text =
+            ExternalUtils.convertTimeToEpoch(value.supply.supplyCreated)
 
         root.findViewById<TextView>(R.id.tv_stock_detail_current_bid).text =
             value.supply.currentBid.toString()
@@ -387,7 +409,7 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
         val rv = root.findViewById<RecyclerView>(R.id.rv_bidHistory)
         rv.layoutManager = LinearLayoutManager(context)
-        val adapter = MyBidHistoryAdapter(this)
+        adapter = MyBidHistoryAdapter(this)
 
         //Create list
         val mBids: MutableList<ViewSupplyResponse.Supply.Bid.BidDetails> = mutableListOf()
@@ -407,6 +429,7 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
         //Second bid is wrt to the bids of the parent bid person
         val entries = ArrayList<Entry>()
 
+
         for (element in item) {
             for (j in element.bids) {
                 entries.add(
@@ -417,6 +440,8 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
                 )
             }
         }
+
+        Log.e(TAG, "In graph and entries" + entries.toString())
 
 
         val vl = LineDataSet(entries, requireContext().resources.getString(R.string.graphTitle))

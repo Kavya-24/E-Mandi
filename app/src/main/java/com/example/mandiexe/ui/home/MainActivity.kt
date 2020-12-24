@@ -277,15 +277,6 @@ class MainActivity : AppCompatActivity(), Communicator {
 
     }
 
-    override fun onSearchRequested(): Boolean {
-
-        val appData = Bundle().apply {
-            putBoolean("JARGON", true)
-        }
-        startSearch(null, false, appData, false)
-        return true
-    }
-
     private fun showWalkthrough() {
     }
 

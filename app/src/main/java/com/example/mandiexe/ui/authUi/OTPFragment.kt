@@ -353,24 +353,6 @@ class OTPFragment : Fragment() {
         makeCall(body, str)
 
 
-//        viewModel.lgnFunction(body).observe(viewLifecycleOwner, Observer { mResponse ->
-//            if (viewModel.successful.value != null) {
-//
-//                Log.e(TAG, "In sccess true AND its value is " + viewModel.successful.value)
-//                if (viewModel.successful.value!!)
-//                    checkResponse(mResponse, str)
-//                else
-//                    createSnackbar(
-//                        resources.getString(R.string.failedLogin),
-//                        requireContext(),
-//                        container_frag_otp
-//                    )
-//
-//            }
-//
-//        })
-
-
     }
 
     private fun makeCall(body: LoginBody, str: String) {
@@ -435,7 +417,7 @@ class OTPFragment : Fragment() {
     private fun checkResponse(mResponse: LoginResponse, str: String, message: String) {
 
         Log.e(TAG, "In check response and message is " + mResponse.msg + mResponse.user)
-
+        Log.e(TAG, "Firebase Token " + str)
         if (mResponse.msg == "Phone Number not registered.") {
 
             //Remove timer
@@ -452,12 +434,6 @@ class OTPFragment : Fragment() {
 
         } else if (mResponse.msg == "Login successful.") {
             successLogin(mResponse)
-        } else {
-            createSnackbar(
-                message,
-                requireContext(),
-                container_frag_otp
-            )
         }
 
 
@@ -469,14 +445,21 @@ class OTPFragment : Fragment() {
         Log.e(TAG, "Success Login and response is " + response.toString())
 
         response?.user?.accessToken?.let { sessionManager.saveAuth_access_Token(it) }
-        response?.user?.refreshToken?.let { sessionManager.saveAuth_refresh_Token(it) }
-        response?.user?.accessToken?.let { preferenceManager.putAuthToken(it) }
+
+        //response?.user?.refreshToken?.let { sessionManager.saveAuth_refresh_Token(it) }
+        response?.user?.refreshToken?.let { preferenceManager.putAuthToken(it) }
+
+        Log.e(TAG, "AT: \n" + sessionManager.fetchAcessToken().toString())
+        Log.e(TAG, "RT: \n" + sessionManager.fetchRefreshToken().toString())
+        Log.e(TAG, "PT: \n" + preferenceManager.authToken.toString())
 
         pref.setNumberFromPreference(phoneNumber)
         pref.name = response?.user?.name
 
+
         Toast.makeText(context, resources.getString(R.string.loginSuceed), Toast.LENGTH_LONG)
             .show()
+
         val intent = Intent(requireContext(), MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP and Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK)
         hideKeyboard(requireActivity(), requireContext())

@@ -62,7 +62,7 @@ object RetrofitClient {
         return Retrofit.Builder()
             .baseUrl(url)
             .addConverterFactory(MoshiConverterFactory.create())
-            .addCallAdapterFactory(CoroutineCallAdapterFactory())
+            //  .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .client(okhttpClient(context))
             .build().create(mySupplyInterface::class.java)
 

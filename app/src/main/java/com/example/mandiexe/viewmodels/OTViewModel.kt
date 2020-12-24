@@ -9,6 +9,8 @@ import com.example.mandiexe.models.body.authBody.LoginBody
 import com.example.mandiexe.models.responses.auth.LoginResponse
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.ExternalUtils
+import com.example.mandiexe.utils.auth.PreferenceManager
+import com.example.mandiexe.utils.auth.SessionManager
 import retrofit2.Call
 import retrofit2.Response
 
@@ -24,8 +26,10 @@ class OTViewModel : ViewModel() {
     var successful: MutableLiveData<Boolean> = MutableLiveData()
     var message: MutableLiveData<String> = MutableLiveData()
 
-    private var mLogin: MutableLiveData<LoginResponse> = MutableLiveData()
+    var mLogin: MutableLiveData<LoginResponse> = MutableLiveData()
 
+    private val sessionManager = SessionManager(ApplicationUtils.getContext())
+    private val preferenceManager = PreferenceManager()
 
     fun lgnFunction(body: LoginBody): MutableLiveData<LoginResponse> {
 
@@ -74,6 +78,7 @@ class OTViewModel : ViewModel() {
                             successful.value = true
                             message.value =
                                 context.resources.getString(R.string.loginSuceed)
+
 
                         } else if (response.body()?.msg == "Phone Number not registered.") {
                             successful.value = true

@@ -70,4 +70,5 @@
     <string name="village">Village</string>
     <string name="numberVerifed">Phone number verified</string>
     <string name="searchHead">Search Crop</string>
+    <string name="emptyRV">No bids found.</string>
 </resources>

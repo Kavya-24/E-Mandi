@@ -22,8 +22,11 @@
         <com.google.android.material.textfield.TextInputLayout
 
             android:id="@+id/tilEditCropType"
-            style="@style/styleTIL"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+            android:layout_width="match_parent"
             android:hint="@string/crop_type"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/space"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tilEditWhichCrop">
 
@@ -33,7 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space_half"
-                android:inputType="none" />
+                android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

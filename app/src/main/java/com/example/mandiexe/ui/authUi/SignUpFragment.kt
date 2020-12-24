@@ -111,6 +111,7 @@ class SignUpFragment : Fragment() {
     }
 
     private fun goToMapActivity() {
+
         val i = Intent(requireContext(), MapActivity::class.java)
         val b = bundleOf(
             "TOKEN" to TOKEN,

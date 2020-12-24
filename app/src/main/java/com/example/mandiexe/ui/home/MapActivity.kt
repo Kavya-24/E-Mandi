@@ -251,24 +251,28 @@ class MapActivity : AppCompatActivity() {
         loginFromSignUp()
 
 
+
     }
 
     private fun loginFromSignUp() {
         val token = args?.getString("TOKEN")
         val body = LoginBody(token!!)
 
-        viewmodelLogin.lgnFunction(body).observe(this, Observer { mResponse ->
+        Log.e(TAG, "Firebase Token " + token)
 
-            Log.e(TAG, "In vm")
-            if (viewmodelLogin.successful.value == false) {
-                createSnackbar(viewmodelLogin.message.value, this, container_map)
-            } else {
+        val response =
+            viewmodelLogin.lgnFunction(body).observe(this, Observer { mResponse ->
+
+                Log.e(TAG, "In vm")
+                if (viewmodelLogin.successful.value == false) {
+                    createSnackbar(viewmodelLogin.message.value, this, container_map)
+                } else {
 
 
-                // manageLoginResponse(viewmodelLogin.mLogin.value, token)
-            }
+                    manageLoginResponse(viewmodelLogin.mLogin.value, token)
+                }
 
-        })
+            })
 
 
     }
@@ -290,29 +294,28 @@ class MapActivity : AppCompatActivity() {
 
     private fun successLogin(response: LoginResponse) {
         //Set access tokens
-        sessionManager.saveAuth_access_Token(
-            LoginResponse(
-                response.msg,
-                response.user,
-                response.error
-            ).user.accessToken
-        )
+        Log.e(TAG, "Success Login and response is " + response.toString())
 
-        sessionManager.saveAuth_refresh_Token(
-            (LoginResponse(
-                response.msg,
-                response.user,
-                response.error
-            )).user.refreshToken
-        )
+        response.user?.accessToken.let {
+            if (it != null) {
+                sessionManager.saveAuth_access_Token(it)
+            }
+        }
+        response.user?.refreshToken.let {
+            if (it != null) {
+                sessionManager.saveAuth_refresh_Token(it)
+            }
+        }
+        response.user?.accessToken.let {
+            if (it != null) {
+                preferenceManager.putAuthToken(it)
+            }
+        }
 
-        preferenceManager.putAuthToken(
-            (LoginResponse(
-                response.msg,
-                response.user,
-                response.error
-            )).user.accessToken
-        )
+        response.user?.phone?.let { pref.setNumberFromPreference(it) }
+        pref.name = response.user?.name
+
+        Log.e(TAG, "Success AT " + sessionManager.fetchAcessToken().toString())
 
         Toast.makeText(this, resources.getString(R.string.loginSuceed), Toast.LENGTH_LONG)
             .show()

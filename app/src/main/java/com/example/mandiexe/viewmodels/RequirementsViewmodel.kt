@@ -67,6 +67,7 @@ class RequirementsViewmodel : ViewModel() {
                         message.value = context.resources.getString(R.string.couldNotLoad)
                     }
 
+
                 }
             })
 

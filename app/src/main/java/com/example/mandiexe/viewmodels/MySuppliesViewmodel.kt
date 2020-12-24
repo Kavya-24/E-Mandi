@@ -35,14 +35,16 @@ class MySuppliesViewmodel : ViewModel() {
 
     fun mSuppliesFunction(): MutableLiveData<FarmerSuppliesResponse> {
 
+
         mySupplyService.getFarmerActiveSupplies(
-            accessToken = "Bearer ${sessionManager.fetchAcessToken()}",
+            accessToken = "Bearer ${sessionManager.fetchAcessToken()}"
         )
             .enqueue(object : retrofit2.Callback<FarmerSuppliesResponse> {
                 override fun onFailure(call: Call<FarmerSuppliesResponse>, t: Throwable) {
                     successful.value = false
                     message.value = ExternalUtils.returnStateMessageForThrowable(t)
                     //Response is null
+                    Log.e(TAG, "Throwable " + t.message + t.cause)
                 }
 
                 override fun onResponse(
@@ -50,10 +52,7 @@ class MySuppliesViewmodel : ViewModel() {
                     response: Response<FarmerSuppliesResponse>
                 ) {
 
-                    Log.e(
-                        TAG,
-                        response.message() + response.body().toString()
-                    )
+
                     if (response.isSuccessful) {
 
                         successful.value = true
@@ -68,9 +67,12 @@ class MySuppliesViewmodel : ViewModel() {
                         message.value = context.resources.getString(R.string.couldNotLoad)
                     }
 
+                    mSupplies.value = response.body()
+
                 }
             })
 
+        Log.e(TAG, mSupplies.value.toString())
 
         return mSupplies
 
