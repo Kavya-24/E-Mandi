@@ -8,6 +8,7 @@ import android.database.MatrixCursor
 import android.os.Bundle
 import android.os.Handler
 import android.provider.BaseColumns
+import android.speech.RecognizerIntent
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -47,6 +48,7 @@ import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.InstallStatus
 import retrofit2.Call
 import retrofit2.Response
+import java.util.*
 
 class MainActivity : AppCompatActivity(), Communicator {
 
@@ -65,7 +67,7 @@ class MainActivity : AppCompatActivity(), Communicator {
     private lateinit var searchView: android.widget.SearchView
     private var mAdapter: SimpleCursorAdapter? = null
     private val ACTION_VOICE_SEARCH = "com.google.android.gms.actions.SEARCH_ACTION"
-
+    private val VOICE_REC_CODE = 1234
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -254,6 +256,24 @@ class MainActivity : AppCompatActivity(), Communicator {
             false
         }
 
+        val Voiceintent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+        Voiceintent.putExtra(
+            RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+        )
+
+        //Put language
+        Voiceintent.putExtra(
+            RecognizerIntent.EXTRA_LANGUAGE,
+            Locale(pref.getLanguageFromPreference() ?: "en")
+        )
+        Voiceintent.putExtra(
+            RecognizerIntent.EXTRA_PROMPT,
+            resources.getString(R.string.searchHead)
+        )
+        startActivityForResult(Voiceintent, VOICE_REC_CODE)
+
+
     }
 
     override fun onSearchRequested(): Boolean {
@@ -320,6 +340,15 @@ class MainActivity : AppCompatActivity(), Communicator {
             if (resultCode != Activity.RESULT_OK) {
                 Log.e("Android", "onActivityResult: app download failed")
             }
+        } else if (requestCode == VOICE_REC_CODE) {
+            if (data != null) {
+                //Put result
+                val res: java.util.ArrayList<String>? =
+                    data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+                searchView.setQuery(res?.get((0)), false)
+
+            }
+
         }
     }
 
@@ -336,7 +365,6 @@ class MainActivity : AppCompatActivity(), Communicator {
         snackbar.setActionTextColor(resources.getColor(R.color.wildColor))
         snackbar.show()
     }
-
 
     //States
 
