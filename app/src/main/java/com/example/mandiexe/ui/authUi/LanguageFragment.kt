@@ -63,9 +63,23 @@ class LanguageFragment : Fragment(), OnMyLanguageListener {
 
         val mLanguages: MutableList<LanguageBody> = mutableListOf()
 
+        //0
         mLanguages.add(LanguageBody("English"))
+
+        //1
         mLanguages.add(LanguageBody("हिंदी"))
+
+        //2
         mLanguages.add(LanguageBody("বাংলা"))
+
+        //3
+        mLanguages.add(LanguageBody("मराठी"))
+
+        //4 Tamil
+        mLanguages.add(LanguageBody("தமிழ்"))
+
+        //5 Telugu
+        mLanguages.add(LanguageBody("తెలుగు"))
 
 
         val rv = root.findViewById<RecyclerView>(R.id.rv_language_main)
@@ -104,6 +118,20 @@ class LanguageFragment : Fragment(), OnMyLanguageListener {
                 recreateModel("bn")
             }
 
+            3 -> {
+                setLocale("mr")
+                recreateModel("mr")
+            }
+            4 -> {
+                setLocale("ta")
+                recreateModel("ta")
+            }
+            5 -> {
+                setLocale("te")
+                recreateModel("te")
+            }
+
+
             else -> {
                 setLocale("en")
                 recreateModel("en")
@@ -118,8 +146,10 @@ class LanguageFragment : Fragment(), OnMyLanguageListener {
 
     private fun recreateModel(s: String) {
 
+
         context?.let { LocaleHelper.onAttach(it, s) }
-        activity?.recreate()
+        requireActivity().recreate()
+
 
     }
 

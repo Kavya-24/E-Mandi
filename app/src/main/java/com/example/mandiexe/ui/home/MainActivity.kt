@@ -4,14 +4,18 @@ import android.app.Activity
 import android.app.SearchManager
 import android.content.Intent
 import android.database.Cursor
+import android.database.MatrixCursor
 import android.os.Bundle
 import android.os.Handler
+import android.provider.BaseColumns
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.CursorAdapter
 import android.widget.SearchView
 import android.widget.SimpleCursorAdapter
+import android.widget.TextView
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -24,10 +28,15 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.mandiexe.R
+import com.example.mandiexe.interfaces.RetrofitClient
+import com.example.mandiexe.models.body.supply.CropSearchAutoCompleteBody
+import com.example.mandiexe.models.responses.supply.CropSearchAutocompleteResponse
 import com.example.mandiexe.utils.Communicator
+import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.utils.ExternalUtils.hideKeyboard
 import com.example.mandiexe.utils.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.auth.PreferenceUtil
+import com.example.mandiexe.utils.auth.SessionManager
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManager
@@ -35,23 +44,26 @@ import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.InstallState
 import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.InstallStatus
+import retrofit2.Call
+import retrofit2.Response
 
 class MainActivity : AppCompatActivity(), Communicator {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var navView: NavigationView
 
     //App Update
     private var appUpdateManager: AppUpdateManager? = null
     private var RC_APP_UPDATE = 1249
 
     private val pref = PreferenceUtil
+    private val sessionManager = SessionManager(this)
 
 
     private var searchQuery = ""
     private lateinit var searchView: android.widget.SearchView
     private var mAdapter: SimpleCursorAdapter? = null
     private val ACTION_VOICE_SEARCH = "com.google.android.gms.actions.SEARCH_ACTION"
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,7 +77,7 @@ class MainActivity : AppCompatActivity(), Communicator {
 
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        val navView: NavigationView = findViewById(R.id.nav_view)
+        navView = findViewById(R.id.nav_view)
 
         val navController = findNavController(R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
@@ -78,11 +90,71 @@ class MainActivity : AppCompatActivity(), Communicator {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        //Update the drawer
+        updateDrawerDetails()
+
+    }
+
+    private fun updateDrawerDetails() {
+
+
+        val NAME = pref.name
+        val PHONE = pref.getNumberFromPreference().toString()
+
+        val v: View = navView.getHeaderView(0)
+
+        //Check the presence of the View
+        (v.findViewById<View>(R.id.tv_header_name) as TextView).text = NAME
+        (v.findViewById<View>(R.id.tv_header_number) as TextView).text = PHONE
+
 
     }
 
     private fun fetchSuggestions(query: String) {
-        //Write calls for this
+
+        //This is not yet made
+        val service = RetrofitClient.makeCallsForSupplies(this)
+
+        val body = CropSearchAutoCompleteBody(query)
+        service.getCropAutoComplete(
+            body = body,
+            accessToken = "Bearer ${sessionManager.fetchAcessToken()}",
+
+            ).enqueue(object : retrofit2.Callback<CropSearchAutocompleteResponse> {
+            override fun onFailure(call: Call<CropSearchAutocompleteResponse>, t: Throwable) {
+
+                val message = ExternalUtils.returnStateMessageForThrowable(t)
+
+            }
+
+            override fun onResponse(
+                call: Call<CropSearchAutocompleteResponse>,
+                response: Response<CropSearchAutocompleteResponse>
+            ) {
+
+                if (response.isSuccessful) {
+                    val strAr = mutableListOf<String>()
+                    for (y: CropSearchAutocompleteResponse.Suggestion in response.body()!!.suggestions) {
+                        strAr.add(y.name)
+                    }
+
+                    Log.e("STr", strAr.toString())
+                    Log.e("Str", strAr.size.toString())
+
+
+                    val c =
+                        MatrixCursor(arrayOf(BaseColumns._ID, "suggestionList"))
+                    for (i in 0 until strAr.size) {
+                        c.addRow(arrayOf(i, strAr[i]))
+                    }
+
+
+                    mAdapter?.changeCursor(c)
+                }
+
+            }
+        })
+
 
     }
 
@@ -99,7 +171,6 @@ class MainActivity : AppCompatActivity(), Communicator {
 
         return true
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
@@ -183,7 +254,6 @@ class MainActivity : AppCompatActivity(), Communicator {
         }
 
     }
-
 
     override fun onSearchRequested(): Boolean {
 
@@ -274,6 +344,7 @@ class MainActivity : AppCompatActivity(), Communicator {
         Handler().postDelayed({ updateApp() }, 1000)
     }
 
+    //Comunicator function
     override fun goToAddStocks(fragment: Fragment) {
 
 

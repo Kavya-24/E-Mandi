@@ -47,7 +47,8 @@ class SignUpFragment : Fragment() {
     private val mapFromSignUp = "10"
     private val pref = PreferenceUtil
 
-
+    private var TOKEN = ""
+    private var PHONE = ""
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -65,6 +66,10 @@ class SignUpFragment : Fragment() {
         etArea = root.findViewById(R.id.etArea)
         etAreaUnit = root.findViewById(R.id.actv_area_unit)
 
+        if (arguments != null) {
+            TOKEN = requireArguments().getString("TOKEN").toString()
+            PHONE = requireArguments().getString("PHONE").toString()
+        }
 
         //Populate units
         populateAreaUnit()
@@ -108,6 +113,8 @@ class SignUpFragment : Fragment() {
     private fun goToMapActivity() {
         val i = Intent(requireContext(), MapActivity::class.java)
         val b = bundleOf(
+            "TOKEN" to TOKEN,
+            "PHONE" to PHONE,
             "RC" to mapFromSignUp,
             "NAME" to etName.text.toString(),
             "AREA" to etArea.text.toString(),

@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
-import com.example.mandiexe.models.responses.bids.FarmerBidsResponse
+import com.example.mandiexe.models.responses.bids.FamerBidsResponse
 import com.example.mandiexe.utils.ExternalUtils
 
 class MyRequirementAdapter(val itemClick: OnMyBidClickListener) :
@@ -15,7 +15,7 @@ class MyRequirementAdapter(val itemClick: OnMyBidClickListener) :
 
 
     //Initialize an empty list of the dataclass T
-    var lst: List<FarmerBidsResponse.Bid> = listOf()
+    var lst: List<FamerBidsResponse.Bid> = listOf()
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -33,23 +33,25 @@ class MyRequirementAdapter(val itemClick: OnMyBidClickListener) :
 
 
         //Bind a single item
-        fun bindPost(_listItem: FarmerBidsResponse.Bid, itemClick: OnMyBidClickListener) {
+        fun bindPost(_listItem: FamerBidsResponse.Bid, itemClick: OnMyBidClickListener) {
             with(_listItem) {
 
                 CROP_NAME.text = _listItem.demand.crop
 
-                //##Add location in the Farmer bids response
-                //CROP_LOCATION.text = ExternalUtils.getVisibleAddressFromLocationObject(_listItem.demand.bidder)
+                //CROP_LOCATION = _listItem.demand.demander.
 
                 CROP_QUANTITY.text = _listItem.qty.toString()
                 CROP_EXP.text = ExternalUtils.convertTimeToEpoch(_listItem.demand.expiry)
-                CROP_CURRENT_BID.text = _listItem.currentBid.toString()
+
+                CROP_CURRENT_BID.text = _listItem.demand.lastBid.toString()
                 CROP_IOP.text = _listItem.demand.offerPrice.toString()
+
+
                 CROP_LAST_UPDATED.text = ExternalUtils.convertTimeToEpoch(_listItem.lastModified)
 
-                //## May have error
-                CROP_MY_BID.text = _listItem.bids[0].amount.toString()
-                val currentBid = _listItem.currentBid
+                CROP_MY_BID.text = _listItem.currentBid.toString()
+
+                val currentBid = _listItem.demand.lastBid
                 val askBid = _listItem.demand.offerPrice
                 val ans = currentBid - askBid
 
@@ -107,7 +109,7 @@ class MyRequirementAdapter(val itemClick: OnMyBidClickListener) :
 
 
 interface OnMyBidClickListener {
-    fun viewMyBidDetails(_listItem: FarmerBidsResponse.Bid)
+    fun viewMyBidDetails(_listItem: FamerBidsResponse.Bid)
 }
 
 

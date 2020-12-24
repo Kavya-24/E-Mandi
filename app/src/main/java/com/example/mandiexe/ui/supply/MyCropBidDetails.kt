@@ -9,37 +9,49 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
+import com.example.mandiexe.adapter.MyBidHistoryAdapter
+import com.example.mandiexe.adapter.OnBidHistoryClickListener
 import com.example.mandiexe.models.body.supply.DeleteSupplyBody
 import com.example.mandiexe.models.body.supply.ModifySupplyBody
+import com.example.mandiexe.models.body.supply.ViewSupplyBody
 import com.example.mandiexe.models.responses.supply.DeleteSupplyResponse
 import com.example.mandiexe.models.responses.supply.ModifySupplyResponse
+import com.example.mandiexe.models.responses.supply.ViewSupplyResponse
+import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.viewmodels.MyCropBidDetailsViewModel
-import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
-import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
-import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
+import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.my_crop_bid_details_fragment.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
-class MyCropBidDetails : Fragment() {
+class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
     companion object {
         fun newInstance() = MyCropBidDetails()
     }
 
-    private lateinit var viewModelCrop: MyCropBidDetailsViewModel
+    private val viewModelCrop: MyCropBidDetailsViewModel by viewModels()
     private lateinit var root: View
     private lateinit var aaChartView: AAChartView
+    private lateinit var lineChart: LineChart
     private lateinit var args: Bundle
 
 
@@ -68,9 +80,9 @@ class MyCropBidDetails : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        root = inflater.inflate(R.layout.my_crop_bid_details_fragment, container, false)
-        aaChartView = root.findViewById<AAChartView>(R.id.chartView_details)
 
+        root = inflater.inflate(R.layout.my_crop_bid_details_fragment, container, false)
+        lineChart = root.findViewById(R.id.lineChart)
 
         if (arguments != null) {
             //Set the address in the box trimmed
@@ -78,14 +90,16 @@ class MyCropBidDetails : Fragment() {
 
             Log.e(TAG, "Argument str is" + SUPPLY_ID)
         }
+
         //This gets an id as the argument and makes a call from it
         makeCall()
 
 
         //initViews
         root.findViewById<TextView>(R.id.tv_view_bid_history_stocks).setOnClickListener {
-            //##Send the crop object
-            root.findNavController().navigate(R.id.action_myBidDetails_to_bidHistory)
+
+            //Open the history
+            openBidHistory()
 
         }
 
@@ -101,7 +115,24 @@ class MyCropBidDetails : Fragment() {
         return root
     }
 
+    private fun openBidHistory() {
+
+        root.findViewById<RecyclerView>(R.id.rv_bidHistory).visibility = View.VISIBLE
+
+    }
+
     private fun makeCall() {
+
+        val body = ViewSupplyBody(SUPPLY_ID)
+        val mResponse = viewModelCrop.getFunction(body)
+        val success = viewModelCrop.successfulSupply.value
+        if (success != null) {
+            if (!success) {
+                createSnackbar(viewModelCrop.messageCancel.value)
+            } else {
+                mResponse.value?.let { initViews(it) }
+            }
+        }
 
 
     }
@@ -127,18 +158,15 @@ class MyCropBidDetails : Fragment() {
 
         val body = DeleteSupplyBody(SUPPLY_ID)
 
-        if (body != null) {
-            viewModelCrop.cancelFunction(body).observe(viewLifecycleOwner, Observer { mResponse ->
-
-                //Check with the sucessful of it
-                if (viewModelCrop.successfulCancel.value == false) {
-                    createSnackbar(viewModelCrop.messageCancel.value)
-                } else {
-                    manageCancelResponses(mResponse)
-                }
-            })
+        val mResponse = viewModelCrop.cancelFunction(body)
+        val success = viewModelCrop.successfulCancel.value
+        if (success != null) {
+            if (success) {
+                manageCancelResponses(mResponse.value)
+            } else {
+                createSnackbar(viewModelCrop.messageCancel.value)
+            }
         }
-
 
     }
 
@@ -167,7 +195,6 @@ class MyCropBidDetails : Fragment() {
         tilPrice = root.findViewById(R.id.tilEditOfferPrice)
         tilEst = root.findViewById(R.id.tilEditEstDate)
         tilExp = root.findViewById(R.id.tilEditExpDate)
-
 
 
         //Positive and negative buttons
@@ -320,51 +347,100 @@ class MyCropBidDetails : Fragment() {
         return isValid
     }
 
-    private fun initViews() {
+    private fun initViews(value: ViewSupplyResponse) {
 
-        //Set the above 7 entities wrt root
-        createGraph()
+        root.findViewById<ConstraintLayout>(R.id.mLayoutSup).visibility = View.VISIBLE
+
+        root.findViewById<ProgressBar>(R.id.pb_my_crops_details).visibility = View.GONE
+
+        root.findViewById<TextView>(R.id.tv_stock_detail_crop_name).text = value.supply.crop
+        root.findViewById<TextView>(R.id.tv_stock_detail_crop_type).text = value.supply.variety
+        root.findViewById<TextView>(R.id.tv_stock_detail_crop_description).text =
+            value.supply.description
+
+        root.findViewById<TextView>(R.id.ans_detail_crop_quanity).text = value.supply.qty.toString()
+        root.findViewById<TextView>(R.id.ans_detail_crop_exp).text = value.supply.expiry
+        root.findViewById<TextView>(R.id.ans_detail_init_date).text = value.supply.supplyCreated
+
+        root.findViewById<TextView>(R.id.tv_stock_detail_current_bid).text =
+            value.supply.currentBid.toString()
+        if (value.supply.currentBid < value.supply.askPrice) {
+            root.findViewById<TextView>(R.id.tv_stock_detail_current_bid)
+                .setTextColor(resources.getColor(R.color.red_A700))
+
+        } else if (value.supply.currentBid == value.supply.askPrice) {
+            root.findViewById<TextView>(R.id.tv_stock_detail_current_bid)
+                .setTextColor(resources.getColor(R.color.blue_A700))
+
+        }
+
+        //Else the color is green
+
+        root.findViewById<TextView>(R.id.tv_stock_detail_initial_offer_price).text =
+            value.supply.askPrice.toString()
+
+        fillRecyclerView(value.supply.bids)
+        createGraph(value.supply.bids)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModelCrop = ViewModelProviders.of(this).get(MyCropBidDetailsViewModel::class.java)
+    private fun fillRecyclerView(bids: List<ViewSupplyResponse.Supply.Bid>) {
+
+        val rv = root.findViewById<RecyclerView>(R.id.rv_bidHistory)
+        rv.layoutManager = LinearLayoutManager(context)
+        val adapter = MyBidHistoryAdapter(this)
+
+        //Create list
+        val mBids: MutableList<ViewSupplyResponse.Supply.Bid.Bid> = mutableListOf()
+        for (element in bids) {
+            for (j in element.bids) {
+                mBids.add(j)
+            }
+        }
+
+        adapter.lst = mBids
+        rv.adapter = adapter
     }
 
-    private fun createGraph() {
+    private fun createGraph(item: List<ViewSupplyResponse.Supply.Bid>) {
 
-        val aaChartModel: AAChartModel = AAChartModel()
-            .chartType(AAChartType.Line)
-            .title("Bid History")
-            .backgroundColor("#4b2b7f")
-            .yAxisTitle(resources.getString(R.string.price))
-            .dataLabelsEnabled(true)
-            .series(
-                arrayOf(
-                    AASeriesElement()
-                        .name("12 Dec")
-                        .data(
-                            arrayOf(
-                                35.7
-                            )
-                        ),
+        //First bid is wrt to the first person
+        //Second bid is wrt to the bids of the parent bid person
+        val entries = ArrayList<Entry>()
 
-                    AASeriesElement()
-                        .name("13 Dec")
-                        .data(
-                            arrayOf(35.9)
-                        ),
-
-                    AASeriesElement()
-                        .name("18 Dec")
-                        .data(
-                            arrayOf(38.7)
-                        )
+        for (element in item) {
+            for (j in element.bids) {
+                entries.add(
+                    Entry(
+                        ExternalUtils.convertTimeToEpoch(j.timestamp.toString()).toFloat(),
+                        j.amount.toFloat()
+                    )
                 )
-            )
+            }
+        }
 
 
-        aaChartView.aa_drawChartWithChartModel(aaChartModel)
+        val vl = LineDataSet(entries, requireContext().resources.getString(R.string.graphTitle))
+
+
+        vl.setDrawValues(false)
+        vl.setDrawFilled(true)
+        vl.lineWidth = 3f
+        vl.fillColor = requireContext().resources.getColor(R.color.darkBlue)
+        vl.fillAlpha = R.color.red
+
+
+        lineChart.xAxis.labelRotationAngle = 0f
+
+        lineChart.data = LineData(vl)
+
+
+        lineChart.setTouchEnabled(true)
+        lineChart.setPinchZoom(true)
+
+        lineChart.description.text = resources.getString(R.string.graphTitle)
+        lineChart.setNoDataText(resources.getString(R.string.graphError))
+
+        lineChart.animateX(1800, Easing.EaseInExpo)
 
 
     }
@@ -381,6 +457,11 @@ class MyCropBidDetails : Fragment() {
         viewModelCrop.successfulUpdate.removeObservers(this)
         viewModelCrop.successfulUpdate.value = null
 
+
+    }
+
+    override fun viewBidDetails(_listItem: ViewSupplyResponse.Supply.Bid.Bid) {
+        //The farmer can view the bids from here
 
     }
 

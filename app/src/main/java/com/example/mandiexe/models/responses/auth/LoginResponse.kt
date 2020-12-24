@@ -9,7 +9,10 @@ data class LoginResponse(
     @Json(name = "msg")
     val msg: String,
     @Json(name = "user")
-    val user: User
+    val user: User,
+    @Json(name = "error")
+    val error: String
+
 ) {
     @Keep
     data class User(

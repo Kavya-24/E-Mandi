@@ -10,13 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.example.mandiexe.R
 import com.example.mandiexe.models.body.supply.AddSupplyBody
 import com.example.mandiexe.models.responses.supply.AddSupplyResponse
-import com.example.mandiexe.ui.home.MapActivity
 import com.example.mandiexe.viewmodels.AddStockViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
@@ -34,7 +33,7 @@ class AddStock : Fragment() {
         fun newInstance() = AddStock()
     }
 
-    private lateinit var viewModel: AddStockViewModel
+    private val viewModel: AddStockViewModel by viewModels()
     private lateinit var root: View
     private val myCalendar = Calendar.getInstance()
     private val TAG = AddStock::class.java.simpleName
@@ -43,11 +42,11 @@ class AddStock : Fragment() {
     private lateinit var etEst: EditText
     private lateinit var etExp: EditText
     private lateinit var ivLocation: ImageView
-    private lateinit var etAddress: EditText
+
+    //private lateinit var etAddress: EditText
     private lateinit var cropName: AutoCompleteTextView
     private lateinit var cropType: AutoCompleteTextView
     private lateinit var cropQuantity: EditText
-    private lateinit var cropQuantityUnit: AutoCompleteTextView
     private lateinit var offerPrice: EditText
     private lateinit var bidSwitch: Switch
 
@@ -56,7 +55,8 @@ class AddStock : Fragment() {
     private lateinit var tilType: TextInputLayout
     private lateinit var tilQuantity: TextInputLayout
     private lateinit var tilPrice: TextInputLayout
-    private lateinit var tilAddress: TextInputLayout
+
+    // private lateinit var tilAddress: TextInputLayout
     private lateinit var tilEst: TextInputLayout
     private lateinit var tilExp: TextInputLayout
 
@@ -73,12 +73,11 @@ class AddStock : Fragment() {
         //UI Init
         etEst = root.findViewById(R.id.etEstDate)
         etExp = root.findViewById(R.id.etExpDate)
-        ivLocation = root.findViewById(R.id.iv_location)
-        etAddress = root.findViewById(R.id.actv_address)
+        //ivLocation = root.findViewById(R.id.iv_location)
+        //  etAddress = root.findViewById(R.id.actv_address)
         cropName = root.findViewById(R.id.actv_which_crop)
         cropType = root.findViewById(R.id.actv_crop_type)
         cropQuantity = root.findViewById(R.id.actv_quantity)
-        cropQuantityUnit = root.findViewById(R.id.actv_quantity_unit)
         offerPrice = root.findViewById(R.id.actv_price)
         bidSwitch = root.findViewById(R.id.switch_for_bid)
 
@@ -86,21 +85,23 @@ class AddStock : Fragment() {
         tilType = root.findViewById(R.id.tilCropType)
         tilPrice = root.findViewById(R.id.tilOfferPrice)
         tilQuantity = root.findViewById(R.id.tilQuantity)
-        tilAddress = root.findViewById(R.id.tv_address)
+        //tilAddress = root.findViewById(R.id.tv_address)
         tilEst = root.findViewById(R.id.tilEstDate)
         tilExp = root.findViewById(R.id.tilExpDate)
 
 
         //Populate views
         setUpCropNameSpinner()
+        setUpVaietyNameSpinner()
+
 
         //The address will either be preset or will come as an argument from Map Activity
-        if (arguments != null) {
-            //Set the address in the box trimmed
-            etAddress.setText(requireArguments().getString("fetchedLocation").toString())
-
-            Log.e(TAG, "Argument str is" + etAddress.text.toString())
-        }
+//        if (arguments != null) {
+//            //Set the address in the box trimmed
+//            etAddress.setText(requireArguments().getString("fetchedLocation").toString())
+//
+//            Log.e(TAG, "Argument str is" + etAddress.text.toString())
+//        }
 
         //Date Instance
         val dateEst =
@@ -150,13 +151,13 @@ class AddStock : Fragment() {
             }
         }
 
-        ivLocation.setOnClickListener {
-
-            //Start an activity
-            val i = Intent(requireContext(), MapActivity::class.java)
-            startActivityForResult(i, RC_MAP_STOCK_ADD)
-
-        }
+//        ivLocation.setOnClickListener {
+//
+//            //Start an activity
+//            val i = Intent(requireContext(), MapActivity::class.java)
+//            startActivityForResult(i, RC_MAP_STOCK_ADD)
+//
+//        }
 
         //For the bidding items
         bidSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -189,6 +190,20 @@ class AddStock : Fragment() {
 
     }
 
+    private fun setUpVaietyNameSpinner() {
+
+        val array: Array<String> = resources.getStringArray(R.array.arr_crop_types)
+
+        val adapter: ArrayAdapter<String>? = context?.let {
+            ArrayAdapter<String>(
+                it, android.R.layout.simple_spinner_item,
+                array
+            )
+        }
+        cropType.setAdapter(adapter)
+
+    }
+
     private fun createStock() {
 
         val des = root.findViewById<EditText>(R.id.etDescription_add_stock)
@@ -213,7 +228,7 @@ class AddStock : Fragment() {
             if (viewModel.successful.value == false) {
                 createSnackbar(viewModel.message.value)
             } else {
-                manageStockCreateResponses(mResponse)
+                manageStockCreateResponses(viewModel.addStock.value)
             }
         })
 
@@ -293,12 +308,12 @@ class AddStock : Fragment() {
             tilEst.error = null
         }
 
-        if (etAddress.text.isEmpty() || etAddress.text.toString() == "null") {
-            isValid = false
-            tilAddress.error = resources.getString(R.string.addressError)
-        } else {
-            tilAddress.error = null
-        }
+//        if (etAddress.text.isEmpty() || etAddress.text.toString() == "null") {
+//            isValid = false
+//            tilAddress.error = resources.getString(R.string.addressError)
+//        } else {
+//            tilAddress.error = null
+//        }
 
         if (bidSwitch.isChecked) {
 
@@ -334,12 +349,6 @@ class AddStock : Fragment() {
 
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(AddStockViewModel::class.java)
-
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         //Get the map data result
         Log.e(
@@ -348,7 +357,7 @@ class AddStock : Fragment() {
                 data?.getStringExtra("fetchedLocation").toString()
             }"
         )
-        etAddress.setText(data?.getStringExtra("fetchedLocation").toString())
+//        etAddress.setText(data?.getStringExtra("fetchedLocation").toString())
 
 
     }

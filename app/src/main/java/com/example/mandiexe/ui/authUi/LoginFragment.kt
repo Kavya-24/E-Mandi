@@ -4,15 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ProgressBar
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import com.example.mandiexe.R
+import com.example.mandiexe.utils.ExternalUtils.createSnackbar
 import com.example.mandiexe.viewmodels.LoginViewModel
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.textfield.TextInputLayout
+import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.auth.PhoneAuthProvider
+import kotlinx.android.synthetic.main.login_fragment.*
 
 class LoginFragment : Fragment() {
 
@@ -24,9 +26,17 @@ class LoginFragment : Fragment() {
     private lateinit var root: View
 
     //UI elements
-    private lateinit var til: TextInputLayout
-    private lateinit var et: EditText
     private lateinit var btn: MaterialButton
+
+    private val TAG = LoginFragment::class.java.simpleName
+
+    private var verificationInProgress = false
+    private var storedVerificationId: String? = ""
+    private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
+    private lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
+
+    private lateinit var etNumber: TextInputEditText
+    private lateinit var etCode: TextInputEditText
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,46 +45,44 @@ class LoginFragment : Fragment() {
         root = inflater.inflate(R.layout.login_fragment, container, false)
 
         //UI init
-        til = root.findViewById(R.id.tilPhoneNumber)
-        et = root.findViewById(R.id.actv_phone_number)
-        btn = root.findViewById(R.id.mtb_get_otp)
+
+        btn = root.findViewById(R.id.buttonContinue)
+        etNumber = root.findViewById(R.id.editTextPhone)
+        etCode = root.findViewById(R.id.editTextCountryCode)
 
 
-        root.findViewById<ProgressBar>(R.id.pb_login).visibility = View.GONE
         btn.setOnClickListener {
             if (isValidate()) {
-                root.findViewById<ProgressBar>(R.id.pb_login).visibility = View.VISIBLE
                 getOTP()
+            } else {
+                createSnackbar(
+                    resources.getString(R.string.invalidPhoneError),
+                    requireContext(),
+                    long_con
+                )
             }
         }
 
 
-        root.findViewById<ProgressBar>(R.id.pb_login).visibility = View.GONE
 
         return root
     }
 
-    private fun getOTP() {
-        //Calls for getting otp
-        /**Test
-         **/
+    private fun isValidate(): Boolean {
 
-        root.findViewById<ProgressBar>(R.id.pb_login).visibility = View.GONE
-        root.findNavController().navigate(R.id.action_nav_login_to_OTPFragment)
+        return !etNumber.text.toString()
+            .isEmpty() && etNumber.text.toString().length == 10 && !etCode.text.toString().isEmpty()
+
     }
 
-    private fun isValidate(): Boolean {
-        var isTrue = true
+    private fun getOTP() {
 
-        if (et.text.length < 10) {
-            isTrue = false
-            til.error = resources.getString(R.string.invalidPhoneError)
-        } else {
-            til.error = null
-        }
+        val phNumber = etCode.text.toString() + etNumber.text.toString()
+        val bundle = bundleOf(
+            "PHONE" to phNumber
+        )
+        root.findNavController().navigate(R.id.action_nav_login_to_OTPFragment, bundle)
 
-
-        return isTrue
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

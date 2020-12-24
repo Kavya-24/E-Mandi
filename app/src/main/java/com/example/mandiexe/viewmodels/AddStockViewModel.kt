@@ -25,7 +25,7 @@ class AddStockViewModel : ViewModel() {
     val successful: MutableLiveData<Boolean> = MutableLiveData()
     var message: MutableLiveData<String> = MutableLiveData()
 
-    private var addStock: MutableLiveData<AddSupplyResponse> = MutableLiveData()
+    var addStock: MutableLiveData<AddSupplyResponse> = MutableLiveData()
 
     fun addFunction(body: AddSupplyBody): MutableLiveData<AddSupplyResponse> {
 
@@ -54,19 +54,22 @@ class AddStockViewModel : ViewModel() {
 
                     Log.e(
                         TAG,
-                        response.message() + response.body()?.msg + response.body().toString()
+                        " In response " + response.message() + " " + response.body()?.msg + " " + response.body()
+                            .toString() + response.code() + " " + response.errorBody()
                     )
+
                     if (response.isSuccessful) {
                         if (response.body()?.msg == "Supply added successfully.") {
                             successful.value = true
                             message.value =
                                 context.resources.getString(R.string.supplyAdded)
-                            addStock.value = response.body()!!
 
                         } else {
                             successful.value = false
                             message.value = response.body()?.msg.toString()
                         }
+
+                        addStock.value = response.body()!!
 
                     } else {
                         successful.value = false

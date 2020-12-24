@@ -1,6 +1,7 @@
 package com.example.mandiexe.utils.auth
 
 import android.content.Context
+import android.util.Log
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -15,12 +16,16 @@ class AuthInterceptor(context: Context) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
 
+
         val requestBuilder = chain.request().newBuilder()
 
         // If token has been saved, add it to the request
         sessionManager.fetchAcessToken()?.let {
             requestBuilder.addHeader("Authorization", "Bearer $it")
         }
+
+        Log.e("AUth ", "In auth interceptor and beareer token" + sessionManager.fetchAcessToken())
+
 
         return chain.proceed(requestBuilder.build())
     }

@@ -3,7 +3,10 @@ package com.example.mandiexe.ui.myrequirements
 import android.app.SearchManager
 import android.content.Context
 import android.database.Cursor
+import android.database.MatrixCursor
 import android.os.Bundle
+import android.provider.BaseColumns
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,14 +17,25 @@ import android.widget.SimpleCursorAdapter
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
-import com.example.mandiexe.adapter.OnItemClickListenerAddReq
-import com.example.mandiexe.models.responses.bids.AddRequirementResponse
+import com.example.mandiexe.adapter.NewReqAdapter
+import com.example.mandiexe.adapter.OnNewReqClockListener
+import com.example.mandiexe.interfaces.RetrofitClient
+import com.example.mandiexe.models.body.SearchCropReqBody
+import com.example.mandiexe.models.body.supply.CropSearchAutoCompleteBody
+import com.example.mandiexe.models.responses.SearchCropReqResponse
+import com.example.mandiexe.models.responses.supply.CropSearchAutocompleteResponse
+import com.example.mandiexe.utils.ExternalUtils
+import com.example.mandiexe.utils.auth.SessionManager
 import com.example.mandiexe.viewmodels.AddRequirementViewModel
+import retrofit2.Call
+import retrofit2.Response
 
 
-class AddRequirement : Fragment(), OnItemClickListenerAddReq {
+class AddRequirement : Fragment(), OnNewReqClockListener {
 
     companion object {
         fun newInstance() = AddRequirement()
@@ -36,6 +50,8 @@ class AddRequirement : Fragment(), OnItemClickListenerAddReq {
 
     private lateinit var pb: ProgressBar
     private lateinit var rv: RecyclerView
+
+    private val sessionManager = SessionManager(requireContext())
 
     val VOICE_REC_CODE = 1234
     private val ACTION_VOICE_SEARCH = "com.google.android.gms.actions.SEARCH_ACTION"
@@ -98,8 +114,7 @@ class AddRequirement : Fragment(), OnItemClickListenerAddReq {
                 val cursor: Cursor = mAdapter!!.getItem(position) as Cursor
                 val txt = cursor.getString(cursor.getColumnIndex("suggestionList"))
 
-                loadResultInRV(txt)
-
+                makeCall(txt)
 
                 return true
 
@@ -124,13 +139,91 @@ class AddRequirement : Fragment(), OnItemClickListenerAddReq {
 
     }
 
-    private fun fetchSuggestions(query: String) {
+    private fun makeCall(txt: String?) {
+
+        val service = RetrofitClient.makeCallsForBids(requireContext())
+        val body = SearchCropReqBody(txt.toString())
+
+
+        service.getSearchReq(
+            body,
+            accessToken = "Bearer ${sessionManager.fetchAcessToken()}",
+
+            )
+            .enqueue(object : retrofit2.Callback<SearchCropReqResponse> {
+                override fun onResponse(
+                    call: Call<SearchCropReqResponse>,
+                    response: Response<SearchCropReqResponse>
+                ) {
+                    if (response.isSuccessful) {
+
+                        response.body()?.let { loadResultInRV(it) }
+
+                    }
+                }
+
+                override fun onFailure(call: Call<SearchCropReqResponse>, t: Throwable) {
+                    val message = ExternalUtils.returnStateMessageForThrowable(t)
+                }
+            })
+
 
     }
 
-    private fun loadResultInRV(txt: String?) {
+    private fun fetchSuggestions(query: String) {
+        //This is not yet made
+        val service = RetrofitClient.makeCallsForSupplies(requireContext())
+
+        val body = CropSearchAutoCompleteBody(query)
+        service.getCropAutoComplete(
+            body = body,
+            accessToken = "Bearer ${sessionManager.fetchAcessToken()}",
+
+            ).enqueue(object : retrofit2.Callback<CropSearchAutocompleteResponse> {
+            override fun onFailure(call: Call<CropSearchAutocompleteResponse>, t: Throwable) {
+
+                val message = ExternalUtils.returnStateMessageForThrowable(t)
+
+            }
+
+            override fun onResponse(
+                call: Call<CropSearchAutocompleteResponse>,
+                response: Response<CropSearchAutocompleteResponse>
+            ) {
+
+                if (response.isSuccessful) {
+                    val strAr = mutableListOf<String>()
+                    for (y: CropSearchAutocompleteResponse.Suggestion in response.body()!!.suggestions) {
+                        strAr.add(y.name)
+                    }
+
+                    Log.e("STr", strAr.toString())
+                    Log.e("Str", strAr.size.toString())
+
+
+                    val c =
+                        MatrixCursor(arrayOf(BaseColumns._ID, "suggestionList"))
+                    for (i in 0 until strAr.size) {
+                        c.addRow(arrayOf(i, strAr[i]))
+                    }
+
+
+                    mAdapter?.changeCursor(c)
+                }
+
+            }
+        })
+
+
+    }
+
+    private fun loadResultInRV(response: SearchCropReqResponse) {
         //MAke call
         pb.visibility = View.VISIBLE
+        rv.layoutManager = LinearLayoutManager(context)
+        val adapter = NewReqAdapter(this)
+        adapter.lst = response.supplies
+        rv.adapter = adapter
 
     }
 
@@ -139,13 +232,18 @@ class AddRequirement : Fragment(), OnItemClickListenerAddReq {
         viewModel = ViewModelProviders.of(this).get(AddRequirementViewModel::class.java)
     }
 
-    override fun onItemClicked(_listItem: AddRequirementResponse) {
-        //Open Card of the requirement
+
+    override fun viewAddReqDetails(_listItem: SearchCropReqResponse.Supply) {
+
         val bundle = bundleOf(
+            "BID_ID" to _listItem._id
 
         )
 
+        root.findNavController()
+            .navigate(R.id.action_addRequirement_to_openNewRequirementFragment, bundle)
 
     }
+
 
 }

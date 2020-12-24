@@ -7,8 +7,10 @@ import com.example.mandiexe.R
 import com.example.mandiexe.interfaces.RetrofitClient
 import com.example.mandiexe.models.body.bid.DeletBidBody
 import com.example.mandiexe.models.body.bid.UpdateBidBody
+import com.example.mandiexe.models.body.bid.ViewBidBody
 import com.example.mandiexe.models.responses.bids.DeleteBidResponse
 import com.example.mandiexe.models.responses.bids.UpdateBidResponse
+import com.example.mandiexe.models.responses.bids.ViewBidResponse
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.utils.auth.SessionManager
@@ -21,9 +23,9 @@ class MyRequirementDetailsViewModel : ViewModel() {
 
     private val context = ApplicationUtils.getContext()
     private val sessionManager = SessionManager(context)
-    private val mySupplyService = RetrofitClient.makeCallsForBids(context)
+    private val myBidService = RetrofitClient.makeCallsForBids(context)
 
-    //For getting the details of the supply stock
+    //For getting the details of the Bid stock
     val successfulBid: MutableLiveData<Boolean> = MutableLiveData()
     var messageBid: MutableLiveData<String> = MutableLiveData()
 
@@ -40,6 +42,63 @@ class MyRequirementDetailsViewModel : ViewModel() {
 
     private var deleteBid: MutableLiveData<DeleteBidResponse> = MutableLiveData()
     private var modifyBid: MutableLiveData<UpdateBidResponse> = MutableLiveData()
+    private var mBid: MutableLiveData<ViewBidResponse> = MutableLiveData()
+
+    fun getFunction(body: ViewBidBody): MutableLiveData<ViewBidResponse> {
+
+        mBid = BidStockFunction(body)
+        return mBid
+    }
+
+    fun BidStockFunction(body: ViewBidBody): MutableLiveData<ViewBidResponse> {
+
+        myBidService.getFarmerViewParticularBid(
+
+            mViewBidBody = body,
+            accessToken = "Bearer ${sessionManager.fetchAcessToken()}",
+        )
+            .enqueue(object : retrofit2.Callback<ViewBidResponse> {
+                override fun onFailure(call: Call<ViewBidResponse>, t: Throwable) {
+                    successfulBid.value = false
+                    messageBid.value = ExternalUtils.returnStateMessageForThrowable(t)
+                    //Response is null
+                }
+
+                override fun onResponse(
+                    call: Call<ViewBidResponse>,
+                    response: Response<ViewBidResponse>
+                ) {
+
+                    Log.e(
+                        TAG,
+                        response.message() + response.body()?.msg + response.body().toString()
+                    )
+                    if (response.isSuccessful) {
+                        if (response.body()?.msg == "Bid retrieved successfully.") {
+                            successfulBid.value = true
+                            messageBid.value =
+                                context.resources.getString(R.string.BidDeleted)
+                            mBid.value = response.body()!!
+
+                        } else {
+                            successfulBid.value = false
+                            messageBid.value = response.body()?.msg.toString()
+                        }
+
+                    } else {
+                        successfulBid.value = false
+                        messageBid.value = response.body()?.msg.toString()
+                    }
+
+                    mBid.value = response.body()
+                }
+            })
+
+
+        return mBid
+
+
+    }
 
 
     fun cancelFunction(body: DeletBidBody): MutableLiveData<DeleteBidResponse> {
@@ -51,7 +110,7 @@ class MyRequirementDetailsViewModel : ViewModel() {
 
     fun deleteBidFunction(body: DeletBidBody): MutableLiveData<DeleteBidResponse> {
 
-        mySupplyService.getFarmerDeleteBid(
+        myBidService.getFarmerDeleteBid(
             mDeleteBidBody = body,
             accessToken = "Bearer ${sessionManager.fetchAcessToken()}",
         )
@@ -106,7 +165,7 @@ class MyRequirementDetailsViewModel : ViewModel() {
 
     fun updateStockFunction(body: UpdateBidBody): MutableLiveData<UpdateBidResponse> {
 
-        mySupplyService.getFarmerUpdateBid(
+        myBidService.getFarmerUpdateBid(
             mUpdateBidBody = body,
             accessToken = "Bearer ${sessionManager.fetchAcessToken()}",
         )
@@ -130,7 +189,7 @@ class MyRequirementDetailsViewModel : ViewModel() {
                         if (response.body()?.msg == "Bid updated successfully.") {
                             successfulUpdate.value = true
                             messageUpdate.value =
-                                context.resources.getString(R.string.supplyUpdated)
+                                context.resources.getString(R.string.bidUpdated)
                             modifyBid.value = response.body()!!
 
                         } else {

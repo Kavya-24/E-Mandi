@@ -3,6 +3,7 @@ package com.example.mandiexe.utils
 import android.app.Application
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
+import com.google.firebase.FirebaseApp
 
 class ApplicationUtils : Application() {
 
@@ -23,8 +24,13 @@ class ApplicationUtils : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        //Firebase init also
+
         instance = this
+
+        //Firebase init also
+        FirebaseApp.initializeApp(getContext())
+
+
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
 
 

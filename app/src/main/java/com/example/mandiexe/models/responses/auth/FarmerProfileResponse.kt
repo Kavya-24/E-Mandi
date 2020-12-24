@@ -21,7 +21,7 @@ data class FarmerProfileResponse(
         @Json(name = "fuid")
         val fuid: String, // S2ustzAO4FeFSgCANfZtNRl7iZ42
         @Json(name = "_id")
-        val id: String, // 5fdfac963f52f60c2356dcd5
+        val _id: String, // 5fdfac963f52f60c2356dcd5
         @Json(name = "location")
         val location: Location,
         @Json(name = "name")

@@ -5,7 +5,7 @@ import com.squareup.moshi.Json
 
 data class FarmerBidHistoryGlobalResponse(
     @Json(name = "bids")
-    val bids: List<Bid>
+    val bids: List<FarmerBidHistoryGlobalResponse.Bid>
 ) {
     data class Bid(
         @Json(name = "active")
@@ -15,7 +15,7 @@ data class FarmerBidHistoryGlobalResponse(
         @Json(name = "bidder")
         val bidder: String, // 5fdfac963f52f60c2356dcd5
         @Json(name = "bids")
-        val bids: List<Bid>,
+        val bids: List<FarmerBidHistoryGlobalResponse.Bid.BidDetail>,
         @Json(name = "currentBid")
         val currentBid: Int, // 10000
         @Json(name = "demand")
@@ -29,7 +29,7 @@ data class FarmerBidHistoryGlobalResponse(
         @Json(name = "__v")
         val v: Int // 0
     ) {
-        data class Bid(
+        data class BidDetail(
             @Json(name = "amount")
             val amount: Int, // 10000
             @Json(name = "_id")

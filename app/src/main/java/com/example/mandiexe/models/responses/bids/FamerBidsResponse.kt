@@ -3,7 +3,7 @@ package com.example.mandiexe.models.responses.bids
 
 import com.squareup.moshi.Json
 
-data class FarmerBidsResponse(
+data class FamerBidsResponse(
     @Json(name = "bids")
     val bids: List<Bid>
 ) {
@@ -13,7 +13,7 @@ data class FarmerBidsResponse(
         @Json(name = "bidDate")
         val bidDate: String, // 2020-12-21T15:53:47.017Z
         @Json(name = "bidder")
-        val bidder: String, // 5fdfac963f52f60c2356dcd5// farmer
+        val bidder: String, // 5fdfac963f52f60c2356dcd5
         @Json(name = "bids")
         val bids: List<Bid>,
         @Json(name = "currentBid")

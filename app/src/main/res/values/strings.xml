@@ -51,7 +51,7 @@
     <string name="expError">Add an expiration date of the bid</string>
     <string name="date_of_start">Date of start</string>
     <string name="view_bid_history">View bid history</string>
-    <string name="cancel_stock">Cancel Stock</string>
+    <string name="cancel_stock">Delete Stock</string>
     <string name="_918">918</string>
     <string name="hello_world_person">Hello World Person</string>
     <string name="rs_45602">Rs 45602</string>
@@ -59,7 +59,7 @@
     <string name="name">Name</string>
     <string name="date">Date</string>
     <string name="price_rs">Price(Rs)</string>
-    <string name="cancel_bid">Cancel bid</string>
+    <string name="cancel_bid">Delete bid</string>
     <string name="bid">Bid</string>
     <string name="emptyBidError">Bid price can not be empty</string>
     <string name="lesserBidError">Place a lower value in the bid</string>
@@ -103,6 +103,13 @@
 
     </string-array>
 
+    <string-array name="arr_crop_types">
+        <item>Grey Wheat</item>
+        <item>Basmati Rice</item>
+        <item>Kala Chana</item>
+
+    </string-array>
+
 
     <string-array name="arr_area_units">
         <item>Hectare</item>
@@ -141,6 +148,33 @@
     <string name="bidUpdated">Bid updated successfully</string>
     <string name="BidDeleted">Bid deleted successfully.</string>
     <string name="newBidPrice">New bid price</string>
+    <string name="invalidRequest">Request is invalid</string>
+    <string name="quotaRequest">Quota of requests exceeded</string>
+    <string name="loginSuceed">Login successful</string>
+    <string name="loginNew">Phone Number not registered.</string>
+    <string name="_91">+91</string>
+    <string name="otpSend">The OTP has been sent to </string>
+    <string name="otpResend">Resend OTP</string>
+    <string name="otpResendInit">Not triggered</string>
+    <string name="resendIn">"Resend OTP in "</string>
+    <string name="invalidCredentials">Invalid Credentials</string>
+    <string name="addNumber">Add your number</string>
+    <string name="please_enter_your_mobile_number_to_receive_a_verification_code">Please enter your mobile number to receive a verification code</string>
+    <string name="pleaseOtp">.\nPlease enter the OTP here</string>
+    <string name="loggingIn">Logging in</string>
+    <string name="signUpSuccess">Registeration successful.</string>
+    <string name="failedLogin">Failed to log in. Please try again later.</string>
+    <string name="kg">kg</string>
+    <string name="NotFound">Not found</string>
+    <string name="graphTitle">Bid history</string>
+    <string name="graphError">Graph not available</string>
+    <string name="howMuchGrown">How much is grown?</string>
+    <string name="InVillage">In Village:</string>
+    <string name="InVDistrict">In district:</string>
+    <string name="InState">In state:</string>
+    <string name="InCountry">In country:</string>
+    <string name="currentBid">Current Bid:</string>
+    <string name="successfullBidAdd">Bid added successfully</string>
 
 
 </resources>

@@ -1,6 +1,7 @@
 package com.example.mandiexe.utils.auth
 
 import android.content.Context
+import android.util.Log
 import com.example.mandiexe.interfaces.RetrofitClient
 import okhttp3.Authenticator
 import okhttp3.Request
@@ -23,9 +24,10 @@ class TokenAuthenticator(val context: Context) : Authenticator {
 
 
         val resp = response.request.newBuilder()
-            .header("Authorization", "Bearer " + newAccessToken.toString())
+            .header("Authorization", "Bearer $newAccessToken")
             .build()
 
+        Log.e("Token Authenitcation", resp.body.toString() + newAccessToken.toString())
         return resp
     }
 

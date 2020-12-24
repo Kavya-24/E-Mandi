@@ -12,6 +12,7 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.mandiexe.R
 import com.google.android.material.snackbar.Snackbar
@@ -68,6 +69,7 @@ object ExternalUtils {
 
     @SuppressLint("SimpleDateFormat")
     fun convertTimeToEpoch(timestamp: String): String {
+
         val calendar = Calendar.getInstance()
         val timezone = TimeZone.getTimeZone("UTC")
         val timeDestinationZone = calendar.timeZone
@@ -116,6 +118,10 @@ object ExternalUtils {
         Snackbar.make(container, value.toString(), Snackbar.LENGTH_SHORT).show()
     }
 
+    fun createToast(value: String, context: Context, container: View) {
+        Toast.makeText(context, value, Toast.LENGTH_SHORT).show()
+    }
+
     fun hideKeyboard(activity: Activity, context: Context) {
         val imm: InputMethodManager =
             context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -128,13 +134,14 @@ object ExternalUtils {
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    fun getVisibleAddressFromLocationObject(): String {
-        val v = ""
-        return v
+
+    fun convertObjectToNativeLanguage() {
 
     }
 
-    fun convertObjectToNativeLanguage() {
+    fun convertDateToReqForm(value: String): String {
+        var date = ""
+        return date
 
     }
 

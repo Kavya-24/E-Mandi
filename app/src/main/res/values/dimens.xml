@@ -12,4 +12,5 @@
     <dimen name="space_8x">64dp</dimen>
     <dimen name="space_2x">16dp</dimen>
     <dimen name="space_4x">32dp</dimen>
+    <dimen name="space_200">220dp</dimen>
 </resources>

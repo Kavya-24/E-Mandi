@@ -16,12 +16,18 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val pref = PreferenceUtil
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setAppLocale(pref.getLanguageFromPreference(), this)
         setContentView(R.layout.activity_login)
 
+
         val navControllerLogin = findNavController(R.id.nav_host_fragment_login)
+
+        val toolbar = supportActionBar
+        toolbar?.title = resources.getString(R.string.app_name)
+
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_language, R.id.nav_login, R.id.nav_otp, R.id.nav_signup
@@ -30,9 +36,7 @@ class LoginActivity : AppCompatActivity() {
         setupActionBarWithNavController(navControllerLogin, appBarConfiguration)
 
 
-
     }
-
 
     override fun onSupportNavigateUp(): Boolean {
         val navControllerLoginActivity = findNavController(R.id.nav_host_fragment_login)
