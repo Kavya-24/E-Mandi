@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Intent
 import android.os.Bundle
+import android.speech.RecognizerIntent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,7 @@ import com.example.mandiexe.R
 import com.example.mandiexe.models.body.supply.AddSupplyBody
 import com.example.mandiexe.models.responses.supply.AddSupplyResponse
 import com.example.mandiexe.utils.ExternalUtils
+import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.viewmodels.AddStockViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
@@ -63,6 +65,12 @@ class AddStock : Fragment() {
 
 
     private val RC_MAP_STOCK_ADD = 111
+
+    private val ACTION_VOICE_SEARCH = "com.google.android.gms.actions.SEARCH_ACTION"
+    private val RC_NAME = 1
+    private val RC_TYPE = 2
+    private val pref = PreferenceUtil
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -187,7 +195,38 @@ class AddStock : Fragment() {
             }
         }
 
+        //Mic units
+        root.findViewById<ImageView>(R.id.mic_crop_name).setOnClickListener {
+            makeSearchForItems(RC_NAME)
+        }
+
+
+        root.findViewById<ImageView>(R.id.mic_crop_type).setOnClickListener {
+            makeSearchForItems(RC_TYPE)
+        }
+
         return root
+
+    }
+
+
+    private fun makeSearchForItems(code: Int) {
+        val Voiceintent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+        Voiceintent.putExtra(
+            RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+        )
+
+        //Put language
+        Voiceintent.putExtra(
+            RecognizerIntent.EXTRA_LANGUAGE,
+            Locale(pref.getLanguageFromPreference() ?: "en")
+        )
+        Voiceintent.putExtra(
+            RecognizerIntent.EXTRA_PROMPT,
+            resources.getString(R.string.searchHead)
+        )
+        startActivityForResult(Voiceintent, code)
 
     }
 
@@ -333,7 +372,6 @@ class AddStock : Fragment() {
         return isValid
     }
 
-
     private fun updateLabelOfDate() {
 
         val myFormat = "dd/MM/yyyy" //In which you need put here
@@ -351,6 +389,7 @@ class AddStock : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
         //Get the map data result
         Log.e(
             TAG,
@@ -360,6 +399,25 @@ class AddStock : Fragment() {
         )
 //        etAddress.setText(data?.getStringExtra("fetchedLocation").toString())
 
+
+        if (requestCode == RC_NAME) {
+
+            if (data != null) {
+                //Put result
+                val res: java.util.ArrayList<String>? =
+                    data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+                cropName.setText(res?.get((0)), false)
+
+            }
+        } else if (requestCode == RC_TYPE) {
+            if (data != null) {
+                //Put result
+                val res: java.util.ArrayList<String>? =
+                    data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+                cropType.setText(res?.get((0)), false)
+
+            }
+        }
 
     }
 
