@@ -406,12 +406,14 @@ class OTPFragment : Fragment() {
 
 
                         if (response.body()?.msg == "Login successful.") {
+                            successLogin(response.body())
                             mMessage =
                                 requireContext().resources.getString(R.string.loginSuceed)
 
 
                         } else if (response.body()?.msg == "Phone Number not registered.") {
                             mMessage = requireContext().resources.getString(R.string.loginNew)
+                            checkResponse(response.body()!!, str, mMessage)
 
                         } else {
                             mMessage = response.body()?.msg.toString()
@@ -456,37 +458,16 @@ class OTPFragment : Fragment() {
     }
 
 
-    private fun successLogin(response: LoginResponse) {
+    private fun successLogin(response: LoginResponse?) {
 
         Log.e(TAG, "Success Login and response is " + response.toString())
-        sessionManager.saveAuth_access_Token(
-            LoginResponse(
-                response.msg,
-                response.user,
-                response.error
-            ).user.accessToken
-        )
 
-        sessionManager.saveAuth_refresh_Token(
-            (LoginResponse(
-                response.msg,
-                response.user,
-                response.error
-            )).user.refreshToken
-        )
+        response?.user?.accessToken?.let { sessionManager.saveAuth_access_Token(it) }
+        response?.user?.refreshToken?.let { sessionManager.saveAuth_refresh_Token(it) }
+        response?.user?.accessToken?.let { preferenceManager.putAuthToken(it) }
 
-        preferenceManager.putAuthToken(
-            (LoginResponse(
-                response.msg,
-                response.user,
-                response.error
-            )).user.accessToken
-        )
-
-
-        //Set phone
         pref.setNumberFromPreference(phoneNumber)
-
+        pref.name = response?.user?.name
 
         Toast.makeText(context, resources.getString(R.string.loginSuceed), Toast.LENGTH_LONG)
             .show()

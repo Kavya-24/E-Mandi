@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
 
-    private val url = "https://qme.company:8000/"
+    private val url = "http://qme.company:8000/"
     private val TAG = RetrofitClient::class.java.simpleName
 
     private fun okhttpClient(context: Context): OkHttpClient {

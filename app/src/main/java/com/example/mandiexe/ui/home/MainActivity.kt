@@ -31,6 +31,7 @@ import com.example.mandiexe.R
 import com.example.mandiexe.interfaces.RetrofitClient
 import com.example.mandiexe.models.body.supply.CropSearchAutoCompleteBody
 import com.example.mandiexe.models.responses.supply.CropSearchAutocompleteResponse
+import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.Communicator
 import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.utils.ExternalUtils.hideKeyboard
@@ -57,7 +58,7 @@ class MainActivity : AppCompatActivity(), Communicator {
     private var RC_APP_UPDATE = 1249
 
     private val pref = PreferenceUtil
-    private val sessionManager = SessionManager(this)
+    private val sessionManager = SessionManager(ApplicationUtils.getContext())
 
 
     private var searchQuery = ""
