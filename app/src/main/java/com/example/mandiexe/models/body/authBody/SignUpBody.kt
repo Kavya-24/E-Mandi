@@ -1,8 +1,10 @@
 package com.example.mandiexe.models.body.authBody
 
 
+import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
+@Keep
 data class SignUpBody(
 
     @Json(name = "address")

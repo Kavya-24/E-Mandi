@@ -1,21 +1,23 @@
 package com.example.mandiexe.models.body.supply
 
 
+import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
+@Keep
 data class AddSupplyBody(
-    @Json(name = "askPrice")
+    @field:Json(name = "askPrice")
     val askPrice: String, // 2000
-    @Json(name = "crop")
+    @field:Json(name = "crop")
     val crop: String, // Wheat
-    @Json(name = "dateOfHarvest")
+    @field:Json(name = "dateOfHarvest")
     val dateOfHarvest: String, // 01-15-2020 23:59:59
-    @Json(name = "description")
+    @field:Json(name = "description")
     val description: String, // NA
-    @Json(name = "expiry")
+    @field:Json(name = "expiry")
     val expiry: String, // 01-15-2020 23:59:59
-    @Json(name = "qty")
+    @field:Json(name = "qty")
     val qty: String, // 100
-    @Json(name = "variety")
+    @field:Json(name = "variety")
     val variety: String // NA
 )

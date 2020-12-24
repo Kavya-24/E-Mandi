@@ -1,12 +1,15 @@
 package com.example.mandiexe.models.responses.bids
 
 
+import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
+@Keep
 data class FamerBidsResponse(
     @Json(name = "bids")
     val bids: List<Bid>
 ) {
+    @Keep
     data class Bid(
         @Json(name = "active")
         val active: Boolean, // false
@@ -29,6 +32,7 @@ data class FamerBidsResponse(
         @Json(name = "__v")
         val v: Int // 0
     ) {
+        @Keep
         data class BidDetails(
             @Json(name = "amount")
             val amount: Int, // 10000
@@ -38,6 +42,7 @@ data class FamerBidsResponse(
             val timestamp: String // 2020-12-21T15:53:47.017Z
         )
 
+        @Keep
         data class Demand(
             @Json(name = "active")
             val active: Boolean, // true

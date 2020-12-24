@@ -20,4 +20,20 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 -keep class com.github.aachartmodel.aainfographics.* { *; }
+-keepclasseswithmembers class * {
+    native <methods>;
+}
+
+-dontwarn javax.annotation.**
+
+-keepclasseswithmembers class * {
+    @com.squareup.moshi.* <methods>;
+}
+
+-keep @com.squareup.moshi.JsonQualifier interface *
+-keepclassmembers @com.squareup.moshi.JsonClass class * extends java.lang.Enum {
+    <fields>;
+    **[] values();
+}
+
 

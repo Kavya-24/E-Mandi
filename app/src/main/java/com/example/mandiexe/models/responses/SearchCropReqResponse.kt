@@ -1,12 +1,15 @@
 package com.example.mandiexe.models.responses
 
 
+import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
+@Keep
 data class SearchCropReqResponse(
     @Json(name = "supplies")
     val supplies: List<Supply>
 ) {
+    @Keep
     data class Supply(
         @Json(name = "active")
         val active: Boolean, // true
@@ -47,6 +50,7 @@ data class SearchCropReqResponse(
         @Json(name = "variety")
         val variety: String // NA
     ) {
+        @Keep
         data class LastBid(
             @Json(name = "amount")
             val amount: Int, // 0
@@ -56,6 +60,7 @@ data class SearchCropReqResponse(
             val timestamp: String // 2020-12-22T00:28:06.236Z
         )
 
+        @Keep
         data class Location(
             @Json(name = "coordinates")
             val coordinates: List<Double>,
@@ -63,6 +68,7 @@ data class SearchCropReqResponse(
             val type: String // Point
         )
 
+        @Keep
         data class Supplier(
             @Json(name = "accountCreated")
             val accountCreated: String, // 2020-12-22T00:03:38.927Z
@@ -94,6 +100,7 @@ data class SearchCropReqResponse(
             val village: String // greno
         ) {
 
+            @Keep
             data class Area(
                 @Json(name = "numerical")
                 val numerical: Int, // 100
@@ -101,6 +108,7 @@ data class SearchCropReqResponse(
                 val unit: String // acre
             )
 
+            @Keep
             data class Location(
                 @Json(name = "coordinates")
                 val coordinates: List<Double>,

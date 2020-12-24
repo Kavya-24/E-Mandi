@@ -26,9 +26,21 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            //Proguard Techniques
+            minifyEnabled true           //Need to add serialized name annotation if enabled true
+            shrinkResources true
+
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [usesCleartextTraffic: "false"]
         }
+        debug {
+            minifyEnabled false            //Need to add serialized name annotation if enabled true
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            manifestPlaceholders = [usesCleartextTraffic: "true"]
+        }
+
     }
 
     // To inline the bytecode built with JVM target 1.8 into
