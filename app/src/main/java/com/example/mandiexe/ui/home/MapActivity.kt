@@ -192,20 +192,23 @@ class MapActivity : AppCompatActivity() {
                     + "Admin area, sub" + fetchedAddress.adminArea + fetchedAddress.subAdminArea
         )
 
-        val mResponse = viewModel.signFunction(body)
-        val success = viewModel.successful.value
-        val message = viewModel.message
-        if (success != null) {
-            if (success) {
-                manageSignUpResponse(viewModel.mSignUp.value)
-            } else {
-                ExternalUtils.createSnackbar(
-                    message.value,
-                    this,
-                    container_map
-                )
+        viewModel.signFunction(body).observe(this, Observer { mResponse ->
+            val success = viewModel.successful.value
+            if (success != null) {
+                if (success) {
+                    manageSignUpResponse(viewModel.mSignUp.value)
+                } else {
+                    ExternalUtils.createSnackbar(
+                        viewModel.message.value,
+                        this,
+                        container_map
+                    )
+                }
+
             }
-        }
+        })
+
+
 
     }
 
@@ -214,6 +217,8 @@ class MapActivity : AppCompatActivity() {
 
             if (value.msg == "Registeration successful.") {
                 signUpSuccess(value)
+            } else if (value.msg == "Farmer already registered.") {
+                loginFromSignUp()
             } else {
                 createSnackbar(value.msg, this, container_map)
             }
@@ -252,7 +257,6 @@ class MapActivity : AppCompatActivity() {
         loginFromSignUp()
 
 
-
     }
 
     private fun loginFromSignUp() {
@@ -262,18 +266,18 @@ class MapActivity : AppCompatActivity() {
         Log.e(TAG, "Firebase Token " + token)
 
 
-            viewmodelLogin.lgnFunction(body).observe(this, Observer { mResponse ->
+        viewmodelLogin.lgnFunction(body).observe(this, Observer { mResponse ->
 
-                Log.e(TAG, "In vm")
-                if (viewmodelLogin.successful.value == false) {
-                    createSnackbar(viewmodelLogin.message.value, this, container_map)
-                } else {
+            Log.e(TAG, "In vm")
+            if (viewmodelLogin.successful.value == false) {
+                createSnackbar(viewmodelLogin.message.value, this, container_map)
+            } else {
 
 
-                    manageLoginResponse(viewmodelLogin.mLogin.value, token)
-                }
+                manageLoginResponse(viewmodelLogin.mLogin.value, token)
+            }
 
-            })
+        })
 
 
     }

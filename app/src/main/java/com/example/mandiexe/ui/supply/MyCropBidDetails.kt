@@ -28,19 +28,12 @@ import com.example.mandiexe.models.responses.supply.ViewSupplyResponse
 import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.utils.ExternalUtils.createToast
 import com.example.mandiexe.viewmodels.MyCropBidDetailsViewModel
-import com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
-import com.github.mikephil.charting.animation.Easing
-import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.my_crop_bid_details_fragment.*
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
@@ -50,8 +43,9 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
     private val viewModelCrop: MyCropBidDetailsViewModel by viewModels()
     private lateinit var root: View
-    private lateinit var aaChartView: AAChartView
-    private lateinit var lineChart: LineChart
+
+//    private lateinit var lineChart: LineChart
+
     private lateinit var args: Bundle
 
 
@@ -71,7 +65,8 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
     ): View? {
 
         root = inflater.inflate(R.layout.my_crop_bid_details_fragment, container, false)
-        lineChart = root.findViewById(R.id.lineChart)
+
+        //lineChart = root.findViewById(R.id.lineChart)
 
         if (arguments != null) {
             //Set the address in the box trimmed
@@ -391,7 +386,7 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
             value.supply.askPrice.toString()
 
         fillRecyclerView(value.supply.bids)
-        createGraph(value.supply.bids)
+        //    createGraph(value.supply.bids)
     }
 
     private fun fillRecyclerView(bids: List<ViewSupplyResponse.Supply.Bid>) {
@@ -412,52 +407,56 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
         rv.adapter = adapter
     }
 
-    private fun createGraph(item: List<ViewSupplyResponse.Supply.Bid>) {
-
-        //First bid is wrt to the first person
-        //Second bid is wrt to the bids of the parent bid person
-        val entries = ArrayList<Entry>()
-
-
-        for (element in item) {
-            for (j in element.bids) {
-                entries.add(
-                    Entry(
-                        ExternalUtils.convertTimeToEpoch(j.timestamp.toString()).toFloat(),
-                        j.amount.toFloat()
-                    )
-                )
-            }
-        }
-
-        Log.e(TAG, "In graph and entries" + entries.toString())
-
-
-        val vl = LineDataSet(entries, requireContext().resources.getString(R.string.graphTitle))
-
-
-        vl.setDrawValues(false)
-        vl.setDrawFilled(true)
-        vl.lineWidth = 3f
-        vl.fillColor = requireContext().resources.getColor(R.color.darkBlue)
-        vl.fillAlpha = R.color.red
-
-
-        lineChart.xAxis.labelRotationAngle = 0f
-
-        lineChart.data = LineData(vl)
-
-
-        lineChart.setTouchEnabled(true)
-        lineChart.setPinchZoom(true)
-
-        lineChart.description.text = resources.getString(R.string.graphTitle)
-        lineChart.setNoDataText(resources.getString(R.string.graphError))
-
-        lineChart.animateX(1800, Easing.EaseInExpo)
-
-
-    }
+//    private fun createGraph(item: List<ViewSupplyResponse.Supply.Bid>) {
+//
+//        //First bid is wrt to the first person
+//        //Second bid is wrt to the bids of the parent bid person
+//        val entries = ArrayList<Entry>()
+//
+//        var i = 0;
+//        for (element in item) {
+//            for (j in element.bids) {
+//                entries.add(
+//                    Entry(
+//                        //ExternalUtils.convertTimeToEpoch(j.timestamp.toString()).toFloat(),
+//                        //j.amount.toFloat()
+//                        i.toFloat()  ,
+//                        j.amount.toFloat()
+//                    )
+//                )
+//
+//                i++
+//            }
+//        }
+//
+//        Log.e(TAG, "In graph and entries" + entries.toString())
+//
+//
+//        val vl = LineDataSet(entries, requireContext().resources.getString(R.string.graphTitle))
+//
+//
+//        vl.setDrawValues(false)
+//        vl.setDrawFilled(true)
+//        vl.lineWidth = 3f
+//        vl.fillColor = requireContext().resources.getColor(R.color.darkBlue)
+//        vl.fillAlpha = R.color.red
+//
+//
+//        lineChart.xAxis.labelRotationAngle = 0f
+//
+//        lineChart.data = LineData(vl)
+//
+//
+//        lineChart.setTouchEnabled(true)
+//        lineChart.setPinchZoom(true)
+//
+//        lineChart.description.text = resources.getString(R.string.graphTitle)
+//        lineChart.setNoDataText(resources.getString(R.string.graphError))
+//
+//        lineChart.animateX(1800, Easing.EaseInExpo)
+//
+//
+//    }
 
     override fun onDestroy() {
         super.onDestroy()
