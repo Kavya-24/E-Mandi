@@ -140,8 +140,27 @@ object ExternalUtils {
     }
 
     fun convertDateToReqForm(value: String): String {
-        var date = ""
-        return date
+
+        val calendar = Calendar.getInstance()
+        val timezone = TimeZone.getTimeZone("UTC")
+        val timeDestinationZone = calendar.timeZone
+
+        val sourceFormat =
+            SimpleDateFormat("dd/MM/yyyy")
+        val destFormat =
+            SimpleDateFormat("MM-dd-yyyy 00:00:00")
+
+        sourceFormat.timeZone = timezone
+        val convertedDate = sourceFormat.parse(value)!!
+        destFormat.timeZone = timeDestinationZone
+        Log.e("Timezone", timezone.toString() + timeDestinationZone.toString())
+
+        Log.e(
+            "ExternalUtil",
+            "Source date " + value + " Dest Date" + destFormat.format(convertedDate)
+        )
+        return destFormat.format(convertedDate)
+
 
     }
 

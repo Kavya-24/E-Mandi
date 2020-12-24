@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.mandiexe.R
 import com.example.mandiexe.models.body.supply.AddSupplyBody
 import com.example.mandiexe.models.responses.supply.AddSupplyResponse
+import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.viewmodels.AddStockViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
@@ -215,9 +216,9 @@ class AddStock : Fragment() {
         val body = AddSupplyBody(
             offerPrice.text.toString(),
             cropName.text.toString(),
-            etEst.text.toString(),
+            ExternalUtils.convertDateToReqForm(etEst.text.toString()),
             str,
-            etExp.text.toString(),
+            ExternalUtils.convertDateToReqForm(etExp.text.toString()),
             "0",
             cropType.text.toString()
         )

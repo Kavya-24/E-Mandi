@@ -23,7 +23,7 @@ data class ViewBidResponse(
         val bidder: Bidder,
 
         @Json(name = "bids")
-        val bids: List<Bid>,
+        val bids: List<BidDetails>,
 
         @Json(name = "currentBid")
         val currentBid: Int, // 8000
@@ -56,7 +56,7 @@ data class ViewBidResponse(
             val area: Area,
 
             @Json(name = "bids")
-            val bids: List<ViewBidResponse.Bid.Bid>,
+            val bids: List<ViewBidResponse.Bid.BidDetails>,
 
             @Json(name = "country")
             val country: String, // ind
@@ -114,7 +114,7 @@ data class ViewBidResponse(
             )
         }
 
-        data class Bid(
+        data class BidDetails(
 
             @Json(name = "amount")
             val amount: Int, // 10000

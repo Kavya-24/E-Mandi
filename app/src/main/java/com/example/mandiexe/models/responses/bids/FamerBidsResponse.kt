@@ -15,7 +15,7 @@ data class FamerBidsResponse(
         @Json(name = "bidder")
         val bidder: String, // 5fdfac963f52f60c2356dcd5
         @Json(name = "bids")
-        val bids: List<Bid>,
+        val bids: List<BidDetails>,
         @Json(name = "currentBid")
         val currentBid: Int, // 10000
         @Json(name = "demand")
@@ -29,7 +29,7 @@ data class FamerBidsResponse(
         @Json(name = "__v")
         val v: Int // 0
     ) {
-        data class Bid(
+        data class BidDetails(
             @Json(name = "amount")
             val amount: Int, // 10000
             @Json(name = "_id")

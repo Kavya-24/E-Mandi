@@ -304,7 +304,7 @@ class MyRequirementDetails : Fragment(), OnBidHistoryClickListener {
 
     }
 
-    private fun fillRecyclerView(bids: List<ViewBidResponse.Bid.Bid>) {
+    private fun fillRecyclerView(bids: List<ViewBidResponse.Bid.BidDetails>) {
 
         val rv = root.findViewById<RecyclerView>(R.id.rv_bidHistoryMyReq)
         rv.layoutManager = LinearLayoutManager(context)
@@ -312,10 +312,10 @@ class MyRequirementDetails : Fragment(), OnBidHistoryClickListener {
 
         //Create list
         //Fill the rv wit
-        val mBids: MutableList<ViewSupplyResponse.Supply.Bid.Bid> = mutableListOf()
+        val mBids: MutableList<ViewSupplyResponse.Supply.Bid.BidDetails> = mutableListOf()
         for (element in bids) {
             mBids.add(
-                ViewSupplyResponse.Supply.Bid.Bid(
+                ViewSupplyResponse.Supply.Bid.BidDetails(
                     element.amount,
                     element.id,
                     element.timestamp
@@ -328,7 +328,7 @@ class MyRequirementDetails : Fragment(), OnBidHistoryClickListener {
 
     }
 
-    private fun createGraph(item: List<ViewBidResponse.Bid.Bid>) {
+    private fun createGraph(item: List<ViewBidResponse.Bid.BidDetails>) {
 
         //Sample
         //First bid is wrt to the first person
@@ -386,7 +386,7 @@ class MyRequirementDetails : Fragment(), OnBidHistoryClickListener {
 
     }
 
-    override fun viewBidDetails(_listItem: ViewSupplyResponse.Supply.Bid.Bid) {
+    override fun viewBidDetails(_listItem: ViewSupplyResponse.Supply.Bid.BidDetails) {
 
     }
 

@@ -78,7 +78,7 @@ data class ViewSupplyResponse(
             val bidder: String, // 5fe13807e0cdc613d2894706
 
             @Json(name = "bids")
-            val bids: List<Bid>,
+            val bids: List<BidDetails>,
 
             @Json(name = "currentBid")
             val currentBid: Int, // 900
@@ -96,7 +96,7 @@ data class ViewSupplyResponse(
             val v: Int // 0
 
         ) {
-            data class Bid(
+            data class BidDetails(
 
                 @Json(name = "amount")
                 val amount: Int, // 900

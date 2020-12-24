@@ -295,21 +295,24 @@ class MapActivity : AppCompatActivity() {
         sessionManager.saveAuth_access_Token(
             LoginResponse(
                 response.msg,
-                response.user
+                response.user,
+                response.error
             ).user.accessToken
         )
 
         sessionManager.saveAuth_refresh_Token(
             (LoginResponse(
                 response.msg,
-                response.user
+                response.user,
+                response.error
             )).user.refreshToken
         )
 
         preferenceManager.putAuthToken(
             (LoginResponse(
                 response.msg,
-                response.user
+                response.user,
+                response.error
             )).user.accessToken
         )
 

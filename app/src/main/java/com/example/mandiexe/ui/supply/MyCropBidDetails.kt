@@ -390,7 +390,7 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
         val adapter = MyBidHistoryAdapter(this)
 
         //Create list
-        val mBids: MutableList<ViewSupplyResponse.Supply.Bid.Bid> = mutableListOf()
+        val mBids: MutableList<ViewSupplyResponse.Supply.Bid.BidDetails> = mutableListOf()
         for (element in bids) {
             for (j in element.bids) {
                 mBids.add(j)
@@ -460,7 +460,7 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
     }
 
-    override fun viewBidDetails(_listItem: ViewSupplyResponse.Supply.Bid.Bid) {
+    override fun viewBidDetails(_listItem: ViewSupplyResponse.Supply.Bid.BidDetails) {
         //The farmer can view the bids from here
 
     }
