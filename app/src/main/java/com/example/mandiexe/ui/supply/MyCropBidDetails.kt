@@ -177,6 +177,7 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
     private fun manageCancelResponses(mResponse: DeleteSupplyResponse?) {
 
         mResponse?.msg?.let { createToast(it, requireContext(), container_crop_bids_details) }
+        
         onDestroy()
     }
 

@@ -180,6 +180,10 @@
     <string name="numberVerifed">Phone number verified</string>
     <string name="searchHead">Search Crop</string>
     <string name="emptyRV">No bids found.</string>
+    <string name="mySupplyHistory">My Supply History</string>
+    <string name="myBidHistory">My Bid History</string>
+    <string name="current_bid">Current Bid</string>
+    <string name="initial_offer_price">Initial Offer Price</string>
 
 
 </resources>
