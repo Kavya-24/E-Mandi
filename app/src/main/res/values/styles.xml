@@ -7,16 +7,15 @@
         <item name="colorPrimary">@color/useGreen</item>
         <item name="colorPrimaryDark">@color/useDarkGreem</item>
         <item name="colorAccent">@color/wildColor</item>
-        <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowDisablePreview">true</item>
 
     </style>
 
+
     <style name="AppTheme.NoActionBar">
 
         <item name="windowActionBar">false</item>
-
         <item name="colorAccent">@color/wildColor</item>
         <item name="colorPrimary">@color/useGreen</item>
         <item name="colorPrimaryDark">@color/useDarkGreem</item>

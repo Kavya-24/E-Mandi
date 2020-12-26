@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -41,10 +40,9 @@ class SearchResultActivity : AppCompatActivity() {
         args = intent?.getBundleExtra("bundle")!!
         crop = args.getString("crop").toString()
 
-        val toolbar = findViewById<Toolbar>(R.id.tb_searchCrop)
-        toolbar.title = crop.toString()
+        supportActionBar?.title = crop
 
-        val back = toolbar.navigationIcon
+
 
         searchCrops()
 

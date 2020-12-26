@@ -1,23 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/space_3x"
         tools:context=".ui.home.SearchResultActivity">
 
-        <Toolbar
-            android:id="@+id/tb_searchCrop"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            android:foregroundTint="@color/white"
-            android:titleTextColor="@color/white"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <!--    Youtube Links-->
         <ProgressBar
@@ -37,16 +28,7 @@
             android:text="@string/howMuchGrown"
             android:textSize="30sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/iv" />
-
-        <ImageView
-            android:id="@+id/iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/farmer_image"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tb_searchCrop" />
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <TextView
@@ -156,7 +138,7 @@
             android:layout_marginStart="@dimen/space"
             android:layout_marginTop="@dimen/space_2x"
             android:layout_marginEnd="@dimen/space"
-            android:layout_marginBottom="@dimen/space_2x"
+            android:layout_marginBottom="@dimen/space_4x"
             app:layout_constraintTop_toBottomOf="@id/tvInCountry" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -170,9 +152,13 @@
             app:backgroundTint="@color/colorPrimary"
             app:icon="@drawable/ic_add"
             app:iconTint="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rv_youtubeLinks" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </ScrollView>

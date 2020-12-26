@@ -5,6 +5,13 @@
         <item name="windowNoTitle">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowTranslucentStatus">true</item>
+
+        <item name="colorAccent">@color/wildColor</item>
+        <item name="colorPrimary">@color/useGreen</item>
+        <item name="colorPrimaryDark">@color/useDarkGreem</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowDisablePreview">true</item>
+
     </style>
 
 
