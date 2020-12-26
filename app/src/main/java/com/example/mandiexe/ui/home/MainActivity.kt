@@ -29,6 +29,8 @@ import com.example.mandiexe.R
 import com.example.mandiexe.interfaces.RetrofitClient
 import com.example.mandiexe.models.body.supply.CropSearchAutoCompleteBody
 import com.example.mandiexe.models.responses.supply.CropSearchAutocompleteResponse
+import com.example.mandiexe.ui.myrequirements.RequirementFragment
+import com.example.mandiexe.ui.supply.MySuppliesFragment
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.Communicator
 import com.example.mandiexe.utils.ExternalUtils
@@ -392,5 +394,18 @@ class MainActivity : AppCompatActivity(), Communicator {
 
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (findFragment() == MySuppliesFragment::class.java.simpleName || findFragment() == RequirementFragment::class.java.simpleName) {
+            Log.e("HOME", "On destroy")
+            finish()
+            finishAffinity()
+            super.onDestroy()
+        }
+
+
+        super.onDestroy()
+
+    }
 
 }

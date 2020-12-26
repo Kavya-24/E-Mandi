@@ -42,14 +42,18 @@ class AddStockViewModel : ViewModel() {
 
     fun addStockFunction(body: AddSupplyBody): MutableLiveData<AddSupplyResponse> {
 
+        Log.e(TAG, "In add stpck")
+
         mySupplyService.getAddSupply(
             mAddSupply = body,
             accessToken = "Bearer ${sessionManager.fetchAcessToken()}",
         )
             .enqueue(object : retrofit2.Callback<AddSupplyResponse> {
                 override fun onFailure(call: Call<AddSupplyResponse>, t: Throwable) {
-                    successful.value = false
-                    message.value = ExternalUtils.returnStateMessageForThrowable(t)
+                    successfulGrowth.value = false
+                    messageGrowth.value = ExternalUtils.returnStateMessageForThrowable(t)
+                    Log.e(TAG, "Throwable  Supply" + t.message + t.cause)
+
                     //Response is null
                 }
 
@@ -65,22 +69,23 @@ class AddStockViewModel : ViewModel() {
                     )
 
                     if (response.isSuccessful) {
-                        if (response.body()?.msg == "Supply added successfully.") {
-                            successful.value = true
-                            message.value =
+                        if (response.body()?.msg == "Crop growth added successfully.") {
+                            successfulGrowth.value = true
+                            messageGrowth.value =
                                 context.resources.getString(R.string.supplyAdded)
 
                         } else {
-                            successful.value = false
-                            message.value = response.body()?.msg.toString()
+                            successfulGrowth.value = false
+                            messageGrowth.value = response.body()?.msg.toString()
                         }
 
                         addStock.value = response.body()!!
 
                     } else {
-                        successful.value = false
-                        message.value = response.body()?.msg.toString()
+                        successfulGrowth.value = false
+                        messageGrowth.value = response.body()?.msg.toString()
                     }
+                    addStock.value = response.body()!!
 
                 }
             })
@@ -101,6 +106,8 @@ class AddStockViewModel : ViewModel() {
 
     fun growthStockFunction(body: AddGrowthBody): MutableLiveData<AddGrowthResponse> {
 
+        Log.e(TAG, "In add stpck")
+
         mySupplyService.getFarmerGrowthAdd(
             body = body,
             accessToken = "Bearer ${sessionManager.fetchAcessToken()}",
@@ -109,6 +116,7 @@ class AddStockViewModel : ViewModel() {
                 override fun onFailure(call: Call<AddGrowthResponse>, t: Throwable) {
                     successful.value = false
                     message.value = ExternalUtils.returnStateMessageForThrowable(t)
+                    Log.e(TAG, "Throwable " + t.message + t.cause)
                     //Response is null
                 }
 

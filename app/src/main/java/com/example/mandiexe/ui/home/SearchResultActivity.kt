@@ -1,5 +1,6 @@
 package com.example.mandiexe.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -52,6 +53,9 @@ class SearchResultActivity : AppCompatActivity() {
     }
 
     private fun addStock() {
+        val i = Intent(this, GrowActivity::class.java)
+        startActivity(i)
+
 
     }
 

@@ -161,4 +161,5 @@
     <string name="dateOfSowing">Date of sowing</string>
     <string name="etSowError">Please add the date of sowing</string>
     <string name="GrowthAdded">Growth added successfully</string>
+    <string name="add_growth">Add growth</string>
 </resources>

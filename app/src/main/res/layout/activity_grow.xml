@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/growth_container_grow"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:actionBarNavMode="standard">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/space_3x"
+        android:paddingBottom="@dimen/space_3x"
+        tools:context=".ui.supply.AddStock">
+
+        <com.google.android.material.textfield.TextInputLayout
+
+            android:id="@+id/growth_tilWhichCrop"
+            style="@style/styleTIL"
+            android:hint="@string/which_crop"
+            app:layout_constraintEnd_toStartOf="@id/growth_mic_crop_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <AutoCompleteTextView
+                android:id="@+id/growth_actv_which_crop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space_half"
+                android:inputType="none" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/growth_mic_crop_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/space"
+            android:src="@drawable/ic_mic_black_24dp"
+            android:tint="@color/red_A700"
+            app:layout_constraintBottom_toBottomOf="@id/growth_tilWhichCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/growth_tilWhichCrop" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+
+            android:id="@+id/growth_tilCropType"
+            style="@style/styleTIL"
+            android:hint="@string/crop_type"
+            app:layout_constraintEnd_toStartOf="@id/growth_mic_crop_type"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/growth_tilWhichCrop">
+
+
+            <AutoCompleteTextView
+                android:id="@+id/growth_actv_crop_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space_half"
+                android:inputType="none" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/growth_mic_crop_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/space"
+            android:src="@drawable/ic_mic_black_24dp"
+            android:tint="@color/red_A700"
+            app:layout_constraintBottom_toBottomOf="@id/growth_tilCropType"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/growth_tilCropType" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+
+            android:id="@+id/growth_tilQuantity"
+            style="@style/OutlinedTextBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/space"
+            android:hint="@string/quantity"
+            android:orientation="horizontal"
+            app:endIconMode="none"
+            app:layout_constraintEnd_toStartOf="@id/growth_tv_kg"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/growth_tilCropType">
+
+
+            <EditText
+                android:id="@+id/growth_actv_quantity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/growth_tv_kg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/space"
+            android:text="@string/kg"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@id/growth_tilQuantity"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/growth_tilQuantity" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/growth_tilSowDate"
+            style="@style/OutlinedTextBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/growth_tilQuantity">
+
+            <EditText
+                android:id="@+id/growth_etSowDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:hint="@string/dateOfSowing" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/growth_tilEstDate"
+            style="@style/OutlinedTextBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/growth_tilSowDate">
+
+            <EditText
+                android:id="@+id/growth_etEstDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:hint="@string/estimated_time_of_completion" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--        <com.google.android.material.textfield.TextInputLayout-->
+        <!--            android:id="@+id/growth_tv_address"-->
+        <!--            style="@style/OutlinedTextBox"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_margin="@dimen/space"-->
+        <!--            android:orientation="horizontal"-->
+        <!--            app:endIconMode="none"-->
+        <!--            app:layout_constraintEnd_toStartOf="@id/growth_tilQUnit"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@id/growth_tilOfferPrice">-->
+
+
+        <!--            <EditText-->
+        <!--                android:id="@+id/growth_actv_address"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:inputType="none"-->
+        <!--                android:text="@string/multi" />-->
+
+        <!--        </com.google.android.material.textfield.TextInputLayout>-->
+
+        <!--        <ImageView-->
+        <!--            android:id="@+id/growth_iv_location"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_margin="@dimen/space"-->
+        <!--            android:padding="@dimen/space"-->
+        <!--            android:src="@drawable/ic_location_on_black_24dp"-->
+        <!--            app:layout_constraintBottom_toBottomOf="@id/growth_tv_address"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="@id/growth_tv_address" />-->
+
+
+        <Switch
+            android:id="@+id/growth_switch_for_bid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/space"
+            android:checked="false"
+            android:enabled="true"
+            android:padding="@dimen/space"
+            android:text="@string/available_for_bidding"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/growth_tilEstDate" />
+
+        <com.google.android.material.textfield.TextInputLayout
+
+            android:id="@+id/growth_tilOfferPrice"
+            style="@style/OutlinedTextBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/space"
+            android:hint="@string/offer_price"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:endIconMode="none"
+            app:errorEnabled="false"
+            app:layout_constraintEnd_toStartOf="@id/growth_tv_rs"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/growth_switch_for_bid">
+
+
+            <EditText
+                android:id="@+id/growth_actv_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/growth_tv_rs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/space"
+            android:text="@string/rs"
+            android:textSize="24sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/growth_tilOfferPrice"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/growth_tilOfferPrice" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/growth_tilExpDate"
+            style="@style/OutlinedTextBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/growth_tilOfferPrice">
+
+            <EditText
+                android:id="@+id/growth_etExpDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:hint="@string/expDate" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/growth_tilDescription"
+            style="@style/OutlinedTextBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/growth_tilExpDate">
+
+            <EditText
+                android:id="@+id/growth_etDescription_add_stock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/description"
+                android:maxLines="4" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/growth_mtb_add_stock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space"
+            android:layout_marginBottom="@dimen/space_3x"
+            android:text="@string/add_growth"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/growth_tilDescription" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</ScrollView>

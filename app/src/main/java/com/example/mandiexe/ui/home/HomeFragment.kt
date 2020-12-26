@@ -27,6 +27,12 @@ class HomeFragment : Fragment() {
     private lateinit var viewPager: ViewPager
     private val TAG = HomeFragment::class.java.simpleName
 
+    fun findFragment(): String? {
+        val fm = childFragmentManager.findFragmentById(R.id.container)
+        val fragmentName: String = fm!!::class.java.simpleName
+        return fragmentName
+    }
+
 
     private fun openFragment(fragment: Fragment) {
 
@@ -102,6 +108,18 @@ class HomeFragment : Fragment() {
             override fun onTabUnselected(tab: TabLayout.Tab) {}
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
+
+    }
+
+    override fun onDestroy() {
+
+        if (findFragment() == MySuppliesFragment::class.java.simpleName || findFragment() == RequirementFragment::class.java.simpleName || findFragment() == HomeFragment::class.java.simpleName) {
+            Log.e("HOME", "On destroy")
+            activity?.finish()
+            activity?.finishAffinity()
+            super.onDestroy()
+        }
+        super.onDestroy()
 
     }
 
