@@ -423,7 +423,7 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
             resources.getString(R.string.graphDataSet)
         )
         val iLineDataSets: ArrayList<ILineDataSet> = ArrayList()
-        iLineDataSets.add(lineDataSet)
+        //iLineDataSets.add(lineDataSet)
 
         val lineData = LineData(iLineDataSets)
         lineChart.data = lineData
@@ -439,7 +439,23 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
             }
         }
 
-        lineChart.xAxis.valueFormatter = IndexAxisValueFormatter(xAxisLabel)
+        val mXAxis = lineChart.xAxis
+        mXAxis.valueFormatter = IndexAxisValueFormatter(xAxisLabel)
+        mXAxis.setDrawGridLines(true)
+        mXAxis.textColor = Color.BLACK
+        mXAxis.setAvoidFirstLastClipping(true)
+
+
+        //LEft axis
+        val mYAxis = lineChart.axisLeft
+        mYAxis.setDrawGridLines(true)
+        mYAxis.textColor = Color.BLUE
+
+
+        //RIght axis
+        val y2 = lineChart.axisRight
+        y2.isEnabled = false
+
 
 
 

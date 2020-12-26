@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity(), Communicator {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_supply_history, R.id.nav_bid_history
+                R.id.nav_home, R.id.nav_supply, R.id.nav_bid
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -310,7 +310,6 @@ class MainActivity : AppCompatActivity(), Communicator {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
-
 
     //App Update
     private fun updateApp() {

@@ -32,7 +32,7 @@ interface mySupplyInterface {
     @POST("api/farmer/history")
     fun getFarmerSupplyHistory(
         @Header("Authorization") accessToken: String?
-    ): Call<FarmerHistoryResponse>
+    ): Call<SupplyHistoryResponse>
 
 
     //Add a stock

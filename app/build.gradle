@@ -191,9 +191,6 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.google.android.gms:play-services-location:17.1.0'
 
-    //Graphs
-    implementation 'com.github.AAChartModel:AAChartCore-Kotlin:-SNAPSHOT'
-
     //OTP Library
     implementation 'com.github.aabhasr1:OtpView:v1.1.2-ktx' // kotlin
 
@@ -213,6 +210,10 @@ dependencies {
     implementation 'com.google.android.gms:play-services-safetynet:17.0.0'
 
     implementation group: 'org.apache.httpcomponents', name: 'httpclient-android', version: '4.3.5.1'
+
+
+    //SearchView material
+    implementation 'com.miguelcatalan:materialsearchview:1.4.0'
 
 
 }

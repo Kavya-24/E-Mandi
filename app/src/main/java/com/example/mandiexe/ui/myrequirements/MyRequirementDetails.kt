@@ -28,7 +28,6 @@ import com.example.mandiexe.models.responses.supply.ViewSupplyResponse
 import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.utils.ExternalUtils.createSnackbar
 import com.example.mandiexe.viewmodels.MyRequirementDetailsViewModel
-import com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
@@ -46,7 +45,6 @@ class MyRequirementDetails : Fragment(), OnBidHistoryClickListener {
 
     private val viewModel: MyRequirementDetailsViewModel by viewModels()
     private lateinit var root: View
-    private lateinit var aaChartView: AAChartView
     private lateinit var args: Bundle
 
     private var BID_ID = ""

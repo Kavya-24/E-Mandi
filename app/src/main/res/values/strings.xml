@@ -185,6 +185,10 @@
     <string name="current_bid">Current Bid</string>
     <string name="initial_offer_price">Initial Offer Price</string>
     <string name="graphDataSet">Price vs Time Graph</string>
+    <string name="supplyHistorySuccess">Supply history retrievd successfully</string>
+    <string name="lastPrice">Last Price</string>
+    <string name="activeSupply">Stock is active</string>
+    <string name="inactiveSupply" translatable="false">Stock is inactive</string>
 
 
 </resources>
