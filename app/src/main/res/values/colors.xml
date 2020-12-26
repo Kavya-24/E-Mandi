@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#26c95c</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorPrimary">@color/useGreen</color>
+    <color name="colorPrimaryDark">@color/useDarkGreem</color>
+    <color name="colorAccent">@color/wildColor</color>
 
 
     <color name="wildColor">#3a91ff</color>
     <color name="crimson">#990000</color>
     <color name="darkBlue">#3b558f</color>
 
-    <color name="useGreen">#26c95c</color>
+    <color name="bgGreen">@color/green_50</color>
+
+    <color name="useGreen">#47b881</color>
+    <!--    <color name="useGreen">#26c95c</color>-->
     <color name="useDarkGreem">#006400</color>
 </resources>

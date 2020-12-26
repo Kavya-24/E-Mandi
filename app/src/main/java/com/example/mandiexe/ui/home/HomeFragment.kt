@@ -111,17 +111,5 @@ class HomeFragment : Fragment() {
 
     }
 
-    override fun onDestroy() {
-
-        if (findFragment() == MySuppliesFragment::class.java.simpleName || findFragment() == RequirementFragment::class.java.simpleName || findFragment() == HomeFragment::class.java.simpleName) {
-            Log.e("HOME", "On destroy")
-            activity?.finish()
-            activity?.finishAffinity()
-            super.onDestroy()
-        }
-        super.onDestroy()
-
-    }
-
 
 }

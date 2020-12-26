@@ -22,7 +22,7 @@
         android:usesCleartextTraffic="true"
         tools:ignore="LockedOrientationActivity"
         tools:replace="android:icon">
-        <activity android:name=".ui.home.GrowActivity"></activity>
+        <activity android:name=".ui.home.GrowActivity" />
         <activity
             android:name=".ui.home.SearchResultActivity"
             android:theme="@style/AppTheme">
@@ -37,7 +37,7 @@
         <activity
             android:name=".ui.authUi.LoginActivity"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.authUi.SplashActivity"
             android:theme="@style/AppTheme.NoActionBar">
