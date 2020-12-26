@@ -20,7 +20,7 @@ interface myBidsInterface {
     @POST("api/farmer/bidhistory")
     fun getFarmerBidHistoryGlobal(
         @Header("Authorization") accessToken: String?
-    ): Call<FarmerBidHistoryGlobalResponse>
+    ): Call<BidHistoryResponse>
 
 
     //Get the demands of the farmer

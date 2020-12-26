@@ -189,6 +189,9 @@
     <string name="lastPrice">Last Price</string>
     <string name="activeSupply">Stock is active</string>
     <string name="inactiveSupply" translatable="false">Stock is inactive</string>
+    <string name="bidHistorySucess">Retrived Bid history successfully</string>
+    <string name="activeBid">Bid is active</string>
+    <string name="inactiveBid">Bid is inactive</string>
 
 
 </resources>

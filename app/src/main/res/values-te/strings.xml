@@ -156,4 +156,7 @@
     <string name="supplyHistorySuccess">Supply history retrievd successfully</string>
     <string name="lastPrice">Last Price</string>
     <string name="activeSupply">Stock is active</string>
+    <string name="bidHistorySucess">Retrived Bid history successfully</string>
+    <string name="activeBid">Bid is active</string>
+    <string name="inactiveBid">Bid is inactive</string>
 </resources>

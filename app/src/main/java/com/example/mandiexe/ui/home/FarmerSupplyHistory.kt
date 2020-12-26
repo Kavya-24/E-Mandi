@@ -46,6 +46,7 @@ class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {
     }
 
     private fun loadHistory() {
+
         viewModel.supplyFunction().observe(viewLifecycleOwner, Observer { mResponse ->
             val success = viewModel.successful.value
 

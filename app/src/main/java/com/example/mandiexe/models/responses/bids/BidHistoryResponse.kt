@@ -23,6 +23,8 @@ data class BidHistoryResponse(
         @Json(name = "_id")
         val _id: String, // 5fe0c50b6bf4390fd95a1fc5
         //##JSON NAME FOR SUPPLIER
+        @Json(name = "supplier")
+        val supplier: Supplier, // 5fe0c50b6bf4390fd95a1fc5
 
         @Json(name = "lastModified")
         val lastModified: String, // 2020-12-21T15:53:47.017Z
