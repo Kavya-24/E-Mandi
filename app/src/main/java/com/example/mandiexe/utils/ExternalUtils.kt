@@ -124,6 +124,26 @@ object ExternalUtils {
         Toast.makeText(context, value, Toast.LENGTH_SHORT).show()
     }
 
+    fun convertTimeToStdGraphForm(value: String): String {
+
+        val calendar = Calendar.getInstance()
+        val timezone = TimeZone.getTimeZone("UTC")
+        val timeDestinationZone = calendar.timeZone
+        val sourceFormat =
+            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        val destFormat =
+            SimpleDateFormat("dd/MM")
+
+        sourceFormat.timeZone = timezone
+        val convertedDate = sourceFormat.parse(value)!!
+        destFormat.timeZone = timeDestinationZone
+        Log.e("Timezone", timezone.toString() + timeDestinationZone.toString())
+        return destFormat.format(convertedDate)
+
+
+    }
+
+
     fun hideKeyboard(activity: Activity, context: Context) {
         val imm: InputMethodManager =
             context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -188,5 +208,6 @@ object ExternalUtils {
         }
         return translated
     }
+
 
 }

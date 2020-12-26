@@ -2,6 +2,7 @@ package com.example.mandiexe.ui.supply
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -28,6 +29,12 @@ import com.example.mandiexe.models.responses.supply.ViewSupplyResponse
 import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.utils.ExternalUtils.createToast
 import com.example.mandiexe.viewmodels.MyCropBidDetailsViewModel
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
@@ -44,7 +51,7 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
     private val viewModelCrop: MyCropBidDetailsViewModel by viewModels()
     private lateinit var root: View
 
-//    private lateinit var lineChart: LineChart
+    private lateinit var lineChart: LineChart
 
     private lateinit var args: Bundle
 
@@ -66,7 +73,7 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
         root = inflater.inflate(R.layout.my_crop_bid_details_fragment, container, false)
 
-        //lineChart = root.findViewById(R.id.lineChart)
+        lineChart = root.findViewById(R.id.lineChart)
 
         if (arguments != null) {
             //Set the address in the box trimmed
@@ -177,7 +184,7 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
     private fun manageCancelResponses(mResponse: DeleteSupplyResponse?) {
 
         mResponse?.msg?.let { createToast(it, requireContext(), container_crop_bids_details) }
-        
+
         onDestroy()
     }
 
@@ -387,7 +394,7 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
             value.supply.askPrice.toString()
 
         fillRecyclerView(value.supply.bids)
-        //    createGraph(value.supply.bids)
+        createGraph(value.supply.bids)
     }
 
     private fun fillRecyclerView(bids: List<ViewSupplyResponse.Supply.Bid>) {
@@ -408,56 +415,77 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
         rv.adapter = adapter
     }
 
-//    private fun createGraph(item: List<ViewSupplyResponse.Supply.Bid>) {
-//
-//        //First bid is wrt to the first person
-//        //Second bid is wrt to the bids of the parent bid person
-//        val entries = ArrayList<Entry>()
-//
-//        var i = 0;
+    private fun createGraph(item: List<ViewSupplyResponse.Supply.Bid>) {
+
+
+        val lineDataSet = LineDataSet(
+            lineChartDataSet(item),
+            resources.getString(R.string.graphDataSet)
+        )
+        val iLineDataSets: ArrayList<ILineDataSet> = ArrayList()
+        iLineDataSets.add(lineDataSet)
+
+        val lineData = LineData(iLineDataSets)
+        lineChart.data = lineData
+        lineChart.invalidate()
+
+
+        lineChart.setNoDataText(resources.getString(R.string.graphError))
+
+        val xAxisLabel: ArrayList<String> = ArrayList()
+        for (element in item) {
+            for (j in element.bids) {
+                xAxisLabel.add(ExternalUtils.convertTimeToStdGraphForm(j.timestamp))
+            }
+        }
+
+        lineChart.xAxis.valueFormatter = IndexAxisValueFormatter(xAxisLabel)
+
+
+
+        lineDataSet.color = Color.BLUE
+        lineDataSet.setCircleColor(Color.GREEN)
+        lineDataSet.setDrawCircles(true)
+        lineDataSet.setDrawCircleHole(true)
+        lineDataSet.lineWidth = 5f
+        lineDataSet.circleRadius = 10f
+        lineDataSet.circleHoleRadius = 10f
+        lineDataSet.valueTextSize = 10f
+        lineDataSet.valueTextColor = Color.BLACK
+
+
+    }
+
+
+    private fun lineChartDataSet(item: List<ViewSupplyResponse.Supply.Bid>): ArrayList<Entry>? {
+
+        val dataSet = ArrayList<Entry>()
+
+//        var m = 0;
 //        for (element in item) {
 //            for (j in element.bids) {
-//                entries.add(
+//                dataSet.add(
 //                    Entry(
-//                        //ExternalUtils.convertTimeToEpoch(j.timestamp.toString()).toFloat(),
-//                        //j.amount.toFloat()
-//                        i.toFloat()  ,
+//                        m.toFloat(),
 //                        j.amount.toFloat()
 //                    )
 //                )
-//
-//                i++
+//                m++;
 //            }
 //        }
-//
-//        Log.e(TAG, "In graph and entries" + entries.toString())
-//
-//
-//        val vl = LineDataSet(entries, requireContext().resources.getString(R.string.graphTitle))
-//
-//
-//        vl.setDrawValues(false)
-//        vl.setDrawFilled(true)
-//        vl.lineWidth = 3f
-//        vl.fillColor = requireContext().resources.getColor(R.color.darkBlue)
-//        vl.fillAlpha = R.color.red
-//
-//
-//        lineChart.xAxis.labelRotationAngle = 0f
-//
-//        lineChart.data = LineData(vl)
-//
-//
-//        lineChart.setTouchEnabled(true)
-//        lineChart.setPinchZoom(true)
-//
-//        lineChart.description.text = resources.getString(R.string.graphTitle)
-//        lineChart.setNoDataText(resources.getString(R.string.graphError))
-//
-//        lineChart.animateX(1800, Easing.EaseInExpo)
-//
-//
-//    }
+
+        dataSet.add(Entry(0f, 40f))
+        dataSet.add(Entry(1f, 10f))
+        dataSet.add(Entry(2f, 15f))
+        dataSet.add(Entry(3f, 12f))
+        dataSet.add(Entry(4f, 20f))
+        dataSet.add(Entry(5f, 50f))
+        dataSet.add(Entry(6f, 23f))
+        dataSet.add(Entry(7f, 34f))
+        dataSet.add(Entry(8f, 12f))
+
+        return dataSet
+    }
 
     override fun onDestroy() {
         super.onDestroy()

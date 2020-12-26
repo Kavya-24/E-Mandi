@@ -67,6 +67,13 @@ class MainActivity : AppCompatActivity(), Communicator {
     private val ACTION_VOICE_SEARCH = "com.google.android.gms.actions.SEARCH_ACTION"
     private val VOICE_REC_CODE = 1234
 
+
+    fun findFragment(): String? {
+        val fm = supportFragmentManager.findFragmentById(R.id.container)
+        val fragmentName: String = fm!!::class.java.simpleName
+        return fragmentName
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setAppLocale(pref.getLanguageFromPreference().toString(), this)

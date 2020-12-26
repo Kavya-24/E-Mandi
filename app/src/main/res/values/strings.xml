@@ -184,6 +184,7 @@
     <string name="myBidHistory">My Bid History</string>
     <string name="current_bid">Current Bid</string>
     <string name="initial_offer_price">Initial Offer Price</string>
+    <string name="graphDataSet">Price vs Time Graph</string>
 
 
 </resources>
