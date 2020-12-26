@@ -1,6 +1,7 @@
 package com.example.mandiexe.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -91,6 +92,20 @@ class FarmerBidHistory : Fragment(), OnMyBidHistoryGlobalClickListener {
     }
 
     override fun viewMyStockDetails(_listItem: BidHistoryResponse.Bid) {
+
+    }
+
+
+    override fun onDestroy() {
+
+        Log.e("Bid History", "In on destroy")
+
+
+        viewModel.successful.removeObservers(this)
+        viewModel.successful.value = null
+
+        super.onDestroy()
+
 
     }
 
