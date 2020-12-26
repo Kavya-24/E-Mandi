@@ -10,7 +10,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/space"
+        android:layout_marginBottom="@dimen/space_3x"
+        android:paddingBottom="@dimen/space_3x"
         tools:context=".ui.supply.AddStock">
 
         <com.google.android.material.textfield.TextInputLayout
@@ -131,7 +132,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilDescription">
+            app:layout_constraintTop_toBottomOf="@id/tilSowDate">
 
             <EditText
                 android:id="@+id/etEstDate"
@@ -139,6 +140,22 @@
                 android:layout_height="wrap_content"
                 android:focusable="false"
                 android:hint="@string/estimated_time_of_completion" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilSowDate"
+            style="@style/OutlinedTextBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tilDescription">
+
+            <EditText
+                android:id="@+id/etSowDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:hint="@string/dateOfSowing" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -210,17 +227,17 @@
         <!--            app:layout_constraintTop_toTopOf="@id/tv_address" />-->
 
 
-        <Switch
-            android:id="@+id/switch_for_bid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/space"
-            android:checked="true"
-            android:enabled="true"
-            android:padding="@dimen/space"
-            android:text="@string/available_for_bidding"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilOfferPrice" />
+        <!--        <Switch-->
+        <!--            android:id="@+id/switch_for_bid"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_margin="@dimen/space"-->
+        <!--            android:checked="true"-->
+        <!--            android:enabled="true"-->
+        <!--            android:padding="@dimen/space"-->
+        <!--            android:text="@string/available_for_bidding"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@id/tilOfferPrice" />-->
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilExpDate"
@@ -228,13 +245,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/switch_for_bid">
+            app:layout_constraintTop_toBottomOf="@id/tilOfferPrice">
 
             <EditText
                 android:id="@+id/etExpDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/space"
                 android:focusable="false"
                 android:hint="@string/expDate" />
         </com.google.android.material.textfield.TextInputLayout>

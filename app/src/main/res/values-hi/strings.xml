@@ -158,4 +158,7 @@
     <string name="bidHistorySucess">बोली इतिहास को सफलतापूर्वक प्राप्त किया गया</string>
     <string name="activeBid">बोली सक्रिय है</string>
     <string name="inactiveBid">बोली अमान्य है</string>
+    <string name="dateOfSowing">Date of sowing</string>
+    <string name="etSowError">Please add the date of sowing</string>
+    <string name="GrowthAdded">Growth added successfully</string>
 </resources>

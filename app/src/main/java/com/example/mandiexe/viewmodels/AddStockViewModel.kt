@@ -5,7 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mandiexe.R
 import com.example.mandiexe.interfaces.RetrofitClient
+import com.example.mandiexe.models.body.supply.AddGrowthBody
 import com.example.mandiexe.models.body.supply.AddSupplyBody
+import com.example.mandiexe.models.responses.supply.AddGrowthResponse
 import com.example.mandiexe.models.responses.supply.AddSupplyResponse
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.ExternalUtils
@@ -25,7 +27,11 @@ class AddStockViewModel : ViewModel() {
     val successful: MutableLiveData<Boolean> = MutableLiveData()
     var message: MutableLiveData<String> = MutableLiveData()
 
+    val successfulGrowth: MutableLiveData<Boolean> = MutableLiveData()
+    var messageGrowth: MutableLiveData<String> = MutableLiveData()
+
     var addStock: MutableLiveData<AddSupplyResponse> = MutableLiveData()
+    var growthStock: MutableLiveData<AddGrowthResponse> = MutableLiveData()
 
     fun addFunction(body: AddSupplyBody): MutableLiveData<AddSupplyResponse> {
 
@@ -84,5 +90,67 @@ class AddStockViewModel : ViewModel() {
 
 
     }
+
+
+    fun growthFunction(body: AddGrowthBody): MutableLiveData<AddGrowthResponse> {
+
+        growthStock = growthStockFunction(body)
+        return growthStock
+    }
+
+
+    fun growthStockFunction(body: AddGrowthBody): MutableLiveData<AddGrowthResponse> {
+
+        mySupplyService.getFarmerGrowthAdd(
+            body = body,
+            accessToken = "Bearer ${sessionManager.fetchAcessToken()}",
+        )
+            .enqueue(object : retrofit2.Callback<AddGrowthResponse> {
+                override fun onFailure(call: Call<AddGrowthResponse>, t: Throwable) {
+                    successful.value = false
+                    message.value = ExternalUtils.returnStateMessageForThrowable(t)
+                    //Response is null
+                }
+
+                override fun onResponse(
+                    call: Call<AddGrowthResponse>,
+                    response: Response<AddGrowthResponse>
+                ) {
+
+                    Log.e(
+                        TAG,
+                        " In response " + response.message() + " " + response.body()?.msg + " " + response.body()
+                            .toString() + response.code() + " " + response.errorBody()
+                    )
+
+                    if (response.isSuccessful) {
+                        if (response.body()?.msg == "Growth added successfully.") {
+                            successful.value = true
+                            message.value =
+                                context.resources.getString(R.string.GrowthAdded)
+
+                        } else {
+                            successful.value = false
+                            message.value = response.body()?.msg.toString()
+                        }
+
+                        growthStock.value = response.body()!!
+
+                    } else {
+                        successful.value = false
+                        message.value = response.body()?.msg.toString()
+                    }
+
+                    growthStock.value = response.body()!!
+
+                }
+            })
+
+
+        return growthStock
+
+
+    }
+
 
 }

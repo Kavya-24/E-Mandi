@@ -158,4 +158,7 @@
 	<string name="bidHistorySucess">Retrieved Bid history successfully</string>
 	<string name="activeBid">Bid is active</string>
 	<string name="inactiveBid">Bid is inactive</string>
+    <string name="dateOfSowing">Date of sowing</string>
+    <string name="etSowError">Please add the date of sowing</string>
+    <string name="GrowthAdded">Growth added successfully</string>
 </resources>

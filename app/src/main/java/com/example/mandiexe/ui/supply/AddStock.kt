@@ -15,6 +15,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.mandiexe.R
+import com.example.mandiexe.models.body.supply.AddGrowthBody
 import com.example.mandiexe.models.body.supply.AddSupplyBody
 import com.example.mandiexe.models.responses.supply.AddSupplyResponse
 import com.example.mandiexe.utils.ExternalUtils
@@ -88,7 +89,7 @@ class AddStock : Fragment() {
         cropType = root.findViewById(R.id.actv_crop_type)
         cropQuantity = root.findViewById(R.id.actv_quantity)
         offerPrice = root.findViewById(R.id.actv_price)
-        bidSwitch = root.findViewById(R.id.switch_for_bid)
+        //bidSwitch = root.findViewById(R.id.switch_for_bid)
 
         tilName = root.findViewById(R.id.tilWhichCrop)
         tilType = root.findViewById(R.id.tilCropType)
@@ -140,6 +141,16 @@ class AddStock : Fragment() {
                 updateLabelOfExpiry()
             }
 
+        val dateSow =
+            OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+
+
+                view.minDate = now
+                myCalendar.set(Calendar.YEAR, year)
+                myCalendar.set(Calendar.MONTH, monthOfYear)
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                updateLabelOfSowing()
+            }
 
         //##Requires N
         etEst.setOnClickListener {
@@ -163,6 +174,15 @@ class AddStock : Fragment() {
             }
         }
 
+        root.findViewById<EditText>(R.id.etSowDate).setOnClickListener {
+            context?.let { it1 ->
+                DatePickerDialog(
+                    it1, dateSow, myCalendar[Calendar.YEAR],
+                    myCalendar[Calendar.MONTH],
+                    myCalendar[Calendar.DAY_OF_MONTH]
+                ).show()
+            }
+        }
 //        ivLocation.setOnClickListener {
 //
 //            //Start an activity
@@ -172,14 +192,14 @@ class AddStock : Fragment() {
 //        }
 
         //For the bidding items
-        bidSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-
-            if (isChecked) {
-                tilExp.visibility = View.VISIBLE
-            } else {
-                tilExp.visibility = View.GONE
-            }
-        }
+//        bidSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+//
+//            if (isChecked) {
+//                tilExp.visibility = View.VISIBLE
+//            } else {
+//                tilExp.visibility = View.GONE
+//            }
+//        }
 
         tilName.setOnClickListener {
             setUpCropNameSpinner()
@@ -265,6 +285,22 @@ class AddStock : Fragment() {
             cropType.text.toString()
         )
 
+        //Create growth
+        val growthBody = AddGrowthBody(
+            cropName.text.toString(),
+            ExternalUtils.convertDateToReqForm(etEst.text.toString()),
+            ExternalUtils.convertDateToReqForm(root.findViewById<EditText>(R.id.etSowDate).text.toString()),
+            cropQuantity.text.toString(),
+            cropType.text.toString()
+        )
+        viewModel.growthFunction(growthBody).observe(viewLifecycleOwner, Observer { mResponse ->
+            val success = viewModel.successfulGrowth.value
+            if (success != null) {
+                Log.e(TAG, "In growth function and success is " + success + viewModel.messageGrowth)
+
+            }
+        })
+
         viewModel.addFunction(body).observe(viewLifecycleOwner, Observer { mResponse ->
 
             //Check with the sucessful of it
@@ -283,6 +319,7 @@ class AddStock : Fragment() {
         Toast.makeText(context, resources.getString(R.string.supplyAdded), Toast.LENGTH_SHORT)
             .show()
         onDestroy()
+
     }
 
     private fun createSnackbar(value: String?) {
@@ -351,6 +388,16 @@ class AddStock : Fragment() {
             tilEst.error = null
         }
 
+
+        if (root.findViewById<EditText>(R.id.etSowDate).text.isEmpty()) {
+            isValid = false
+            root.findViewById<TextInputLayout>(R.id.tilSowDate).error =
+                resources.getString(R.string.etSowError)
+        } else {
+            root.findViewById<TextInputLayout>(R.id.tilSowDate).error = null
+        }
+
+
 //        if (etAddress.text.isEmpty() || etAddress.text.toString() == "null") {
 //            isValid = false
 //            tilAddress.error = resources.getString(R.string.addressError)
@@ -358,18 +405,15 @@ class AddStock : Fragment() {
 //            tilAddress.error = null
 //        }
 
-        if (bidSwitch.isChecked) {
+        //    if (bidSwitch.isChecked) {
 
-            if (etExp.text.isEmpty()) {
-                isValid = false
-                tilExp.error = resources.getString(R.string.expError)
-            } else {
-                tilExp.error = null
-            }
+        if (etExp.text.isEmpty()) {
+            isValid = false
+            tilExp.error = resources.getString(R.string.expError)
+        } else {
+            tilExp.error = null
         }
-
-
-
+        //  }
 
 
         return isValid
@@ -380,6 +424,14 @@ class AddStock : Fragment() {
         val myFormat = "dd/MM/yyyy" //In which you need put here
         val sdf = SimpleDateFormat(myFormat, Locale.US)
         etEst.setText(sdf.format(myCalendar.time))
+
+    }
+
+    private fun updateLabelOfSowing() {
+
+        val myFormat = "dd/MM/yyyy" //In which you need put here
+        val sdf = SimpleDateFormat(myFormat, Locale.US)
+        root.findViewById<EditText>(R.id.etSowDate).setText(sdf.format(myCalendar.time))
 
     }
 
