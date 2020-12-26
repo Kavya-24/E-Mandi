@@ -15,6 +15,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
@@ -184,7 +185,7 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
     private fun manageCancelResponses(mResponse: DeleteSupplyResponse?) {
 
         mResponse?.msg?.let { createToast(it, requireContext(), container_crop_bids_details) }
-
+        Log.e(TAG, "In manage cancel response")
         onDestroy()
     }
 
@@ -504,7 +505,11 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
+
+        Log.e(TAG, "In on destroy")
+
+        val navController = findNavController()
+        navController.navigateUp()
 
         viewModelCrop.successfulSupply.removeObservers(this)
         viewModelCrop.successfulSupply.value = null
@@ -514,6 +519,8 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
         viewModelCrop.successfulUpdate.removeObservers(this)
         viewModelCrop.successfulUpdate.value = null
+
+        super.onDestroy()
 
 
     }
