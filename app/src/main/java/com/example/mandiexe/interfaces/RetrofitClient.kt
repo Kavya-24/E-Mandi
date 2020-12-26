@@ -2,6 +2,7 @@ package com.example.mandiexe.interfaces
 
 import android.content.Context
 import android.util.Log
+import com.example.mandiexe.utils.LanguageInterceptor
 import com.example.mandiexe.utils.auth.AuthInterceptor
 import com.example.mandiexe.utils.auth.TokenAuthenticator
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -25,6 +26,7 @@ object RetrofitClient {
                     context
                 )
             )
+            .addInterceptor(LanguageInterceptor())
             .followRedirects(false)
             .writeTimeout(20, TimeUnit.SECONDS)
             .authenticator(

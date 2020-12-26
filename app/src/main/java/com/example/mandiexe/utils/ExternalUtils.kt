@@ -23,6 +23,14 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeoutException
 
+//import org.apache.http.HttpResponse;
+//import org.apache.http.HttpStatus;
+//import org.apache.http.client.HttpClient;
+//import org.apache.http.client.methods.HttpGet;
+//import org.apache.http.impl.client.DefaultHttpClient;
+//import org.apache.http.util.EntityUtils;
+
+
 
 object ExternalUtils {
 
@@ -200,7 +208,6 @@ object ExternalUtils {
 //                val response = JSONObject(EntityUtils.toString(hr.getEntity()))
 //                translated = response.getJSONObject("responseData").getString("translatedText")
 //            }
-//
 
 
         } catch (e: Exception) {
