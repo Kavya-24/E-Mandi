@@ -8,16 +8,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/space"
+        android:paddingBottom="@dimen/space_3x"
         tools:context=".ui.authUi.LanguageFragment">
 
-        <ImageView
-            android:id="@+id/iv"
-            android:layout_width="@dimen/space_200"
-            android:layout_height="@dimen/space_200"
-            android:src="@drawable/language_image"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv"
@@ -29,7 +22,7 @@
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ProgressBar
             android:id="@+id/pb_language"
@@ -46,8 +39,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space"
             android:src="@drawable/ic_arrow_forward"
-            app:layout_constraintStart_toEndOf="@id/tv"
             app:layout_constraintBottom_toBottomOf="@id/tv"
+            app:layout_constraintStart_toEndOf="@id/tv"
             app:layout_constraintTop_toTopOf="@id/tv" />
 
         <View

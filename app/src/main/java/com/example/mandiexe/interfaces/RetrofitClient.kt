@@ -20,19 +20,22 @@ object RetrofitClient {
 
     private fun okhttpClient(context: Context): OkHttpClient {
 
+        val tAuthenticator = TokenAuthenticator(context)
+
         return OkHttpClient.Builder()
             .addInterceptor(
                 AuthInterceptor(
                     context
                 )
             )
+            .authenticator(
+                tAuthenticator
+            )
             .addInterceptor(LanguageInterceptor())
             .followRedirects(false)
             .writeTimeout(20, TimeUnit.SECONDS)
             .authenticator(
-                TokenAuthenticator(
-                    context
-                )
+                tAuthenticator
             )
             .build()
     }
@@ -40,7 +43,7 @@ object RetrofitClient {
     //This is the auth token to be used with firebase
     private fun authClient(): OkHttpClient {
 
-        Log.e(TAG, "In authh cluent")
+        Log.e(TAG, "In auth cluent")
         return OkHttpClient.Builder()
             .followRedirects(false)
             .writeTimeout(20, TimeUnit.SECONDS)

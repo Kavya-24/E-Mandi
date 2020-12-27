@@ -10,8 +10,10 @@
     <color name="darkBlue">#3b558f</color>
 
     <color name="bgGreen">@color/green_50</color>
+    <!--    Google-->
+    <color name="useGreen">#0f9d58</color>
 
-    <color name="useGreen">#47b881</color>
+    <!--    <color name="useGreen">#47b881</color>-->
     <!--    <color name="useGreen">#26c95c</color>-->
     <color name="useDarkGreem">#006400</color>
 </resources>

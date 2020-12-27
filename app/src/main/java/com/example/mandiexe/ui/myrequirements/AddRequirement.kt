@@ -1,20 +1,14 @@
 package com.example.mandiexe.ui.myrequirements
 
 import android.app.SearchManager
-import android.content.Context
-import android.content.Intent
-import android.database.Cursor
 import android.database.MatrixCursor
 import android.os.Bundle
 import android.provider.BaseColumns
-import android.speech.RecognizerIntent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CursorAdapter
 import android.widget.ProgressBar
-import android.widget.SearchView
 import android.widget.SimpleCursorAdapter
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -37,7 +31,6 @@ import com.example.mandiexe.utils.auth.SessionManager
 import com.example.mandiexe.viewmodels.AddRequirementViewModel
 import retrofit2.Call
 import retrofit2.Response
-import java.util.*
 
 
 class AddRequirement : Fragment(), OnNewReqClockListener {
@@ -49,7 +42,7 @@ class AddRequirement : Fragment(), OnNewReqClockListener {
     private lateinit var viewModel: AddRequirementViewModel
     private lateinit var root: View
 
-    private lateinit var searchView: SearchView
+    //private lateinit var searchView: SearchView
     private var mAdapter: SimpleCursorAdapter? = null
     private lateinit var searchManager: SearchManager
 
@@ -72,96 +65,96 @@ class AddRequirement : Fragment(), OnNewReqClockListener {
         //UI init
         pb = root.findViewById(R.id.pb_add_req)
         rv = root.findViewById(R.id.rv_search_requirements)
-        searchView = root.findViewById(R.id.sv_requirements)
+        // searchView = root.findViewById(R.id.sv_requirements)
 
-        searchManager = context?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
-
-        searchView.setOnClickListener {
-            searchRequirements()
-        }
-
+////        searchManager = context?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+////        searchView.setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
+//
+//        searchView.setOnClickListener {
+//            searchRequirements()
+//        }
+//
 
 
         return root
     }
 
 
-    private fun searchRequirements() {
-
-        val from = arrayOf("suggestionList")
-        val to = intArrayOf(android.R.id.text1)
-
-        //Add a searchManager
-
-
-        mAdapter = SimpleCursorAdapter(
-            context,
-            android.R.layout.simple_list_item_1,
-            null,
-            from,
-            to,
-            CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER
-        )
-
-        searchView.suggestionsAdapter = mAdapter
-        searchView.isIconifiedByDefault = false
-        searchView.onActionViewExpanded()
-        searchView.clearFocus()
-
-        searchView.setOnSuggestionListener(object : SearchView.OnSuggestionListener {
-            override fun onSuggestionSelect(position: Int): Boolean {
-                return false        //Was true
-            }
-
-            override fun onSuggestionClick(position: Int): Boolean {
-
-                val cursor: Cursor = mAdapter!!.getItem(position) as Cursor
-                val txt = cursor.getString(cursor.getColumnIndex("suggestionList"))
-
-                makeCall(txt)
-
-                return true
-
-
-            }
-        })
-
-
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                //Returns query
-                //Do nothing here
-
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                fetchSuggestions(newText.toString())
-                return false
-            }
-        })
-
-
-        val Voiceintent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-        Voiceintent.putExtra(
-            RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-        )
-
-        //Put language
-        Voiceintent.putExtra(
-            RecognizerIntent.EXTRA_LANGUAGE,
-            Locale(pref.getLanguageFromPreference() ?: "en")
-        )
-        Voiceintent.putExtra(
-            RecognizerIntent.EXTRA_PROMPT,
-            resources.getString(R.string.searchHead)
-        )
-        startActivityForResult(Voiceintent, VOICE_REC_CODE)
-
-
-    }
+//    private fun searchRequirements() {
+//
+//        val from = arrayOf("suggestionList")
+//        val to = intArrayOf(android.R.id.text1)
+//
+//        //Add a searchManager
+//
+//
+//        mAdapter = SimpleCursorAdapter(
+//            context,
+//            android.R.layout.simple_list_item_1,
+//            null,
+//            from,
+//            to,
+//            CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER
+//        )
+//
+//        searchView.suggestionsAdapter = mAdapter
+//        searchView.isIconifiedByDefault = false
+//        searchView.onActionViewExpanded()
+//        searchView.clearFocus()
+//
+//        searchView.setOnSuggestionListener(object : SearchView.OnSuggestionListener {
+//            override fun onSuggestionSelect(position: Int): Boolean {
+//                return false        //Was true
+//            }
+//
+//            override fun onSuggestionClick(position: Int): Boolean {
+//
+//                val cursor: Cursor = mAdapter!!.getItem(position) as Cursor
+//                val txt = cursor.getString(cursor.getColumnIndex("suggestionList"))
+//
+//                makeCall(txt)
+//
+//                return true
+//
+//
+//            }
+//        })
+//
+//
+//        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+//            override fun onQueryTextSubmit(query: String?): Boolean {
+//                //Returns query
+//                //Do nothing here
+//
+//                return false
+//            }
+//
+//            override fun onQueryTextChange(newText: String?): Boolean {
+//                fetchSuggestions(newText.toString())
+//                return false
+//            }
+//        })
+//
+//
+//        val Voiceintent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+//        Voiceintent.putExtra(
+//            RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+//            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+//        )
+//
+//        //Put language
+//        Voiceintent.putExtra(
+//            RecognizerIntent.EXTRA_LANGUAGE,
+//            Locale(pref.getLanguageFromPreference() ?: "en")
+//        )
+//        Voiceintent.putExtra(
+//            RecognizerIntent.EXTRA_PROMPT,
+//            resources.getString(R.string.searchHead)
+//        )
+//        startActivityForResult(Voiceintent, VOICE_REC_CODE)
+//
+//
+//    }
 
 
     private fun makeCall(txt: String?) {
@@ -267,21 +260,6 @@ class AddRequirement : Fragment(), OnNewReqClockListener {
 
         root.findNavController()
             .navigate(R.id.action_addRequirement_to_openNewRequirementFragment, bundle)
-
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == VOICE_REC_CODE) {
-            if (data != null) {
-                //Put result
-                val res: java.util.ArrayList<String>? =
-                    data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
-                searchView.setQuery(res?.get((0)), false)
-
-            }
-        }
 
     }
 
