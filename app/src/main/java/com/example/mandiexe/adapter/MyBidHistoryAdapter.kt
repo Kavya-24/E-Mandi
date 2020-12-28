@@ -38,12 +38,15 @@ class MyBidHistoryAdapter(val itemClick: OnBidHistoryClickListener) :
             with(_listItem) {
 
 
-                RANK.text = (position + 1).toString()
+                RANK.text = (position + 1).toString() + "."
 
 
-                TIME.text = _listItem.amount.toString()
+                AMOUNT.text =
+                    itemView.context.resources.getString(R.string.rs) + _listItem.amount.toString()
 
-                AMOUNT.text = ExternalUtils.convertTimeToEpoch(_listItem.timestamp).toString()
+                TIME.text = ExternalUtils.convertTimeToEpoch(
+                    _listItem.timestamp
+                ).toString()
 
 
                 itemView.setOnClickListener {

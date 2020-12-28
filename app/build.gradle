@@ -217,5 +217,9 @@ dependencies {
     implementation 'com.miguelcatalan:materialsearchview:1.4.0'
 
 
+    //GraphView
+    implementation 'com.jjoe64:graphview:4.2.2'
+
+
 }
 apply plugin: 'com.google.gms.google-services'

@@ -77,6 +77,29 @@ object ExternalUtils {
     }
 
     @SuppressLint("SimpleDateFormat")
+    fun convertDateTimestampUtil(timestamp: String): Date? {
+        val calendar = Calendar.getInstance()
+        val timezone = TimeZone.getTimeZone("UTC")
+        val timeDestinationZone = calendar.timeZone
+        val sourceFormat =
+            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+
+        sourceFormat.timeZone = timezone
+        val convertedDate = sourceFormat.parse(timestamp)!!
+
+        val destFormat =
+            SimpleDateFormat("dd-MM-yy HH:mm")
+        destFormat.timeZone = timeDestinationZone
+
+        val resultDate = destFormat.format(convertedDate)
+
+        Log.e("ExternalUtils", resultDate)
+
+        return destFormat.parse(resultDate)
+
+    }
+
+    @SuppressLint("SimpleDateFormat")
     fun convertTimeToEpoch(timestamp: String): String {
 
         val calendar = Calendar.getInstance()
@@ -89,12 +112,27 @@ object ExternalUtils {
 
         sourceFormat.timeZone = timezone
         val convertedDate = sourceFormat.parse(timestamp)!!
+
         destFormat.timeZone = timeDestinationZone
         Log.e("Timezone", timezone.toString() + timeDestinationZone.toString())
         return destFormat.format(convertedDate)
 
 
     }
+
+//    @RequiresApi(Build.VERSION_CODES.O)
+//    fun convertTimestampToDate(timestamp: String): Date? {
+//
+//        val formatter = DateTimeFormatter.ofPattern(
+//            "dd-MMM-yyyy",
+//            Locale(PreferenceUtil.getLanguageFromPreference()) ?: Locale.ENGLISH
+//        )
+//        val ts = convertTimeToEpoch(timestamp)
+//        val localDate = LocalDate.parse(ts, formatter)
+//
+//        return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
+//
+//    }
 
     fun convertLastModified(timestamp: String): String {
 

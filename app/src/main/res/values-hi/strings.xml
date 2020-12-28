@@ -163,4 +163,6 @@
     <string name="GrowthAdded">Growth added successfully</string>
     <string name="add_growth">Add growth</string>
     <string name="lastModified">Last Modified</string>
+    <string name="variety">"Variety: "</string>
+    <string name="time">Time</string>
 </resources>

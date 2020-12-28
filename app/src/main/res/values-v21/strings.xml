@@ -25,7 +25,7 @@
     <string name="expiration_date">Expiration date:</string>
     <string name="estimated_time_of_completion">Estimated time of completion</string>
     <string name="offer_price">Offer Price</string>
-    <string name="rs">Rs</string>
+    <string name="rs">Rs </string>
     <string name="available_for_bidding">Available for bidding</string>
     <string name="expDate">Expiration date of bid:</string>
     <string name="add_stock">Add stock</string>
@@ -46,7 +46,7 @@
     <string name="etEstError">Add an estimated time of completion</string>
     <string name="addressError">Location can not be empty</string>
     <string name="expError">Add an expiration date of the bid</string>
-    <string name="date_of_start">Date of start</string>
+    <string name="date_of_start">Date of start: </string>
     <string name="view_bid_history">View bid history</string>
     <string name="cancel_stock">Delete Stock</string>
     <string name="_918">918</string>
@@ -132,7 +132,7 @@
     <string name="supplyUpdated">Crop updated successfully</string>
     <string name="cancelStock">Delete crop</string>
     <string name="no">No</string>
-    <string name="description">Description</string>
+    <string name="description">Description: </string>
     <string name="modifyCrop">Modify crop</string>
     <string name="supplyAdded">New crop stock created successfully</string>
     <string name="couldNotLoad">Could not load stocks</string>
@@ -193,6 +193,8 @@
     <string name="GrowthAdded">Growth added successfully</string>
     <string name="add_growth">Add growth</string>
     <string name="lastModified">Last Modified: </string>
+    <string name="variety">"Variety: "</string>
+    <string name="time">Time</string>
 
 
 </resources>

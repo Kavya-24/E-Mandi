@@ -30,15 +30,13 @@ import com.example.mandiexe.models.responses.supply.ViewSupplyResponse
 import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.utils.ExternalUtils.createToast
 import com.example.mandiexe.viewmodels.MyCropBidDetailsViewModel
-import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
+import com.jjoe64.graphview.DefaultLabelFormatter
+import com.jjoe64.graphview.GraphView
+import com.jjoe64.graphview.series.DataPoint
+import com.jjoe64.graphview.series.LineGraphSeries
 import kotlinx.android.synthetic.main.my_crop_bid_details_fragment.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -52,8 +50,8 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
     private val viewModelCrop: MyCropBidDetailsViewModel by viewModels()
     private lateinit var root: View
 
-    private lateinit var lineChart: LineChart
-
+    // private lateinit var lineChart: LineChart
+    private lateinit var graph: GraphView
     private lateinit var args: Bundle
 
 
@@ -70,6 +68,9 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
     private var mPrice = ""
 
+    private var sdf = SimpleDateFormat("dd-MM-yy HH:mm")
+    private var numberOfBid = 0
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -77,7 +78,8 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
         root = inflater.inflate(R.layout.my_crop_bid_details_fragment, container, false)
 
-        lineChart = root.findViewById(R.id.lineChart)
+        //  lineChart = root.findViewById(R.id.lineChart)
+        graph = root.findViewById(R.id.graphView)
 
         if (arguments != null) {
             //Set the address in the box trimmed
@@ -411,7 +413,115 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
         mPrice = value.supply.askPrice.toString()
 
         fillRecyclerView(value.supply.bids)
-        createGraph(value.supply.bids)
+        createGraphView(value.supply.bids)
+    }
+
+    private fun createGraphView(item: List<ViewSupplyResponse.Supply.Bid>) {
+
+        val calendar = Calendar.getInstance()
+        val series: LineGraphSeries<DataPoint> = LineGraphSeries<DataPoint>(getSeriesPoints(item))
+
+        Log.e(TAG, "Series is given by " + series.toString())
+
+        graph.addSeries(series)
+
+        graph.gridLabelRenderer.horizontalAxisTitle = resources.getString(R.string.time)
+        graph.gridLabelRenderer.verticalAxisTitle = resources.getString(R.string.price_rs)
+
+        graph.gridLabelRenderer.labelFormatter = object : DefaultLabelFormatter() {
+            override fun formatLabel(value: Double, isValueX: Boolean): String {
+
+                if (isValueX) {
+                    return sdf.format(Date(value.toLong()))
+                }
+                return super.formatLabel(value, isValueX)
+
+            }
+
+        }
+
+        //Enable scrolling and zooming
+        graph.viewport.isScalable = true
+        graph.viewport.setScalableY(true)
+        graph.gridLabelRenderer.numHorizontalLabels = numberOfBid
+
+
+        Log.e(TAG, numberOfBid.toString() + "Number ")
+        graph.gridLabelRenderer.setHorizontalLabelsAngle(90)
+
+        // set manual x bounds to have nice steps
+        //graph.getViewport().setMinX(getInitialDate(item).time.toDouble());
+        //graph.getViewport().setMaxX(getEndingDate(item).time.toDouble());
+        //graph.getViewport().setXAxisBoundsManual(true);
+
+        graph.title = resources.getString(R.string.myBidHistory)
+        graph.titleColor = Color.BLACK
+
+        graph.gridLabelRenderer.labelHorizontalHeight = 300
+
+    }
+
+    private fun getEndingDate(item: List<ViewSupplyResponse.Supply.Bid>): Date {
+
+        if (item.size != 0) {
+            Log.e(
+                TAG,
+                "Ending date " + ExternalUtils.convertDateTimestampUtil(
+                    item.get(item.size - 1).bids.get(item.size - 1).timestamp
+                ).toString()
+            )
+            return ExternalUtils.convertDateTimestampUtil(
+                item.get(item.size - 1).bids.get(item.size - 1).timestamp
+            )!!
+        }
+        return Date()
+    }
+
+
+    private fun getInitialDate(item: List<ViewSupplyResponse.Supply.Bid>): Date {
+
+        if (item.size != 0) {
+            Log.e(
+                TAG,
+                "Starting adte date " + ExternalUtils.convertDateTimestampUtil(
+                    item.get(0).bids.get(
+                        0
+                    ).timestamp
+                )
+            )
+            return ExternalUtils.convertDateTimestampUtil(item.get(0).bids.get(0).timestamp)!!
+        }
+
+        return Date()
+    }
+
+
+    private fun getSeriesPoints(item: List<ViewSupplyResponse.Supply.Bid>): Array<DataPoint>? {
+
+        val arrayDataPoints: MutableList<DataPoint> = mutableListOf()
+
+
+        for (element in item) {
+
+
+            for (j in element.bids) {
+
+                numberOfBid++
+
+                arrayDataPoints.add(
+                    DataPoint(
+                        ExternalUtils.convertDateTimestampUtil(j.timestamp),
+                        j.amount.toDouble()
+                    )
+                )
+
+            }
+        }
+
+
+
+        return arrayDataPoints.toTypedArray()
+
     }
 
     private fun fillRecyclerView(bids: List<ViewSupplyResponse.Supply.Bid>) {
@@ -422,103 +532,15 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
         //Create list
         val mBids: MutableList<ViewSupplyResponse.Supply.Bid.BidDetails> = mutableListOf()
+
         for (element in bids) {
-            for (j in element.bids) {
-                mBids.add(j)
-            }
+            mBids.add(element.bids.get(element.bids.size - 1))
         }
 
         adapter.lst = mBids
         rv.adapter = adapter
     }
 
-    private fun createGraph(item: List<ViewSupplyResponse.Supply.Bid>) {
-
-
-        val lineDataSet = LineDataSet(
-            lineChartDataSet(item),
-            resources.getString(R.string.graphDataSet)
-        )
-        val iLineDataSets: ArrayList<ILineDataSet> = ArrayList()
-        //iLineDataSets.add(lineDataSet)
-
-        val lineData = LineData(iLineDataSets)
-        lineChart.data = lineData
-        lineChart.invalidate()
-
-
-        lineChart.setNoDataText(resources.getString(R.string.graphError))
-
-        val xAxisLabel: ArrayList<String> = ArrayList()
-        for (element in item) {
-            for (j in element.bids) {
-                xAxisLabel.add(ExternalUtils.convertTimeToStdGraphForm(j.timestamp))
-            }
-        }
-
-        val mXAxis = lineChart.xAxis
-        mXAxis.valueFormatter = IndexAxisValueFormatter(xAxisLabel)
-        mXAxis.setDrawGridLines(true)
-        mXAxis.textColor = Color.BLACK
-        mXAxis.setAvoidFirstLastClipping(true)
-
-
-        //LEft axis
-        val mYAxis = lineChart.axisLeft
-        mYAxis.setDrawGridLines(true)
-        mYAxis.textColor = Color.BLUE
-
-
-        //RIght axis
-        val y2 = lineChart.axisRight
-        y2.isEnabled = false
-
-
-
-
-        lineDataSet.color = Color.BLUE
-        lineDataSet.setCircleColor(Color.GREEN)
-        lineDataSet.setDrawCircles(true)
-        lineDataSet.setDrawCircleHole(true)
-        lineDataSet.lineWidth = 5f
-        lineDataSet.circleRadius = 10f
-        lineDataSet.circleHoleRadius = 10f
-        lineDataSet.valueTextSize = 10f
-        lineDataSet.valueTextColor = Color.BLACK
-
-
-    }
-
-
-    private fun lineChartDataSet(item: List<ViewSupplyResponse.Supply.Bid>): ArrayList<Entry>? {
-
-        val dataSet = ArrayList<Entry>()
-
-//        var m = 0;
-//        for (element in item) {
-//            for (j in element.bids) {
-//                dataSet.add(
-//                    Entry(
-//                        m.toFloat(),
-//                        j.amount.toFloat()
-//                    )
-//                )
-//                m++;
-//            }
-//        }
-
-        dataSet.add(Entry(0f, 40f))
-        dataSet.add(Entry(1f, 10f))
-        dataSet.add(Entry(2f, 15f))
-        dataSet.add(Entry(3f, 12f))
-        dataSet.add(Entry(4f, 20f))
-        dataSet.add(Entry(5f, 50f))
-        dataSet.add(Entry(6f, 23f))
-        dataSet.add(Entry(7f, 34f))
-        dataSet.add(Entry(8f, 12f))
-
-        return dataSet
-    }
 
     override fun onDestroy() {
 
