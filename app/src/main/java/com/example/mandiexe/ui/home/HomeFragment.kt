@@ -27,6 +27,12 @@ class HomeFragment : Fragment() {
     private lateinit var viewPager: ViewPager
     private val TAG = HomeFragment::class.java.simpleName
 
+    fun findFragment(): String? {
+        val fm = childFragmentManager.findFragmentById(R.id.container)
+        val fragmentName: String = fm!!::class.java.simpleName
+        return fragmentName
+    }
+
 
     private fun openFragment(fragment: Fragment) {
 
@@ -70,6 +76,7 @@ class HomeFragment : Fragment() {
         root = inflater.inflate(R.layout.fragment_home, container, false)
 
         tabLayout = root.findViewById<View>(R.id.tabs) as TabLayout
+
 
         viewPager = root.findViewById<View>(R.id.viewpager) as ViewPager
 

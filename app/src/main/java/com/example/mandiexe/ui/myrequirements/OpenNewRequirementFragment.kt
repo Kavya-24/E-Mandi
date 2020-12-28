@@ -14,17 +14,14 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
-import com.example.mandiexe.adapter.MyBidHistoryAdapter
 import com.example.mandiexe.adapter.OnBidHistoryClickListener
 import com.example.mandiexe.interfaces.RetrofitClient
+import com.example.mandiexe.models.body.BidHistoryBody
 import com.example.mandiexe.models.body.bid.AddBidBody
 import com.example.mandiexe.models.body.bid.ViewBidBody
 import com.example.mandiexe.models.responses.bids.AddBidResponse
 import com.example.mandiexe.models.responses.bids.ViewBidResponse
-import com.example.mandiexe.models.responses.supply.ViewSupplyResponse
 import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.utils.ExternalUtils.createSnackbar
 import com.example.mandiexe.utils.ExternalUtils.createToast
@@ -175,25 +172,25 @@ class OpenNewRequirementFragment : Fragment(), OnBidHistoryClickListener {
 
     private fun fillRecyclerView(bids: List<ViewBidResponse.Bid.BidDetails>) {
 
-        val rv = root.findViewById<RecyclerView>(R.id.rv_bidHistoryOPneReq)
-        rv.layoutManager = LinearLayoutManager(context)
-        val adapter = MyBidHistoryAdapter(this)
-
-        //Create list
-        //Fill the rv wit
-        val mBids: MutableList<ViewSupplyResponse.Supply.Bid.BidDetails> = mutableListOf()
-        for (element in bids) {
-            mBids.add(
-                ViewSupplyResponse.Supply.Bid.BidDetails(
-                    element.amount,
-                    element.id,
-                    element.timestamp
-                )
-            )
-        }
-
-        adapter.lst = mBids
-        rv.adapter = adapter
+//        val rv = root.findViewById<RecyclerView>(R.id.rv_bidHistoryOPneReq)
+//        rv.layoutManager = LinearLayoutManager(context)
+//        val adapter = MyBidHistoryAdapter(this)
+//
+//        //Create list
+//        //Fill the rv wit
+//        val mBids: MutableList<ViewSupplyResponse.Supply.Bid.BidDetails> = mutableListOf()
+//        for (element in bids) {
+//            mBids.add(
+//                ViewSupplyResponse.Supply.Bid.BidDetails(
+//                    element.amount,
+//                    element.id,
+//                    element.timestamp
+//                )
+//            )
+//        }
+//
+//        adapter.lst = mBids
+//        rv.adapter = adapter
 
     }
 
@@ -298,7 +295,7 @@ class OpenNewRequirementFragment : Fragment(), OnBidHistoryClickListener {
 
     }
 
-    override fun viewBidDetails(_listItem: ViewSupplyResponse.Supply.Bid.BidDetails) {
+    override fun viewBidDetails(_listItem: BidHistoryBody) {
 
     }
 

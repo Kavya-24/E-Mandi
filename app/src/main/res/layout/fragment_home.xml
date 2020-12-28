@@ -32,7 +32,6 @@
                 android:layout_height="match_parent"
                 android:text="@string/stocks" />
         </com.google.android.material.tabs.TabLayout>
-
     </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/viewpager_fragment" />

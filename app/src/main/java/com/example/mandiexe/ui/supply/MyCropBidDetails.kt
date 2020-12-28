@@ -9,17 +9,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
 import com.example.mandiexe.adapter.MyBidHistoryAdapter
 import com.example.mandiexe.adapter.OnBidHistoryClickListener
+import com.example.mandiexe.models.body.BidHistoryBody
 import com.example.mandiexe.models.body.supply.DeleteSupplyBody
 import com.example.mandiexe.models.body.supply.ModifySupplyBody
 import com.example.mandiexe.models.body.supply.ViewSupplyBody
@@ -29,15 +32,13 @@ import com.example.mandiexe.models.responses.supply.ViewSupplyResponse
 import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.utils.ExternalUtils.createToast
 import com.example.mandiexe.viewmodels.MyCropBidDetailsViewModel
-import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
+import com.jjoe64.graphview.DefaultLabelFormatter
+import com.jjoe64.graphview.GraphView
+import com.jjoe64.graphview.series.DataPoint
+import com.jjoe64.graphview.series.LineGraphSeries
 import kotlinx.android.synthetic.main.my_crop_bid_details_fragment.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -51,8 +52,8 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
     private val viewModelCrop: MyCropBidDetailsViewModel by viewModels()
     private lateinit var root: View
 
-    private lateinit var lineChart: LineChart
-
+    // private lateinit var lineChart: LineChart
+    private lateinit var graph: GraphView
     private lateinit var args: Bundle
 
 
@@ -66,6 +67,14 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
     private var SUPPLY_ID = ""
     private val TAG = MyCropBidDetails::class.java.simpleName
     private var modifyBody = ModifySupplyBody.Update(0, "", "", "", "")
+
+    private var mPrice = ""
+
+    private var sdf = SimpleDateFormat("dd-MM-yy HH:mm")
+    private var numberOfBid = 0
+    private var isOpen = false
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -73,7 +82,8 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
         root = inflater.inflate(R.layout.my_crop_bid_details_fragment, container, false)
 
-        lineChart = root.findViewById(R.id.lineChart)
+        //  lineChart = root.findViewById(R.id.lineChart)
+        graph = root.findViewById(R.id.graphView)
 
         if (arguments != null) {
             //Set the address in the box trimmed
@@ -90,13 +100,29 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
         root.findViewById<TextView>(R.id.tv_view_bid_history_stocks).setOnClickListener {
 
             //Open the history
-            openBidHistory()
+            if (!isOpen) {
+                openBidHistory()
+            }
 
         }
+
+        root.findViewById<ImageView>(R.id.iv_dropdown_bid_history).setOnClickListener {
+
+            //Open the history
+            if (isOpen) {
+                openBidHistory()
+            } else {
+                closeBidHistory()
+            }
+
+        }
+
+
 
         root.findViewById<MaterialButton>(R.id.mtb_cancel_stock).setOnClickListener {
             cancelStock()
         }
+
 
 
         root.findViewById<MaterialButton>(R.id.mtb_modify_stock).setOnClickListener {
@@ -106,9 +132,28 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
         return root
     }
 
+    private fun closeBidHistory() {
+        isOpen = false
+
+        root.findViewById<RecyclerView>(R.id.rv_bidHistory).visibility = View.GONE
+        root.findViewById<TextView>(R.id.tv_view_bid_history_stocks).text =
+            resources.getString(R.string.view_bid_history)
+
+        root.findViewById<ImageView>(R.id.iv_dropdown_bid_history)
+            .setImageDrawable(resources.getDrawable(R.drawable.ic_down))
+
+    }
+
     private fun openBidHistory() {
 
+        isOpen = true
         root.findViewById<RecyclerView>(R.id.rv_bidHistory).visibility = View.VISIBLE
+        root.findViewById<TextView>(R.id.tv_view_bid_history_stocks).text =
+            resources.getString(R.string.myBidHistory)
+
+        root.findViewById<ImageView>(R.id.iv_dropdown_bid_history)
+            .setImageDrawable(resources.getDrawable(R.drawable.ic_top))
+
         if (adapter.lst.size == 0) {
             ExternalUtils.createSnackbar(
                 resources.getString(R.string.emptyRV),
@@ -184,7 +229,7 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
     private fun manageCancelResponses(mResponse: DeleteSupplyResponse?) {
 
         mResponse?.msg?.let { createToast(it, requireContext(), container_crop_bids_details) }
-
+        Log.e(TAG, "In manage cancel response")
         onDestroy()
     }
 
@@ -269,14 +314,26 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
         d.setPositiveButton(resources.getString(R.string.modifyCrop)) { _, _ ->
 
-            // if (isValidate()) {
-            modifyBody = ModifySupplyBody.Update(
-                offerPrice.text.toString().toInt(),
-                cropType.toString(),
-                desc.text.toString(),
-                ExternalUtils.convertDateToReqForm(etExp.text.toString()),
-                ExternalUtils.convertDateToReqForm(etEst.text.toString())
-            )
+            if (offerPrice.text.toString() != "") {
+                modifyBody = ModifySupplyBody.Update(
+                    offerPrice.text.toString().toInt(),
+                    cropType.toString(),
+                    desc.text.toString(),
+                    ExternalUtils.convertDateToReqForm(etExp.text.toString()),
+                    ExternalUtils.convertDateToReqForm(etEst.text.toString())
+                )
+
+            } else {
+
+                modifyBody = ModifySupplyBody.Update(
+                    mPrice.toInt(),
+                    cropType.toString(),
+                    desc.text.toString(),
+                    ExternalUtils.convertDateToReqForm(etExp.text.toString()),
+                    ExternalUtils.convertDateToReqForm(etEst.text.toString())
+                )
+
+            }
             confirmModify()
 
             //}
@@ -392,9 +449,92 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
         root.findViewById<TextView>(R.id.tv_stock_detail_initial_offer_price).text =
             value.supply.askPrice.toString()
+        mPrice = value.supply.askPrice.toString()
 
         fillRecyclerView(value.supply.bids)
-        createGraph(value.supply.bids)
+        createGraphView(value.supply.lastBid, value.supply.currentBid, value.supply.lastModified)
+    }
+
+    private fun createGraphView(
+        item: List<ViewSupplyResponse.Supply.LastBid>,
+        currentBid: Int,
+        lastModified: String
+    ) {
+
+        val mList = item.toMutableList()
+        mList.add(ViewSupplyResponse.Supply.LastBid(currentBid, "", lastModified))
+
+        val series: LineGraphSeries<DataPoint> = LineGraphSeries<DataPoint>(getSeriesPoints(mList))
+
+        Log.e(TAG, "Series is given by " + series.toString())
+
+        graph.addSeries(series)
+
+
+        // graph.gridLabelRenderer.horizontalAxisTitle = resources.getString(R.string.time)
+        // graph.gridLabelRenderer.verticalAxisTitle = resources.getString(R.string.price_rs)
+
+        graph.gridLabelRenderer.labelFormatter = object : DefaultLabelFormatter() {
+            override fun formatLabel(value: Double, isValueX: Boolean): String {
+
+                if (isValueX) {
+                    return sdf.format(Date(value.toLong()))
+                }
+                return super.formatLabel(value, isValueX)
+
+            }
+
+        }
+
+        //Enable scrolling and zooming
+        graph.viewport.isScalable = true
+        graph.viewport.setScalableY(true)
+        graph.gridLabelRenderer.numHorizontalLabels = numberOfBid
+        graph.gridLabelRenderer.labelsSpace = 20
+
+
+        Log.e(TAG, numberOfBid.toString() + "Number ")
+        graph.gridLabelRenderer.setHorizontalLabelsAngle(90)
+
+        // set manual x bounds to have nice steps
+        ExternalUtils.convertDateTimestampUtil(item.get(0).timestamp)?.time?.toDouble()?.let {
+            graph.viewport.setMinX(
+                it
+            )
+        }
+        //graph.getViewport().setMaxX(getEndingDate(item).time.toDouble());
+        //graph.getViewport().setXAxisBoundsManual(true);
+
+        graph.title = resources.getString(R.string.myBidHistory)
+        graph.titleColor = Color.BLACK
+
+        graph.gridLabelRenderer.labelHorizontalHeight = 300
+
+    }
+
+
+    private fun getSeriesPoints(item: MutableList<ViewSupplyResponse.Supply.LastBid>): Array<DataPoint>? {
+
+        val arrayDataPoints: MutableList<DataPoint> = mutableListOf()
+
+
+        for (element in item) {
+
+            numberOfBid++
+
+            arrayDataPoints.add(
+                DataPoint(
+                    ExternalUtils.convertDateTimestampUtil(element.timestamp),
+                    element.amount.toDouble()
+                )
+            )
+
+        }
+
+
+
+        return arrayDataPoints.toTypedArray()
+
     }
 
     private fun fillRecyclerView(bids: List<ViewSupplyResponse.Supply.Bid>) {
@@ -404,107 +544,36 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
         adapter = MyBidHistoryAdapter(this)
 
         //Create list
-        val mBids: MutableList<ViewSupplyResponse.Supply.Bid.BidDetails> = mutableListOf()
+        val mBids: MutableList<BidHistoryBody> = mutableListOf()
+
+
         for (element in bids) {
-            for (j in element.bids) {
-                mBids.add(j)
-            }
+            val x = element.bids.get(element.bids.size - 1)
+            mBids.add(
+                BidHistoryBody(
+                    x.amount,
+                    x._id,
+                    x.timestamp,
+                    element.bidder.name,
+                    element.bidder.phone,
+                    element.bidder.address
+                )
+            )
         }
+
+        mBids.sortByDescending { it.amount }
+        Log.e(TAG, mBids.toString())
 
         adapter.lst = mBids
         rv.adapter = adapter
     }
 
-    private fun createGraph(item: List<ViewSupplyResponse.Supply.Bid>) {
-
-
-        val lineDataSet = LineDataSet(
-            lineChartDataSet(item),
-            resources.getString(R.string.graphDataSet)
-        )
-        val iLineDataSets: ArrayList<ILineDataSet> = ArrayList()
-        //iLineDataSets.add(lineDataSet)
-
-        val lineData = LineData(iLineDataSets)
-        lineChart.data = lineData
-        lineChart.invalidate()
-
-
-        lineChart.setNoDataText(resources.getString(R.string.graphError))
-
-        val xAxisLabel: ArrayList<String> = ArrayList()
-        for (element in item) {
-            for (j in element.bids) {
-                xAxisLabel.add(ExternalUtils.convertTimeToStdGraphForm(j.timestamp))
-            }
-        }
-
-        val mXAxis = lineChart.xAxis
-        mXAxis.valueFormatter = IndexAxisValueFormatter(xAxisLabel)
-        mXAxis.setDrawGridLines(true)
-        mXAxis.textColor = Color.BLACK
-        mXAxis.setAvoidFirstLastClipping(true)
-
-
-        //LEft axis
-        val mYAxis = lineChart.axisLeft
-        mYAxis.setDrawGridLines(true)
-        mYAxis.textColor = Color.BLUE
-
-
-        //RIght axis
-        val y2 = lineChart.axisRight
-        y2.isEnabled = false
-
-
-
-
-        lineDataSet.color = Color.BLUE
-        lineDataSet.setCircleColor(Color.GREEN)
-        lineDataSet.setDrawCircles(true)
-        lineDataSet.setDrawCircleHole(true)
-        lineDataSet.lineWidth = 5f
-        lineDataSet.circleRadius = 10f
-        lineDataSet.circleHoleRadius = 10f
-        lineDataSet.valueTextSize = 10f
-        lineDataSet.valueTextColor = Color.BLACK
-
-
-    }
-
-
-    private fun lineChartDataSet(item: List<ViewSupplyResponse.Supply.Bid>): ArrayList<Entry>? {
-
-        val dataSet = ArrayList<Entry>()
-
-//        var m = 0;
-//        for (element in item) {
-//            for (j in element.bids) {
-//                dataSet.add(
-//                    Entry(
-//                        m.toFloat(),
-//                        j.amount.toFloat()
-//                    )
-//                )
-//                m++;
-//            }
-//        }
-
-        dataSet.add(Entry(0f, 40f))
-        dataSet.add(Entry(1f, 10f))
-        dataSet.add(Entry(2f, 15f))
-        dataSet.add(Entry(3f, 12f))
-        dataSet.add(Entry(4f, 20f))
-        dataSet.add(Entry(5f, 50f))
-        dataSet.add(Entry(6f, 23f))
-        dataSet.add(Entry(7f, 34f))
-        dataSet.add(Entry(8f, 12f))
-
-        return dataSet
-    }
-
     override fun onDestroy() {
-        super.onDestroy()
+
+        Log.e(TAG, "In on destroy")
+
+        val navController = findNavController()
+        navController.navigateUp()
 
         viewModelCrop.successfulSupply.removeObservers(this)
         viewModelCrop.successfulSupply.value = null
@@ -515,10 +584,12 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
         viewModelCrop.successfulUpdate.removeObservers(this)
         viewModelCrop.successfulUpdate.value = null
 
+        super.onDestroy()
+
 
     }
 
-    override fun viewBidDetails(_listItem: ViewSupplyResponse.Supply.Bid.BidDetails) {
+    override fun viewBidDetails(_listItem: BidHistoryBody) {
         //The farmer can view the bids from here
 
     }

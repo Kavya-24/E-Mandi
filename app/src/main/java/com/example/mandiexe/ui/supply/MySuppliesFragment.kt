@@ -46,9 +46,12 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
         root = inflater.inflate(R.layout.my_crop_bids_fragment, container, false)
 
         loadItems()
+
         comm = activity as Communicator
 
         //Get the items from normal adapter
@@ -77,6 +80,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
 
         root.findViewById<ProgressBar>(R.id.pb_my_crops).visibility = View.VISIBLE
 
+
         viewModel.supplyFunction().observe(viewLifecycleOwner, Observer { mResponse ->
             if (viewModel.successful.value != null) {
                 if (viewModel.successful.value!!) {
@@ -89,14 +93,19 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
             }
 
         })
-        'p'
+
+
+        root.findViewById<ProgressBar>(R.id.pb_my_crops).visibility = View.GONE
+
 
     }
 
     @SuppressLint("CutPasteId")
     private fun manageStockLoadedResponses(mResponse: FarmerSuppliesResponse?) {
         //Create rv
+
         Log.e("MY Supply", "In manage stock")
+
         root.findViewById<ProgressBar>(R.id.pb_my_crops).visibility = View.GONE
         val rv = root.findViewById<RecyclerView>(R.id.rv_my_stocks)
         val adapter = MySuppliesAdapter(this)

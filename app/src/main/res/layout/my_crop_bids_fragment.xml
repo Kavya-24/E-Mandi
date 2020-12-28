@@ -10,44 +10,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/green_100">
+        android:background="@color/bgGreen">
 
-        <!--        <TableLayout-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            app:layout_constraintTop_toTopOf="parent">-->
-
-        <!--            <TableRow-->
-        <!--                android:layout_width="match_parent"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_margin="@dimen/space"-->
-        <!--                android:background="@color/white"-->
-        <!--                android:padding="@dimen/space_half">-->
-
-
-        <!--                <Spinner android:id="@+id/spinner_crop" />-->
-
-        <!--                <TextView-->
-        <!--                    android:layout_width="wrap_content"-->
-        <!--                    android:layout_height="wrap_content"-->
-        <!--                    android:text="@string/crop_value" />-->
-
-        <!--                <Spinner android:id="@+id/spinner_location" />-->
-
-        <!--                <TextView-->
-        <!--                    android:layout_width="wrap_content"-->
-        <!--                    android:layout_height="wrap_content"-->
-        <!--                    android:text="@string/location_value" />-->
-
-        <!--                <ImageView-->
-        <!--                    android:layout_width="wrap_content"-->
-        <!--                    android:layout_height="wrap_content"-->
-        <!--                    android:layout_weight="2"-->
-        <!--                    android:paddingStart="@dimen/space"-->
-        <!--                    android:paddingEnd="@dimen/space"-->
-        <!--                    android:src="@drawable/ic_sort" />-->
-        <!--            </TableRow>-->
-        <!--        </TableLayout>-->
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swl_price_fragment"
@@ -62,8 +26,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:listitem="@layout/item_stock" />
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -93,11 +56,13 @@
             android:id="@+id/fab_add_my_stock"
             style="@style/styleProgressBar"
             android:layout_margin="@dimen/space"
-            android:backgroundTint="@color/colorPrimary"
+            android:backgroundTint="@color/colorAccent"
             android:src="@drawable/ic_add"
-            app:backgroundTint="@color/colorPrimary"
+            android:tint="@color/white"
+            app:backgroundTint="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/white" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,14 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#26c95c</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+
+    <color name="colorPrimary">@color/useDarkGreem</color>
+    <color name="colorPrimaryDark">@color/useDarkGreem</color>
+    <color name="colorAccent">@color/colorLightGreenWhatsapp</color>
+    <color name="bgGreen">@color/ivory</color>
+    <color name="bgCard">@color/lightRedMono</color>
+
+
+    <color name="deltaGreen">@color/useDarkGreenOriginal</color>
+    <color name="deltaRed">@color/red_A700</color>
+
+    <color name="stockMarketGreen">#32CD32</color>
+    <color name="stockMarketRed"></color>
+
+    <color name="cardbgWhatsappTeaGreen">#DCF8C6</color>
+    <color name="cardbgWhatsappYellow">#e7e7cf</color>
+    <color name="cardGreenMessgaeWA">#e2ffc7</color>
+    <color name="cardOffWhite">#f5f5f5</color>
+    <color name="ivoryDark">#FFFFF0</color>
+    <color name="ivory">#f8f8ff</color>
+
+    <color name="lightRedVatsal">#550000</color>
+    <color name="lightRedMono">#fff7f6</color>
 
 
     <color name="wildColor">#3a91ff</color>
     <color name="crimson">#990000</color>
     <color name="darkBlue">#3b558f</color>
 
-    <color name="useGreen">#26c95c</color>
-    <color name="useDarkGreem">#006400</color>
+    <color name="googleGreen">#0f9d58</color>
+    <color name="lightGreenHoneyDew">#f0fff0</color>
+
+    <color name="lightGreenTest">#eefdec</color>
+
+    <!--    Whatsapp Teal green-->
+    <color name="useGreen">#128C7E</color>
+    <!--    Whatsapp Teal Dark Green-->
+    <color name="useDarkGreem">#075E54</color>
+
+    <color name="colorLightGreenWhatsapp">#25D366</color>
+    <!--    <color name="useGreen">#47b881</color>-->
+    <!--    <color name="useGreen">#26c95c</color>-->
+    <color name="useDarkGreenOriginal">#006400</color>
 </resources>

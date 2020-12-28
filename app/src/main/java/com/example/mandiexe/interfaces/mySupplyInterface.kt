@@ -76,5 +76,13 @@ interface mySupplyInterface {
         @Header("Authorization") accessToken: String?
     ): Call<CropSearchAutocompleteResponse>
 
+    //Add Growth
+    @Headers("Content-Type:application/json")
+    @POST("api/farmer/growth/add")
+    fun getFarmerGrowthAdd(
+        @Body body: AddGrowthBody,
+        @Header("Authorization") accessToken: String?
+    ): Call<AddGrowthResponse>
+
 
 }

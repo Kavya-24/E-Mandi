@@ -1,46 +1,35 @@
-package com.example.mandiexe.ui.supply
+package com.example.mandiexe.ui.home
 
 import android.app.DatePickerDialog
-import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Intent
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import com.example.mandiexe.R
 import com.example.mandiexe.models.body.supply.AddGrowthBody
 import com.example.mandiexe.models.body.supply.AddSupplyBody
 import com.example.mandiexe.models.responses.supply.AddSupplyResponse
 import com.example.mandiexe.utils.ExternalUtils
+import com.example.mandiexe.utils.ExternalUtils.createToast
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.viewmodels.AddStockViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.android.synthetic.main.add_stock_fragment.*
+import kotlinx.android.synthetic.main.activity_grow.*
 import java.text.SimpleDateFormat
 import java.util.*
 
+class GrowActivity : AppCompatActivity() {
 
-class AddStock : Fragment() {
-
-
-    //Primary constructor
-    companion object {
-        fun newInstance() = AddStock()
-    }
 
     private val viewModel: AddStockViewModel by viewModels()
-    private lateinit var root: View
     private val myCalendar = Calendar.getInstance()
-    private val TAG = AddStock::class.java.simpleName
+    private val TAG = GrowActivity::class.java.simpleName
 
     //UI variables
     private lateinit var etEst: EditText
@@ -73,45 +62,33 @@ class AddStock : Fragment() {
     private val pref = PreferenceUtil
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        root = inflater.inflate(R.layout.add_stock_fragment, container, false)
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_grow)
 
         //UI Init
-        etEst = root.findViewById(R.id.etEstDate)
-        etExp = root.findViewById(R.id.etExpDate)
-        //ivLocation = root.findViewById(R.id.iv_location)
-        //  etAddress = root.findViewById(R.id.actv_address)
-        cropName = root.findViewById(R.id.actv_which_crop)
-        cropType = root.findViewById(R.id.actv_crop_type)
-        cropQuantity = root.findViewById(R.id.actv_quantity)
-        offerPrice = root.findViewById(R.id.actv_price)
-        //bidSwitch = root.findViewById(R.id.switch_for_bid)
+        etEst = findViewById(R.id.growth_etEstDate)
+        etExp = findViewById(R.id.growth_etExpDate)
+        //ivLocation = findViewById(R.id.growth_iv_location)
+        //  etAddress = findViewById(R.id.growth_actv_address)
+        cropName = findViewById(R.id.growth_actv_which_crop)
+        cropType = findViewById(R.id.growth_actv_crop_type)
+        cropQuantity = findViewById(R.id.growth_actv_quantity)
+        offerPrice = findViewById(R.id.growth_actv_price)
+        bidSwitch = findViewById(R.id.growth_switch_for_bid)
 
-        tilName = root.findViewById(R.id.tilWhichCrop)
-        tilType = root.findViewById(R.id.tilCropType)
-        tilPrice = root.findViewById(R.id.tilOfferPrice)
-        tilQuantity = root.findViewById(R.id.tilQuantity)
-        //tilAddress = root.findViewById(R.id.tv_address)
-        tilEst = root.findViewById(R.id.tilEstDate)
-        tilExp = root.findViewById(R.id.tilExpDate)
+        tilName = findViewById(R.id.growth_tilWhichCrop)
+        tilType = findViewById(R.id.growth_tilCropType)
+        tilPrice = findViewById(R.id.growth_tilOfferPrice)
+        tilQuantity = findViewById(R.id.growth_tilQuantity)
+        //tilAddress = findViewById(R.id.growth_tv_address)
+        tilEst = findViewById(R.id.growth_tilEstDate)
+        tilExp = findViewById(R.id.growth_tilExpDate)
 
 
         //Populate views
         setUpCropNameSpinner()
         setUpVaietyNameSpinner()
-
-
-        //The address will either be preset or will come as an argument from Map Activity
-//        if (arguments != null) {
-//            //Set the address in the box trimmed
-//            etAddress.setText(requireArguments().getString("fetchedLocation").toString())
-//
-//            Log.e(TAG, "Argument str is" + etAddress.text.toString())
-//        }
 
         // disable dates before today
 
@@ -121,7 +98,7 @@ class AddStock : Fragment() {
 
         //Date Instance
         val dateEst =
-            OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
 
                 view.minDate = now
                 myCalendar.set(Calendar.YEAR, year)
@@ -131,7 +108,7 @@ class AddStock : Fragment() {
             }
 
         val dateExp =
-            OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
 
 
                 view.minDate = now
@@ -142,7 +119,7 @@ class AddStock : Fragment() {
             }
 
         val dateSow =
-            OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
 
 
                 view.minDate = now
@@ -154,7 +131,7 @@ class AddStock : Fragment() {
 
         //##Requires N
         etEst.setOnClickListener {
-            context?.let { it1 ->
+            this.let { it1 ->
                 DatePickerDialog(
                     it1, dateEst, myCalendar[Calendar.YEAR],
                     myCalendar[Calendar.MONTH],
@@ -165,7 +142,7 @@ class AddStock : Fragment() {
 
         //##Requires N
         etExp.setOnClickListener {
-            context?.let { it1 ->
+            this.let { it1 ->
                 DatePickerDialog(
                     it1, dateExp, myCalendar[Calendar.YEAR],
                     myCalendar[Calendar.MONTH],
@@ -174,8 +151,9 @@ class AddStock : Fragment() {
             }
         }
 
-        root.findViewById<EditText>(R.id.etSowDate).setOnClickListener {
-            context?.let { it1 ->
+
+        findViewById<EditText>(R.id.growth_etSowDate).setOnClickListener {
+            this.let { it1 ->
                 DatePickerDialog(
                     it1, dateSow, myCalendar[Calendar.YEAR],
                     myCalendar[Calendar.MONTH],
@@ -183,23 +161,26 @@ class AddStock : Fragment() {
                 ).show()
             }
         }
-//        ivLocation.setOnClickListener {
-//
-//            //Start an activity
-//            val i = Intent(requireContext(), MapActivity::class.java)
-//            startActivityForResult(i, RC_MAP_STOCK_ADD)
-//
-//        }
+
 
         //For the bidding items
-//        bidSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-//
-//            if (isChecked) {
-//                tilExp.visibility = View.VISIBLE
-//            } else {
-//                tilExp.visibility = View.GONE
-//            }
-//        }
+        bidSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+
+            if (isChecked) {
+                tilExp.visibility = View.VISIBLE
+                tilPrice.visibility = View.VISIBLE
+                findViewById<TextView>(R.id.growth_tv_rs).visibility = View.VISIBLE
+                findViewById<TextInputLayout>(R.id.growth_tilDescription).visibility = View.VISIBLE
+
+            } else {
+                tilExp.visibility = View.GONE
+                tilPrice.visibility = View.GONE
+                findViewById<TextView>(R.id.growth_tv_rs).visibility = View.GONE
+                findViewById<TextInputLayout>(R.id.growth_tilDescription).visibility = View.GONE
+
+            }
+
+        }
 
         tilName.setOnClickListener {
             setUpCropNameSpinner()
@@ -210,7 +191,7 @@ class AddStock : Fragment() {
         }
 
 
-        root.findViewById<MaterialButton>(R.id.mtb_add_stock).setOnClickListener {
+        findViewById<MaterialButton>(R.id.growth_mtb_add_stock).setOnClickListener {
             if (isValidate()) {
 
                 createStock()
@@ -219,16 +200,84 @@ class AddStock : Fragment() {
         }
 
         //Mic units
-        root.findViewById<ImageView>(R.id.mic_crop_name).setOnClickListener {
+        findViewById<ImageView>(R.id.growth_mic_crop_name).setOnClickListener {
             makeSearchForItems(RC_NAME)
         }
 
 
-        root.findViewById<ImageView>(R.id.mic_crop_type).setOnClickListener {
+        findViewById<ImageView>(R.id.growth_mic_crop_type).setOnClickListener {
             makeSearchForItems(RC_TYPE)
         }
 
-        return root
+
+    }
+
+    private fun createStock() {
+
+
+        //Create growth
+
+        val growthBody = AddGrowthBody(
+            cropName.text.toString(),
+            ExternalUtils.convertDateToReqForm(etEst.text.toString()),
+            ExternalUtils.convertDateToReqForm(findViewById<EditText>(R.id.growth_etSowDate).text.toString()),
+            cropQuantity.text.toString(),
+            cropType.text.toString()
+        )
+
+        Log.e("GROW", "In create and body is " + growthBody)
+        //Add growth
+        viewModel.growthFunction(growthBody)
+            .observe(this, androidx.lifecycle.Observer { mResponse ->
+                val success = viewModel.successfulGrowth.value
+
+                Log.e(
+                    "GROW",
+                    "Succes is and bidCheck is " + success + bidSwitch.isChecked.toString()
+                )
+                if (mResponse.msg == "Crop growth added successfully." && !bidSwitch.isChecked) {
+                    createToast(mResponse.msg, this, growth_container_grow)
+                    destroyActivity()
+                } else if (mResponse.msg == "Crop growth added successfully." && bidSwitch.isChecked) {
+                    makeAddCall()
+                } else {
+                    createSnackbar(mResponse.msg)
+                }
+
+            })
+
+
+    }
+
+    private fun makeAddCall() {
+
+
+        Log.e("GROW", "In make add call")
+        val des = findViewById<EditText>(R.id.growth_etDescription_add_stock)
+        var str = "NA"
+        if (!des.text.isEmpty()) {
+            str = des.text.toString()
+        }
+
+        val body = AddSupplyBody(
+            offerPrice.text.toString(),
+            cropName.text.toString(),
+            ExternalUtils.convertDateToReqForm(etEst.text.toString()),
+            str,
+            ExternalUtils.convertDateToReqForm(etExp.text.toString()),
+            "0",
+            cropType.text.toString()
+        )
+
+        viewModel.addFunction(body).observe(this, androidx.lifecycle.Observer { mResponse ->
+
+            //Check with the sucessful of it
+            if (mResponse.msg == "Supply added successfully.") {
+                manageStockCreateResponses(mResponse)
+            } else {
+                createSnackbar(mResponse.msg)
+            }
+        })
 
     }
 
@@ -257,7 +306,7 @@ class AddStock : Fragment() {
 
         val array: Array<String> = resources.getStringArray(R.array.arr_crop_types)
 
-        val adapter: ArrayAdapter<String>? = context?.let {
+        val adapter: ArrayAdapter<String>? = this.let {
             ArrayAdapter<String>(
                 it, android.R.layout.simple_spinner_item,
                 array
@@ -267,63 +316,23 @@ class AddStock : Fragment() {
 
     }
 
-    private fun createStock() {
-
-        val des = root.findViewById<EditText>(R.id.etDescription_add_stock)
-        var str = "NA"
-        if (!des.text.isEmpty()) {
-            str = des.text.toString()
-        }
-
-        val body = AddSupplyBody(
-            offerPrice.text.toString(),
-            cropName.text.toString(),
-            ExternalUtils.convertDateToReqForm(etEst.text.toString()),
-            str,
-            ExternalUtils.convertDateToReqForm(etExp.text.toString()),
-            "0",
-            cropType.text.toString()
-        )
-
-        //Create growth
-        val growthBody = AddGrowthBody(
-            cropName.text.toString(),
-            ExternalUtils.convertDateToReqForm(etEst.text.toString()),
-            ExternalUtils.convertDateToReqForm(root.findViewById<EditText>(R.id.etSowDate).text.toString()),
-            cropQuantity.text.toString(),
-            cropType.text.toString()
-        )
-        viewModel.growthFunction(growthBody).observe(viewLifecycleOwner, Observer { mResponse ->
-            val success = viewModel.successfulGrowth.value
-            if (success != null) {
-                Log.e(TAG, "In growth function and success is " + success + viewModel.messageGrowth)
-
-            }
-        })
-
-        viewModel.addFunction(body).observe(viewLifecycleOwner, Observer { mResponse ->
-
-            //Check with the sucessful of it
-            if (viewModel.successful.value == false) {
-                createSnackbar(viewModel.message.value)
-            } else {
-                manageStockCreateResponses(viewModel.addStock.value)
-            }
-        })
-
-
-    }
-
     private fun manageStockCreateResponses(mResponse: AddSupplyResponse?) {
         //On creating this stock
-        Toast.makeText(context, resources.getString(R.string.supplyAdded), Toast.LENGTH_SHORT)
-            .show()
-        onDestroy()
 
+        Log.e("GROW", "In supply success")
+        Toast.makeText(this, resources.getString(R.string.supplyAdded), Toast.LENGTH_SHORT)
+            .show()
+        destroyActivity()
+    }
+
+    private fun destroyActivity() {
+
+        Log.e("GROW", "In on destroy")
+        onBackPressed()
     }
 
     private fun createSnackbar(value: String?) {
-        Snackbar.make(container_add_stock, value.toString(), Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(growth_container_grow, value.toString(), Snackbar.LENGTH_SHORT).show()
     }
 
     private fun setUpCropNameSpinner() {
@@ -331,7 +340,7 @@ class AddStock : Fragment() {
         //Crop names
 
         val array: Array<String> = resources.getStringArray(R.array.arr_crop_names)
-        val adapter: ArrayAdapter<String>? = context?.let {
+        val adapter: ArrayAdapter<String>? = this.let {
             ArrayAdapter<String>(
                 it, android.R.layout.simple_spinner_item,
                 array
@@ -373,12 +382,6 @@ class AddStock : Fragment() {
 
 
 
-        if (offerPrice.text.isEmpty()) {
-            isValid = false
-            tilPrice.error = resources.getString(R.string.offerPriceError)
-        } else {
-            tilPrice.error = null
-        }
 
 
         if (etEst.text.isEmpty()) {
@@ -389,12 +392,12 @@ class AddStock : Fragment() {
         }
 
 
-        if (root.findViewById<EditText>(R.id.etSowDate).text.isEmpty()) {
+        if (findViewById<EditText>(R.id.growth_etSowDate).text.isEmpty()) {
             isValid = false
-            root.findViewById<TextInputLayout>(R.id.tilSowDate).error =
+            findViewById<TextInputLayout>(R.id.growth_tilSowDate).error =
                 resources.getString(R.string.etSowError)
         } else {
-            root.findViewById<TextInputLayout>(R.id.tilSowDate).error = null
+            findViewById<TextInputLayout>(R.id.growth_tilSowDate).error = null
         }
 
 
@@ -405,15 +408,26 @@ class AddStock : Fragment() {
 //            tilAddress.error = null
 //        }
 
-        //    if (bidSwitch.isChecked) {
 
-        if (etExp.text.isEmpty()) {
-            isValid = false
-            tilExp.error = resources.getString(R.string.expError)
-        } else {
-            tilExp.error = null
+        if (bidSwitch.isChecked) {
+
+            if (etExp.text.isEmpty()) {
+                isValid = false
+                tilExp.error = resources.getString(R.string.expError)
+            } else {
+                tilExp.error = null
+            }
+
+
+            if (offerPrice.text.isEmpty()) {
+                isValid = false
+                tilPrice.error = resources.getString(R.string.offerPriceError)
+            } else {
+                tilPrice.error = null
+            }
+
+
         }
-        //  }
 
 
         return isValid
@@ -431,7 +445,7 @@ class AddStock : Fragment() {
 
         val myFormat = "dd/MM/yyyy" //In which you need put here
         val sdf = SimpleDateFormat(myFormat, Locale.US)
-        root.findViewById<EditText>(R.id.etSowDate).setText(sdf.format(myCalendar.time))
+        findViewById<EditText>(R.id.growth_etSowDate).setText(sdf.format(myCalendar.time))
 
     }
 
@@ -444,6 +458,7 @@ class AddStock : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
         //Get the map data result
         Log.e(
@@ -476,16 +491,18 @@ class AddStock : Fragment() {
 
     }
 
-    override fun onDestroy() {
 
-        //Now we need to destroy this fragment and on resume of home, go to remove views
-        Log.e(TAG, "In on destroy")
-        val navController = findNavController()
-        navController.navigateUp()
+    override fun onBackPressed() {
+        super.onBackPressed()
+
         viewModel.successful.removeObservers(this)
         viewModel.successful.value = null
 
+        viewModel.successfulGrowth.removeObservers(this)
+        viewModel.successfulGrowth.value = null
 
-        super.onDestroy()
+
+
+        finish()
     }
 }

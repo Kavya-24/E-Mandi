@@ -23,6 +23,13 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeoutException
 
+//import org.apache.http.HttpResponse;
+//import org.apache.http.HttpStatus;
+//import org.apache.http.client.HttpClient;
+//import org.apache.http.client.methods.HttpGet;
+//import org.apache.http.impl.client.DefaultHttpClient;
+//import org.apache.http.util.EntityUtils;
+
 
 object ExternalUtils {
 
@@ -70,6 +77,29 @@ object ExternalUtils {
     }
 
     @SuppressLint("SimpleDateFormat")
+    fun convertDateTimestampUtil(timestamp: String): Date? {
+        val calendar = Calendar.getInstance()
+        val timezone = TimeZone.getTimeZone("UTC")
+        val timeDestinationZone = calendar.timeZone
+        val sourceFormat =
+            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+
+        sourceFormat.timeZone = timezone
+        val convertedDate = sourceFormat.parse(timestamp)!!
+
+        val destFormat =
+            SimpleDateFormat("dd-MM-yy HH:mm")
+        destFormat.timeZone = timeDestinationZone
+
+        val resultDate = destFormat.format(convertedDate)
+
+        Log.e("ExternalUtils", resultDate)
+
+        return destFormat.parse(resultDate)
+
+    }
+
+    @SuppressLint("SimpleDateFormat")
     fun convertTimeToEpoch(timestamp: String): String {
 
         val calendar = Calendar.getInstance()
@@ -82,12 +112,47 @@ object ExternalUtils {
 
         sourceFormat.timeZone = timezone
         val convertedDate = sourceFormat.parse(timestamp)!!
+
         destFormat.timeZone = timeDestinationZone
         Log.e("Timezone", timezone.toString() + timeDestinationZone.toString())
         return destFormat.format(convertedDate)
 
 
     }
+
+//    @RequiresApi(Build.VERSION_CODES.O)
+//    fun convertTimestampToDate(timestamp: String): Date? {
+//
+//        val formatter = DateTimeFormatter.ofPattern(
+//            "dd-MMM-yyyy",
+//            Locale(PreferenceUtil.getLanguageFromPreference()) ?: Locale.ENGLISH
+//        )
+//        val ts = convertTimeToEpoch(timestamp)
+//        val localDate = LocalDate.parse(ts, formatter)
+//
+//        return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
+//
+//    }
+
+    fun convertLastModified(timestamp: String): String {
+
+        val calendar = Calendar.getInstance()
+        val timezone = TimeZone.getTimeZone("UTC")
+        val timeDestinationZone = calendar.timeZone
+        val sourceFormat =
+            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        val destFormat =
+            SimpleDateFormat("dd-MMM-yyyy HH:mm")
+
+        sourceFormat.timeZone = timezone
+        val convertedDate = sourceFormat.parse(timestamp)!!
+        destFormat.timeZone = timeDestinationZone
+        Log.e("Timezone", timezone.toString() + timeDestinationZone.toString())
+        return destFormat.format(convertedDate)
+
+
+    }
+
 
     fun validateName(string: String): Boolean {
         //Check if the name has only alphabets and not special characters or numbers
@@ -200,7 +265,6 @@ object ExternalUtils {
 //                val response = JSONObject(EntityUtils.toString(hr.getEntity()))
 //                translated = response.getJSONObject("responseData").getString("translatedText")
 //            }
-//
 
 
         } catch (e: Exception) {
