@@ -19,21 +19,21 @@
             android:layout_weight="1"
             android:text="@string/_918" />
 
-        <!--        <TextView-->
-        <!--            android:id="@+id/item_history_name"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginStart="@dimen/space_half"-->
-        <!--            android:layout_weight="2.5"-->
-        <!--            android:maxLines="2"-->
-        <!--            android:text="@string/hello_world_person" />-->
-
         <TextView
-            android:id="@+id/item_history_time"
+            android:id="@+id/item_history_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="@string/_12_4_2005" />
+            android:layout_marginStart="@dimen/space_half"
+            android:layout_weight="2.5"
+            android:maxLines="2"
+            android:text="@string/hello_world_person" />
+
+        <!--        <TextView-->
+        <!--            android:id="@+id/item_history_time"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_weight="2"-->
+        <!--            android:text="@string/_12_4_2005" />-->
 
         <TextView
             android:id="@+id/item_history_amount"
@@ -43,6 +43,13 @@
             android:text="@string/rs_45602"
             android:textStyle="bold" />
 
+        <ImageView
+            android:id="@+id/item_history_call"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:cropToPadding="true"
+            android:src="@drawable/ic_info_outline_black_24dp" />
 
     </TableRow>
 </androidx.constraintlayout.widget.ConstraintLayout>

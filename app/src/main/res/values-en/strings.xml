@@ -165,4 +165,5 @@
     <string name="lastModified">Last Modified</string>
     <string name="variety">"Variety: "</string>
     <string name="time">Time</string>
+    <string name="call">Call</string>
 </resources>

@@ -97,6 +97,7 @@ data class ViewSupplyResponse(
             val v: Int // 0
         ) {
             data class Bidder(
+
                 @Json(name = "address")
                 val address: String, // b381, asia
                 @Json(name = "district")

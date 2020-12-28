@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
 import com.example.mandiexe.adapter.MyBidHistoryAdapter
 import com.example.mandiexe.adapter.OnBidHistoryClickListener
+import com.example.mandiexe.models.body.BidHistoryBody
 import com.example.mandiexe.models.body.supply.DeleteSupplyBody
 import com.example.mandiexe.models.body.supply.ModifySupplyBody
 import com.example.mandiexe.models.body.supply.ViewSupplyBody
@@ -100,9 +102,19 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
         }
 
+        root.findViewById<ImageView>(R.id.iv_dropdown_bid_history).setOnClickListener {
+
+            //Open the history
+            openBidHistory()
+
+        }
+
+
+
         root.findViewById<MaterialButton>(R.id.mtb_cancel_stock).setOnClickListener {
             cancelStock()
         }
+
 
 
         root.findViewById<MaterialButton>(R.id.mtb_modify_stock).setOnClickListener {
@@ -115,6 +127,12 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
     private fun openBidHistory() {
 
         root.findViewById<RecyclerView>(R.id.rv_bidHistory).visibility = View.VISIBLE
+        root.findViewById<TextView>(R.id.tv_view_bid_history_stocks).text =
+            resources.getString(R.string.myBidHistory)
+
+        root.findViewById<ImageView>(R.id.iv_dropdown_bid_history)
+            .setImageDrawable(resources.getDrawable(R.drawable.ic_top))
+
         if (adapter.lst.size == 0) {
             ExternalUtils.createSnackbar(
                 resources.getString(R.string.emptyRV),
@@ -413,20 +431,28 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
         mPrice = value.supply.askPrice.toString()
 
         fillRecyclerView(value.supply.bids)
-        createGraphView(value.supply.bids)
+        createGraphView(value.supply.lastBid, value.supply.currentBid, value.supply.lastModified)
     }
 
-    private fun createGraphView(item: List<ViewSupplyResponse.Supply.Bid>) {
+    private fun createGraphView(
+        item: List<ViewSupplyResponse.Supply.LastBid>,
+        currentBid: Int,
+        lastModified: String
+    ) {
 
         val calendar = Calendar.getInstance()
-        val series: LineGraphSeries<DataPoint> = LineGraphSeries<DataPoint>(getSeriesPoints(item))
+        val mList = item.toMutableList()
+        mList.add(ViewSupplyResponse.Supply.LastBid(currentBid, "", lastModified))
+
+        val series: LineGraphSeries<DataPoint> = LineGraphSeries<DataPoint>(getSeriesPoints(mList))
 
         Log.e(TAG, "Series is given by " + series.toString())
 
         graph.addSeries(series)
 
-        graph.gridLabelRenderer.horizontalAxisTitle = resources.getString(R.string.time)
-        graph.gridLabelRenderer.verticalAxisTitle = resources.getString(R.string.price_rs)
+
+        // graph.gridLabelRenderer.horizontalAxisTitle = resources.getString(R.string.time)
+        // graph.gridLabelRenderer.verticalAxisTitle = resources.getString(R.string.price_rs)
 
         graph.gridLabelRenderer.labelFormatter = object : DefaultLabelFormatter() {
             override fun formatLabel(value: Double, isValueX: Boolean): String {
@@ -444,13 +470,18 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
         graph.viewport.isScalable = true
         graph.viewport.setScalableY(true)
         graph.gridLabelRenderer.numHorizontalLabels = numberOfBid
+        graph.gridLabelRenderer.labelsSpace = 20
 
 
         Log.e(TAG, numberOfBid.toString() + "Number ")
         graph.gridLabelRenderer.setHorizontalLabelsAngle(90)
 
         // set manual x bounds to have nice steps
-        //graph.getViewport().setMinX(getInitialDate(item).time.toDouble());
+        ExternalUtils.convertDateTimestampUtil(item.get(0).timestamp)?.time?.toDouble()?.let {
+            graph.viewport.setMinX(
+                it
+            )
+        }
         //graph.getViewport().setMaxX(getEndingDate(item).time.toDouble());
         //graph.getViewport().setXAxisBoundsManual(true);
 
@@ -461,61 +492,23 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
     }
 
-    private fun getEndingDate(item: List<ViewSupplyResponse.Supply.Bid>): Date {
 
-        if (item.size != 0) {
-            Log.e(
-                TAG,
-                "Ending date " + ExternalUtils.convertDateTimestampUtil(
-                    item.get(item.size - 1).bids.get(item.size - 1).timestamp
-                ).toString()
-            )
-            return ExternalUtils.convertDateTimestampUtil(
-                item.get(item.size - 1).bids.get(item.size - 1).timestamp
-            )!!
-        }
-        return Date()
-    }
-
-
-    private fun getInitialDate(item: List<ViewSupplyResponse.Supply.Bid>): Date {
-
-        if (item.size != 0) {
-            Log.e(
-                TAG,
-                "Starting adte date " + ExternalUtils.convertDateTimestampUtil(
-                    item.get(0).bids.get(
-                        0
-                    ).timestamp
-                )
-            )
-            return ExternalUtils.convertDateTimestampUtil(item.get(0).bids.get(0).timestamp)!!
-        }
-
-        return Date()
-    }
-
-
-    private fun getSeriesPoints(item: List<ViewSupplyResponse.Supply.Bid>): Array<DataPoint>? {
+    private fun getSeriesPoints(item: MutableList<ViewSupplyResponse.Supply.LastBid>): Array<DataPoint>? {
 
         val arrayDataPoints: MutableList<DataPoint> = mutableListOf()
 
 
         for (element in item) {
 
+            numberOfBid++
 
-            for (j in element.bids) {
-
-                numberOfBid++
-
-                arrayDataPoints.add(
-                    DataPoint(
-                        ExternalUtils.convertDateTimestampUtil(j.timestamp),
-                        j.amount.toDouble()
-                    )
+            arrayDataPoints.add(
+                DataPoint(
+                    ExternalUtils.convertDateTimestampUtil(element.timestamp),
+                    element.amount.toDouble()
                 )
+            )
 
-            }
         }
 
 
@@ -531,16 +524,29 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
         adapter = MyBidHistoryAdapter(this)
 
         //Create list
-        val mBids: MutableList<ViewSupplyResponse.Supply.Bid.BidDetails> = mutableListOf()
+        val mBids: MutableList<BidHistoryBody> = mutableListOf()
+
 
         for (element in bids) {
-            mBids.add(element.bids.get(element.bids.size - 1))
+            val x = element.bids.get(element.bids.size - 1)
+            mBids.add(
+                BidHistoryBody(
+                    x.amount,
+                    x._id,
+                    x.timestamp,
+                    element.bidder.name,
+                    element.bidder.phone,
+                    element.bidder.address
+                )
+            )
         }
+
+        mBids.sortByDescending { it.amount }
+        Log.e(TAG, mBids.toString())
 
         adapter.lst = mBids
         rv.adapter = adapter
     }
-
 
     override fun onDestroy() {
 
@@ -563,7 +569,7 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
     }
 
-    override fun viewBidDetails(_listItem: ViewSupplyResponse.Supply.Bid.BidDetails) {
+    override fun viewBidDetails(_listItem: BidHistoryBody) {
         //The farmer can view the bids from here
 
     }
