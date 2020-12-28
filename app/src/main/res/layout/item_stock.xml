@@ -8,131 +8,16 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/space"
         android:elevation="@dimen/space"
+        android:id="@+id/cv_item_stock"
+        app:cardBackgroundColor="@color/bgCard"
         app:cardCornerRadius="@dimen/space_half">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/space"
-            android:background="@color/white"
             android:padding="@dimen/space_half">
 
-            <!--        <LinearLayout-->
-            <!--            android:layout_width="match_parent"-->
-            <!--            android:layout_height="match_parent"-->
-            <!--            android:orientation="vertical"-->
-            <!--            app:layout_constraintTop_toTopOf="parent">-->
-
-            <!--            <TableLayout-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content">-->
-
-            <!--                <TableRow-->
-            <!--                    android:layout_margin="@dimen/space"-->
-            <!--                    android:padding="@dimen/space">-->
-
-            <!--                    <TextView-->
-            <!--                        style="@style/styleTextViewHeadingItem"-->
-            <!--                        android:text="@string/crop"-->
-            <!--                        android:textStyle="bold" />-->
-
-            <!--                    <TextView-->
-            <!--                        style="@style/styleTextViewHeadingItem"-->
-            <!--                        tools:text="@tools:sample/full_names" />-->
-            <!--                </TableRow>-->
-
-            <!--                <TableRow-->
-            <!--                    android:layout_margin="@dimen/space"-->
-            <!--                    android:padding="@dimen/space">-->
-
-            <!--                    <TextView-->
-            <!--                        style="@style/styleTextViewHeadingItem"-->
-            <!--                        android:text="@string/quantity"-->
-            <!--                        android:textStyle="bold" />-->
-
-            <!--                    <TextView-->
-            <!--                        style="@style/styleTextViewHeadingItem"-->
-            <!--                        tools:text="@tools:sample/full_names" />-->
-            <!--                </TableRow>-->
-
-            <!--                <TableRow-->
-            <!--                    android:layout_margin="@dimen/space"-->
-            <!--                    android:padding="@dimen/space">-->
-
-            <!--                    <TextView-->
-            <!--                        style="@style/styleTextViewHeadingItem"-->
-            <!--                        android:text="@string/location"-->
-            <!--                        android:textStyle="bold" />-->
-
-            <!--                    <TextView-->
-            <!--                        style="@style/styleTextViewHeadingItem"-->
-            <!--                        tools:text="@tools:sample/full_names" />-->
-            <!--                </TableRow>-->
-
-            <!--                <TableRow-->
-            <!--                    android:layout_margin="@dimen/space"-->
-            <!--                    android:padding="@dimen/space">-->
-
-            <!--                    <TextView-->
-            <!--                        style="@style/styleTextViewHeadingItem"-->
-            <!--                        android:text="@string/price"-->
-            <!--                        android:textStyle="bold" />-->
-
-            <!--                    <TextView-->
-            <!--                        style="@style/styleTextViewHeadingItem"-->
-            <!--                        tools:text="@tools:sample/full_names" />-->
-            <!--                </TableRow>-->
-
-            <!--                <TableRow-->
-            <!--                    android:layout_margin="@dimen/space"-->
-            <!--                    android:padding="@dimen/space">-->
-
-            <!--                    <TextView-->
-            <!--                        style="@style/styleTextViewHeadingItem"-->
-            <!--                        android:text="@string/expected_ready"-->
-            <!--                        android:textStyle="bold" />-->
-
-            <!--                    <TextView-->
-            <!--                        style="@style/styleTextViewHeadingItem"-->
-            <!--                        tools:text="@tools:sample/full_names" />-->
-            <!--                </TableRow>-->
-
-            <!--                <TableRow-->
-            <!--                    android:layout_margin="@dimen/space"-->
-            <!--                    android:padding="@dimen/space">-->
-
-            <!--                    <TextView-->
-            <!--                        style="@style/styleTextViewHeadingItem"-->
-            <!--                        android:text="@string/date_posted"-->
-            <!--                        android:textStyle="bold" />-->
-
-            <!--                    <TextView-->
-            <!--                        style="@style/styleTextViewHeadingItem"-->
-            <!--                        tools:text="@tools:sample/full_names" />-->
-            <!--                </TableRow>-->
-
-            <!--                <TableRow-->
-            <!--                    android:layout_margin="@dimen/space"-->
-            <!--                    android:padding="@dimen/space">-->
-
-            <!--                    <TextView-->
-            <!--                        style="@style/styleTextViewHeadingItem"-->
-            <!--                        android:text="@string/contact"-->
-            <!--                        android:textStyle="bold" />-->
-
-            <!--                    <TextView-->
-            <!--                        style="@style/styleTextViewHeadingItem"-->
-            <!--                        tools:text="@tools:sample/full_names" />-->
-
-            <!--                    <ImageView-->
-            <!--                        style="@style/styleProgressBar"-->
-            <!--                        android:src="@drawable/ic_arrow_forward" />-->
-
-            <!--                </TableRow>-->
-
-
-            <!--            </TableLayout>-->
-            <!--        </LinearLayout>-->
 
             <TextView
                 android:id="@+id/tv_stock_crop_name"
@@ -182,7 +67,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/space"
-                android:layout_marginTop="@dimen/space_half"
                 app:layout_constraintBottom_toBottomOf="@id/mType"
                 app:layout_constraintStart_toEndOf="@id/mType"
                 app:layout_constraintTop_toTopOf="@id/mType"
@@ -194,7 +78,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space"
                 android:text="@string/quantity2"
-                android:textSize="24sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_stock_crop_type" />
 
@@ -204,7 +87,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/space"
                 android:text="@string/_0_kg"
-                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="@id/tv_stock_quantity"
                 app:layout_constraintStart_toEndOf="@id/tv_stock_quantity"
                 app:layout_constraintTop_toTopOf="@id/tv_stock_quantity" />
@@ -215,7 +97,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space"
                 android:text="@string/expiration_date"
-                android:textSize="24sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_stock_quantity" />
 
@@ -225,7 +106,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/space"
                 android:text="@string/_12_4_2005"
-                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="@id/tv_stock_expiration"
                 app:layout_constraintStart_toEndOf="@id/tv_stock_expiration"
                 app:layout_constraintTop_toTopOf="@id/tv_stock_expiration" />

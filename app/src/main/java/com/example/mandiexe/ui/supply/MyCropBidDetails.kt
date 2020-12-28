@@ -67,6 +67,9 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
     private var SUPPLY_ID = ""
     private val TAG = MyCropBidDetails::class.java.simpleName
     private var modifyBody = ModifySupplyBody.Update(0, "", "", "", "")
+
+    private var mPrice = ""
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -270,14 +273,26 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
         d.setPositiveButton(resources.getString(R.string.modifyCrop)) { _, _ ->
 
-            // if (isValidate()) {
-            modifyBody = ModifySupplyBody.Update(
-                offerPrice.text.toString().toInt(),
-                cropType.toString(),
-                desc.text.toString(),
-                ExternalUtils.convertDateToReqForm(etExp.text.toString()),
-                ExternalUtils.convertDateToReqForm(etEst.text.toString())
-            )
+            if (offerPrice.text.toString() != "") {
+                modifyBody = ModifySupplyBody.Update(
+                    offerPrice.text.toString().toInt(),
+                    cropType.toString(),
+                    desc.text.toString(),
+                    ExternalUtils.convertDateToReqForm(etExp.text.toString()),
+                    ExternalUtils.convertDateToReqForm(etEst.text.toString())
+                )
+
+            } else {
+
+                modifyBody = ModifySupplyBody.Update(
+                    mPrice.toInt(),
+                    cropType.toString(),
+                    desc.text.toString(),
+                    ExternalUtils.convertDateToReqForm(etExp.text.toString()),
+                    ExternalUtils.convertDateToReqForm(etEst.text.toString())
+                )
+
+            }
             confirmModify()
 
             //}
@@ -393,6 +408,7 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
         root.findViewById<TextView>(R.id.tv_stock_detail_initial_offer_price).text =
             value.supply.askPrice.toString()
+        mPrice = value.supply.askPrice.toString()
 
         fillRecyclerView(value.supply.bids)
         createGraph(value.supply.bids)

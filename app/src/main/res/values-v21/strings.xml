@@ -21,7 +21,7 @@
     <string name="which_crop">Which Crop</string>
     <string name="str_my_crops">My crops</string>
     <string name="str_my_req">Buyers</string>
-    <string name="crop_type">Crop Type</string>
+    <string name="crop_type">Variety</string>
     <string name="expiration_date">Expiration date</string>
     <string name="estimated_time_of_completion">Estimated time of completion</string>
     <string name="offer_price">Offer Price</string>

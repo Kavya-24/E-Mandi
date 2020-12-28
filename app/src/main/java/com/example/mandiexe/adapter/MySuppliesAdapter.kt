@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
 import com.example.mandiexe.models.responses.supply.FarmerSuppliesResponse
@@ -30,6 +31,7 @@ class MySuppliesAdapter(val itemClick: OnMyStockClickListener) :
         val CROP_LAST_UPDATED = itemView.findViewById<TextView>(R.id.tv_stock_last_upadted)
         val CROP_DELTA = itemView.findViewById<TextView>(R.id.tv_my_crop_delta)
         val CROP_CHANGE = itemView.findViewById<ImageView>(R.id.iv_stock_image)
+        val CROP_CARD = itemView.findViewById<CardView>(R.id.cv_item_stock)
 
 
         //Bind a single item
@@ -57,16 +59,17 @@ class MySuppliesAdapter(val itemClick: OnMyStockClickListener) :
                         CROP_DELTA.text = "+" + ans.toString()
                         CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.green_A700))
                         CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.green_A700))
+                        CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightGreenTest))
                     } else if (ans < 0) {
                         CROP_DELTA.text = ans.toString()
                         CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.red_A700))
                         CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.red_A700))
-
+                        CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightRedMono))
                     } else if (ans == 0) {
                         CROP_DELTA.text = ans.toString()
                         CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.blue_A700))
                         CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.blue_A700))
-
+                        CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightGreenTest))
                     }
 
                 } else {
@@ -74,6 +77,7 @@ class MySuppliesAdapter(val itemClick: OnMyStockClickListener) :
                     CROP_DELTA.text = "-"
                     CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.blue_A700))
                     CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.blue_A700))
+                    CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightGreenTest))
                 }
 
 

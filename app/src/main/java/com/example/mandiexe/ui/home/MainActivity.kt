@@ -29,6 +29,10 @@ import com.example.mandiexe.R
 import com.example.mandiexe.interfaces.RetrofitClient
 import com.example.mandiexe.models.body.supply.CropSearchAutoCompleteBody
 import com.example.mandiexe.models.responses.supply.CropSearchAutocompleteResponse
+import com.example.mandiexe.ui.myrequirements.RequirementFragment
+import com.example.mandiexe.ui.supply.AddStock
+import com.example.mandiexe.ui.supply.MyCropBidDetails
+import com.example.mandiexe.ui.supply.MySuppliesFragment
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.Communicator
 import com.example.mandiexe.utils.ExternalUtils
@@ -264,7 +268,7 @@ class MainActivity : AppCompatActivity(), Communicator {
         when (item.itemId) {
 
             R.id.action_change_language -> changeLanguage()
-            R.id.action_notification -> showNotification()
+            //  R.id.action_notification -> showNotification()
             R.id.action_show_walkthrough -> showWalkthrough()
             R.id.action_main_search -> searchCrop()
 
@@ -389,6 +393,23 @@ class MainActivity : AppCompatActivity(), Communicator {
     //Comunicator function
     override fun goToAddStocks(fragment: Fragment) {
 
+
+    }
+
+
+    override fun onBackPressed() {
+
+
+        if (findFragment() == AddStock::class.java.simpleName || findFragment() == MyCropBidDetails::class.java.simpleName || findFragment() == FarmerBidHistory::class.java.simpleName || findFragment() == FarmerSupplyHistory::class.java.simpleName) {
+            super.onBackPressed()
+
+        } else if (findFragment() == MySuppliesFragment::class.java.simpleName || findFragment() == RequirementFragment::class.java.simpleName) {
+            finish()
+            super.onBackPressed()
+
+        }
+
+        super.onBackPressed()
 
     }
 
