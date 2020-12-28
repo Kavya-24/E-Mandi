@@ -21,13 +21,13 @@
     <string name="which_crop">Which Crop</string>
     <string name="str_my_crops">My crops</string>
     <string name="str_my_req">Buyers</string>
-    <string name="crop_type">Variety</string>
-    <string name="expiration_date">Expiration date</string>
+    <string name="crop_type">Variety: </string>
+    <string name="expiration_date">Expiration date:</string>
     <string name="estimated_time_of_completion">Estimated time of completion</string>
     <string name="offer_price">Offer Price</string>
     <string name="rs">Rs</string>
     <string name="available_for_bidding">Available for bidding</string>
-    <string name="expDate">Expiration date of bid</string>
+    <string name="expDate">Expiration date of bid:</string>
     <string name="add_stock">Add stock</string>
     <string name="_0_kg">0 kg</string>
     <string name="quantity2">Quantity:</string>
@@ -192,6 +192,7 @@
     <string name="etSowError">Please add the date of sowing</string>
     <string name="GrowthAdded">Growth added successfully</string>
     <string name="add_growth">Add growth</string>
+    <string name="lastModified">Last Modified: </string>
 
 
 </resources>

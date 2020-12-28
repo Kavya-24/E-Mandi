@@ -162,4 +162,5 @@
     <string name="etSowError">Please add the date of sowing</string>
     <string name="GrowthAdded">Growth added successfully</string>
     <string name="add_growth">Add growth</string>
+    <string name="lastModified">Last Modified</string>
 </resources>

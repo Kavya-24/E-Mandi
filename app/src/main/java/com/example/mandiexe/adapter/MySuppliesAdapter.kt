@@ -46,7 +46,8 @@ class MySuppliesAdapter(val itemClick: OnMyStockClickListener) :
                 CROP_EXP.text = ExternalUtils.convertTimeToEpoch(_listItem.expiry)
                 CROP_CURRENT_BID.text = _listItem.currentBid.toString()
                 CROP_IOP.text = _listItem.askPrice.toString()
-                CROP_LAST_UPDATED.text = ExternalUtils.convertTimeToEpoch(_listItem.lastModified)
+                CROP_LAST_UPDATED.text = ExternalUtils.convertLastModified(_listItem.lastModified)
+
 
                 if (currentBid != 0) {
 
@@ -56,20 +57,29 @@ class MySuppliesAdapter(val itemClick: OnMyStockClickListener) :
 
 
                     if (ans > 0) {
+
                         CROP_DELTA.text = "+" + ans.toString()
-                        CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.green_A700))
-                        CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.green_A700))
+                        CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaGreen))
+                        CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaGreen))
                         CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightGreenTest))
+
                     } else if (ans < 0) {
+
                         CROP_DELTA.text = ans.toString()
-                        CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.red_A700))
-                        CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.red_A700))
+                        CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
+                        CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaRed))
                         CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightRedMono))
+                        CROP_CURRENT_BID.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
+                        CROP_IOP.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
+
+
                     } else if (ans == 0) {
+
                         CROP_DELTA.text = ans.toString()
                         CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.blue_A700))
                         CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.blue_A700))
                         CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightGreenTest))
+
                     }
 
                 } else {

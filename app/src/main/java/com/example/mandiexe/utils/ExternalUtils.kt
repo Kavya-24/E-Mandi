@@ -31,7 +31,6 @@ import java.util.concurrent.TimeoutException
 //import org.apache.http.util.EntityUtils;
 
 
-
 object ExternalUtils {
 
     //##Access network state
@@ -96,6 +95,26 @@ object ExternalUtils {
 
 
     }
+
+    fun convertLastModified(timestamp: String): String {
+
+        val calendar = Calendar.getInstance()
+        val timezone = TimeZone.getTimeZone("UTC")
+        val timeDestinationZone = calendar.timeZone
+        val sourceFormat =
+            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        val destFormat =
+            SimpleDateFormat("dd-MMM-yyyy HH:mm")
+
+        sourceFormat.timeZone = timezone
+        val convertedDate = sourceFormat.parse(timestamp)!!
+        destFormat.timeZone = timeDestinationZone
+        Log.e("Timezone", timezone.toString() + timeDestinationZone.toString())
+        return destFormat.format(convertedDate)
+
+
+    }
+
 
     fun validateName(string: String): Boolean {
         //Check if the name has only alphabets and not special characters or numbers

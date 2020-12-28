@@ -17,7 +17,7 @@
     <string name="expected_ready">अपेक्षित तैयार तिथि</string>
     <string name="date_posted">निर्माण की तिथि</string>
     <string name="contact">संपर्क करें</string>
-    <string name="crop_value">crop_value</string>
+    <string name="crop_value"></string>
     <string name="location_value">स्थान</string>
     <string name="which_crop">कौन सी फसल</string>
     <string name="str_my_crops">मेरी फसलें</string>
@@ -162,4 +162,5 @@
     <string name="etSowError">Please add the date of sowing</string>
     <string name="GrowthAdded">Growth added successfully</string>
     <string name="add_growth">Add growth</string>
+    <string name="lastModified">Last Modified</string>
 </resources>

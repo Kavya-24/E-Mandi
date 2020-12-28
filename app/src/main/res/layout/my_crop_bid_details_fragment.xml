@@ -50,11 +50,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space"
-            android:layout_marginTop="@dimen/space_half"
             app:layout_constraintBottom_toBottomOf="@id/mDetQuantity"
             app:layout_constraintStart_toEndOf="@id/mDetQuantity"
             app:layout_constraintTop_toTopOf="@id/mDetQuantity"
-            app:layout_constraintVertical_bias="1.0"
             tools:text="Basmati" />
 
         <TextView
@@ -62,13 +60,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="@dimen/space_half"
             android:maxLines="4"
             android:text="@string/description"
             app:layout_constraintBottom_toBottomOf="@id/mCropDesc"
             app:layout_constraintStart_toEndOf="@id/mCropDesc"
-            app:layout_constraintTop_toTopOf="@id/mCropDesc"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintTop_toTopOf="@id/mCropDesc" />
 
         <TextView
             android:id="@+id/mCropDesc"
