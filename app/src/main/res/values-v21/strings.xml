@@ -196,6 +196,10 @@
     <string name="variety">"Variety: "</string>
     <string name="time">Time</string>
     <string name="call">Call</string>
+    <string name="canNotCall">Can not ake call</string>
+    <string name="permissionPhone">Permission to dial call from this app.</string>
+    <string name="permissionHead">Permission Needed</string>
+    <string name="ok">OKAY</string>
 
 
 </resources>

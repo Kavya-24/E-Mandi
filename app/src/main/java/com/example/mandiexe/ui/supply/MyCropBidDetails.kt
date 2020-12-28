@@ -72,6 +72,8 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
     private var sdf = SimpleDateFormat("dd-MM-yy HH:mm")
     private var numberOfBid = 0
+    private var isOpen = false
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -98,14 +100,20 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
         root.findViewById<TextView>(R.id.tv_view_bid_history_stocks).setOnClickListener {
 
             //Open the history
-            openBidHistory()
+            if (!isOpen) {
+                openBidHistory()
+            }
 
         }
 
         root.findViewById<ImageView>(R.id.iv_dropdown_bid_history).setOnClickListener {
 
             //Open the history
-            openBidHistory()
+            if (isOpen) {
+                openBidHistory()
+            } else {
+                closeBidHistory()
+            }
 
         }
 
@@ -124,8 +132,21 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
         return root
     }
 
+    private fun closeBidHistory() {
+        isOpen = false
+
+        root.findViewById<RecyclerView>(R.id.rv_bidHistory).visibility = View.GONE
+        root.findViewById<TextView>(R.id.tv_view_bid_history_stocks).text =
+            resources.getString(R.string.view_bid_history)
+
+        root.findViewById<ImageView>(R.id.iv_dropdown_bid_history)
+            .setImageDrawable(resources.getDrawable(R.drawable.ic_down))
+
+    }
+
     private fun openBidHistory() {
 
+        isOpen = true
         root.findViewById<RecyclerView>(R.id.rv_bidHistory).visibility = View.VISIBLE
         root.findViewById<TextView>(R.id.tv_view_bid_history_stocks).text =
             resources.getString(R.string.myBidHistory)
@@ -440,7 +461,6 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
         lastModified: String
     ) {
 
-        val calendar = Calendar.getInstance()
         val mList = item.toMutableList()
         mList.add(ViewSupplyResponse.Supply.LastBid(currentBid, "", lastModified))
 

@@ -77,8 +77,6 @@ class HomeFragment : Fragment() {
 
         tabLayout = root.findViewById<View>(R.id.tabs) as TabLayout
 
-        tabLayout.tabMode = TabLayout.MODE_FIXED
-        tabLayout.tabGravity = TabLayout.GRAVITY_FILL
 
         viewPager = root.findViewById<View>(R.id.viewpager) as ViewPager
 
