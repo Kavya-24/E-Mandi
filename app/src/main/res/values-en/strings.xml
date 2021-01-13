@@ -170,4 +170,7 @@
     <string name="permissionPhone">Permission to dial call from this app.</string>
     <string name="permissionHead">Permission Needed</string>
     <string name="ok">OKAY</string>
+	<string name="sendingOTp">"Sending OTP to "</string>
+	<string name="num_000000000">9090909090</string>
+	<string name="otpSent">OTP sent</string>
 </resources>
