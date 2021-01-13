@@ -39,22 +39,22 @@ class LanguageFragment : AppCompatActivity(), OnMyLanguageListener {
         val mLanguages: MutableList<LanguageBody> = mutableListOf()
 
         //0
-        mLanguages.add(LanguageBody("English"))
+        mLanguages.add(LanguageBody("English", "en"))
 
         //1
-        mLanguages.add(LanguageBody("हिंदी"))
+        mLanguages.add(LanguageBody("हिंदी", "hi"))
 
         //2
-        mLanguages.add(LanguageBody("বাংলা"))
+        mLanguages.add(LanguageBody("বাংলা", "bn"))
 
         //3
-        mLanguages.add(LanguageBody("मराठी"))
+        mLanguages.add(LanguageBody("मराठी", "mr"))
 
         //4 Tamil
-        mLanguages.add(LanguageBody("தமிழ்"))
+        mLanguages.add(LanguageBody("தமிழ்", "ta"))
 
         //5 Telugu
-        mLanguages.add(LanguageBody("తెలుగు"))
+        mLanguages.add(LanguageBody("తెలుగు", "te"))
 
 
         val rv = findViewById<RecyclerView>(R.id.rv_language_main)!!
@@ -74,6 +74,8 @@ class LanguageFragment : AppCompatActivity(), OnMyLanguageListener {
         ExternalUtils.setAppLocale(pref.getLanguageFromPreference().toString(), this)
         setContentView(R.layout.language_fragment)
 
+        //Change the language of the toolbar
+        setTitle(R.string.choose_language)
 
         createLanguageList()
     }

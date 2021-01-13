@@ -33,11 +33,16 @@ class LanguagesAdapter(
 
                 CARD.text = _listItem.language
 
-                if (_listItem.language == pref.getLanguageFromPreference()) {
+                Log.e(
+                    "LA",
+                    "In bind post and langugae us " + _listItem.mLocale + " pref is " + pref.getLanguageFromPreference()
+                )
+                if (_listItem.mLocale == pref.getLanguageFromPreference()) {
                     //Then add the button
                     Log.e("In language adapter", "With tick")
                     CARD.icon =
                         itemView.context.resources.getDrawable(R.drawable.ic_check_black_24dp)
+
                 }
 
                 itemView.setOnClickListener {

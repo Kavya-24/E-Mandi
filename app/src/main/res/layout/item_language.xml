@@ -7,6 +7,7 @@
     android:layout_height="@dimen/space_10x"
     android:layout_margin="@dimen/space_half"
     android:gravity="center"
+    app:iconGravity="textEnd"
     android:text="@string/english"
     android:backgroundTint="@color/colorAccent"
     app:backgroundTint="@color/colorAccent"

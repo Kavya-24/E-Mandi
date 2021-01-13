@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimary">@color/useDarkGreem</color>
+    <color name="colorPrimary">@color/greenTemp</color>
     <color name="colorPrimaryDark">@color/useDarkGreem</color>
     <color name="colorAccent">@color/colorLightGreenWhatsapp</color>
     <color name="bgGreen">@color/ivory</color>
@@ -43,4 +43,7 @@
     <!--    <color name="useGreen">#47b881</color>-->
     <!--    <color name="useGreen">#26c95c</color>-->
     <color name="useDarkGreenOriginal">#006400</color>
+
+    <!--    Dark Green-->
+    <color name="greenTemp">#006d5b</color>
 </resources>
