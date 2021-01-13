@@ -70,9 +70,23 @@ class LoginFragment : Fragment() {
 
     private fun isValidate(): Boolean {
 
-        return !etNumber.text.toString()
-            .isEmpty() && etNumber.text.toString().length == 10 && !etCode.text.toString().isEmpty()
+        return etNumber.text.toString()
+            .isNotEmpty() && etNumber.text.toString().length == 10 && etCode.text.toString()
+            .isNotEmpty() && validNumber()
 
+    }
+
+    private fun validNumber(): Boolean {
+
+        val check = etNumber.text.toString()
+
+        for (i in check) {
+            if (i != '0' && i != '1' && i != '2' && i != '3' && i != '4' && i != '5' && i != '6' && i != '7' && i != '8' && i != '9') {
+                return false
+            }
+        }
+
+        return true
     }
 
     private fun getOTP() {

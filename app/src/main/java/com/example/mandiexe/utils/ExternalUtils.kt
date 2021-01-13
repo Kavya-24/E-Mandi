@@ -155,7 +155,7 @@ object ExternalUtils {
 
 
     fun validateName(string: String): Boolean {
-        //Check if the name has only alphabets and not special characters or numbers
+////        Check if the name has only alphabets and not special characters or numbers
 //
 //        for (c in string) {
 //            if (c !in 'A'..'Z' && c !in 'a'..'z' && c != ' ') {
