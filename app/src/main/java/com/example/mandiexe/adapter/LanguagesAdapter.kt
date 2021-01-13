@@ -1,11 +1,13 @@
 package com.example.mandiexe.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
 import com.example.mandiexe.models.body.LanguageBody
+import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.google.android.material.button.MaterialButton
 
 class LanguagesAdapter(
@@ -22,12 +24,21 @@ class LanguagesAdapter(
         //Use other items you want the layout to inflate
         val CARD = itemView.findViewById<MaterialButton>(R.id.mtb_item_language)
 
+        //The shared prefernece is empty first
+        private val pref = PreferenceUtil
 
         //Bind a single item
         fun bindPost(_listItem: LanguageBody, itemClick: OnMyLanguageListener, position: Int) {
             with(_listItem) {
 
                 CARD.text = _listItem.language
+
+                if (_listItem.language == pref.getLanguageFromPreference()) {
+                    //Then add the button
+                    Log.e("In language adapter", "With tick")
+                    CARD.icon =
+                        itemView.context.resources.getDrawable(R.drawable.ic_check_black_24dp)
+                }
 
                 itemView.setOnClickListener {
 

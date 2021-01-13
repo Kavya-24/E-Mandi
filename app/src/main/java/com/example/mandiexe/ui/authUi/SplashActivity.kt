@@ -13,7 +13,7 @@ class SplashActivity : AppCompatActivity() {
 
     private lateinit var handler: Handler
     private lateinit var runnable: Runnable
-    private var splash_display_time: Long = 500
+    private var splash_display_time: Long = 1000
     private val preferenceManager: PreferenceManager = PreferenceManager()
     private val TAG = SplashActivity::class.java.simpleName
 
@@ -41,7 +41,7 @@ class SplashActivity : AppCompatActivity() {
 
         val intent = if (preferenceManager.authToken!!.isEmpty()) {
             Log.e(TAG, "In no access token")
-            Intent(this, LoginActivity::class.java)
+            Intent(this, LanguageFragment::class.java)
         } else {
             Log.e(TAG, "In success atoken")
             Intent(this, MainActivity::class.java)

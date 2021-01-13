@@ -19,8 +19,8 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="@dimen/space_200"
-                android:layout_height="@dimen/space_200"
+                android:layout_width="@dimen/space_220"
+                android:layout_height="@dimen/space_220"
                 android:src="@drawable/number_image" />
 
             <TextView

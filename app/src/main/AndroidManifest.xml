@@ -40,6 +40,13 @@
             android:name=".ui.authUi.LoginActivity"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".ui.authUi.LanguageFragment"
+            android:label="@string/choose_language"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize" />
+
         <activity
             android:name=".ui.authUi.SplashActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -48,7 +55,9 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- Maps -->
+        </activity>
+
+        <!-- Maps -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/map_key" />

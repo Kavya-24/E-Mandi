@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/login_navigation"
-    app:startDestination="@+id/nav_language">
+    app:startDestination="@+id/nav_login">
 
     <fragment
         android:id="@+id/nav_login"
@@ -15,15 +15,7 @@
             android:id="@+id/action_nav_login_to_OTPFragment"
             app:destination="@id/nav_otp" />
     </fragment>
-    <fragment
-        android:id="@+id/nav_language"
-        android:name="com.example.mandiexe.ui.authUi.LanguageFragment"
-        android:label="@string/app_name"
-        tools:layout="@layout/language_fragment">
-        <action
-            android:id="@+id/action_nav_language_to_nav_login"
-            app:destination="@id/nav_login" />
-    </fragment>
+
     <fragment
         android:id="@+id/nav_otp"
         android:name="com.example.mandiexe.ui.authUi.OTPFragment"

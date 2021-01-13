@@ -14,8 +14,8 @@
 
         <ImageView
             android:id="@+id/v"
-            android:layout_width="@dimen/space_200"
-            android:layout_height="@dimen/space_200"
+            android:layout_width="@dimen/space_220"
+            android:layout_height="@dimen/space_220"
             android:src="@drawable/otp_image"
             app:layout_constraintBottom_toTopOf="@id/tv_phoneNumber"
             app:layout_constraintEnd_toEndOf="parent"

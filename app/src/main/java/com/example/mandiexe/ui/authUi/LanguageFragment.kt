@@ -1,16 +1,11 @@
 package com.example.mandiexe.ui.authUi
 
-import android.content.Context.MODE_PRIVATE
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
@@ -18,45 +13,25 @@ import com.example.mandiexe.adapter.LanguagesAdapter
 import com.example.mandiexe.adapter.OnMyLanguageListener
 import com.example.mandiexe.models.body.LanguageBody
 import com.example.mandiexe.utils.ApplicationUtils
-import com.example.mandiexe.utils.LocaleHelper
+import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.viewmodels.LanguageViewModel
 import java.util.*
 
 
-class LanguageFragment : Fragment(), OnMyLanguageListener {
+class LanguageFragment : AppCompatActivity(), OnMyLanguageListener {
 
     companion object {
         fun newInstance() = LanguageFragment()
     }
 
     private lateinit var viewModel: LanguageViewModel
-    private lateinit var root: View
     private var pref = PreferenceUtil
 
     private val TAG = LanguageFragment::class.java.simpleName
 
     //To be replaced by rv of languge
     //Default will be english
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        root = inflater.inflate(R.layout.language_fragment, container, false)
-
-
-        //Set the toolbar language
-        //(activity as AppCompatActivity).supportActionBar?.title =
-        //+  resources.getString(R.string.app_name)
-
-        createLanguageList()
-
-
-
-
-        return root
-    }
 
 
     private fun createLanguageList() {
@@ -82,19 +57,25 @@ class LanguageFragment : Fragment(), OnMyLanguageListener {
         mLanguages.add(LanguageBody("తెలుగు"))
 
 
-        val rv = root.findViewById<RecyclerView>(R.id.rv_language_main)
+        val rv = findViewById<RecyclerView>(R.id.rv_language_main)!!
+        Log.e(TAG, "Rv is " + rv.toString())
+
+        rv.layoutManager = LinearLayoutManager(this)
+
         val mAdapter = LanguagesAdapter(this)
         mAdapter.lst = mLanguages
-        rv.layoutManager = LinearLayoutManager(context)
         rv.adapter = mAdapter
 
 
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(LanguageViewModel::class.java)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        ExternalUtils.setAppLocale(pref.getLanguageFromPreference().toString(), this)
+        setContentView(R.layout.language_fragment)
 
+
+        createLanguageList()
     }
 
     override fun selectLanguage(_listItem: LanguageBody, position: Int) {
@@ -139,17 +120,15 @@ class LanguageFragment : Fragment(), OnMyLanguageListener {
 
         }
 
-        val navController = Navigation.findNavController(root)
-        navController.navigate(R.id.action_nav_language_to_nav_login)
+        //Naviagte to the new ACTRIVTY
+        val i = Intent(this, LoginActivity::class.java)
+        startActivity(i)
+        finish()
 
     }
 
     private fun recreateModel(s: String) {
-
-
-        context?.let { LocaleHelper.onAttach(it, s) }
-        requireActivity().recreate()
-
+        //Do nothing here
 
     }
 
@@ -171,7 +150,7 @@ class LanguageFragment : Fragment(), OnMyLanguageListener {
 
         Log.e(TAG, "In set local" + pref.getLanguageFromPreference().toString())
         //Now for the system
-        val editor: SharedPreferences.Editor = context?.getSharedPreferences(
+        val editor: SharedPreferences.Editor = getSharedPreferences(
             "Settings",
             MODE_PRIVATE
         )!!.edit()

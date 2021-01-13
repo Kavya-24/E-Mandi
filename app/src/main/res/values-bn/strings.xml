@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ই-ম্যান্ডি।</string>
+    <string name="app_name">ই-ম্যান্ডি</string>
     <string name="navigation_drawer_open">ওপেন ন্যাভিগেশন ড্রয়ারের</string>
     <string name="navigation_drawer_close">ন্যাভিগেশন ড্রয়ারের বন্ধ করুন</string>
     <string name="nav_header_title">অ্যান্ড্রয়েড স্টুডিও</string>
