@@ -308,6 +308,11 @@ class OTPFragment : Fragment() {
 
                     val user = task.result?.user
                     Log.e(TAG, "Firebase user made user" + user.toString())
+                    createSnackbar(
+                        resources.getString(R.string.successOTP),
+                        requireContext(),
+                        container_frag_otp
+                    )
 
                     user?.getIdToken(true)?.addOnCompleteListener { mTask ->
                         if (mTask.isSuccessful) {

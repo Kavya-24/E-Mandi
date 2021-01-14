@@ -203,6 +203,7 @@
     <string name="sendingOTp">"Sending OTP to "</string>
     <string name="num_000000000">9090909090</string>
     <string name="otpSent">OTP sent</string>
+    <string name="successOTP">OTP retrieved successfully</string>
 
 
 </resources>
