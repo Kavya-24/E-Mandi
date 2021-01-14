@@ -6,7 +6,7 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
 import com.example.mandiexe.adapter.LanguagesAdapter
@@ -60,7 +60,7 @@ class LanguageFragment : AppCompatActivity(), OnMyLanguageListener {
         val rv = findViewById<RecyclerView>(R.id.rv_language_main)!!
         Log.e(TAG, "Rv is " + rv.toString())
 
-        rv.layoutManager = LinearLayoutManager(this)
+        rv.layoutManager = GridLayoutManager(this, 2)
 
         val mAdapter = LanguagesAdapter(this)
         mAdapter.lst = mLanguages

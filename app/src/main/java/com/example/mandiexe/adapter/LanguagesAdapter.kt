@@ -45,6 +45,14 @@ class LanguagesAdapter(
 
                 }
 
+                //If this is notthe selected lagage
+                else {
+                    CARD.backgroundTintList =
+                        itemView.context.resources.getColorStateList(R.color.grey_100)
+                    CARD.setTextColor(itemView.context.resources.getColor(R.color.black))
+                }
+
+
                 itemView.setOnClickListener {
 
 
