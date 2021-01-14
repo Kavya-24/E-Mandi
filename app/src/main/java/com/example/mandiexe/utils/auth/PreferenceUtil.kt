@@ -1,6 +1,7 @@
 package com.example.mandiexe.utils.auth
 
 import android.preference.PreferenceManager
+import com.example.mandiexe.R
 import com.example.mandiexe.models.ProfileObject
 import com.example.mandiexe.models.body.AddressBlock
 import com.example.mandiexe.utils.ApplicationUtils
@@ -56,7 +57,10 @@ object PreferenceUtil {
         }
 
     var area_unit: String?
-        get() = pm.getString(AREA_UNIT, "bigha")
+        get() = pm.getString(
+            AREA_UNIT,
+            ApplicationUtils.getContext().resources.getString(R.string.bigha)
+        )
         set(value) {
             pm.edit().putString(AREA_UNIT, value).apply()
         }

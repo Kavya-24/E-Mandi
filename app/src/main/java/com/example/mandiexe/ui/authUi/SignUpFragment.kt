@@ -110,7 +110,7 @@ class SignUpFragment : Fragment() {
         val b = bundleOf(
             "TOKEN" to TOKEN,
             "PHONE" to PHONE,
-            "RC" to mapFromSignUp,
+            "RC" to mapFromSignUp,                          //For the thing that it goes from Login to Map Activity
             "NAME" to etName.text.toString(),
             "AREA" to etArea.text.toString(),
             "AREA_UNIT" to etAreaUnit.text.toString(),
@@ -156,8 +156,6 @@ class SignUpFragment : Fragment() {
         } else {
             tilAddress.error = null
         }
-
-
 
 
         return isValid
