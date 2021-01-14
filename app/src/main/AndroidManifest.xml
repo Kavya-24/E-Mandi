@@ -76,7 +76,10 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".ui.home.MapActivity" />
+        <activity
+            android:name=".ui.home.MapActivity"
+            android:label="@string/location"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

@@ -174,4 +174,9 @@
     <string name="num_000000000">9090909090</string>
     <string name="otpSent">OTP sent</string>
     <string name="successOTP">OTP retrieved successfully</string>
+    <string name="permissionRequired">Permission Required</string>
+    <string name="permissionMessageLocation">Permission to access location is required.</string>
+    <string name="allow">Allow</string>
+    <string name="unableToOpenMaps">Unable to open maps</string>
+    <string name="register">Register</string>
 </resources>
