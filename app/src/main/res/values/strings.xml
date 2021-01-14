@@ -107,14 +107,17 @@
 
     </string-array>
 
+    <string name="Hectare" translatable="false">Hectare</string>
+    <string name="acres" translatable="false">Acres</string>
+    <string name="sqrmetres" translatable="false">Sq Metres</string>
 
     <string-array name="arr_area_units">
-        <item>Hectare</item>
-        <item>Square Metres</item>
-        <item>Acres</item>
-        <item>Bigha</item>
-
+        <item>@string/Hectare</item>
+        <item>@string/bigha</item>
+        <item>@string/acres</item>
+        <item>@string/sqrmetres</item>
     </string-array>
+
 
     <string name="hello_blank_fragment" tools:ignore="MissingTranslation">Hello blank fragment</string>
     <string name="searchBuyers">Search buyers</string>

@@ -49,6 +49,7 @@ class SignUpFragment : Fragment() {
 
     private var TOKEN = ""
     private var PHONE = ""
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -74,13 +75,6 @@ class SignUpFragment : Fragment() {
         //Populate units
         populateAreaUnit()
 
-        tilAUnit.setOnClickListener {
-            etAreaUnit.showDropDown()
-        }
-
-        etAreaUnit.setOnClickListener {
-            etAreaUnit.showDropDown()
-        }
 
         root.findViewById<MaterialButton>(R.id.mtb_sign_up).setOnClickListener {
             if (isValidate()) {

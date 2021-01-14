@@ -443,13 +443,14 @@ class OTPFragment : Fragment() {
 
         Log.e(TAG, "In check response and message is " + mResponse.msg + mResponse.user)
         Log.e(TAG, "Firebase Token " + str)
+
         if (mResponse.msg == "Phone Number not registered.") {
 
-            //Remove timer
             val bundle = bundleOf(
                 "TOKEN" to str,
                 "PHONE" to phoneNumber
             )
+
             createToast(
                 resources.getString(R.string.numberVerifed),
                 requireContext(),
