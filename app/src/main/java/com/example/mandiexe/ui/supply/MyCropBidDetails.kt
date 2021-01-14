@@ -110,9 +110,9 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
             //Open the history
             if (isOpen) {
-                openBidHistory()
-            } else {
                 closeBidHistory()
+            } else {
+                openBidHistory()
             }
 
         }
@@ -497,14 +497,16 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
         graph.gridLabelRenderer.setHorizontalLabelsAngle(90)
 
         // set manual x bounds to have nice steps
-        ExternalUtils.convertDateTimestampUtil(item.get(0).timestamp)?.time?.toDouble()?.let {
-            graph.viewport.setMinX(
-                it
-            )
-        }
-        //graph.getViewport().setMaxX(getEndingDate(item).time.toDouble());
-        //graph.getViewport().setXAxisBoundsManual(true);
 
+        if (!item.isEmpty()) {
+            ExternalUtils.convertDateTimestampUtil(item.get(0).timestamp)?.time?.toDouble()?.let {
+                graph.viewport.setMinX(
+                    it
+                )
+            }
+            //graph.getViewport().setMaxX(getEndingDate(item).time.toDouble());
+            graph.viewport.isXAxisBoundsManual = true
+        }
         graph.title = resources.getString(R.string.myBidHistory)
         graph.titleColor = Color.BLACK
 

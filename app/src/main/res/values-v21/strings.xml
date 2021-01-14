@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">E-Mandi</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -21,13 +21,13 @@
     <string name="which_crop">Which Crop</string>
     <string name="str_my_crops">My crops</string>
     <string name="str_my_req">Buyers</string>
-    <string name="crop_type">Variety: </string>
+    <string name="crop_type">Variety:</string>
     <string name="expiration_date">Expiration date:</string>
     <string name="estimated_time_of_completion">Estimated time of completion</string>
     <string name="offer_price">Offer Price</string>
     <string name="rs">Rs </string>
     <string name="available_for_bidding">Available for bidding</string>
-    <string name="expDate">Expiration date of bid:</string>
+    <string name="expDate">Expiration date of bid</string>
     <string name="add_stock">Add stock</string>
     <string name="_0_kg">0 kg</string>
     <string name="quantity2">Quantity:</string>
@@ -74,29 +74,92 @@
     <string name="area">Area</string>
     <string name="emptyName">Name can not be empty</string>
     <string name="invalidName">Invalid name</string>
-    <string name="emptyAreaError" tools:ignore="MissingTranslation">Area can not be empty</string>
-    <string name="cancel" tools:ignore="MissingTranslation">Cancel</string>
-    <string name="Login" tools:ignore="MissingTranslation">Login</string>
-    <string name="changeLanguage" tools:ignore="MissingTranslation">Change langauge</string>
+    <string name="emptyAreaError">Area can not be empty</string>
+    <string name="cancel">Cancel</string>
+    <string name="Login">Login</string>
+    <string name="changeLanguage">Change langauge</string>
     <string name="changeCurrentLanguage">Change the language</string>
     <string name="helpForPage">Get a walkthrough</string>
     <string name="Notifications">Notifications</string>
     <string name="search">Search</string>
-    <string name="bigha" tools:ignore="MissingTranslation">Bigha</string>
+    <string name="bigha">Bigha</string>
     <string name="searchHint">Search crop</string>
     <string name="details">Details</string>
 
 
     <!--    //Crop name-->
+
+    <string name="rice">Rice</string>
+    <string name="wheat">Wheat</string>
+    <string name="maize">Maize</string>
+    <string name="barley">Barley</string>
+    <string name="potato">Potato</string>
+    <string name="tomato">Tomato</string>
+    <string name="onion">Onion</string>
+    <string name="sugarcane">Sugarcane</string>
+    <string name="capsicum">Capsicum</string>
+    <string name="brinjal">Brinjal</string>
+    <string name="sugar">Sugar</string>
+    <string name="bamboo">Bamboo</string>
+    <string name="raddish">Radish</string>
+    <string name="carrot">carrot</string>
+    <string name="cabbage">Cabbage</string>
+    <string name="cauliflower">Cauliflower</string>
+    <string name="pumpkin">Pumpkin</string>
+    <string name="peas">Peas</string>
+    <string name="ladyfinger">Ladyfinger</string>
+    <string name="bottleguard">Bottle Guard</string>
+    <string name="bitterguard">Bitter Guard</string>
+    <string name="spongeguard">SpongeGuard</string>
+    <string name="coriander">Coriander</string>
+    <string name="mushroom">Mushroom</string>
+    <string name="ginger">Ginger</string>
+    <string name="lemon">Lemon</string>
+    <string name="garlic">Garlic</string>
+    <string name="turdal">Tur Dal</string>
+    <string name="arhardal">Arhar Dal</string>
+    <string name="uraddal">Urad Dal</string>
+    <string name="massor">Masoor Dal</string>
+    <string name="gram">Gram</string>
+    <string name="chole">Kabuli Chane</string>
+    <string name="rajma">Kidney Beans</string>
+
+
     <string-array name="arr_crop_names">
-        <item>Rice</item>
-        <item>Wheat</item>
-        <item>Maize</item>
-        <item>Barley</item>
-        <item>Potato</item>
-        <item>Tomato</item>
-        <item>Onion</item>
-        <item>Sugarcane</item>
+        <item>@string/rice</item>
+        <item>@string/wheat</item>
+        <item>@string/maize</item>
+        <item>@string/barley</item>
+        <item>@string/potato</item>
+        <item>@string/tomato</item>
+        <item>@string/onion</item>
+        <item>@string/sugarcane</item>
+        <item>@string/capsicum</item>
+        <item>@string/brinjal</item>
+        <item>@string/sugar</item>
+        <item>@string/bamboo</item>
+        <item>@string/raddish</item>
+        <item>@string/carrot</item>
+        <item>@string/cabbage</item>
+        <item>@string/cauliflower</item>
+        <item>@string/pumpkin</item>
+        <item>@string/peas</item>
+        <item>@string/ladyfinger</item>
+        <item>@string/bottleguard</item>
+        <item>@string/bitterguard</item>
+        <item>@string/spongeguard</item>
+        <item>@string/coriander</item>
+        <item>@string/mushroom</item>
+        <item>@string/ginger</item>
+        <item>@string/lemon</item>
+        <item>@string/garlic</item>
+        <item>@string/turdal</item>
+        <item>@string/arhardal</item>
+        <item>@string/uraddal</item>
+        <item>@string/massor</item>
+        <item>@string/gram</item>
+        <item>@string/chole</item>
+        <item>@string/rajma</item>
 
     </string-array>
 
@@ -107,16 +170,19 @@
 
     </string-array>
 
+    <string name="Hectare">>Hectare</string>
+    <string name="acres">>Acres</string>
+    <string name="sqrmetres">>Sq Metres</string>
 
     <string-array name="arr_area_units">
-        <item>Hectare</item>
-        <item>Square Metres</item>
-        <item>Acres</item>
-        <item>Bigha</item>
-
+        <item>@string/Hectare</item>
+        <item>@string/bigha</item>
+        <item>@string/acres</item>
+        <item>@string/sqrmetres</item>
     </string-array>
 
-    <string name="hello_blank_fragment" tools:ignore="MissingTranslation">Hello blank fragment</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="searchBuyers">Search buyers</string>
     <string name="delta">delta</string>
     <string name="modifyBid">Modify bid</string>
@@ -125,7 +191,7 @@
     <string name="confirmation">Confirmation</string>
     <string name="tvDesc">Please note the following changes before adding the bid</string>
     <string name="initPrice">Ask Price of Crop:</string>
-    <string name="myBidPrice" tools:ignore="MissingTranslation">Price you are adding</string>
+    <string name="myBidPrice">Price you are adding</string>
     <string name="noChangeInBid">No change in bid</string>
     <string name="modifyStock">Modify stock</string>
     <string name="supplyDeleted">Crop deleted successfully</string>
@@ -149,7 +215,7 @@
     <string name="loginSuceed">Login successful</string>
     <string name="loginNew">Phone Number not registered.</string>
     <string name="_91">+91</string>
-    <string name="otpSend">The OTP has been sent to </string>
+    <string name="otpSend">The OTP has been sent to: </string>
     <string name="otpResend">Resend OTP</string>
     <string name="otpResendInit">Not triggered</string>
     <string name="resendIn">"Resend OTP in "</string>
@@ -184,7 +250,7 @@
     <string name="supplyHistorySuccess">Supply history retrieved successfully</string>
     <string name="lastPrice">Last Price</string>
     <string name="activeSupply">Stock is active</string>
-    <string name="inactiveSupply" tools:ignore="MissingTranslation">Stock is inactive</string>
+    <string name="inactiveSupply">Stock is inactive</string>
     <string name="bidHistorySucess">Retrieved Bid history successfully</string>
     <string name="activeBid">Bid is active</string>
     <string name="inactiveBid">Bid is inactive</string>
@@ -192,9 +258,10 @@
     <string name="etSowError">Please add the date of sowing</string>
     <string name="GrowthAdded">Growth added successfully</string>
     <string name="add_growth">Add growth</string>
-    <string name="lastModified">Last Modified: </string>
+    <string name="lastModified">Last Modified:</string>
     <string name="variety">"Variety: "</string>
     <string name="time">Time</string>
+    <string name="i" translatable="false">i</string>
     <string name="call">Call</string>
     <string name="canNotCall">Can not ake call</string>
     <string name="permissionPhone">Permission to dial call from this app.</string>
@@ -204,12 +271,13 @@
     <string name="num_000000000">9090909090</string>
     <string name="otpSent">OTP sent</string>
     <string name="successOTP">OTP retrieved successfully</string>
-    <string name="permissionRequired">Permission Required</string>
+    <string name="permissionRequired">Permission required</string>
     <string name="permissionMessageLocation">Permission to access location is required.</string>
     <string name="allow">Allow</string>
     <string name="unableToOpenMaps">Unable to open maps</string>
     <string name="register">Register</string>
     <string name="creatinguser">Creating User</string>
+    <string name="eMandi">E-Mandi</string>
 
 
 </resources>

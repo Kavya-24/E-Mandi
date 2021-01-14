@@ -2,7 +2,6 @@ package com.example.mandiexe.adapter
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -39,6 +38,7 @@ class MyBidHistoryAdapter(val itemClick: OnBidHistoryClickListener) :
         val NAME = itemView.findViewById<TextView>(R.id.item_history_name)
         val INFO = itemView.findViewById<ImageView>(R.id.item_history_call)
         val AMOUNT = itemView.findViewById<TextView>(R.id.item_history_amount)
+
         private val context = ApplicationUtils.getContext()
         private val permissionRequestCode = 1234
         private var mNumber = ""
@@ -77,7 +77,7 @@ class MyBidHistoryAdapter(val itemClick: OnBidHistoryClickListener) :
         private fun createDialog(_listItem: BidHistoryBody, context: Context?) {
 
             val d = context?.let { androidx.appcompat.app.AlertDialog.Builder(it) }
-            val lI = LayoutInflater.from(context)
+            val lI = LayoutInflater.from(ApplicationUtils.getContext())
             val v = lI.inflate(R.layout.layout_bidder_detail, null)
             d?.setView(v)
 
@@ -116,12 +116,11 @@ class MyBidHistoryAdapter(val itemClick: OnBidHistoryClickListener) :
             try {
 
 
-                val i = Intent(Intent.ACTION_CALL, Uri.parse(mNumber))
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                ApplicationUtils.getContext().startActivity(i)
+                val i = Intent(Intent.ACTION_CALL, Uri.fromParts("tel", mNumber, null))
+                itemView.context.startActivity(i)
 
-            } catch (e: ActivityNotFoundException) {
-
+            } catch (e: Exception) {
+                Log.e("In ADAPTER", "In except" + e)
             }
 
 
@@ -136,7 +135,7 @@ class MyBidHistoryAdapter(val itemClick: OnBidHistoryClickListener) :
 
         }
 
-        fun onRequestPermissionsResult(
+        private fun onRequestPermissionsResult(
             requestCode: Int,
             permissions: Array<out String>,
             grantResults: IntArray
@@ -151,7 +150,7 @@ class MyBidHistoryAdapter(val itemClick: OnBidHistoryClickListener) :
                             Toast.LENGTH_SHORT
                         ).show()
                     } else {
-
+                        makeCall()
                     }
 
             }

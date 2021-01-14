@@ -392,5 +392,4 @@ class MainActivity : AppCompatActivity(), Communicator {
 
     }
 
-
 }
