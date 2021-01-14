@@ -179,4 +179,5 @@
     <string name="allow">Allow</string>
     <string name="unableToOpenMaps">Unable to open maps</string>
     <string name="register">Register</string>
+    <string name="creatinguser">Creating User</string>
 </resources>

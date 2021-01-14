@@ -2,6 +2,7 @@ package com.example.mandiexe.ui.home
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.ProgressDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -75,6 +76,8 @@ class MapActivity : AppCompatActivity() {
 
     private val viewModel: MapViewmodel by viewModels()
     private val viewmodelLogin: OTViewModel by viewModels()
+
+    private lateinit var pb: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -154,6 +157,9 @@ class MapActivity : AppCompatActivity() {
         tempRef.dismiss()
         //Create a new user
 
+        pb = ProgressDialog(this)
+        pb.setMessage(resources.getString(R.string.creatinguser))
+
         val mCountry = fetchedAddress.countryName
         val mDistrict = fetchedAddress.subAdminArea
         val mState = fetchedAddress.adminArea
@@ -210,6 +216,7 @@ class MapActivity : AppCompatActivity() {
 
         })
 
+        pb.dismiss()
 
     }
 
