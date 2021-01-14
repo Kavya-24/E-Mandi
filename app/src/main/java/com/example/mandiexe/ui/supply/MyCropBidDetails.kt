@@ -462,56 +462,67 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
     ) {
 
         val mList = item.toMutableList()
-        mList.add(ViewSupplyResponse.Supply.LastBid(currentBid, "", lastModified))
 
-        val series: LineGraphSeries<DataPoint> = LineGraphSeries<DataPoint>(getSeriesPoints(mList))
+        if (item.isEmpty()) {
+            //When there are no last bids or any bids
+            graph.removeAllSeries()
+            graph.visibility = View.GONE
+            root.findViewById<TextView>(R.id.tvNoGraph).visibility = View.VISIBLE
 
-        Log.e(TAG, "Series is given by " + series.toString())
+        } else {
 
-        graph.addSeries(series)
+            mList.add(ViewSupplyResponse.Supply.LastBid(currentBid, "", lastModified))
+
+            val series: LineGraphSeries<DataPoint> =
+                LineGraphSeries<DataPoint>(getSeriesPoints(mList))
+
+            Log.e(TAG, "Series is given by " + series.toString())
+
+            graph.addSeries(series)
 
 
-        // graph.gridLabelRenderer.horizontalAxisTitle = resources.getString(R.string.time)
-        // graph.gridLabelRenderer.verticalAxisTitle = resources.getString(R.string.price_rs)
+            // graph.gridLabelRenderer.horizontalAxisTitle = resources.getString(R.string.time)
+            // graph.gridLabelRenderer.verticalAxisTitle = resources.getString(R.string.price_rs)
 
-        graph.gridLabelRenderer.labelFormatter = object : DefaultLabelFormatter() {
-            override fun formatLabel(value: Double, isValueX: Boolean): String {
+            graph.gridLabelRenderer.labelFormatter = object : DefaultLabelFormatter() {
+                override fun formatLabel(value: Double, isValueX: Boolean): String {
 
-                if (isValueX) {
-                    return sdf.format(Date(value.toLong()))
+                    if (isValueX) {
+                        return sdf.format(Date(value.toLong()))
+                    }
+                    return super.formatLabel(value, isValueX)
+
                 }
-                return super.formatLabel(value, isValueX)
 
             }
 
-        }
-
-        //Enable scrolling and zooming
-        graph.viewport.isScalable = true
-        graph.viewport.setScalableY(true)
-        graph.gridLabelRenderer.numHorizontalLabels = numberOfBid
-        graph.gridLabelRenderer.labelsSpace = 20
+            //Enable scrolling and zooming
+            graph.viewport.isScalable = true
+            graph.viewport.setScalableY(true)
+            graph.gridLabelRenderer.numHorizontalLabels = numberOfBid
+            graph.gridLabelRenderer.labelsSpace = 20
 
 
-        Log.e(TAG, numberOfBid.toString() + "Number ")
-        graph.gridLabelRenderer.setHorizontalLabelsAngle(90)
+            Log.e(TAG, numberOfBid.toString() + "Number ")
+            graph.gridLabelRenderer.setHorizontalLabelsAngle(90)
 
-        // set manual x bounds to have nice steps
+            // set manual x bounds to have nice steps
 
-        if (!item.isEmpty()) {
-            ExternalUtils.convertDateTimestampUtil(item.get(0).timestamp)?.time?.toDouble()?.let {
-                graph.viewport.setMinX(
-                    it
-                )
+            if (!item.isEmpty()) {
+                ExternalUtils.convertDateTimestampUtil(item.get(0).timestamp)?.time?.toDouble()
+                    ?.let {
+                        graph.viewport.setMinX(
+                            it
+                        )
+                    }
+                //graph.getViewport().setMaxX(getEndingDate(item).time.toDouble());
+                graph.viewport.isXAxisBoundsManual = true
             }
-            //graph.getViewport().setMaxX(getEndingDate(item).time.toDouble());
-            graph.viewport.isXAxisBoundsManual = true
+            graph.title = resources.getString(R.string.myBidHistory)
+            graph.titleColor = Color.BLACK
+
+            graph.gridLabelRenderer.labelHorizontalHeight = 300
         }
-        graph.title = resources.getString(R.string.myBidHistory)
-        graph.titleColor = Color.BLACK
-
-        graph.gridLabelRenderer.labelHorizontalHeight = 300
-
     }
 
 
