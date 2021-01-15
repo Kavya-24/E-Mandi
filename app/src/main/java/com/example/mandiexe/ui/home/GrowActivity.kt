@@ -15,8 +15,10 @@ import com.example.mandiexe.models.body.supply.AddSupplyBody
 import com.example.mandiexe.models.responses.supply.AddSupplyResponse
 import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.utils.ExternalUtils.createToast
+import com.example.mandiexe.utils.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.viewmodels.AddStockViewModel
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
@@ -64,6 +66,7 @@ class GrowActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setAppLocale(pref.getLanguageFromPreference(), this)
         setContentView(R.layout.activity_grow)
 
         //UI Init
@@ -84,6 +87,15 @@ class GrowActivity : AppCompatActivity() {
         //tilAddress = findViewById(R.id.growth_tv_address)
         tilEst = findViewById(R.id.growth_tilEstDate)
         tilExp = findViewById(R.id.growth_tilExpDate)
+
+        //Toolbar configuration
+        val tb = findViewById<Toolbar>(R.id.toolbarExternal)
+        tb.setTitle(R.string.add_growth)
+        tb.setNavigationOnClickListener {
+            onBackPressed()
+        }
+
+        val aBar = findViewById<AppBarLayout>(R.id.appbarlayoutExternal)
 
 
         //Populate views

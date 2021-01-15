@@ -228,6 +228,7 @@
     <string name="gram"></string>
     <string name="chole"></string>
     <string name="rajma"></string>
+    <string name="desc">Update the crop details</string>
 
     <string-array name="arr_crop_names">
         <item>@string/rice</item>

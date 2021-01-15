@@ -278,6 +278,7 @@
     <string name="register">Register</string>
     <string name="creatinguser">Creating User</string>
     <string name="eMandi">E-Mandi</string>
+    <string name="desc">Update the crop details</string>
 
 
 </resources>

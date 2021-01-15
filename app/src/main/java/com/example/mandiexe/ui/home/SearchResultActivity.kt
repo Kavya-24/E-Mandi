@@ -6,7 +6,9 @@ import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
@@ -18,6 +20,7 @@ import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.utils.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.auth.SessionManager
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import retrofit2.Call
 import retrofit2.Response
@@ -41,7 +44,14 @@ class SearchResultActivity : AppCompatActivity() {
         args = intent?.getBundleExtra("bundle")!!
         crop = args.getString("crop").toString()
 
-        supportActionBar?.title = crop
+        val tb = findViewById<Toolbar>(R.id.toolbarExternal)
+        tb.title = crop
+        tb.setNavigationOnClickListener {
+            onBackPressed()
+        }
+
+        val aBar = findViewById<AppBarLayout>(R.id.appbarlayoutExternal)
+
 
 
 
@@ -99,6 +109,7 @@ class SearchResultActivity : AppCompatActivity() {
 
     private fun loadItemsFunction(response: SearchGlobalCropResponse) {
 
+        findViewById<ConstraintLayout>(R.id.clVis).visibility = View.VISIBLE
         Log.e("SEARCH RES", "response " + response.toString())
 
         findViewById<TextView>(R.id.tvInCountry).text = response.country.total.toString()

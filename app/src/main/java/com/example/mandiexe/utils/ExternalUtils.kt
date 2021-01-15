@@ -76,6 +76,7 @@ object ExternalUtils {
         return message
     }
 
+    //For the graph util
     @SuppressLint("SimpleDateFormat")
     fun convertDateTimestampUtil(timestamp: String): Date? {
         val calendar = Calendar.getInstance()
@@ -117,8 +118,28 @@ object ExternalUtils {
         Log.e("Timezone", timezone.toString() + timeDestinationZone.toString())
         return destFormat.format(convertedDate)
 
+    }
+
+
+    fun reverseToReq(timestamp: String): String {
+
+        val calendar = Calendar.getInstance()
+        val timezone = TimeZone.getTimeZone("UTC")
+        val timeDestinationZone = calendar.timeZone
+        val sourceFormat =
+            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        val destFormat =
+            SimpleDateFormat("dd/MM/yyyy")
+
+        sourceFormat.timeZone = timezone
+        val convertedDate = sourceFormat.parse(timestamp)!!
+
+        destFormat.timeZone = timeDestinationZone
+        Log.e("Timezone", timezone.toString() + timeDestinationZone.toString())
+        return destFormat.format(convertedDate)
 
     }
+
 
 //    @RequiresApi(Build.VERSION_CODES.O)
 //    fun convertTimestampToDate(timestamp: String): Date? {
@@ -187,25 +208,6 @@ object ExternalUtils {
 
     fun createToast(value: String, context: Context, container: View) {
         Toast.makeText(context, value, Toast.LENGTH_SHORT).show()
-    }
-
-    fun convertTimeToStdGraphForm(value: String): String {
-
-        val calendar = Calendar.getInstance()
-        val timezone = TimeZone.getTimeZone("UTC")
-        val timeDestinationZone = calendar.timeZone
-        val sourceFormat =
-            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-        val destFormat =
-            SimpleDateFormat("dd/MM")
-
-        sourceFormat.timeZone = timezone
-        val convertedDate = sourceFormat.parse(value)!!
-        destFormat.timeZone = timeDestinationZone
-        Log.e("Timezone", timezone.toString() + timeDestinationZone.toString())
-        return destFormat.format(convertedDate)
-
-
     }
 
 
