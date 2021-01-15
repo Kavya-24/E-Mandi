@@ -1,6 +1,7 @@
 package com.example.mandiexe.ui.supply
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,10 +10,10 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.os.bundleOf
+import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -27,7 +28,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.my_crop_bids_fragment.*
 
 
-class MySuppliesFragment : Fragment(), OnMyStockClickListener {
+class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
 
     companion object {
         fun newInstance() = MySuppliesFragment()
@@ -36,6 +37,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
     private val viewModel: MySuppliesViewmodel by viewModels()
     private lateinit var root: View
     private lateinit var comm: Communicator
+
 
     override fun onResume() {
         super.onResume()
@@ -60,10 +62,11 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
 
             //Use communicators
             //Replace containers
-
-            val navController = root.findNavController()
-            navController.navigateUp()
-            navController.navigate(R.id.action_nav_home_to_nav_add_stock_2)
+            val i = Intent(requireContext(), AddStock::class.java)
+            startActivity(i)
+//            val navController = root.findNavController()
+//            navController.navigateUp()
+//            navController.navigate(R.id.action_nav_home_to_nav_add_stock_2)
 
         }
 
@@ -131,25 +134,40 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
 
     override fun viewMyStockDetails(_listItem: FarmerSuppliesResponse.Supply) {
 
-        //##MIght give error
-        val navController = root.findNavController()
-        navController.navigateUp()
 
         val bundle = bundleOf(
             "SUPPLY_ID" to _listItem._id
         )
 
-        val supply = _listItem._id
-
-        navController.navigate(R.id.action_nav_home_to_myBidDetails, bundle)
+        //   val supply = _listItem._id
+        val i = Intent(requireContext(), MyCropBidDetails::class.java)
+        i.putExtra("bundle", bundle)
+        startActivity(i)
+        //     navController.navigate(R.id.action_nav_home_to_myBidDetails, bundle)
 
 
     }
 
+
     override fun onDestroy() {
-        super.onDestroy()
+
         viewModel.successful.removeObservers(this)
         viewModel.successful.value = null
+        val mFragment = childFragmentManager.findFragmentById(R.id.frame_main)
+        if (mFragment == MySuppliesFragment()) {
+            activity?.finish()
+        }
+        super.onDestroy()
+
+
+    }
+
+    override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
+
+    }
+
+    override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
+
     }
 
 

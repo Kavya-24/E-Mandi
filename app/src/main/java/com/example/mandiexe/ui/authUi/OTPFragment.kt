@@ -14,7 +14,6 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -77,6 +76,7 @@ class OTPFragment : Fragment() {
     private lateinit var tvTimer: TextView
     private var mMessage = ""
 
+    private lateinit var timer: CountDownTimer
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -88,16 +88,17 @@ class OTPFragment : Fragment() {
         otpTextView = root.findViewById(R.id.otpView)
         pb = root.findViewById(R.id.pb_otp_verify)
 
+        pb.visibility = View.VISIBLE
+
         //Get phone number from arguments
         phoneNumber = arguments?.getString("PHONE")!!
         Log.e(TAG, phoneNumber)
 
-        root.findViewById<TextView>(R.id.tv_phoneNumber).text =
-            resources.getString(R.string.otpSend) + phoneNumber
+        root.findViewById<TextView>(R.id.tv_phoneNumber_ans).text = phoneNumber
         tvTimer = root.findViewById<TextView>(R.id.tv_timer_resend)
 
         getOTP()
-
+        pb.visibility = View.VISIBLE
 
         otpTextView.otpListener = object : OTPListener {
             override fun onInteractionListener() {
@@ -121,12 +122,14 @@ class OTPFragment : Fragment() {
             pb.visibility = View.GONE
         }
 
-        if (tvTimer.isVisible) {
-            tvTimer.setOnClickListener {
-                if (tvTimer.text == resources.getString(R.string.otpResend)) {
-                    //resend otp
-                    resendVerificationCode(phoneNumber, resendToken)
-                }
+
+        root.findViewById<TextView>(R.id.tv_resend).setOnClickListener {
+
+            Log.e(TAG, "In resent")
+            if (root.findViewById<TextView>(R.id.tv_resend).text == resources.getString(R.string.otpResend)) {
+                //finsih rhe timer
+                timer.onFinish()
+                resendVerificationCode(phoneNumber, resendToken)
             }
         }
 
@@ -150,7 +153,6 @@ class OTPFragment : Fragment() {
         PhoneAuthProvider.verifyPhoneNumber(optionsBuilder.build())
 
     }
-
 
     private fun isValidOtp(): Boolean {
 
@@ -176,21 +178,22 @@ class OTPFragment : Fragment() {
 
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
 
-                // This callback will be invoked in two situations:
                 // 1 - Instant verification. In some cases the phone number can be instantly
                 //     verified without needing to send or enter a verification code.
                 // 2 - Auto-retrieval. On some devices Google Play services can automatically
                 //     detect the incoming verification SMS and perform verification without
                 //     user action.
-                Log.d(TAG, "onVerificationCompleted:$credential")
+
+                pb.visibility = View.GONE
                 Log.e(TAG, "on ver comp " + credential.toString())
+
                 signInWithPhoneAuthCredential(credential)
             }
 
             override fun onVerificationFailed(e: FirebaseException) {
                 // This callback is invoked in an invalid request for verification is made,
                 // for instance if the the phone number format is not valid.
-                Log.w(TAG, "onVerificationFailed", e)
+                pb.visibility = View.GONE
                 Log.e(TAG, "on ver failed " + e)
                 if (e is FirebaseAuthInvalidCredentialsException) {
                     ExternalUtils.createSnackbar(
@@ -227,28 +230,45 @@ class OTPFragment : Fragment() {
                 verificationId: String,
                 token: PhoneAuthProvider.ForceResendingToken
             ) {
-                // The SMS verification code has been sent to the provided phone number, we
-                // now need to ask the user to enter the code and then construct a credential
-                // by combining the code with a verification ID.
-                Log.d(TAG, "onCodeSent:$verificationId")
+
                 Log.e(TAG, "In code sent")
                 // Save verification ID and resending token so we can use them later
                 storedVerificationId = verificationId
                 resendToken = token
 
                 //After code has been sent
-
+                //Remove the progress bar
+                pb.visibility = View.GONE
                 tvTimer.visibility = View.VISIBLE
+                root.findViewById<TextView>(R.id.tv_resend).visibility = View.VISIBLE
 
-                object : CountDownTimer(300000, 1000) {
+                //Cretae snackbar
+                context?.let {
+                    createSnackbar(
+                        resources.getString(R.string.otpSent),
+                        it, container_frag_otp
+                    )
+                }
+
+                //Change the text
+                root.findViewById<TextView>(R.id.tv_phoneNumber).setText(R.string.otpSend)
+
+
+                timer = object : CountDownTimer(30000, 1000) {
                     override fun onTick(millisUntilFinished: Long) {
                         tvTimer.text =
-                            resources.getString(R.string.resendIn) + millisUntilFinished / 1000
+                            (millisUntilFinished / 1000).toString()
 
                     }
 
                     override fun onFinish() {
-                        tvTimer.text = resources.getString(R.string.otpResend)
+                        tvTimer.visibility = View.GONE
+                        root.findViewById<TextView>(R.id.tv_resend).text =
+                            resources.getString(R.string.otpResend)
+                        root.findViewById<TextView>(R.id.tv_resend)
+                            .setTextColor(resources.getColor(R.color.wildColor))
+
+
                     }
                 }.start()
             }
@@ -288,6 +308,11 @@ class OTPFragment : Fragment() {
 
                     val user = task.result?.user
                     Log.e(TAG, "Firebase user made user" + user.toString())
+                    createSnackbar(
+                        resources.getString(R.string.successOTP),
+                        requireContext(),
+                        container_frag_otp
+                    )
 
                     user?.getIdToken(true)?.addOnCompleteListener { mTask ->
                         if (mTask.isSuccessful) {
@@ -418,13 +443,14 @@ class OTPFragment : Fragment() {
 
         Log.e(TAG, "In check response and message is " + mResponse.msg + mResponse.user)
         Log.e(TAG, "Firebase Token " + str)
+
         if (mResponse.msg == "Phone Number not registered.") {
 
-            //Remove timer
             val bundle = bundleOf(
                 "TOKEN" to str,
                 "PHONE" to phoneNumber
             )
+
             createToast(
                 resources.getString(R.string.numberVerifed),
                 requireContext(),

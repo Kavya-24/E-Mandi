@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.mandiexe.R
 import com.example.mandiexe.adapter.OnMySupplyHistoryClickListener
 import com.example.mandiexe.adapter.SupplyHistoryAdapter
@@ -39,7 +40,14 @@ class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {
         root.findViewById<ProgressBar>(R.id.pb_history_supply).visibility = View.VISIBLE
 
         loadHistory()
+        val swl = root.findViewById<SwipeRefreshLayout>(R.id.swl_supply_history)
+        root.findViewById<ProgressBar>(R.id.pb_history_supply).visibility = View.GONE
 
+        swl.setOnRefreshListener {
+            loadHistory()
+            swl.isRefreshing = false
+
+        }
 
 
 

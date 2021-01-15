@@ -30,7 +30,7 @@ class LoginActivity : AppCompatActivity() {
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_language, R.id.nav_login, R.id.nav_otp, R.id.nav_signup
+                R.id.nav_login, R.id.nav_otp, R.id.nav_signup
             )
         )
         setupActionBarWithNavController(navControllerLogin, appBarConfiguration)

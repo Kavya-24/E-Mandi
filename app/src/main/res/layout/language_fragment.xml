@@ -12,17 +12,17 @@
         tools:context=".ui.authUi.LanguageFragment">
 
 
-        <TextView
-            android:id="@+id/tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/space_2x"
-            android:text="@string/choose_language"
-            android:textColor="@color/black"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <!--        <TextView-->
+        <!--            android:id="@+id/tv"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_margin="@dimen/space_2x"-->
+        <!--            android:text="@string/choose_language"-->
+        <!--            android:textColor="@color/black"-->
+        <!--            android:textSize="30sp"-->
+        <!--            android:textStyle="bold"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent" />-->
 
         <ProgressBar
             android:id="@+id/pb_language"
@@ -34,26 +34,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space"
-            android:src="@drawable/ic_arrow_forward"
-            app:layout_constraintBottom_toBottomOf="@id/tv"
-            app:layout_constraintStart_toEndOf="@id/tv"
-            app:layout_constraintTop_toTopOf="@id/tv" />
-
-        <View
-            android:id="@+id/v"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/space_4x"
-            app:layout_constraintTop_toBottomOf="@id/tv" />
+        <!--        <ImageView-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginStart="@dimen/space"-->
+        <!--            android:src="@drawable/ic_arrow_forward"-->
+        <!--            app:layout_constraintBottom_toBottomOf="@id/tv"-->
+        <!--            app:layout_constraintStart_toEndOf="@id/tv"-->
+        <!--            app:layout_constraintTop_toTopOf="@id/tv" />-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_language_main"
             android:layout_width="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/v"
+            app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/item_language" />
 
 

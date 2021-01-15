@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">E-Mandi.</string>
+    <string name="app_name">E-Mandi</string>
 	<string name="navigation_drawer_open">Open navigation drawer</string>
 	<string name="navigation_drawer_close">Close navigation drawer</string>
 	<string name="nav_header_title">Android Studio</string>
-	<string name="nav_header_subtitle">Android.studio@android.com</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
 	<string name="nav_header_desc">Navigation header</string>
 	<string name="action_settings">Settings</string>
 	<string name="menu_home">Home</string>
-	<string name="Mandi">Mandi prices</string>
+    <string name="Mandi">Mandi Prices</string>
 	<string name="stocks">Stocks</string>
 	<string name="crop">Crop</string>
 	<string name="quantity">Quantity</string>
@@ -22,11 +22,11 @@
 	<string name="which_crop">Which Crop</string>
 	<string name="str_my_crops">My crops</string>
 	<string name="str_my_req">Buyers</string>
-	<string name="crop_type">Crop Type</string>
-	<string name="expiration_date">Expiration date</string>
+    <string name="crop_type">Variety:</string>
+    <string name="expiration_date">Expiration date:</string>
 	<string name="estimated_time_of_completion">Estimated time of completion</string>
 	<string name="offer_price">Offer Price</string>
-	<string name="rs">Rs</string>
+    <string name="rs">Rs </string>
 	<string name="available_for_bidding">Available for bidding</string>
 	<string name="expDate">Expiration date of bid</string>
 	<string name="add_stock">Add stock</string>
@@ -38,7 +38,7 @@
 	<string name="error_request_timed_out">Request timed out</string>
 	<string name="error_something_went_wrong">Something went wrong</string>
 	<string name="you_are_here">You are here</string>
-	<string name="maddress_and_lorem">mAddress and lorem</string>
+    <string name="maddress_and_lorem">mAddress and Lorem</string>
 	<string name="multi">This is my home number \n It is GNoida \n OkaY</string>
 	<string name="cropNameError">Add crop name</string>
 	<string name="cropTypeError">Please specify a type</string>
@@ -47,7 +47,7 @@
 	<string name="etEstError">Add an estimated time of completion</string>
 	<string name="addressError">Location can not be empty</string>
 	<string name="expError">Add an expiration date of the bid</string>
-	<string name="date_of_start">Date of start</string>
+    <string name="date_of_start">Date of start: </string>
 	<string name="view_bid_history">View bid history</string>
 	<string name="cancel_stock">Delete Stock</string>
 	<string name="_918">918</string>
@@ -64,10 +64,10 @@
 	<string name="Language">Language</string>
 	<string name="choose_language">Choose Language</string>
 	<string name="english">English</string>
-	<string name="hindi">No.</string>
+    <string name="hindi">Hindi</string>
 	<string name="next">Next</string>
 	<string name="phone_number">Phone number</string>
-	<string name="get_otp">Get OTP</string>
+    <string name="get_otp">get otp</string>
 	<string name="verify_otp">Verify OTP</string>
 	<string name="invalidOtp">Invalid OTP</string>
 	<string name="invalidPhoneError">Invalid phone number</string>
@@ -86,11 +86,108 @@
 	<string name="bigha">Bigha</string>
 	<string name="searchHint">Search crop</string>
 	<string name="details">Details</string>
-	<string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!--    //Crop name-->
+
+    <string name="rice">Rice</string>
+    <string name="wheat">Wheat</string>
+    <string name="maize">Maize</string>
+    <string name="barley">Barley</string>
+    <string name="potato">Potato</string>
+    <string name="tomato">Tomato</string>
+    <string name="onion">Onion</string>
+    <string name="sugarcane">Sugarcane</string>
+    <string name="capsicum">Capsicum</string>
+    <string name="brinjal">Brinjal</string>
+    <string name="sugar">Sugar</string>
+    <string name="bamboo">Bamboo</string>
+    <string name="raddish">Radish</string>
+    <string name="carrot">carrot</string>
+    <string name="cabbage">Cabbage</string>
+    <string name="cauliflower">Cauliflower</string>
+    <string name="pumpkin">Pumpkin</string>
+    <string name="peas">Peas</string>
+    <string name="ladyfinger">Ladyfinger</string>
+    <string name="bottleguard">Bottle Guard</string>
+    <string name="bitterguard">Bitter Guard</string>
+    <string name="spongeguard">SpongeGuard</string>
+    <string name="coriander">Coriander</string>
+    <string name="mushroom">Mushroom</string>
+    <string name="ginger">Ginger</string>
+    <string name="lemon">Lemon</string>
+    <string name="garlic">Garlic</string>
+    <string name="turdal">Tur Dal</string>
+    <string name="arhardal">Arhar Dal</string>
+    <string name="uraddal">Urad Dal</string>
+    <string name="massor">Masoor Dal</string>
+    <string name="gram">Gram</string>
+    <string name="chole">Kabuli Chane</string>
+    <string name="rajma">Kidney Beans</string>
+
+
+    <string-array name="arr_crop_names">
+        <item>@string/rice</item>
+        <item>@string/wheat</item>
+        <item>@string/maize</item>
+        <item>@string/barley</item>
+        <item>@string/potato</item>
+        <item>@string/tomato</item>
+        <item>@string/onion</item>
+        <item>@string/sugarcane</item>
+        <item>@string/capsicum</item>
+        <item>@string/brinjal</item>
+        <item>@string/sugar</item>
+        <item>@string/bamboo</item>
+        <item>@string/raddish</item>
+        <item>@string/carrot</item>
+        <item>@string/cabbage</item>
+        <item>@string/cauliflower</item>
+        <item>@string/pumpkin</item>
+        <item>@string/peas</item>
+        <item>@string/ladyfinger</item>
+        <item>@string/bottleguard</item>
+        <item>@string/bitterguard</item>
+        <item>@string/spongeguard</item>
+        <item>@string/coriander</item>
+        <item>@string/mushroom</item>
+        <item>@string/ginger</item>
+        <item>@string/lemon</item>
+        <item>@string/garlic</item>
+        <item>@string/turdal</item>
+        <item>@string/arhardal</item>
+        <item>@string/uraddal</item>
+        <item>@string/massor</item>
+        <item>@string/gram</item>
+        <item>@string/chole</item>
+        <item>@string/rajma</item>
+
+    </string-array>
+
+    <string-array name="arr_crop_types">
+        <item>Grey Wheat</item>
+        <item>Basmati Rice</item>
+        <item>Kala Chana</item>
+
+    </string-array>
+
+    <string name="Hectare">>Hectare</string>
+    <string name="acres">>Acres</string>
+    <string name="sqrmetres">>Sq Metres</string>
+
+    <string-array name="arr_area_units">
+        <item>@string/Hectare</item>
+        <item>@string/bigha</item>
+        <item>@string/acres</item>
+        <item>@string/sqrmetres</item>
+    </string-array>
+
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 	<string name="searchBuyers">Search buyers</string>
 	<string name="delta">delta</string>
 	<string name="modifyBid">Modify bid</string>
-	<string name="myBid">My bid:</string>
+    <string name="myBid">My bid: </string>
 	<string name="bidAPrice">Enter price</string>
 	<string name="confirmation">Confirmation</string>
 	<string name="tvDesc">Please note the following changes before adding the bid</string>
@@ -102,7 +199,7 @@
 	<string name="supplyUpdated">Crop updated successfully</string>
 	<string name="cancelStock">Delete crop</string>
 	<string name="no">No</string>
-	<string name="description">Description</string>
+    <string name="description">Description: </string>
 	<string name="modifyCrop">Modify crop</string>
 	<string name="supplyAdded">New crop stock created successfully</string>
 	<string name="couldNotLoad">Could not load stocks</string>
@@ -119,7 +216,7 @@
 	<string name="loginSuceed">Login successful</string>
 	<string name="loginNew">Phone Number not registered.</string>
 	<string name="_91">+91</string>
-	<string name="otpSend">The OTP has been sent to</string>
+    <string name="otpSend">The OTP has been sent to: </string>
 	<string name="otpResend">Resend OTP</string>
 	<string name="otpResendInit">Not triggered</string>
 	<string name="resendIn">"Resend OTP in "</string>
@@ -162,12 +259,28 @@
     <string name="etSowError">Please add the date of sowing</string>
     <string name="GrowthAdded">Growth added successfully</string>
     <string name="add_growth">Add growth</string>
-    <string name="lastModified">Last Modified</string>
+    <string name="lastModified">Last Modified:</string>
     <string name="variety">"Variety: "</string>
     <string name="time">Time</string>
+    <string name="i" translatable="false">i</string>
     <string name="call">Call</string>
     <string name="canNotCall">Can not ake call</string>
     <string name="permissionPhone">Permission to dial call from this app.</string>
     <string name="permissionHead">Permission Needed</string>
     <string name="ok">OKAY</string>
+	<string name="sendingOTp">"Sending OTP to "</string>
+	<string name="num_000000000">9090909090</string>
+	<string name="otpSent">OTP sent</string>
+	<string name="successOTP">OTP retrieved successfully</string>
+    <string name="permissionRequired">Permission required</string>
+	<string name="permissionMessageLocation">Permission to access location is required.</string>
+	<string name="allow">Allow</string>
+	<string name="unableToOpenMaps">Unable to open maps</string>
+	<string name="register">Register</string>
+	<string name="creatinguser">Creating User</string>
+    <string name="eMandi">E-Mandi</string>
+    <string name="desc">Update the crop details</string>
+    <string name="no_bids_founds">No bids founds</string>
+
+
 </resources>

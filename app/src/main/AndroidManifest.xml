@@ -24,10 +24,27 @@
         android:usesCleartextTraffic="true"
         tools:ignore="LockedOrientationActivity"
         tools:replace="android:icon">
-        <activity android:name=".ui.home.GrowActivity" />
+        <activity
+            android:name=".ui.home.GrowActivity"
+            android:label="@string/add_growth"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.supply.AddStock"
+            android:label="@string/add_stock"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.supply.MyCropBidDetails"
+            android:label="@string/details"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.myrequirements.AddRequirement"
+            android:label="@string/searchBuyers"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+
         <activity
             android:name=".ui.home.SearchResultActivity"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -40,6 +57,13 @@
             android:name=".ui.authUi.LoginActivity"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".ui.authUi.LanguageFragment"
+            android:label="@string/choose_language"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize" />
+
         <activity
             android:name=".ui.authUi.SplashActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -48,7 +72,9 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- Maps -->
+        </activity>
+
+        <!-- Maps -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/map_key" />
@@ -67,7 +93,10 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".ui.home.MapActivity" />
+        <activity
+            android:name=".ui.home.MapActivity"
+            android:label="@string/location"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

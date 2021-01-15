@@ -27,12 +27,6 @@ class HomeFragment : Fragment() {
     private lateinit var viewPager: ViewPager
     private val TAG = HomeFragment::class.java.simpleName
 
-    fun findFragment(): String? {
-        val fm = childFragmentManager.findFragmentById(R.id.container)
-        val fragmentName: String = fm!!::class.java.simpleName
-        return fragmentName
-    }
-
 
     private fun openFragment(fragment: Fragment) {
 
@@ -111,6 +105,13 @@ class HomeFragment : Fragment() {
         })
 
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+
+    }
+
 
 
 }

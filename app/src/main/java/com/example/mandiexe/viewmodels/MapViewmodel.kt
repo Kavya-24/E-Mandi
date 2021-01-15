@@ -45,7 +45,10 @@ class MapViewmodel : ViewModel() {
                     successful.value = false
                     message.value = ExternalUtils.returnStateMessageForThrowable(t)
                     //Response is null
-                    Log.e(TAG, "In on failed and message {${message.value}} and call is ")
+                    Log.e(
+                        TAG,
+                        "In on failed and message {${message.value}} and cause is " + t.cause + t.message
+                    )
                 }
 
                 override fun onResponse(

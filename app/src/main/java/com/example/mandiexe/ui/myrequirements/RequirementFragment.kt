@@ -1,6 +1,7 @@
 package com.example.mandiexe.ui.myrequirements
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +20,7 @@ import com.example.mandiexe.R
 import com.example.mandiexe.adapter.MyRequirementAdapter
 import com.example.mandiexe.adapter.OnMyBidClickListener
 import com.example.mandiexe.models.responses.bids.FamerBidsResponse
+import com.example.mandiexe.ui.supply.MySuppliesFragment
 import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.viewmodels.RequirementsViewmodel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -51,7 +53,8 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
         }
 
         root.findViewById<FloatingActionButton>(R.id.fab_add_requirement).setOnClickListener {
-            root.findNavController().navigate(R.id.action_nav_home_to_addRequirement)
+            val i = Intent(requireContext(), AddRequirement::class.java)
+            startActivity(i)
         }
 
         return root
@@ -104,9 +107,15 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
 
 
     override fun onDestroy() {
-        super.onDestroy()
         viewModel.successful.removeObservers(this)
         viewModel.successful.value = null
+        val mFragment = childFragmentManager.findFragmentById(R.id.frame_main)
+        if (mFragment == MySuppliesFragment()) {
+            activity?.finish()
+        }
+
+        super.onDestroy()
+
     }
 
     override fun viewMyBidDetails(_listItem: FamerBidsResponse.Bid) {

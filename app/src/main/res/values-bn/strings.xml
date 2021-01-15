@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ই-ম্যান্ডি।</string>
+    <string name="app_name">ই-ম্যান্ডি</string>
     <string name="navigation_drawer_open">ওপেন ন্যাভিগেশন ড্রয়ারের</string>
     <string name="navigation_drawer_close">ন্যাভিগেশন ড্রয়ারের বন্ধ করুন</string>
     <string name="nav_header_title">অ্যান্ড্রয়েড স্টুডিও</string>
@@ -170,4 +170,103 @@
     <string name="permissionPhone">Permission to dial call from this app.</string>
     <string name="permissionHead">Permission Needed</string>
     <string name="ok">OKAY</string>
+    <string name="sendingOTp">"Sending OTP to "</string>
+    <string name="num_000000000">9090909090</string>
+    <string name="otpSent">OTP sent</string>
+    <string name="successOTP">OTP retrieved successfully</string>
+    <string name="permissionRequired">Permission Required</string>
+    <string name="permissionMessageLocation">Permission to access location is required.</string>
+    <string name="allow">Allow</string>
+    <string name="unableToOpenMaps">Unable to open maps</string>
+    <string name="register">Register</string>
+    <string name="creatinguser">Creating User</string>
+
+
+    <string name="Hectare">हैक्टर</string>
+    <string name="acres">एकड़</string>
+    <string name="sqrmetres">वर्ग मीटर</string>
+
+    <string-array name="arr_area_units">
+        <item>@string/Hectare</item>
+        <item>@string/bigha</item>
+        <item>@string/acres</item>
+        <item>@string/sqrmetres</item>
+    </string-array>
+
+
+    <string name="rice"></string>
+    <string name="wheat"></string>
+    <string name="maize"></string>
+    <string name="barley"></string>
+    <string name="potato"></string>
+    <string name="tomato"></string>
+    <string name="onion"></string>
+    <string name="sugarcane"></string>
+    <string name="capsicum"></string>
+    <string name="brinjal"></string>
+    <string name="sugar"></string>
+    <string name="bamboo"></string>
+    <string name="raddish"></string>
+    <string name="carrot"></string>
+    <string name="cabbage"></string>
+    <string name="cauliflower"></string>
+    <string name="pumpkin"></string>
+    <string name="peas"></string>
+    <string name="ladyfinger"></string>
+    <string name="bottleguard"></string>
+    <string name="bitterguard"></string>
+    <string name="spongeguard"></string>
+    <string name="coriander"></string>
+    <string name="mushroom"></string>
+    <string name="ginger"></string>
+    <string name="lemon"></string>
+    <string name="garlic"></string>
+    <string name="turdal"></string>
+    <string name="arhardal"></string>
+    <string name="uraddal"></string>
+    <string name="massor"></string>
+    <string name="gram"></string>
+    <string name="chole"></string>
+    <string name="rajma"></string>
+    <string name="desc">Update the crop details</string>
+    <string name="no_bids_founds">No bids founds</string>
+
+    <string-array name="arr_crop_names">
+        <item>@string/rice</item>
+        <item>@string/wheat</item>
+        <item>@string/maize</item>
+        <item>@string/barley</item>
+        <item>@string/potato</item>
+        <item>@string/tomato</item>
+        <item>@string/onion</item>
+        <item>@string/sugarcane</item>
+        <item>@string/capsicum</item>
+        <item>@string/brinjal</item>
+        <item>@string/sugar</item>
+        <item>@string/bamboo</item>
+        <item>@string/raddish</item>
+        <item>@string/carrot</item>
+        <item>@string/cabbage</item>
+        <item>@string/cauliflower</item>
+        <item>@string/pumpkin</item>
+        <item>@string/peas</item>
+        <item>@string/ladyfinger</item>
+        <item>@string/bottleguard</item>
+        <item>@string/bitterguard</item>
+        <item>@string/spongeguard</item>
+        <item>@string/coriander</item>
+        <item>@string/mushroom</item>
+        <item>@string/ginger</item>
+        <item>@string/lemon</item>
+        <item>@string/garlic</item>
+        <item>@string/turdal</item>
+        <item>@string/arhardal</item>
+        <item>@string/uraddal</item>
+        <item>@string/massor</item>
+        <item>@string/gram</item>
+        <item>@string/chole</item>
+        <item>@string/rajma</item>
+
+    </string-array>
+
 </resources>

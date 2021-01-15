@@ -220,6 +220,8 @@ dependencies {
     //GraphView
     implementation 'com.jjoe64:graphview:4.2.2'
 
+    implementation 'com.github.iammannan:TranslateAPI:1.1'
+
 
 }
 apply plugin: 'com.google.gms.google-services'

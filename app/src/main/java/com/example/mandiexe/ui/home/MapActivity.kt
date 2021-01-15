@@ -2,6 +2,7 @@ package com.example.mandiexe.ui.home
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.ProgressDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -76,12 +77,14 @@ class MapActivity : AppCompatActivity() {
     private val viewModel: MapViewmodel by viewModels()
     private val viewmodelLogin: OTViewModel by viewModels()
 
+    private lateinit var pb: ProgressDialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setAppLocale(pref.getLanguageFromPreference().toString(), this)
         setContentView(R.layout.map_fragment)
 
-        setAppLocale(pref.getLanguageFromPreference().toString(), this)
+        setTitle(R.string.location)
 
         args = intent?.getBundleExtra("bundle")
 
@@ -123,10 +126,11 @@ class MapActivity : AppCompatActivity() {
         val tvAddress = v.findViewById<TextView>(R.id.tv_new_user_address)
 
         tvName.text = args?.getString("NAME")
-        if (fetchedLocation == "" || fetchedLocation == "Not found") {
+        if (fetchedLocation == "" || fetchedLocation == resources.getString(R.string.NotFound)) {
             tvAddress.text = args?.getString("ADDRESS_USER")
         } else {
-            tvAddress.text = fetchedLocation
+            tvAddress.text =
+                fetchedLocation        //This is the address that we have got from the map
         }
 
 
@@ -134,12 +138,10 @@ class MapActivity : AppCompatActivity() {
 
         //Create observer on Text
 
-        d.setPositiveButton("Register") { _, _ ->
-
+        d.setPositiveButton(resources.getString(R.string.register)) { _, _ ->
             createUser()
-
-
         }
+
         d.setNegativeButton(resources.getString(R.string.cancel)) { _, _ ->
 
         }
@@ -155,6 +157,9 @@ class MapActivity : AppCompatActivity() {
         tempRef.dismiss()
         //Create a new user
 
+        pb = ProgressDialog(this)
+        pb.setMessage(resources.getString(R.string.creatinguser))
+
         val mCountry = fetchedAddress.countryName
         val mDistrict = fetchedAddress.subAdminArea
         val mState = fetchedAddress.adminArea
@@ -166,7 +171,9 @@ class MapActivity : AppCompatActivity() {
         val name = args?.getString("NAME").toString()
         val area = args?.getString("AREA").toString().toInt()
         val area_unit = args?.getString("AREA_UNIT").toString()
-        val phone = args?.getString("PHONE")!!.drop(2).toString()
+        val phone = args?.getString("PHONE").toString()
+
+        //val phone = args?.getString("PHONE")!!.drop(2).toString()
 
         body = SignUpBody(
             mAddress,
@@ -183,6 +190,7 @@ class MapActivity : AppCompatActivity() {
             village
         )
 
+        Log.e(TAG, "Map SignUp body number is ph " + phone)
 
         Log.e(
             TAG, "Map variates fA line 1 " + fetchedAddress.getAddressLine(0)
@@ -204,11 +212,11 @@ class MapActivity : AppCompatActivity() {
                         container_map
                     )
                 }
-
             }
+
         })
 
-
+        pb.dismiss()
 
     }
 
@@ -216,9 +224,18 @@ class MapActivity : AppCompatActivity() {
         if (value != null) {
 
             if (value.msg == "Registeration successful.") {
+
+                createSnackbar(
+                    resources.getString(R.string.signUpSuccess),
+                    this@MapActivity,
+                    container_map
+                )
                 signUpSuccess(value)
+
             } else if (value.msg == "Farmer already registered.") {
+
                 loginFromSignUp()
+
             } else {
                 createSnackbar(value.msg, this, container_map)
             }
@@ -260,6 +277,7 @@ class MapActivity : AppCompatActivity() {
     }
 
     private fun loginFromSignUp() {
+
         val token = args?.getString("TOKEN")
         val body = LoginBody(token!!)
 
@@ -269,12 +287,15 @@ class MapActivity : AppCompatActivity() {
         viewmodelLogin.lgnFunction(body).observe(this, Observer { mResponse ->
 
             Log.e(TAG, "In vm")
-            if (viewmodelLogin.successful.value == false) {
-                createSnackbar(viewmodelLogin.message.value, this, container_map)
-            } else {
+            val success = viewmodelLogin.successful.value
+            if (success != null) {
+                if (success == false) {
+                    createSnackbar(viewmodelLogin.message.value, this, container_map)
+                } else {
 
 
-                manageLoginResponse(viewmodelLogin.mLogin.value, token)
+                    manageLoginResponse(viewmodelLogin.mLogin.value, token)
+                }
             }
 
         })
@@ -320,14 +341,17 @@ class MapActivity : AppCompatActivity() {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP and Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK)
         ExternalUtils.hideKeyboard(this, this)
         startActivity(intent)
-
+        finish()
 
     }
 
     private fun makeRequest() {
         ActivityCompat.requestPermissions(
             this as Activity,
-            arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+            arrayOf(
+                android.Manifest.permission.ACCESS_FINE_LOCATION,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION
+            ),
             permissionRequestCode
         )
 
@@ -351,12 +375,14 @@ class MapActivity : AppCompatActivity() {
 
         }
 
+        //Grant results 0; for fine locations
 
     }
 
     private fun getPermissions() {
 
         Log.e(TAG, "In get permissions")
+
         val p = this.let {
             this.let { it1 ->
                 ContextCompat.checkSelfPermission(
@@ -368,14 +394,16 @@ class MapActivity : AppCompatActivity() {
 
 
         if (p == PackageManager.PERMISSION_GRANTED) {
-            //Go to it
-
             getLocationInMap()
         }
 
         if (p != PackageManager.PERMISSION_GRANTED) {
             //Not permitted
-            Toast.makeText(this, "Permissions needed", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this,
+                resources.getString(R.string.permissionRequired),
+                Toast.LENGTH_SHORT
+            ).show()
 
 
         }
@@ -386,9 +414,9 @@ class MapActivity : AppCompatActivity() {
         ) {
             //Tell user what we are going to do with this permission
             val b = AlertDialog.Builder(this)
-            b.setMessage("Permission to access location")
-            b.setTitle("Permission required")
-            b.setPositiveButton("Ok") { dialog: DialogInterface?, which: Int ->
+            b.setMessage(resources.getString(R.string.permissionMessageLocation))
+            b.setTitle(resources.getString(R.string.permissionRequired))
+            b.setPositiveButton(resources.getString(R.string.allow)) { _: DialogInterface?, _: Int ->
                 makeRequest()
             }
             val dialog = b.create()
@@ -421,14 +449,16 @@ class MapActivity : AppCompatActivity() {
 
                             //Mark this as the current location
                             fetchedLocation = getAddress(latitudeLongitude)
+                            createSnackbar(fetchedLocation, this@MapActivity, container_map)
 
                         } else {
                             Toast.makeText(
                                 this@MapActivity,
-                                "Unable to open maps",
+                                resources.getString(R.string.unableToOpenMaps),
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
+
 
                         gMap?.setOnMapClickListener { newLatLong ->
                             //Create a new marker
@@ -444,6 +474,7 @@ class MapActivity : AppCompatActivity() {
 
                             //Update the location
                             fetchedLocation = getAddress(newLatLong)
+                            createSnackbar(fetchedLocation, this@MapActivity, container_map)
 
 
                         }
@@ -453,7 +484,7 @@ class MapActivity : AppCompatActivity() {
 
                 })
             } else {
-                fetchedLocation = "Not found"
+                fetchedLocation = resources.getString(R.string.NotFound)
             }
         }
 
@@ -483,6 +514,7 @@ class MapActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
 
+        //This result is when it comes to another activty or fragment
         val bundle = Bundle()
 
         bundle.putString("fetchedLocation", fetchedLocation)
