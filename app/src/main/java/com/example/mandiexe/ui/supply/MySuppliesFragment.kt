@@ -13,7 +13,6 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -61,10 +60,11 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
 
             //Use communicators
             //Replace containers
-
-            val navController = root.findNavController()
-            navController.navigateUp()
-            navController.navigate(R.id.action_nav_home_to_nav_add_stock_2)
+            val i = Intent(requireContext(), AddStock::class.java)
+            startActivity(i)
+//            val navController = root.findNavController()
+//            navController.navigateUp()
+//            navController.navigate(R.id.action_nav_home_to_nav_add_stock_2)
 
         }
 

@@ -1,6 +1,7 @@
 package com.example.mandiexe.ui.myrequirements
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -51,7 +52,8 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
         }
 
         root.findViewById<FloatingActionButton>(R.id.fab_add_requirement).setOnClickListener {
-            root.findNavController().navigate(R.id.action_nav_home_to_addRequirement)
+            val i = Intent(requireContext(), AddRequirement::class.java)
+            startActivity(i)
         }
 
         return root
