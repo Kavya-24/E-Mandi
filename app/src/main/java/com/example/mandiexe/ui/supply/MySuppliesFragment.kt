@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.os.bundleOf
+import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -27,7 +28,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.my_crop_bids_fragment.*
 
 
-class MySuppliesFragment : Fragment(), OnMyStockClickListener {
+class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
 
     companion object {
         fun newInstance() = MySuppliesFragment()
@@ -36,6 +37,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
     private val viewModel: MySuppliesViewmodel by viewModels()
     private lateinit var root: View
     private lateinit var comm: Communicator
+
 
     override fun onResume() {
         super.onResume()
@@ -152,6 +154,14 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
         viewModel.successful.removeObservers(this)
         viewModel.successful.value = null
         super.onDestroy()
+
+    }
+
+    override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
+
+    }
+
+    override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
 
     }
 
