@@ -616,9 +616,9 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
         rv.adapter = adapter
     }
 
-    override fun onDestroy() {
+    override fun onBackPressed() {
 
-        Log.e(TAG, "In on destroy")
+        Log.e(TAG, "In on BackPressed")
 
 //        val navController = findNavController()
 //        navController.navigateUp()
@@ -632,8 +632,8 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
         viewModelCrop.successfulUpdate.removeObservers(this)
         viewModelCrop.successfulUpdate.value = null
 
-        super.onDestroy()
-
+        super.onBackPressed()
+        finish()
 
     }
 
