@@ -1,19 +1,16 @@
 package com.example.mandiexe.ui.myrequirements
 
 import android.app.SearchManager
+import android.content.Intent
 import android.database.MatrixCursor
 import android.os.Bundle
 import android.provider.BaseColumns
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.SimpleCursorAdapter
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
@@ -26,6 +23,7 @@ import com.example.mandiexe.models.responses.SearchCropReqResponse
 import com.example.mandiexe.models.responses.supply.CropSearchAutocompleteResponse
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.ExternalUtils
+import com.example.mandiexe.utils.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.auth.SessionManager
 import com.example.mandiexe.viewmodels.AddRequirementViewModel
@@ -33,14 +31,14 @@ import retrofit2.Call
 import retrofit2.Response
 
 
-class AddRequirement : Fragment(), OnNewReqClockListener {
+class AddRequirement : AppCompatActivity(), OnNewReqClockListener {
 
     companion object {
         fun newInstance() = AddRequirement()
     }
 
     private lateinit var viewModel: AddRequirementViewModel
-    private lateinit var root: View
+    //private lateinit var root: View
 
     //private lateinit var searchView: SearchView
     private var mAdapter: SimpleCursorAdapter? = null
@@ -56,29 +54,6 @@ class AddRequirement : Fragment(), OnNewReqClockListener {
 
     private val TAG = AddRequirement::class.java.simpleName
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        root = inflater.inflate(R.layout.add_requirement_fragment, container, false)
-
-        //UI init
-        pb = root.findViewById(R.id.pb_add_req)
-        rv = root.findViewById(R.id.rv_search_requirements)
-        // searchView = root.findViewById(R.id.sv_requirements)
-
-////        searchManager = context?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
-////        searchView.setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
-//
-//        searchView.setOnClickListener {
-//            searchRequirements()
-//        }
-//
-
-
-        return root
-    }
-
 
 //    private fun searchRequirements() {
 //
@@ -89,7 +64,7 @@ class AddRequirement : Fragment(), OnNewReqClockListener {
 //
 //
 //        mAdapter = SimpleCursorAdapter(
-//            context,
+//            this,
 //            android.R.layout.simple_list_item_1,
 //            null,
 //            from,
@@ -159,7 +134,7 @@ class AddRequirement : Fragment(), OnNewReqClockListener {
 
     private fun makeCall(txt: String?) {
 
-        val service = RetrofitClient.makeCallsForBids(requireContext())
+        val service = RetrofitClient.makeCallsForBids(this)
         val body = SearchCropReqBody(txt.toString())
 
 
@@ -190,7 +165,7 @@ class AddRequirement : Fragment(), OnNewReqClockListener {
 
     private fun fetchSuggestions(query: String) {
         //This is not yet made
-        val service = RetrofitClient.makeCallsForSupplies(requireContext())
+        val service = RetrofitClient.makeCallsForSupplies(this)
 
         val body = CropSearchAutoCompleteBody(query)
         service.getCropAutoComplete(
@@ -238,16 +213,31 @@ class AddRequirement : Fragment(), OnNewReqClockListener {
     private fun loadResultInRV(response: SearchCropReqResponse) {
         //MAke call
         pb.visibility = View.VISIBLE
-        rv.layoutManager = LinearLayoutManager(context)
+        rv.layoutManager = LinearLayoutManager(this)
         val adapter = NewReqAdapter(this)
         adapter.lst = response.supplies
         rv.adapter = adapter
 
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(AddRequirementViewModel::class.java)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        setAppLocale(pref.getLanguageFromPreference(), this)
+        setContentView(R.layout.add_requirement_fragment)
+        super.onCreate(savedInstanceState)
+
+        //UI init
+        pb = findViewById(R.id.pb_add_req)
+        rv = findViewById(R.id.rv_search_requirements)
+        // searchView = findViewById(R.id.sv_requirements)
+
+////        searchManager = this?.getSystemService(this.SEARCH_SERVICE) as SearchManager
+////        searchView.setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
+//
+//        searchView.setOnClickListener {
+//            searchRequirements()
+//        }
+//
+
     }
 
 
@@ -258,8 +248,8 @@ class AddRequirement : Fragment(), OnNewReqClockListener {
 
         )
 
-        root.findNavController()
-            .navigate(R.id.action_addRequirement_to_openNewRequirementFragment, bundle)
+        //val i = Intent(this, OpenNewRequirementFragment::class.java)
+
 
     }
 
