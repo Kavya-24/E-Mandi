@@ -1,6 +1,7 @@
 package com.example.mandiexe.ui.supply
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -131,17 +132,16 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
 
     override fun viewMyStockDetails(_listItem: FarmerSuppliesResponse.Supply) {
 
-        //##MIght give error
-        val navController = root.findNavController()
-        navController.navigateUp()
 
         val bundle = bundleOf(
             "SUPPLY_ID" to _listItem._id
         )
 
-        val supply = _listItem._id
-
-        navController.navigate(R.id.action_nav_home_to_myBidDetails, bundle)
+        //   val supply = _listItem._id
+        val i = Intent(requireContext(), MyCropBidDetails::class.java)
+        i.putExtra("bundle", bundle)
+        startActivity(i)
+        //     navController.navigate(R.id.action_nav_home_to_myBidDetails, bundle)
 
 
     }

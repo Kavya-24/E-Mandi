@@ -5,18 +5,15 @@ import android.app.DatePickerDialog
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -32,6 +29,7 @@ import com.example.mandiexe.models.responses.supply.ModifySupplyResponse
 import com.example.mandiexe.models.responses.supply.ViewSupplyResponse
 import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.utils.ExternalUtils.createToast
+import com.example.mandiexe.utils.ExternalUtils.setAppLocale
 import com.example.mandiexe.viewmodels.MyCropBidDetailsViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
@@ -44,14 +42,14 @@ import kotlinx.android.synthetic.main.my_crop_bid_details_fragment.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
+class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
     companion object {
         fun newInstance() = MyCropBidDetails()
     }
 
     private val viewModelCrop: MyCropBidDetailsViewModel by viewModels()
-    private lateinit var root: View
+    //private lateinit var root: View
 
     // private lateinit var lineChart: LineChart
     private lateinit var graph: GraphView
@@ -85,30 +83,28 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
     private lateinit var cropType: EditText
     private lateinit var etExp: EditText
 
+    private val pref = com.example.mandiexe.utils.auth.PreferenceUtil
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setAppLocale(pref.getLanguageFromPreference(), this)
+        setContentView(R.layout.my_crop_bid_details_fragment)
 
-        root = inflater.inflate(R.layout.my_crop_bid_details_fragment, container, false)
+        //  lineChart = findViewById(R.id.lineChart)
+        graph = findViewById(R.id.graphView)
 
-        //  lineChart = root.findViewById(R.id.lineChart)
-        graph = root.findViewById(R.id.graphView)
+        args = intent?.getBundleExtra("bundle")!!
+        //Set the address in the box trimmed
+        SUPPLY_ID = args.getString("SUPPLY_ID").toString()
 
-        if (arguments != null) {
-            //Set the address in the box trimmed
-            SUPPLY_ID = requireArguments().getString("SUPPLY_ID").toString()
-
-            Log.e(TAG, "Argument str is" + SUPPLY_ID)
-        }
+        Log.e(TAG, "Argument str is" + SUPPLY_ID)
 
         //This gets an id as the argument and makes a call from it
         makeCall()
 
 
         //initViews
-        root.findViewById<TextView>(R.id.tv_view_bid_history_stocks).setOnClickListener {
+        findViewById<TextView>(R.id.tv_view_bid_history_stocks).setOnClickListener {
 
             //Open the history
             if (!isOpen) {
@@ -117,7 +113,7 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
         }
 
-        root.findViewById<ImageView>(R.id.iv_dropdown_bid_history).setOnClickListener {
+        findViewById<ImageView>(R.id.iv_dropdown_bid_history).setOnClickListener {
 
             //Open the history
             if (isOpen) {
@@ -130,33 +126,33 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
 
 
-        root.findViewById<MaterialButton>(R.id.mtb_cancel_stock).setOnClickListener {
+        findViewById<MaterialButton>(R.id.mtb_cancel_stock).setOnClickListener {
             cancelStock()
         }
 
 
 
-        root.findViewById<MaterialButton>(R.id.mtb_modify_stock).setOnClickListener {
+        findViewById<MaterialButton>(R.id.mtb_modify_stock).setOnClickListener {
             modifyStock()
         }
 
 
-        root.findViewById<SwipeRefreshLayout>(R.id.swl_details).setOnRefreshListener {
+        findViewById<SwipeRefreshLayout>(R.id.swl_details).setOnRefreshListener {
             makeCall()
-            root.findViewById<SwipeRefreshLayout>(R.id.swl_details).isRefreshing = false
+            findViewById<SwipeRefreshLayout>(R.id.swl_details).isRefreshing = false
         }
 
-        return root
     }
+
 
     private fun closeBidHistory() {
         isOpen = false
 
-        root.findViewById<RecyclerView>(R.id.rv_bidHistory).visibility = View.GONE
-        root.findViewById<TextView>(R.id.tv_view_bid_history_stocks).text =
+        findViewById<RecyclerView>(R.id.rv_bidHistory).visibility = View.GONE
+        findViewById<TextView>(R.id.tv_view_bid_history_stocks).text =
             resources.getString(R.string.view_bid_history)
 
-        root.findViewById<ImageView>(R.id.iv_dropdown_bid_history)
+        findViewById<ImageView>(R.id.iv_dropdown_bid_history)
             .setImageDrawable(resources.getDrawable(R.drawable.ic_down))
 
     }
@@ -164,17 +160,17 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
     private fun openBidHistory() {
 
         isOpen = true
-        root.findViewById<RecyclerView>(R.id.rv_bidHistory).visibility = View.VISIBLE
-        root.findViewById<TextView>(R.id.tv_view_bid_history_stocks).text =
+        findViewById<RecyclerView>(R.id.rv_bidHistory).visibility = View.VISIBLE
+        findViewById<TextView>(R.id.tv_view_bid_history_stocks).text =
             resources.getString(R.string.myBidHistory)
 
-        root.findViewById<ImageView>(R.id.iv_dropdown_bid_history)
+        findViewById<ImageView>(R.id.iv_dropdown_bid_history)
             .setImageDrawable(resources.getDrawable(R.drawable.ic_top))
 
         if (adapter.lst.size == 0) {
             ExternalUtils.createSnackbar(
                 resources.getString(R.string.emptyRV),
-                requireContext(),
+                this,
                 container_crop_bids_details
             )
         }
@@ -193,7 +189,7 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
 
 
-        viewModelCrop.getFunction(body).observe(viewLifecycleOwner, Observer { mResponse ->
+        viewModelCrop.getFunction(body).observe(this, Observer { mResponse ->
             if (viewModelCrop.successfulSupply.value != null) {
                 if (viewModelCrop.successfulSupply.value!!) {
                     Log.e(TAG, "Response is " + mResponse.toString())
@@ -210,7 +206,7 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
     private fun cancelStock() {
 
-        val dialog = AlertDialog.Builder(context)
+        val dialog = AlertDialog.Builder(this)
         dialog.setTitle(resources.getString(R.string.cancelStock))
         dialog.setPositiveButton(resources.getString(R.string.cancelStock), { _, _ ->
             confirmCancel()
@@ -231,7 +227,7 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
         val mResponse = viewModelCrop.cancelFunction(body)
 
-        viewModelCrop.cancelFunction(body).observe(viewLifecycleOwner, Observer { mResponse ->
+        viewModelCrop.cancelFunction(body).observe(this, Observer { mResponse ->
             val success = viewModelCrop.successfulCancel.value
             if (success != null)
                 if (success) {
@@ -252,14 +248,14 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
     private fun manageCancelResponses(mResponse: DeleteSupplyResponse?) {
 
-        mResponse?.msg?.let { createToast(it, requireContext(), container_crop_bids_details) }
+        mResponse?.msg?.let { createToast(it, this, container_crop_bids_details) }
         Log.e(TAG, "In manage cancel response")
         onDestroy()
     }
 
     private fun modifyStock() {
 
-        d = androidx.appcompat.app.AlertDialog.Builder(requireContext())
+        d = androidx.appcompat.app.AlertDialog.Builder(this)
 
         val v = layoutInflater.inflate(R.layout.layout_modify_supply, null)
         d.setView(v)
@@ -327,7 +323,7 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
         //##Requires N
         etEst.setOnClickListener {
-            context?.let { it1 ->
+            let { it1 ->
                 DatePickerDialog(
                     it1, dateEst, myCalendar[Calendar.YEAR],
                     myCalendar[Calendar.MONTH],
@@ -338,7 +334,7 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
         //##Requires N
         etExp.setOnClickListener {
-            context?.let { it1 ->
+            let { it1 ->
                 DatePickerDialog(
                     it1, dateExp, myCalendar[Calendar.YEAR],
                     myCalendar[Calendar.MONTH],
@@ -380,7 +376,7 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
         val body = ModifySupplyBody(SUPPLY_ID, modifyBody)
 
-        viewModelCrop.updateFunction(body).observe(viewLifecycleOwner, Observer { mResponse ->
+        viewModelCrop.updateFunction(body).observe(this, Observer { mResponse ->
 
             //Check with the sucessful of it
             if (viewModelCrop.successfulUpdate.value == false) {
@@ -443,35 +439,39 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
     private fun initViews(value: ViewSupplyResponse) {
 
-        root.findViewById<ConstraintLayout>(R.id.mLayoutSup).visibility = View.VISIBLE
-        root.findViewById<ProgressBar>(R.id.pb_my_crops_details).visibility = View.GONE
+        val xValue = ExternalUtils.convertJSONToEnglish(value)
 
-        root.findViewById<TextView>(R.id.tv_stock_detail_crop_name).text = value.supply.crop
-        root.findViewById<TextView>(R.id.tv_stock_detail_crop_type).text = value.supply.variety
-        root.findViewById<TextView>(R.id.tv_stock_detail_crop_description).text =
+        Log.e(TAG, xValue.toString())
+
+        findViewById<ConstraintLayout>(R.id.mLayoutSup).visibility = View.VISIBLE
+        findViewById<ProgressBar>(R.id.pb_my_crops_details).visibility = View.GONE
+
+        findViewById<TextView>(R.id.tv_stock_detail_crop_name).text = value.supply.crop
+        findViewById<TextView>(R.id.tv_stock_detail_crop_type).text = value.supply.variety
+        findViewById<TextView>(R.id.tv_stock_detail_crop_description).text =
             value.supply.description
 
-        root.findViewById<TextView>(R.id.ans_detail_crop_quanity).text = value.supply.qty.toString()
-        root.findViewById<TextView>(R.id.ans_detail_crop_exp).text =
+        findViewById<TextView>(R.id.ans_detail_crop_quanity).text = value.supply.qty.toString()
+        findViewById<TextView>(R.id.ans_detail_crop_exp).text =
             ExternalUtils.convertTimeToEpoch(value.supply.expiry)
-        root.findViewById<TextView>(R.id.ans_detail_init_date).text =
+        findViewById<TextView>(R.id.ans_detail_init_date).text =
             ExternalUtils.convertTimeToEpoch(value.supply.supplyCreated)
 
-        root.findViewById<TextView>(R.id.tv_stock_detail_current_bid).text =
+        findViewById<TextView>(R.id.tv_stock_detail_current_bid).text =
             value.supply.currentBid.toString()
         if (value.supply.currentBid < value.supply.askPrice) {
-            root.findViewById<TextView>(R.id.tv_stock_detail_current_bid)
+            findViewById<TextView>(R.id.tv_stock_detail_current_bid)
                 .setTextColor(resources.getColor(R.color.red_A700))
 
         } else if (value.supply.currentBid == value.supply.askPrice) {
-            root.findViewById<TextView>(R.id.tv_stock_detail_current_bid)
+            findViewById<TextView>(R.id.tv_stock_detail_current_bid)
                 .setTextColor(resources.getColor(R.color.blue_A700))
 
         }
 
         //Else the color is green
 
-        root.findViewById<TextView>(R.id.tv_stock_detail_initial_offer_price).text =
+        findViewById<TextView>(R.id.tv_stock_detail_initial_offer_price).text =
             value.supply.askPrice.toString()
         mPrice = value.supply.askPrice.toString()
         mCrop = value.supply.crop
@@ -500,7 +500,7 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
             //When there are no last bids or any bids
             graph.removeAllSeries()
             graph.visibility = View.GONE
-            root.findViewById<TextView>(R.id.tvNoGraph).visibility = View.VISIBLE
+            findViewById<TextView>(R.id.tvNoGraph).visibility = View.VISIBLE
 
         } else {
 
@@ -587,8 +587,8 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
     private fun fillRecyclerView(bids: List<ViewSupplyResponse.Supply.Bid>) {
 
-        val rv = root.findViewById<RecyclerView>(R.id.rv_bidHistory)
-        rv.layoutManager = LinearLayoutManager(context)
+        val rv = findViewById<RecyclerView>(R.id.rv_bidHistory)
+        rv.layoutManager = LinearLayoutManager(this)
         adapter = MyBidHistoryAdapter(this)
 
         //Create list
@@ -620,8 +620,8 @@ class MyCropBidDetails : Fragment(), OnBidHistoryClickListener {
 
         Log.e(TAG, "In on destroy")
 
-        val navController = findNavController()
-        navController.navigateUp()
+//        val navController = findNavController()
+//        navController.navigateUp()
 
         viewModelCrop.successfulSupply.removeObservers(this)
         viewModelCrop.successfulSupply.value = null

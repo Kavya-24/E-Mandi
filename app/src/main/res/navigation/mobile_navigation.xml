@@ -23,9 +23,6 @@
             android:id="@+id/action_nav_home_to_addRequirement"
             app:destination="@id/addRequirement" />
         <action
-            android:id="@+id/action_nav_home_to_myBidDetails"
-            app:destination="@id/myBidDetails" />
-        <action
             android:id="@+id/action_nav_home_to_addRequirement2"
             app:destination="@id/addRequirement" />
         <action
@@ -39,9 +36,6 @@
         android:label="@string/menu_home"
         tools:layout="@layout/my_crop_bids_fragment">
 
-        <action
-            android:id="@+id/action_nav_my_crops2_to_myBidDetails"
-            app:destination="@id/myBidDetails" />
         <action
             android:id="@+id/action_nav_my_crops2_to_nav_add_stock_2"
             app:destination="@id/nav_add_stock_2" />
@@ -69,16 +63,16 @@
             app:nullable="true" />
 
     </fragment>
-    <fragment
-        android:id="@+id/myBidDetails"
-        android:name="com.example.mandiexe.ui.supply.MyCropBidDetails"
-        android:label="@string/details"
-        tools:layout="@layout/my_crop_bid_details_fragment">
-        <argument
-            android:name="SUPPLY_ID"
-            app:argType="string"
-            app:nullable="true" />
-    </fragment>
+    <!--    <fragment-->
+    <!--        android:id="@+id/myBidDetails"-->
+    <!--        android:name="com.example.mandiexe.ui.supply.MyCropBidDetails"-->
+    <!--        android:label="@string/details"-->
+    <!--        tools:layout="@layout/my_crop_bid_details_fragment">-->
+    <!--        <argument-->
+    <!--            android:name="SUPPLY_ID"-->
+    <!--            app:argType="string"-->
+    <!--            app:nullable="true" />-->
+    <!--    </fragment>-->
     <fragment
         android:id="@+id/myRequirementDetails"
         android:name="com.example.mandiexe.ui.myrequirements.MyRequirementDetails"

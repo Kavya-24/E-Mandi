@@ -229,6 +229,7 @@
     <string name="chole"></string>
     <string name="rajma"></string>
     <string name="desc">Update the crop details</string>
+    <string name="no_bids_founds">No bids founds</string>
 
     <string-array name="arr_crop_names">
         <item>@string/rice</item>

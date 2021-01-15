@@ -15,10 +15,13 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.mandiexe.R
+import com.example.mandiexe.lib.Language
+import com.example.mandiexe.lib.TranslateAPI
+import com.example.mandiexe.models.responses.supply.ViewSupplyResponse
 import com.google.android.material.snackbar.Snackbar
-import com.mannan.translateapi.Language
-import com.mannan.translateapi.TranslateAPI
-import com.mannan.translateapi.TranslateAPI.TranslateListener
+import com.google.gson.Gson
+
+import org.json.JSONObject
 import retrofit2.HttpException
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -238,8 +241,30 @@ object ExternalUtils {
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
+    fun convertJSONToEnglish(mJson: ViewSupplyResponse): ViewSupplyResponse {
 
-    fun translateTextToEnglish(mText: String, srcLanguage: String, dstLanguage: String): String? {
+        //For all the values in the JSON parser map
+        //Make JSON string
+        val gson = Gson()
+        val jsonString: String = gson.toJson(mJson.supply)
+        val jsonObject = JSONObject(jsonString)
+
+
+        val keys: Iterator<String> = jsonObject.keys()
+        keys.forEach { mKey ->
+            val mValue: String = jsonObject.get(mKey).toString()
+            jsonObject.put(mKey, translateTextToDefault(mValue, "en", "hi"))
+
+        }
+
+        return mJson
+    }
+
+    fun translateTextToEnglish(
+        mText: String,
+        srcLanguage: String,
+        dstLanguage: String
+    ): String? {
 
         val translateAPI = TranslateAPI(
             srcLanguage,  //Source Language
@@ -249,13 +274,13 @@ object ExternalUtils {
 
         var q = ""
 
-        translateAPI.setTranslateListener(object : TranslateListener {
-            override fun onSuccess(translatedText: String) {
+        translateAPI.setTranslateListener(object : TranslateAPI.TranslateListener {
+            override fun onSuccess(translatedText: String?) {
                 Log.e("EXternal Utils", "In language conversion error " + translatedText)
-                q = translatedText
+                q = translatedText!!
             }
 
-            override fun onFailure(ErrorText: String) {
+            override fun onFailure(ErrorText: String?) {
                 Log.e("EXternal Utils", "In language conversion error " + ErrorText)
 
             }
@@ -265,7 +290,11 @@ object ExternalUtils {
     }
 
 
-    fun translateTextToDefault(mText: String, srcLanguage: String, dstLanguage: String): String {
+    fun translateTextToDefault(
+        mText: String,
+        srcLanguage: String,
+        dstLanguage: String
+    ): String {
 
         val translateAPI = TranslateAPI(
             Language.ENGLISH,  //Source Language
@@ -275,13 +304,16 @@ object ExternalUtils {
 
         var q = ""
 
-        translateAPI.setTranslateListener(object : TranslateListener {
-            override fun onSuccess(translatedText: String) {
-                Log.e("EXternal Utils Default", "In language conversion error " + translatedText)
-                q = translatedText
+        translateAPI.setTranslateListener(object : TranslateAPI.TranslateListener {
+            override fun onSuccess(translatedText: String?) {
+                Log.e(
+                    "EXternal Utils Default",
+                    "In language conversion xx " + translatedText
+                )
+                q = translatedText!!
             }
 
-            override fun onFailure(ErrorText: String) {
+            override fun onFailure(ErrorText: String?) {
                 Log.e("EXternal Utils Default", "In language conversion error " + ErrorText)
 
             }

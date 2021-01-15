@@ -29,6 +29,10 @@
             android:label="@string/add_growth"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".ui.supply.MyCropBidDetails"
+            android:label="@string/details"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".ui.home.SearchResultActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
