@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.SimpleCursorAdapter
+import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -137,6 +138,11 @@ class AddRequirement : AppCompatActivity(), OnNewReqClockListener {
         val service = RetrofitClient.makeCallsForBids(this)
         val body = SearchCropReqBody(txt.toString())
 
+        val tb = findViewById<Toolbar>(R.id.toolbarExternal)
+        tb.title = resources.getString(R.string.searchBuyers)
+        tb.setNavigationOnClickListener {
+            onBackPressed()
+        }
 
         service.getSearchReq(
             body,

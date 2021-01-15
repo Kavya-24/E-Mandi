@@ -153,7 +153,12 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
 
         viewModel.successful.removeObservers(this)
         viewModel.successful.value = null
+        val mFragment = childFragmentManager.findFragmentById(R.id.frame_main)
+        if (mFragment == MySuppliesFragment()) {
+            activity?.finish()
+        }
         super.onDestroy()
+
 
     }
 

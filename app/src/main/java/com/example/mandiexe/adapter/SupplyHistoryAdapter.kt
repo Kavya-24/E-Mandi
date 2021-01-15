@@ -1,5 +1,6 @@
 package com.example.mandiexe.adapter
 
+import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,7 +33,7 @@ class SupplyHistoryAdapter(val itemClick: OnMySupplyHistoryClickListener) :
         val CROP_DELTA = itemView.findViewById<TextView>(R.id.tv_my_crop_delta)
         val CROP_CHANGE = itemView.findViewById<ImageView>(R.id.iv_stock_image)
         val CROP_CARD = itemView.findViewById<CardView>(R.id.cv_item_stock)
-
+        val TV_LAST_BIS = itemView.findViewById<TextView>(R.id.mCurrentBid)
 
         //Bind a single item
         fun bindPost(
@@ -47,55 +48,58 @@ class SupplyHistoryAdapter(val itemClick: OnMySupplyHistoryClickListener) :
 
                 CROP_QUANTITY.text = _listItem.qty.toString()
                 CROP_EXP.text = ExternalUtils.convertTimeToEpoch(_listItem.expiry)
+
                 CROP_CURRENT_BID.text = _listItem.currentBid.toString()
+                TV_LAST_BIS.text = itemView.context.resources.getString(R.string.lastPrice)
                 CROP_IOP.text = _listItem.askPrice.toString()
                 CROP_LAST_UPDATED.text = ExternalUtils.convertLastModified(_listItem.lastModified)
 
                 if (_listItem.active) {
                     CROP_DELTA.text = itemView.context.resources.getString(R.string.activeSupply)
                     CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaGreen))
+                    //If stock is active show the icon and make it greem
+                    if (currentBid != 0) {
 
-                } else {
-                    CROP_DELTA.text = itemView.context.resources.getString(R.string.inactiveSupply)
-                    CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
-                }
-
-                if (currentBid != 0) {
-
-                    val currentBid = _listItem.currentBid
-                    val askBid = _listItem.askPrice
-                    val ans = currentBid - askBid
+                        val currentBid = _listItem.currentBid
+                        val askBid = _listItem.askPrice
+                        val ans = currentBid - askBid
 
 
-                    if (ans > 0) {
+                        if (ans > 0) {
 
-                        CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaGreen))
-                        CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightGreenTest))
+                            CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaGreen))
+                            CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightGreenTest))
 
-                    } else if (ans < 0) {
+                        } else if (ans < 0) {
 
-                        CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaRed))
-                        CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightRedMono))
-                        CROP_CURRENT_BID.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
-                        CROP_IOP.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
+                            CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaRed))
+                            CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightRedMono))
+                            CROP_CURRENT_BID.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
+                            CROP_IOP.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
 
 
-                    } else if (ans == 0) {
+                        } else if (ans == 0) {
 
-                        CROP_DELTA.text = ans.toString()
-                        CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.blue_A700))
-                        CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.blue_A700))
-                        CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightGreenTest))
+                            CROP_DELTA.text = ans.toString()
+                            CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.blue_A700))
+                            CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.blue_A700))
+                            CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightGreenTest))
+
+                        }
 
                     }
 
                 } else {
+                    CROP_DELTA.text = itemView.context.resources.getString(R.string.inactiveSupply)
+                    CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
+                    CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaRed))
+                    //rEMOVE THE Image
+                   // CROP_CHANGE.visibility = View.GONE
+                    CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.cardOffWhite))
 
-                    CROP_DELTA.text = "-"
-                    CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.blue_A700))
-                    CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.blue_A700))
-                    CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightGreenTest))
                 }
+
+
 
 
                 itemView.setOnClickListener {

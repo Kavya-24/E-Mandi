@@ -6,10 +6,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -96,6 +93,11 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
         args = intent?.getBundleExtra("bundle")!!
         //Set the address in the box trimmed
         SUPPLY_ID = args.getString("SUPPLY_ID").toString()
+        val tb = findViewById<Toolbar>(R.id.toolbarExternal)
+        tb.title = resources.getString(R.string.details)
+        tb.setNavigationOnClickListener {
+            onBackPressed()
+        }
 
         Log.e(TAG, "Argument str is" + SUPPLY_ID)
 

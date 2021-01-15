@@ -75,6 +75,12 @@ class AddStock : AppCompatActivity() {
         setAppLocale(pref.getLanguageFromPreference(), this)
         setContentView(R.layout.add_stock_fragment)
 
+        val tb = findViewById<Toolbar>(R.id.toolbarExternal)
+        tb.title = resources.getString(R.string.add_stock)
+        tb.setNavigationOnClickListener {
+            onBackPressed()
+        }
+
         //UI Init
         etEst = findViewById(R.id.etEstDate)
         etExp = findViewById(R.id.etExpDate)

@@ -20,6 +20,7 @@ import com.example.mandiexe.R
 import com.example.mandiexe.adapter.MyRequirementAdapter
 import com.example.mandiexe.adapter.OnMyBidClickListener
 import com.example.mandiexe.models.responses.bids.FamerBidsResponse
+import com.example.mandiexe.ui.supply.MySuppliesFragment
 import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.viewmodels.RequirementsViewmodel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -106,9 +107,15 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
 
 
     override fun onDestroy() {
-        super.onDestroy()
         viewModel.successful.removeObservers(this)
         viewModel.successful.value = null
+        val mFragment = childFragmentManager.findFragmentById(R.id.frame_main)
+        if (mFragment == MySuppliesFragment()) {
+            activity?.finish()
+        }
+
+        super.onDestroy()
+
     }
 
     override fun viewMyBidDetails(_listItem: FamerBidsResponse.Bid) {
