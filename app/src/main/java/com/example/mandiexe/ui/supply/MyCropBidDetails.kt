@@ -25,12 +25,16 @@ import com.example.mandiexe.models.responses.supply.DeleteSupplyResponse
 import com.example.mandiexe.models.responses.supply.ModifySupplyResponse
 import com.example.mandiexe.models.responses.supply.ViewSupplyResponse
 import com.example.mandiexe.utils.ExternalUtils
+import com.example.mandiexe.utils.ExternalUtils.convertJSONToEnglish
 import com.example.mandiexe.utils.ExternalUtils.createToast
 import com.example.mandiexe.utils.ExternalUtils.setAppLocale
 import com.example.mandiexe.viewmodels.MyCropBidDetailsViewModel
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
+import com.google.gson.Gson
 import com.jjoe64.graphview.DefaultLabelFormatter
 import com.jjoe64.graphview.GraphView
 import com.jjoe64.graphview.series.DataPoint
@@ -441,10 +445,26 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
     private fun initViews(value: ViewSupplyResponse) {
 
-        val xValue = ExternalUtils.convertJSONToEnglish(value)
+        val gson = Gson()
+        val jsonString: String = gson.toJson(value.supply)
 
-        Log.e(TAG, xValue.toString())
+        val xValue = convertJSONToEnglish(jsonString)
+        //This is a nested converted string
+        //Now convrt it in Java Object
 
+        //Jackson mapper
+        val mapper = jacksonObjectMapper()
+
+        try {
+            val mResponse: ViewSupplyResponse.Supply =
+                mapper.readValue<ViewSupplyResponse.Supply>(xValue)
+            Log.e(
+                TAG,
+                "Finally he value is given by of the class obj " + "\n\nmJson is " + xValue + "\nreposne s \n" + mResponse
+            )
+        } catch (e: Exception) {
+            Log.e("Exception in mapping", e.message.toString())
+        }
         findViewById<ConstraintLayout>(R.id.mLayoutSup).visibility = View.VISIBLE
         findViewById<ProgressBar>(R.id.pb_my_crops_details).visibility = View.GONE
 
@@ -512,7 +532,6 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
             val series: LineGraphSeries<DataPoint> =
                 LineGraphSeries<DataPoint>(getSeriesPoints(mList))
 
-            Log.e(TAG, "Series is given by " + series.toString())
 
             graph.addSeries(series)
 
