@@ -34,7 +34,9 @@
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" >
+        <item name="iconTint">@color/white</item>
+    </style>
 
     <style name="styleTextViewHeadingItem">
         <item name="android:layout_width">wrap_content</item>

@@ -90,7 +90,7 @@ class OpenNewRequirementFragment : Fragment(), OnBidHistoryClickListener {
         val service = RetrofitClient.makeCallsForBids(requireContext())
         val body = ViewBidBody(BID_ID)
         service.getFarmerViewParticularBid(
-            body, accessToken = "Bearer ${sessionManager!!.fetchAcessToken()}",
+            body
         ).enqueue(object : retrofit2.Callback<ViewBidResponse> {
             override fun onResponse(
                 call: Call<ViewBidResponse>,
@@ -238,8 +238,7 @@ class OpenNewRequirementFragment : Fragment(), OnBidHistoryClickListener {
         Log.e("OPEN REQ", " Bid object " + bidObject)
 
         service.getFarmerAddBid(
-            bidObject,
-            accessToken = "Bearer ${sessionManager!!.fetchAcessToken()}"
+            bidObject
         ).enqueue(object : retrofit2.Callback<AddBidResponse> {
             override fun onResponse(
                 call: Call<AddBidResponse>,

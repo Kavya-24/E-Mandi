@@ -194,7 +194,6 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
         viewModelCrop.getFunction(body).observe(this, Observer { mResponse ->
             if (viewModelCrop.successfulSupply.value != null) {
                 if (viewModelCrop.successfulSupply.value!!) {
-                    Log.e(TAG, "Response is " + mResponse.toString())
                     initViews(mResponse)
                 } else {
                     createSnackbar(viewModelCrop.messageCancel.value)
@@ -252,7 +251,7 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
         mResponse?.msg?.let { createToast(it, this, container_crop_bids_details) }
         Log.e(TAG, "In manage cancel response")
-        onDestroy()
+        onBackPressed()
     }
 
     private fun modifyStock() {
@@ -441,10 +440,28 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
     private fun initViews(value: ViewSupplyResponse) {
 
-        val xValue = ExternalUtils.convertJSONToEnglish(value)
-
-        Log.e(TAG, xValue.toString())
-
+//        val gson = Gson()
+//        val jsonString: String = gson.toJson(value.supply)
+//
+//        val xValue = convertJSONToEnglish(jsonString)
+//        //This is a nested converted string
+//        //Now convrt it in Java Object
+//
+//        //Jackson mapper
+//        val mapper = jacksonObjectMapper()
+//
+//        try {
+//            val mResponse: ViewSupplyResponse.Supply =
+//                mapper.readValue<ViewSupplyResponse.Supply>(xValue)
+//            Log.e(
+//                TAG,
+//                "Finally he value is given by of the class obj " + "\n\nmJson is " + xValue + "\nreposne s \n" + mResponse
+//            )
+//        } catch (e: Exception) {
+//            Log.e("Exception in mapping", e.message.toString())
+//        }
+//
+//
         findViewById<ConstraintLayout>(R.id.mLayoutSup).visibility = View.VISIBLE
         findViewById<ProgressBar>(R.id.pb_my_crops_details).visibility = View.GONE
 
@@ -512,7 +529,6 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
             val series: LineGraphSeries<DataPoint> =
                 LineGraphSeries<DataPoint>(getSeriesPoints(mList))
 
-            Log.e(TAG, "Series is given by " + series.toString())
 
             graph.addSeries(series)
 

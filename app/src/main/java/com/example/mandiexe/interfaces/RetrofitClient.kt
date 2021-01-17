@@ -34,16 +34,12 @@ object RetrofitClient {
             .addInterceptor(LanguageInterceptor())
             .followRedirects(false)
             .writeTimeout(20, TimeUnit.SECONDS)
-            .authenticator(
-                tAuthenticator
-            )
             .build()
     }
 
     //This is the auth token to be used with firebase
     private fun authClient(): OkHttpClient {
 
-        Log.e(TAG, "In auth cluent")
         return OkHttpClient.Builder()
             .followRedirects(false)
             .writeTimeout(20, TimeUnit.SECONDS)

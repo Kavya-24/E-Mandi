@@ -1,36 +1,73 @@
 package com.example.mandiexe.adapter
 
-import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.fragment.app.FragmentPagerAdapter
 import com.example.mandiexe.R
 import com.example.mandiexe.ui.myrequirements.RequirementFragment
 import com.example.mandiexe.ui.supply.MySuppliesFragment
+import com.example.mandiexe.utils.ApplicationUtils
 
 
-class PagerAdapter(fm: FragmentManager?, var mNumOfTabs: Int, context: Context) :
-    FragmentStatePagerAdapter(fm!!) {
+class MyViewPagerAdapter(manager: FragmentManager) :
+    FragmentPagerAdapter(manager, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
-    private val mCrops = context.resources.getString(R.string.str_my_crops)
-    private val mReq = context.resources.getString(R.string.str_my_req)
 
-    private val tabTitles = arrayOf(mCrops, mReq)
+    private val mCrops = ApplicationUtils.getContext().resources.getString(R.string.str_my_crops)
+    private val mReq = ApplicationUtils.getContext().resources.getString(R.string.str_my_req)
 
+    // Returns total number of pages
     override fun getCount(): Int {
-        return mNumOfTabs
+        return NUM_ITEMS
     }
 
+    // Returns the fragment to display for that page
     override fun getItem(position: Int): Fragment {
         return when (position) {
-            0 -> MySuppliesFragment()
-            1 -> RequirementFragment()
-            else -> MySuppliesFragment()
+
+            0 -> MySuppliesFragment.newInstance()
+            1 -> RequirementFragment.newInstance()
+            else -> MySuppliesFragment.newInstance()
+        }
+    }
+
+    // Returns the page title for the top indicator
+    override fun getPageTitle(position: Int): CharSequence? {
+
+        return when (position) {
+            0 -> mCrops
+            1 -> mReq
+            else -> ""
         }
 
     }
 
-    override fun getPageTitle(position: Int): CharSequence? {
-        return tabTitles[position]
+    companion object {
+        private const val NUM_ITEMS = 2
     }
+
 }
+
+//class PagerAdapter(fm: FragmentManager?, var mNumOfTabs: Int, context: Context) :
+//    FragmentStatePagerAdapter(fm!!) {
+//
+//
+//    private val tabTitles = arrayOf(mCrops, mReq)
+//
+//    override fun getCount(): Int {
+//        return mNumOfTabs
+//    }
+//
+//    override fun getItem(position: Int): Fragment {
+//        return when (position) {
+//            0 -> MySuppliesFragment()
+//            1 -> RequirementFragment()
+//            else -> MySuppliesFragment()
+//        }
+//
+//    }
+//
+//    override fun getPageTitle(position: Int): CharSequence? {
+//        return tabTitles[position]
+//    }
+//}

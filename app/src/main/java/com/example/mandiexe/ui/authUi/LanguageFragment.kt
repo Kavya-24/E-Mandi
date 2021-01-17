@@ -58,7 +58,6 @@ class LanguageFragment : AppCompatActivity(), OnMyLanguageListener {
 
 
         val rv = findViewById<RecyclerView>(R.id.rv_language_main)!!
-        Log.e(TAG, "Rv is " + rv.toString())
 
         rv.layoutManager = GridLayoutManager(this, 2)
 
@@ -83,7 +82,6 @@ class LanguageFragment : AppCompatActivity(), OnMyLanguageListener {
     override fun selectLanguage(_listItem: LanguageBody, position: Int) {
         //Use keys
 
-        Log.e(TAG, "In selectLanguage")
 
         when (position) {
 
@@ -150,7 +148,6 @@ class LanguageFragment : AppCompatActivity(), OnMyLanguageListener {
         pref.setLanguageFromPreference(s)
 
 
-        Log.e(TAG, "In set local" + pref.getLanguageFromPreference().toString())
         //Now for the system
         val editor: SharedPreferences.Editor = getSharedPreferences(
             "Settings",

@@ -37,7 +37,6 @@ class MySuppliesViewmodel : ViewModel() {
 
 
         mySupplyService.getFarmerActiveSupplies(
-            accessToken = "Bearer ${sessionManager.fetchAcessToken()}"
         )
             .enqueue(object : retrofit2.Callback<FarmerSuppliesResponse> {
                 override fun onFailure(call: Call<FarmerSuppliesResponse>, t: Throwable) {

@@ -17,24 +17,19 @@ import androidx.annotation.RequiresApi
 import com.example.mandiexe.R
 import com.example.mandiexe.lib.Language
 import com.example.mandiexe.lib.TranslateAPI
-import com.example.mandiexe.models.responses.supply.ViewSupplyResponse
+import com.example.mandiexe.utils.auth.PreferenceUtil
+import com.github.wnameless.json.flattener.JsonFlattener
+import com.github.wnameless.json.unflattener.JsonUnflattener
 import com.google.android.material.snackbar.Snackbar
-import com.google.gson.Gson
-
+import com.google.cloud.translate.Translate
+import com.google.cloud.translate.TranslateOptions
+import com.google.cloud.translate.Translation
 import org.json.JSONObject
 import retrofit2.HttpException
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeoutException
-
-
-//import org.apache.http.HttpResponse;
-//import org.apache.http.HttpStatus;
-//import org.apache.http.client.HttpClient;
-//import org.apache.http.client.methods.HttpGet;
-//import org.apache.http.impl.client.DefaultHttpClient;
-//import org.apache.http.util.EntityUtils;
 
 
 object ExternalUtils {
@@ -100,7 +95,6 @@ object ExternalUtils {
 
         val resultDate = destFormat.format(convertedDate)
 
-        Log.e("ExternalUtils", resultDate)
 
         return destFormat.parse(resultDate)
 
@@ -121,7 +115,6 @@ object ExternalUtils {
         val convertedDate = sourceFormat.parse(timestamp)!!
 
         destFormat.timeZone = timeDestinationZone
-        Log.e("Timezone", timezone.toString() + timeDestinationZone.toString())
         return destFormat.format(convertedDate)
 
     }
@@ -141,7 +134,6 @@ object ExternalUtils {
         val convertedDate = sourceFormat.parse(timestamp)!!
 
         destFormat.timeZone = timeDestinationZone
-        Log.e("Timezone", timezone.toString() + timeDestinationZone.toString())
         return destFormat.format(convertedDate)
 
     }
@@ -160,7 +152,6 @@ object ExternalUtils {
         sourceFormat.timeZone = timezone
         val convertedDate = sourceFormat.parse(timestamp)!!
         destFormat.timeZone = timeDestinationZone
-        Log.e("Timezone", timezone.toString() + timeDestinationZone.toString())
         return destFormat.format(convertedDate)
 
 
@@ -183,10 +174,6 @@ object ExternalUtils {
         destFormat.timeZone = timeDestinationZone
         Log.e("Timezone", timezone.toString() + timeDestinationZone.toString())
 
-        Log.e(
-            "ExternalUtil",
-            "Source date " + value + " Dest Date" + destFormat.format(convertedDate)
-        )
         return destFormat.format(convertedDate)
 
 
@@ -194,17 +181,19 @@ object ExternalUtils {
 
 
     fun validateName(string: String): Boolean {
-////        Check if the name has only alphabets and not special characters or numbers
+//////        Check if the name has only alphabets and not special characters or numbers
 //
 //        for (c in string) {
 //            if (c !in 'A'..'Z' && c !in 'a'..'z' && c != ' ') {
 //                return false
 //            }
 //        }
+//
         return true
     }
 
     fun setAppLocale(languageFromPreference: String?, context: Context) {
+
         if (languageFromPreference != null) {
 
             val resources: Resources = context.resources
@@ -213,7 +202,7 @@ object ExternalUtils {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 config.setLocale(Locale(languageFromPreference.toLowerCase(Locale.ROOT)))
             } else {
-                config.locale = Locale(languageFromPreference.toLowerCase(Locale.ROOT))
+                config.setLocale(Locale(languageFromPreference.toLowerCase(Locale.ROOT)))
             }
             resources.updateConfiguration(config, dm)
         }
@@ -241,23 +230,35 @@ object ExternalUtils {
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    fun convertJSONToEnglish(mJson: ViewSupplyResponse): ViewSupplyResponse {
+    fun convertJSONToEnglish(jsonString: String): String {
 
         //For all the values in the JSON parser map
         //Make JSON string
-        val gson = Gson()
-        val jsonString: String = gson.toJson(mJson.supply)
-        val jsonObject = JSONObject(jsonString)
+        //jsonString is nested
+        //Flatten it
+        val mJson = flattenJsonString(jsonString)
+        Log.e("Flattened json ", mJson)
+        //Create JSONOBject for this
+        val jsonObject = JSONObject(mJson)
 
-
+        //Access the keys for this
         val keys: Iterator<String> = jsonObject.keys()
-        keys.forEach { mKey ->
-            val mValue: String = jsonObject.get(mKey).toString()
-            jsonObject.put(mKey, translateTextToDefault(mValue, "en", "hi"))
 
+        keys.forEach { mKey ->
+            //For each key, we need a value
+            val mValue = jsonObject.get(mKey).toString()       //
+            jsonObject.put(mKey, translateTextToDefault(mValue, "en", "hi"))
+            Log.e("In For each", "mKey is " + mKey + " mValue is " + mValue)
         }
 
-        return mJson
+        //Make a string of the object
+        val finalJson = jsonObject.toString()
+        Log.e("Final json", finalJson)
+        //Unflatten it
+
+        val unfalttenedJson = unflattenJSONString(finalJson)
+        Log.e("Unflattened json", unfalttenedJson)
+        return unfalttenedJson
     }
 
     fun translateTextToEnglish(
@@ -302,24 +303,64 @@ object ExternalUtils {
             mText
         ) //Query Text
 
-        var q = ""
+        var q = mText
 
         translateAPI.setTranslateListener(object : TranslateAPI.TranslateListener {
             override fun onSuccess(translatedText: String?) {
                 Log.e(
-                    "EXternal Utils Default",
-                    "In language conversion xx " + translatedText
+                    "CONVERT DEF",
+                    "Translateing" + mText + "-" + translatedText
                 )
                 q = translatedText!!
             }
 
             override fun onFailure(ErrorText: String?) {
-                Log.e("EXternal Utils Default", "In language conversion error " + ErrorText)
+                Log.e("CONVERT DEF", "In language conversion error " + ErrorText)
 
             }
         })
 
         return q
+    }
+
+
+    //Flatten and unflatten objects
+    private fun flattenJsonString(mJson: String): String {
+
+        //Returns the flattened json structure
+        val jsonStr: String = JsonFlattener.flatten(mJson)
+        println(jsonStr)
+        Log.e("FLATTEN", jsonStr)
+        return jsonStr
+    }
+
+    private fun unflattenJSONString(jsonStr: String): String {
+
+        val nestedJson: String = JsonUnflattener.unflatten(jsonStr)
+        println(nestedJson)
+        Log.e("UNFLATTEN", nestedJson)
+        return nestedJson
+
+    }
+
+    //Transliterate
+    fun transliterateFromEnglishToDefault(query: String): String? {
+
+        val translate: Translate = TranslateOptions.getDefaultInstance().getService()
+
+
+        // Translates some text into Russian
+        val translation: Translation = translate.translate(
+            query,
+            com.google.cloud.translate.Translate.TranslateOption.sourceLanguage("en"),
+            com.google.cloud.translate.Translate.TranslateOption.targetLanguage("hi")
+        )
+    
+
+        System.out.printf("Text: %s%n", query)
+        System.out.printf("Translation: %s%n", translation.translatedText)
+        Log.e("Ext", "TExt is " + query + " Trans " + translation.translatedText)
+        return translation.translatedText
     }
 
 

@@ -3,19 +3,24 @@ package com.example.mandiexe.ui.supply
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Intent
+import android.icu.text.Transliterator
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.*
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.example.mandiexe.R
+import com.example.mandiexe.lib.ConversionTable
 import com.example.mandiexe.models.body.supply.AddGrowthBody
 import com.example.mandiexe.models.body.supply.AddSupplyBody
 import com.example.mandiexe.models.responses.supply.AddSupplyResponse
 import com.example.mandiexe.utils.ExternalUtils
-import com.example.mandiexe.utils.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.viewmodels.AddStockViewModel
 import com.google.android.material.button.MaterialButton
@@ -26,7 +31,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class AddStock : AppCompatActivity() {
+class AddStock : Fragment() {
 
 
     //Primary constructor
@@ -36,7 +41,7 @@ class AddStock : AppCompatActivity() {
 
     private val viewModel: AddStockViewModel by viewModels()
 
-    //private lateinit var root: View
+    private lateinit var root: View
     private val myCalendar = Calendar.getInstance()
     private val TAG = AddStock::class.java.simpleName
 
@@ -70,35 +75,37 @@ class AddStock : AppCompatActivity() {
     private val RC_TYPE = 2
     private val pref = PreferenceUtil
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setAppLocale(pref.getLanguageFromPreference(), this)
-        setContentView(R.layout.add_stock_fragment)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
-        val tb = findViewById<Toolbar>(R.id.toolbarExternal)
-        tb.title = resources.getString(R.string.add_stock)
-        tb.setNavigationOnClickListener {
-            onBackPressed()
-        }
+        root = inflater.inflate(R.layout.add_stock_fragment, container, false)
+
+//        val tb = root.findViewById<Toolbar>(R.id.toolbarExternal)
+//        tb.title = resources.getString(R.string.add_stock)
+//        tb.setNavigationOnClickListener {
+//            onBackPressed()
+//        }
 
         //UI Init
-        etEst = findViewById(R.id.etEstDate)
-        etExp = findViewById(R.id.etExpDate)
-        //ivLocation = findViewById(R.id.iv_location)
-        //  etAddress = findViewById(R.id.actv_address)
-        cropName = findViewById(R.id.actv_which_crop)
-        cropType = findViewById(R.id.actv_crop_type)
-        cropQuantity = findViewById(R.id.actv_quantity)
-        offerPrice = findViewById(R.id.actv_price)
-        //bidSwitch = findViewById(R.id.switch_for_bid)
+        etEst = root.findViewById(R.id.etEstDate)
+        etExp = root.findViewById(R.id.etExpDate)
+        //ivLocation = root.findViewById(R.id.iv_location)
+        //  etAddress = root.findViewById(R.id.actv_address)
+        cropName = root.findViewById(R.id.actv_which_crop)
+        cropType = root.findViewById(R.id.actv_crop_type)
+        cropQuantity = root.findViewById(R.id.actv_quantity)
+        offerPrice = root.findViewById(R.id.actv_price)
+        //bidSwitch = root.findViewById(R.id.switch_for_bid)
 
-        tilName = findViewById(R.id.tilWhichCrop)
-        tilType = findViewById(R.id.tilCropType)
-        tilPrice = findViewById(R.id.tilOfferPrice)
-        tilQuantity = findViewById(R.id.tilQuantity)
-        //tilAddress = findViewById(R.id.tv_address)
-        tilEst = findViewById(R.id.tilEstDate)
-        tilExp = findViewById(R.id.tilExpDate)
+        tilName = root.findViewById(R.id.tilWhichCrop)
+        tilType = root.findViewById(R.id.tilCropType)
+        tilPrice = root.findViewById(R.id.tilOfferPrice)
+        tilQuantity = root.findViewById(R.id.tilQuantity)
+        //tilAddress = root.findViewById(R.id.tv_address)
+        tilEst = root.findViewById(R.id.tilEstDate)
+        tilExp = root.findViewById(R.id.tilExpDate)
 
 
         //Populate views
@@ -113,8 +120,6 @@ class AddStock : AppCompatActivity() {
 //
 //            Log.e(TAG, "Argument str is" + etAddress.text.toString())
 //        }
-
-        // disable dates before today
 
         // disable dates before today
         val today = Calendar.getInstance()
@@ -155,7 +160,7 @@ class AddStock : AppCompatActivity() {
 
         //##Requires N
         etEst.setOnClickListener {
-            let { it1 ->
+            context?.let { it1 ->
                 DatePickerDialog(
                     it1, dateEst, myCalendar[Calendar.YEAR],
                     myCalendar[Calendar.MONTH],
@@ -166,7 +171,7 @@ class AddStock : AppCompatActivity() {
 
         //##Requires N
         etExp.setOnClickListener {
-            let { it1 ->
+            context?.let { it1 ->
                 DatePickerDialog(
                     it1, dateExp, myCalendar[Calendar.YEAR],
                     myCalendar[Calendar.MONTH],
@@ -175,8 +180,8 @@ class AddStock : AppCompatActivity() {
             }
         }
 
-        findViewById<EditText>(R.id.etSowDate).setOnClickListener {
-            let { it1 ->
+        root.findViewById<EditText>(R.id.etSowDate).setOnClickListener {
+            context?.let { it1 ->
                 DatePickerDialog(
                     it1, dateSow, myCalendar[Calendar.YEAR],
                     myCalendar[Calendar.MONTH],
@@ -184,6 +189,7 @@ class AddStock : AppCompatActivity() {
                 ).show()
             }
         }
+
 //        ivLocation.setOnClickListener {
 //
 //            //Start an activity
@@ -211,7 +217,7 @@ class AddStock : AppCompatActivity() {
         }
 
 
-        findViewById<MaterialButton>(R.id.mtb_add_stock).setOnClickListener {
+        root.findViewById<MaterialButton>(R.id.mtb_add_stock).setOnClickListener {
             if (isValidate()) {
 
                 createStock()
@@ -220,15 +226,17 @@ class AddStock : AppCompatActivity() {
         }
 
         //Mic units
-        findViewById<ImageView>(R.id.mic_crop_name).setOnClickListener {
+        root.findViewById<ImageView>(R.id.mic_crop_name).setOnClickListener {
             makeSearchForItems(RC_NAME)
         }
 
 
-        findViewById<ImageView>(R.id.mic_crop_type).setOnClickListener {
+        root.findViewById<ImageView>(R.id.mic_crop_type).setOnClickListener {
             makeSearchForItems(RC_TYPE)
         }
 
+
+        return root
 
     }
 
@@ -243,7 +251,7 @@ class AddStock : AppCompatActivity() {
         //Put language
         Voiceintent.putExtra(
             RecognizerIntent.EXTRA_LANGUAGE,
-            Locale(pref.getLanguageFromPreference() ?: "en")
+            Locale(pref.getLanguageFromPreference() + "-IN")
         )
         Voiceintent.putExtra(
             RecognizerIntent.EXTRA_PROMPT,
@@ -257,7 +265,7 @@ class AddStock : AppCompatActivity() {
 
         val array: Array<String> = resources.getStringArray(R.array.arr_crop_types)
 
-        val adapter: ArrayAdapter<String>? = let {
+        val adapter: ArrayAdapter<String>? = context?.let {
             ArrayAdapter<String>(
                 it, android.R.layout.simple_spinner_item,
                 array
@@ -269,7 +277,7 @@ class AddStock : AppCompatActivity() {
 
     private fun createStock() {
 
-        val des = findViewById<EditText>(R.id.etDescription_add_stock)
+        val des = root.findViewById<EditText>(R.id.etDescription_add_stock)
         var str = "NA"
         if (!des.text.isEmpty()) {
             str = des.text.toString()
@@ -289,11 +297,11 @@ class AddStock : AppCompatActivity() {
         val growthBody = AddGrowthBody(
             cropName.text.toString(),
             ExternalUtils.convertDateToReqForm(etEst.text.toString()),
-            ExternalUtils.convertDateToReqForm(findViewById<EditText>(R.id.etSowDate).text.toString()),
+            ExternalUtils.convertDateToReqForm(root.findViewById<EditText>(R.id.etSowDate).text.toString()),
             cropQuantity.text.toString(),
             cropType.text.toString()
         )
-        viewModel.growthFunction(growthBody).observe(this, Observer { mResponse ->
+        viewModel.growthFunction(growthBody).observe(viewLifecycleOwner, Observer { mResponse ->
             val success = viewModel.successfulGrowth.value
             if (success != null) {
                 Log.e(TAG, "In growth function and success is " + success + viewModel.messageGrowth)
@@ -301,7 +309,7 @@ class AddStock : AppCompatActivity() {
             }
         })
 
-        viewModel.addFunction(body).observe(this, Observer { mResponse ->
+        viewModel.addFunction(body).observe(viewLifecycleOwner, Observer { mResponse ->
 
             //Check with the sucessful of it
             if (viewModel.successful.value == false) {
@@ -316,10 +324,13 @@ class AddStock : AppCompatActivity() {
 
     private fun manageStockCreateResponses(mResponse: AddSupplyResponse?) {
         //On creating this stock
-        Toast.makeText(this, resources.getString(R.string.supplyAdded), Toast.LENGTH_SHORT)
+        Toast.makeText(
+            requireContext(),
+            resources.getString(R.string.supplyAdded),
+            Toast.LENGTH_SHORT
+        )
             .show()
-        onBackPressed()
-
+        onDestroy()
     }
 
     private fun createSnackbar(value: String?) {
@@ -330,15 +341,15 @@ class AddStock : AppCompatActivity() {
 
         //Crop names
 
+
         val array: Array<String> = resources.getStringArray(R.array.arr_crop_names)
-        val adapter: ArrayAdapter<String>? = let {
+        val adapter: ArrayAdapter<String>? = context?.let {
             ArrayAdapter<String>(
                 it, android.R.layout.simple_spinner_item,
                 array
             )
         }
         cropName.setAdapter(adapter)
-
 
     }
 
@@ -389,12 +400,12 @@ class AddStock : AppCompatActivity() {
         }
 
 
-        if (findViewById<EditText>(R.id.etSowDate).text.isEmpty()) {
+        if (root.findViewById<EditText>(R.id.etSowDate).text.isEmpty()) {
             isValid = false
-            findViewById<TextInputLayout>(R.id.tilSowDate).error =
+            root.findViewById<TextInputLayout>(R.id.tilSowDate).error =
                 resources.getString(R.string.etSowError)
         } else {
-            findViewById<TextInputLayout>(R.id.tilSowDate).error = null
+            root.findViewById<TextInputLayout>(R.id.tilSowDate).error = null
         }
 
 
@@ -431,7 +442,7 @@ class AddStock : AppCompatActivity() {
 
         val myFormat = "dd/MM/yyyy" //In which you need put here
         val sdf = SimpleDateFormat(myFormat, Locale.US)
-        findViewById<EditText>(R.id.etSowDate).setText(sdf.format(myCalendar.time))
+        root.findViewById<EditText>(R.id.etSowDate).setText(sdf.format(myCalendar.time))
 
     }
 
@@ -444,7 +455,7 @@ class AddStock : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+        //  super.onActivityResult(requestCode, resultCode, data)
 
         //Get the map data result
         Log.e(
@@ -462,7 +473,14 @@ class AddStock : AppCompatActivity() {
                 //Put result
                 val res: java.util.ArrayList<String>? =
                     data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
-                cropName.setText(res?.get((0)), false)
+                val resultInEnglish = res?.get(0)
+                val conversionTable = ConversionTable()
+                val transformedString: String? = resultInEnglish?.let { conversionTable.transform(it) }
+
+                //Val translietrated
+                val tx = resultInEnglish?.let { ExternalUtils.transliterateFromEnglishToDefault(it) }
+                cropName.setText(tx)
+                Log.e(TAG, "Res in eng " + resultInEnglish + " transf" + transformedString + tx)
 
             }
         } else if (requestCode == RC_TYPE) {
@@ -471,20 +489,20 @@ class AddStock : AppCompatActivity() {
                 val res: java.util.ArrayList<String>? =
                     data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
                 cropType.setText(res?.get((0)), false)
-
             }
         }
 
     }
 
-    override fun onBackPressed() {
+    override fun onDestroy() {
+
+        //Now we need to destroy this fragment and on resume of home, go to remove views
         Log.e(TAG, "In on destroy")
         viewModel.successful.removeObservers(this)
         viewModel.successful.value = null
+        val navController = findNavController()
+        navController.navigateUp()
 
-        super.onBackPressed()
-        finish()
-
+        super.onDestroy()
     }
-
 }

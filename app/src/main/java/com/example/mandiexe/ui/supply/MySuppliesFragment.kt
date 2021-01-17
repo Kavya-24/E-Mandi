@@ -14,6 +14,7 @@ import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -25,6 +26,7 @@ import com.example.mandiexe.utils.Communicator
 import com.example.mandiexe.utils.ExternalUtils.createSnackbar
 import com.example.mandiexe.viewmodels.MySuppliesViewmodel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.my_crop_bids_fragment.*
 
 
@@ -37,11 +39,12 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
     private val viewModel: MySuppliesViewmodel by viewModels()
     private lateinit var root: View
     private lateinit var comm: Communicator
+    private lateinit var tabLayout: TabLayout
 
 
     override fun onResume() {
         super.onResume()
-        Log.e("IN my crop", "In on resume")
+        Log.e("In supplies", "In on resume")
     }
 
     override fun onCreateView(
@@ -56,21 +59,34 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
 
         comm = activity as Communicator
 
+        tabLayout = root.findViewById(R.id.tabsSupplies) as TabLayout
+        tabLayout.selectTab(tabLayout.getTabAt(0), true)
+
+//        tabLayout.tabMode = TabLayout.MODE_SCROLLABLE
+
+
+        tabLayout.setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                if (tab.position == 1) {
+                    //Navigae to my requirements fragment
+                    root.findNavController()
+                        .navigate(R.id.action_nav_my_supplies_to_nav_my_requirements)
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
+
         //Get the items from normal adapter
 
         root.findViewById<FloatingActionButton>(R.id.fab_add_my_stock).setOnClickListener {
 
-            //Use communicators
-            //Replace containers
-            val i = Intent(requireContext(), AddStock::class.java)
-            startActivity(i)
-//            val navController = root.findNavController()
-//            navController.navigateUp()
-//            navController.navigate(R.id.action_nav_home_to_nav_add_stock_2)
+            root.findNavController().navigate(R.id.action_nav_my_supplies_to_addStock)
 
         }
 
-        val swl = root.findViewById<SwipeRefreshLayout>(R.id.swl_price_fragment)
+        val swl = root.findViewById<SwipeRefreshLayout>(R.id.swl_supplies_fragment)
         swl.setOnRefreshListener {
             loadItems()
             swl.isRefreshing = false
@@ -148,17 +164,13 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
 
     }
 
-
     override fun onDestroy() {
 
         viewModel.successful.removeObservers(this)
         viewModel.successful.value = null
-        val mFragment = childFragmentManager.findFragmentById(R.id.frame_main)
-        if (mFragment == MySuppliesFragment()) {
-            activity?.finish()
-        }
-        super.onDestroy()
 
+        Log.e("In supplies", "In on destroy")
+        super.onDestroy()
 
     }
 

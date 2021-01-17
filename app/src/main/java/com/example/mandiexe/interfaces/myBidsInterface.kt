@@ -19,7 +19,6 @@ interface myBidsInterface {
     @Headers("Content-Type:application/json")
     @POST("api/farmer/bidhistory")
     fun getFarmerBidHistoryGlobal(
-        @Header("Authorization") accessToken: String?
     ): Call<BidHistoryResponse>
 
 
@@ -27,7 +26,7 @@ interface myBidsInterface {
     @Headers("Content-Type:application/json")
     @POST("api/farmer/bids")
     fun getFarmerDemands(
-        @Header("Authorization") accessToken: String?
+        
     ): Call<FamerBidsResponse>
 
 
@@ -35,8 +34,8 @@ interface myBidsInterface {
     @Headers("Content-Type:application/json")
     @POST("api/farmer/bid/view")
     fun getFarmerViewParticularBid(
-        @Body mViewBidBody: ViewBidBody,
-        @Header("Authorization") accessToken: String?
+        @Body mViewBidBody: ViewBidBody
+        
     ): Call<ViewBidResponse>
 
 
@@ -44,8 +43,8 @@ interface myBidsInterface {
     @Headers("Content-Type:application/json")
     @POST("api/farmer/bid/update")
     fun getFarmerUpdateBid(
-        @Body mUpdateBidBody: UpdateBidBody,
-        @Header("Authorization") accessToken: String?
+        @Body mUpdateBidBody: UpdateBidBody
+        
     ): Call<UpdateBidResponse>
 
 
@@ -53,8 +52,8 @@ interface myBidsInterface {
     @Headers("Content-Type:application/json")
     @POST("api/farmer/bid/delete")
     fun getFarmerDeleteBid(
-        @Body mDeleteBidBody: DeletBidBody,
-        @Header("Authorization") accessToken: String?
+        @Body mDeleteBidBody: DeletBidBody
+        
     ): Call<DeleteBidResponse>
 
 
@@ -62,8 +61,8 @@ interface myBidsInterface {
     @Headers("Content-Type:application/json")
     @POST("api/farmer/bid/add")
     fun getFarmerAddBid(
-        @Body mAddBidBody: AddBidBody,
-        @Header("Authorization") accessToken: String?
+        @Body mAddBidBody: AddBidBody
+        
     ): Call<AddBidResponse>
 
 
@@ -71,8 +70,7 @@ interface myBidsInterface {
     @Headers("Content-Type:application/json")
     @POST("api/supply/search")
     fun getSearchReq(
-        @Body body: SearchCropReqBody,
-        @Header("Authorization") accessToken: String?
+        @Body body: SearchCropReqBody
     ): Call<SearchCropReqResponse>
 
 

@@ -23,7 +23,7 @@ class TranslateAPI(langFrom: String?, langTo: String?, text: String?) {
     var langTo: String? = null
     var word: String? = null
 
-    internal open inner class Async :
+    internal  open inner class Async :
         AsyncTask<String?, String?, String?>() {
         override fun doInBackground(vararg params: String?): String? {
             try {

@@ -1,4 +1,5 @@
 <resources>
+    <string name="app_name_main" translatable="false">E-Mandi</string>
     <string name="app_name">E-Mandi</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

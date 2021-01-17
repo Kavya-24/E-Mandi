@@ -33,10 +33,7 @@ class LanguagesAdapter(
 
                 CARD.text = _listItem.language
 
-                Log.e(
-                    "LA",
-                    "In bind post and langugae us " + _listItem.mLocale + " pref is " + pref.getLanguageFromPreference()
-                )
+
                 if (_listItem.mLocale == pref.getLanguageFromPreference()) {
                     //Then add the button
                     Log.e("In language adapter", "With tick")

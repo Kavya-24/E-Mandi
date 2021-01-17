@@ -3,6 +3,7 @@ package com.example.mandiexe.ui.myrequirements
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,10 +21,10 @@ import com.example.mandiexe.R
 import com.example.mandiexe.adapter.MyRequirementAdapter
 import com.example.mandiexe.adapter.OnMyBidClickListener
 import com.example.mandiexe.models.responses.bids.FamerBidsResponse
-import com.example.mandiexe.ui.supply.MySuppliesFragment
 import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.viewmodels.RequirementsViewmodel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.requirement_fragment.*
 
 class RequirementFragment : Fragment(), OnMyBidClickListener {
@@ -35,6 +36,12 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
 
     private val viewModel: RequirementsViewmodel by viewModels()
     private lateinit var root: View
+    private lateinit var tabLayout: TabLayout
+
+    override fun onResume() {
+        super.onResume()
+        Log.e("Req", "In resume")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,6 +50,27 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
         root = inflater.inflate(R.layout.requirement_fragment, container, false)
 
         //Get the items from retrofit call and paged adapter
+
+        tabLayout = root.findViewById(R.id.tabsReq) as TabLayout
+        tabLayout.selectTab(tabLayout.getTabAt(1), true)
+//        tabLayout.tabMode = TabLayout.MODE_SCROLLABLE
+
+
+        tabLayout.setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                //     openFragment(getFragment(tab.position))
+                if (tab.position == 0) {
+                    //1 will be tab reselected
+                    //0 will be MySupplies
+                    //Simply destroy this
+                    root.findNavController().navigateUp()
+                    onDestroy()
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
 
         loadRequirements()
 
@@ -109,11 +137,7 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
     override fun onDestroy() {
         viewModel.successful.removeObservers(this)
         viewModel.successful.value = null
-        val mFragment = childFragmentManager.findFragmentById(R.id.frame_main)
-        if (mFragment == MySuppliesFragment()) {
-            activity?.finish()
-        }
-
+        Log.e("In requirements", "In destroy")
         super.onDestroy()
 
     }
@@ -124,8 +148,8 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
             "BID_ID" to _listItem._id
         )
 
-        root.findNavController()
-            .navigate(R.id.action_nav_home_to_myRequirementDetails, bundle)
+//        root.findNavController()
+//            .navigate(R.id.action_nav_home_to_myRequirementDetails, bundle)
 
     }
 

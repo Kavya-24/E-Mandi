@@ -3,21 +3,27 @@ package com.example.mandiexe.utils.auth
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.mandiexe.R
+import com.example.mandiexe.utils.ApplicationUtils
 
 
 class SessionManager(context: Context) {
 
 
-    private var prefs: SharedPreferences =
-        context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
+    private val prefs: SharedPreferences =
+        context.getSharedPreferences(
+            context.getString(R.string.app_name_main),
+            Context.MODE_PRIVATE
+        )
 
-    private var prefRefresh: SharedPreferences =
-        context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
+    private val USER_ACCESS_TOKEN = ""
+    private val ctx = ApplicationUtils.getContext()
 
-    companion object {
-        var USER_ACCESS_TOKEN = null
-        var USER_REFRESH_TOKEN = null
-    }
+    private var access: String?
+        get() = prefs.getString(USER_ACCESS_TOKEN, "")
+        set(value) {
+            prefs.edit().putString(USER_ACCESS_TOKEN, value).apply()
+        }
+
 
     /**
      * Function to save auth token
@@ -25,31 +31,20 @@ class SessionManager(context: Context) {
 
     fun saveAuth_access_Token(token: String) {
 
-
-        val editor = prefs.edit()
-        editor.putString(USER_ACCESS_TOKEN, token)
-        editor.apply()
+        val p = SessionManager(ctx)
+        p.access = token
 
     }
 
-    fun saveAuth_refresh_Token(token: String) {
-
-        val editor = prefRefresh.edit()
-        editor.putString(USER_REFRESH_TOKEN, token)
-        editor.apply()
-
-    }
 
     /**
      * Function to fetch auth token
      */
 
     fun fetchAcessToken(): String? {
-        return prefs.getString(USER_ACCESS_TOKEN, null)
+        val p = SessionManager(ctx)
+        return p.access
     }
 
-    fun fetchRefreshToken(): String? {
-        return prefRefresh.getString(USER_REFRESH_TOKEN, null)
-    }
 
 }
