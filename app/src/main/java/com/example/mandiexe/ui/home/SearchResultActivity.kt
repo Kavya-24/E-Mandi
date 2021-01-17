@@ -79,9 +79,7 @@ class SearchResultActivity : AppCompatActivity() {
 
         service.getSearchCropGlobally(
             body,
-            accessToken = "Bearer ${sessionManager.fetchAcessToken()}",
-
-            )
+     )
             .enqueue(object : retrofit2.Callback<SearchGlobalCropResponse> {
                 override fun onResponse(
                     call: Call<SearchGlobalCropResponse>,

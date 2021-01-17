@@ -37,8 +37,7 @@ class FarmerBidHistoryViewModel : ViewModel() {
     fun BidStockFunction(): MutableLiveData<BidHistoryResponse> {
 
         myBidService.getFarmerBidHistoryGlobal(
-            accessToken = "Bearer ${sessionManager.fetchAcessToken()}",
-        )
+     )
             .enqueue(object : retrofit2.Callback<BidHistoryResponse> {
                 override fun onFailure(call: Call<BidHistoryResponse>, t: Throwable) {
                     successful.value = false

@@ -14,7 +14,6 @@ interface mySupplyInterface {
     @Headers("Content-Type:application/json")
     @POST("api/farmer/supplies")
     fun getFarmerActiveSupplies(
-        @Header("Authorization") accessToken: String?
     ): Call<FarmerSuppliesResponse>
 
 
@@ -22,8 +21,7 @@ interface mySupplyInterface {
     @Headers("Content-Type:application/json")
     @POST("api/supply/view")
     fun getViewCurrentSupply(
-        @Body body: ViewSupplyBody,
-        @Header("Authorization") accessToken: String?
+        @Body body: ViewSupplyBody
     ): Call<ViewSupplyResponse>
 
 
@@ -31,7 +29,6 @@ interface mySupplyInterface {
     @Headers("Content-Type:application/json")
     @POST("api/farmer/history")
     fun getFarmerSupplyHistory(
-        @Header("Authorization") accessToken: String?
     ): Call<SupplyHistoryResponse>
 
 
@@ -39,24 +36,21 @@ interface mySupplyInterface {
     @Headers("Content-Type:application/json")
     @POST("api/supply/add")
     fun getAddSupply(
-        @Body mAddSupply: AddSupplyBody,
-        @Header("Authorization") accessToken: String?
+        @Body mAddSupply: AddSupplyBody
     ): Call<AddSupplyResponse>
 
     //Delete a stock
     @Headers("Content-Type:application/json")
     @POST("api/supply/delete")
     fun getDeleteSupply(
-        @Body mDeleteSupply: DeleteSupplyBody,
-        @Header("Authorization") accessToken: String?
+        @Body mDeleteSupply: DeleteSupplyBody
     ): Call<DeleteSupplyResponse>
 
     //Modify a stock
     @Headers("Content-Type:application/json")
     @POST("api/supply/update")
     fun getModifySupply(
-        @Body mModifySupply: ModifySupplyBody,
-        @Header("Authorization") accessToken: String?
+        @Body mModifySupply: ModifySupplyBody
     ): Call<ModifySupplyResponse>
 
 
@@ -64,16 +58,14 @@ interface mySupplyInterface {
     @Headers("Content-Type:application/json")
     @POST("api/farmer/crop/search")
     fun getSearchCropGlobally(
-        @Body body: SearchGlobalCropBody,
-        @Header("Authorization") accessToken: String?
+        @Body body: SearchGlobalCropBody
     ): Call<SearchGlobalCropResponse>
 
     //Crop autocomplete
     @Headers("Content-Type:application/json")
     @POST("api/farmer/crop/autocomplete")
     fun getCropAutoComplete(
-        @Body body: CropSearchAutoCompleteBody,
-        @Header("Authorization") accessToken: String?
+        @Body body: CropSearchAutoCompleteBody
     ): Call<CropSearchAutocompleteResponse>
 
 
@@ -81,8 +73,7 @@ interface mySupplyInterface {
     @Headers("Content-Type:application/json")
     @POST("api/farmer/growth/add")
     fun getFarmerGrowthAdd(
-        @Body body: AddGrowthBody,
-        @Header("Authorization") accessToken: String?
+        @Body body: AddGrowthBody
     ): Call<AddGrowthResponse>
 
 

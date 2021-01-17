@@ -36,8 +36,7 @@ class FarmerSupplyHistoryViewModel : ViewModel() {
     fun supplyStockFunction(): MutableLiveData<SupplyHistoryResponse> {
 
         mySupplyService.getFarmerSupplyHistory(
-            accessToken = "Bearer ${sessionManager.fetchAcessToken()}",
-        )
+     )
             .enqueue(object : retrofit2.Callback<SupplyHistoryResponse> {
                 override fun onFailure(call: Call<SupplyHistoryResponse>, t: Throwable) {
                     successful.value = false

@@ -35,8 +35,7 @@ class RequirementsViewmodel : ViewModel() {
     fun mReqFunction(): MutableLiveData<FamerBidsResponse> {
 
         mySupplyService.getFarmerDemands(
-            accessToken = "Bearer ${sessionManager.fetchAcessToken()}",
-        )
+     )
             .enqueue(object : retrofit2.Callback<FamerBidsResponse> {
                 override fun onFailure(call: Call<FamerBidsResponse>, t: Throwable) {
                     successful.value = false

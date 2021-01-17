@@ -127,9 +127,7 @@ class MainActivity : AppCompatActivity(), Communicator {
         val body = CropSearchAutoCompleteBody(query)
         service.getCropAutoComplete(
             body = body,
-            accessToken = "Bearer ${sessionManager.fetchAcessToken()}",
-
-            ).enqueue(object : retrofit2.Callback<CropSearchAutocompleteResponse> {
+     ).enqueue(object : retrofit2.Callback<CropSearchAutocompleteResponse> {
             override fun onFailure(call: Call<CropSearchAutocompleteResponse>, t: Throwable) {
 
                 val message = ExternalUtils.returnStateMessageForThrowable(t)

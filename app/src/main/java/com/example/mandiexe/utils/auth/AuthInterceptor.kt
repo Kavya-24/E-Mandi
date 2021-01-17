@@ -24,7 +24,7 @@ class AuthInterceptor(context: Context) : Interceptor {
             requestBuilder.addHeader("Authorization", "Bearer $it")
         }
 
-        Log.e("AUTH ", "In auth interceptor and bearer token" + sessionManager.fetchAcessToken())
+        Log.e("AUTH", "In auth interceptor and access token is" + sessionManager.fetchAcessToken())
 
 
         return chain.proceed(requestBuilder.build())

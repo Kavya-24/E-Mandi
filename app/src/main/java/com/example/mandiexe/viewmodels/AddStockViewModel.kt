@@ -46,8 +46,7 @@ class AddStockViewModel : ViewModel() {
 
         mySupplyService.getAddSupply(
             mAddSupply = body,
-            accessToken = "Bearer ${sessionManager.fetchAcessToken()}",
-        )
+     )
             .enqueue(object : retrofit2.Callback<AddSupplyResponse> {
                 override fun onFailure(call: Call<AddSupplyResponse>, t: Throwable) {
                     successfulGrowth.value = false
@@ -110,8 +109,7 @@ class AddStockViewModel : ViewModel() {
 
         mySupplyService.getFarmerGrowthAdd(
             body = body,
-            accessToken = "Bearer ${sessionManager.fetchAcessToken()}",
-        )
+     )
             .enqueue(object : retrofit2.Callback<AddGrowthResponse> {
                 override fun onFailure(call: Call<AddGrowthResponse>, t: Throwable) {
                     successful.value = false

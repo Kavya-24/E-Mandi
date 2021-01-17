@@ -55,8 +55,7 @@ class MyRequirementDetailsViewModel : ViewModel() {
         myBidService.getFarmerViewParticularBid(
 
             mViewBidBody = body,
-            accessToken = "Bearer ${sessionManager.fetchAcessToken()}",
-        )
+     )
             .enqueue(object : retrofit2.Callback<ViewBidResponse> {
                 override fun onFailure(call: Call<ViewBidResponse>, t: Throwable) {
                     successfulBid.value = false
@@ -112,8 +111,7 @@ class MyRequirementDetailsViewModel : ViewModel() {
 
         myBidService.getFarmerDeleteBid(
             mDeleteBidBody = body,
-            accessToken = "Bearer ${sessionManager.fetchAcessToken()}",
-        )
+     )
             .enqueue(object : retrofit2.Callback<DeleteBidResponse> {
                 override fun onFailure(call: Call<DeleteBidResponse>, t: Throwable) {
                     successfulCancel.value = false
@@ -167,8 +165,7 @@ class MyRequirementDetailsViewModel : ViewModel() {
 
         myBidService.getFarmerUpdateBid(
             mUpdateBidBody = body,
-            accessToken = "Bearer ${sessionManager.fetchAcessToken()}",
-        )
+     )
             .enqueue(object : retrofit2.Callback<UpdateBidResponse> {
                 override fun onFailure(call: Call<UpdateBidResponse>, t: Throwable) {
                     successfulUpdate.value = false
