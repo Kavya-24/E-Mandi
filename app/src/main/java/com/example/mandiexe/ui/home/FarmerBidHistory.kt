@@ -18,7 +18,7 @@ import com.example.mandiexe.adapter.OnMyBidHistoryGlobalClickListener
 import com.example.mandiexe.models.responses.bids.BidHistoryResponse
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.ExternalUtils
-import kotlinx.android.synthetic.main.farmer_supply_history_fragment.*
+import kotlinx.android.synthetic.main.farmer_bid_history_fragment.*
 
 class FarmerBidHistory : Fragment(), OnMyBidHistoryGlobalClickListener {
 
@@ -58,7 +58,7 @@ class FarmerBidHistory : Fragment(), OnMyBidHistoryGlobalClickListener {
                     ExternalUtils.createSnackbar(
                         viewModel.message.value,
                         ApplicationUtils.getContext(),
-                        container_supply_history
+                        container_bid_history
                     )
                 }
             }
