@@ -425,13 +425,13 @@ class OTPFragment : Fragment() {
 
         Log.e(TAG, "Success Login and response is " + response.toString())
 
-//        response?.user?.accessToken?.let { sessionManager.saveAuth_access_Token(it) }
-//
+        response?.user?.accessToken?.let { sessionManager.saveAuth_access_Token(it) }
+
 //        response?.user?.refreshToken?.let { sessionManager.saveAuth_refresh_Token(it) }
-//        response?.user?.refreshToken?.let { preferenceManager.putAuthToken(it) }
+        response?.user?.refreshToken?.let { preferenceManager.putAuthToken(it) }
 
         Log.e(TAG, "AT: \n" + sessionManager.fetchAcessToken().toString())
-        Log.e(TAG, "RT: \n" + sessionManager.fetchRefreshToken().toString())
+     //   Log.e(TAG, "RT: \n" + sessionManager.fetchRefreshToken().toString())
         Log.e(TAG, "PT: \n" + preferenceManager.authToken.toString())
 
         pref.setNumberFromPreference(phoneNumber)

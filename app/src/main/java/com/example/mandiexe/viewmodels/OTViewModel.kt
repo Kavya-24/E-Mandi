@@ -85,35 +85,35 @@ class OTViewModel : ViewModel() {
                             successful.value = true
                             message.value =
                                 context.resources.getString(R.string.loginSuceed)
-                            LoginResponse(
-                                response.body()!!.msg,
-                                response.body()!!.user,
-                                ""
-                            ).user?.accessToken?.let {
-                                sessionManager.saveAuth_access_Token(
-                                    it
-                                )
-                            }
-
-                            (LoginResponse(
-                                response.body()!!.msg,
-                                response.body()!!.user,
-                                ""
-                            )).user?.refreshToken?.let {
-                                sessionManager.saveAuth_refresh_Token(
-                                    it
-                                )
-                            }
-
-                            (LoginResponse(
-                                response.body()!!.msg,
-                                response.body()!!.user,
-                                ""
-                            )).user?.accessToken?.let {
-                                preferenceManager.putAuthToken(
-                                    it
-                                )
-                            }
+//                            LoginResponse(
+//                                response.body()!!.msg,
+//                                response.body()!!.user,
+//                                ""
+//                            ).user?.accessToken?.let {
+//                                sessionManager.saveAuth_access_Token(
+//                                    it
+//                                )
+//                            }
+//
+//                            (LoginResponse(
+//                                response.body()!!.msg,
+//                                response.body()!!.user,
+//                                ""
+//                            )).user?.refreshToken?.let {
+//                                sessionManager.saveAuth_refresh_Token(
+//                                    it
+//                                )
+//                            }
+//
+//                            (LoginResponse(
+//                                response.body()!!.msg,
+//                                response.body()!!.user,
+//                                ""
+//                            )).user?.accessToken?.let {
+//                                preferenceManager.putAuthToken(
+//                                    it
+//                                )
+//                            }
 
 
                         } else if (response.body()?.msg == "Phone Number not registered.") {

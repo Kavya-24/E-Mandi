@@ -234,6 +234,13 @@ class AddRequirement : AppCompatActivity(), OnNewReqClockListener {
         //UI init
         pb = findViewById(R.id.pb_add_req)
         rv = findViewById(R.id.rv_search_requirements)
+
+        val tb = findViewById<Toolbar>(R.id.toolbarExternal)
+        tb.title = resources.getString(R.string.searchBuyers)
+        tb.setNavigationOnClickListener {
+            onBackPressed()
+        }
+
         // searchView = findViewById(R.id.sv_requirements)
 
 ////        searchManager = this?.getSystemService(this.SEARCH_SERVICE) as SearchManager

@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity(), Communicator {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_supply, R.id.nav_bid
+                R.id.nav_my_supplies, R.id.nav_supply, R.id.nav_bid, R.id.nav_my_requirements
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -391,20 +391,29 @@ class MainActivity : AppCompatActivity(), Communicator {
 
     override fun onBackPressed() {
         super.onBackPressed()
+
         val navHostFragment: NavHostFragment? =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
+
         val mFragment = navHostFragment?.getChildFragmentManager()?.getFragments()?.get(0)
+
         Log.e("MAIN", "Current frag is " + mFragment.toString())
+
         val f2 = supportFragmentManager.findFragmentById(R.id.frame_main)
+
         Log.e("MAIN f2", f2.toString())
+
         if (f2 != null && (f2 == HomeFragment() || f2 == MySuppliesFragment() || f2 == RequirementFragment())) {
             Log.e("MAIN", "In t");
             finish()
         }
+
         if (mFragment == HomeFragment() && (mFragment.isHidden || mFragment.isVisible)) {
             Log.e("MAIN", "In true")
             finishAffinity()
         }
+
+
     }
 
 }

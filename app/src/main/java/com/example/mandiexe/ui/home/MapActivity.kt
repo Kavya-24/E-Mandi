@@ -328,7 +328,7 @@ class MapActivity : AppCompatActivity() {
         response.user?.refreshToken?.let { preferenceManager.putAuthToken(it) }
 
         Log.e(TAG, "AT: \n" + sessionManager.fetchAcessToken().toString())
-        Log.e(TAG, "RT: \n" + sessionManager.fetchRefreshToken().toString())
+        //Log.e(TAG, "RT: \n" + sessionManager.fetchRefreshToken().toString())
         Log.e(TAG, "PT: \n" + preferenceManager.authToken.toString())
 
         response.user?.phone?.let { pref.setNumberFromPreference(it) }

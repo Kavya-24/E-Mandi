@@ -29,13 +29,13 @@ class SessionManager(context: Context) {
 
     }
 
-    fun saveAuth_refresh_Token(token: String) {
-
-        val editor = prefs.edit()
-        editor.putString(USER_REFRESH_TOKEN, token)
-        editor.apply()
-
-    }
+//    fun saveAuth_refresh_Token(token: String) {
+//
+//        val editor = prefs.edit()
+//        editor.putString(USER_REFRESH_TOKEN, token)
+//        editor.apply()
+//
+//    }
 
     /**
      * Function to fetch auth token
@@ -45,8 +45,8 @@ class SessionManager(context: Context) {
         return prefs.getString(USER_ACCESS_TOKEN, null)
     }
 
-    fun fetchRefreshToken(): String? {
-        return prefs.getString(USER_REFRESH_TOKEN, null)
-    }
+//    fun fetchRefreshToken(): String? {
+//        return prefs.getString(USER_REFRESH_TOKEN, null)
+//    }
 
 }
