@@ -11,6 +11,7 @@ import okhttp3.Route
 import retrofit2.Call
 import java.io.IOException
 
+
 class TokenAuthenticator(val context: Context) : Authenticator {
 
     val service = RetrofitClient.getAuthInstance()
@@ -75,6 +76,7 @@ class TokenAuthenticator(val context: Context) : Authenticator {
         // Null indicates no attempt to authenticate.
         return null
     }
+
 
 
 }
