@@ -17,23 +17,19 @@ import androidx.annotation.RequiresApi
 import com.example.mandiexe.R
 import com.example.mandiexe.lib.Language
 import com.example.mandiexe.lib.TranslateAPI
+import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.github.wnameless.json.flattener.JsonFlattener
 import com.github.wnameless.json.unflattener.JsonUnflattener
 import com.google.android.material.snackbar.Snackbar
+import com.google.cloud.translate.Translate
+import com.google.cloud.translate.TranslateOptions
+import com.google.cloud.translate.Translation
 import org.json.JSONObject
 import retrofit2.HttpException
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeoutException
-
-
-//import org.apache.http.HttpResponse;
-//import org.apache.http.HttpStatus;
-//import org.apache.http.client.HttpClient;
-//import org.apache.http.client.methods.HttpGet;
-//import org.apache.http.impl.client.DefaultHttpClient;
-//import org.apache.http.util.EntityUtils;
 
 
 object ExternalUtils {
@@ -197,6 +193,7 @@ object ExternalUtils {
     }
 
     fun setAppLocale(languageFromPreference: String?, context: Context) {
+
         if (languageFromPreference != null) {
 
             val resources: Resources = context.resources
@@ -205,7 +202,7 @@ object ExternalUtils {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 config.setLocale(Locale(languageFromPreference.toLowerCase(Locale.ROOT)))
             } else {
-                config.locale = Locale(languageFromPreference.toLowerCase(Locale.ROOT))
+                config.setLocale(Locale(languageFromPreference.toLowerCase(Locale.ROOT)))
             }
             resources.updateConfiguration(config, dm)
         }
@@ -240,7 +237,7 @@ object ExternalUtils {
         //jsonString is nested
         //Flatten it
         val mJson = flattenJsonString(jsonString)
-        Log.e("Flattened json " , mJson)
+        Log.e("Flattened json ", mJson)
         //Create JSONOBject for this
         val jsonObject = JSONObject(mJson)
 
@@ -346,7 +343,25 @@ object ExternalUtils {
 
     }
 
-    //Unflatten JSON
+    //Transliterate
+    fun transliterateFromEnglishToDefault(query: String): String? {
+
+        val translate: Translate = TranslateOptions.getDefaultInstance().getService()
+
+
+        // Translates some text into Russian
+        val translation: Translation = translate.translate(
+            query,
+            com.google.cloud.translate.Translate.TranslateOption.sourceLanguage("en"),
+            com.google.cloud.translate.Translate.TranslateOption.targetLanguage("hi")
+        )
+    
+
+        System.out.printf("Text: %s%n", query)
+        System.out.printf("Translation: %s%n", translation.translatedText)
+        Log.e("Ext", "TExt is " + query + " Trans " + translation.translatedText)
+        return translation.translatedText
+    }
 
 
 }

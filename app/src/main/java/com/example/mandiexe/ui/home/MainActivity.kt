@@ -276,7 +276,7 @@ class MainActivity : AppCompatActivity(), Communicator {
         //Put language
         Voiceintent.putExtra(
             RecognizerIntent.EXTRA_LANGUAGE,
-            Locale(pref.getLanguageFromPreference() ?: "en")
+            Locale(pref.getLanguageFromPreference() + "-IN")
         )
         Voiceintent.putExtra(
             RecognizerIntent.EXTRA_PROMPT,

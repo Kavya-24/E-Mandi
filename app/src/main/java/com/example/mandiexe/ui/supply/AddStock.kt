@@ -3,6 +3,7 @@ package com.example.mandiexe.ui.supply
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Intent
+import android.icu.text.Transliterator
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.util.Log
@@ -13,9 +14,9 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.mandiexe.R
+import com.example.mandiexe.lib.ConversionTable
 import com.example.mandiexe.models.body.supply.AddGrowthBody
 import com.example.mandiexe.models.body.supply.AddSupplyBody
 import com.example.mandiexe.models.responses.supply.AddSupplyResponse
@@ -250,7 +251,7 @@ class AddStock : Fragment() {
         //Put language
         Voiceintent.putExtra(
             RecognizerIntent.EXTRA_LANGUAGE,
-            Locale(pref.getLanguageFromPreference() + "_IN")
+            Locale(pref.getLanguageFromPreference() + "-IN")
         )
         Voiceintent.putExtra(
             RecognizerIntent.EXTRA_PROMPT,
@@ -323,7 +324,11 @@ class AddStock : Fragment() {
 
     private fun manageStockCreateResponses(mResponse: AddSupplyResponse?) {
         //On creating this stock
-        Toast.makeText(requireContext(), resources.getString(R.string.supplyAdded), Toast.LENGTH_SHORT)
+        Toast.makeText(
+            requireContext(),
+            resources.getString(R.string.supplyAdded),
+            Toast.LENGTH_SHORT
+        )
             .show()
         onDestroy()
     }
@@ -468,7 +473,14 @@ class AddStock : Fragment() {
                 //Put result
                 val res: java.util.ArrayList<String>? =
                     data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
-                cropName.setText(res?.get((0)), false)
+                val resultInEnglish = res?.get(0)
+                val conversionTable = ConversionTable()
+                val transformedString: String? = resultInEnglish?.let { conversionTable.transform(it) }
+
+                //Val translietrated
+                val tx = resultInEnglish?.let { ExternalUtils.transliterateFromEnglishToDefault(it) }
+                cropName.setText(tx)
+                Log.e(TAG, "Res in eng " + resultInEnglish + " transf" + transformedString + tx)
 
             }
         } else if (requestCode == RC_TYPE) {
@@ -477,7 +489,6 @@ class AddStock : Fragment() {
                 val res: java.util.ArrayList<String>? =
                     data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
                 cropType.setText(res?.get((0)), false)
-
             }
         }
 

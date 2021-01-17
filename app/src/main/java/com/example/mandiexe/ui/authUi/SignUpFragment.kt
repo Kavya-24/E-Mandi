@@ -80,6 +80,7 @@ class SignUpFragment : Fragment() {
             if (isValidate()) {
                 //valid details
                 //Save the prefered unit
+
                 pref.setAreaUnitFromPreference(etArea.text.toString())
                 goToMapActivity()
 
@@ -107,20 +108,28 @@ class SignUpFragment : Fragment() {
     private fun goToMapActivity() {
 
         val i = Intent(requireContext(), MapActivity::class.java)
+
+        //Transliterate data (Name, area, village)
+        transliterateData()
+
         val b = bundleOf(
             "TOKEN" to TOKEN,
             "PHONE" to PHONE,
             "RC" to mapFromSignUp,                          //For the thing that it goes from Login to Map Activity
-            "NAME" to etName.text.toString(),
+            "NAME" to etName.text.toString(),//(T)
             "AREA" to etArea.text.toString(),
             "AREA_UNIT" to etAreaUnit.text.toString(),
-            "ADDRESS_USER" to etAddress.text.toString()         //This is the village
+            "ADDRESS_USER" to etAddress.text.toString()//(T)         //This is the village
         )
 
 
         i.putExtra("bundle", b)
         Log.e("SIGN", PreferenceUtil.getLanguageFromPreference().toString())
         startActivityForResult(i, RC_MAP_SIGNUP)
+    }
+
+    private fun transliterateData() {
+
     }
 
 
