@@ -16,19 +16,12 @@ class SessionManager(context: Context) {
         )
 
     private val USER_ACCESS_TOKEN = ""
-    private val USER_REFRESH_TOKEN = ""
     private val ctx = ApplicationUtils.getContext()
 
     private var access: String?
         get() = prefs.getString(USER_ACCESS_TOKEN, "")
         set(value) {
             prefs.edit().putString(USER_ACCESS_TOKEN, value).apply()
-        }
-
-    private var refresh: String?
-        get() = prefs.getString(USER_REFRESH_TOKEN, "")
-        set(value) {
-            prefs.edit().putString(USER_REFRESH_TOKEN, value).apply()
         }
 
 
@@ -43,13 +36,6 @@ class SessionManager(context: Context) {
 
     }
 
-    fun saveAuth_refresh_Token(token: String) {
-
-        val p = SessionManager(ctx)
-        p.refresh = token
-
-    }
-
 
     /**
      * Function to fetch auth token
@@ -60,9 +46,5 @@ class SessionManager(context: Context) {
         return p.access
     }
 
-    fun fetchRefreshToken(): String? {
-        val p = SessionManager(ctx)
-        return p.refresh
-    }
 
 }

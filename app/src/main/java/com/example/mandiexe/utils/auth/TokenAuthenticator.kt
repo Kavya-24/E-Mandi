@@ -38,8 +38,8 @@ class TokenAuthenticator(context: Context) : Authenticator {
 
 
     val service = RetrofitClient.getAuthInstance()
-    val sessionManager =
-        SessionManager(context)
+    val prefManager =
+        PreferenceManager()
 
     @Throws(IOException::class)
     fun authenticateProxy(proxy: Proxy, response: Response): Request? {
@@ -50,12 +50,22 @@ class TokenAuthenticator(context: Context) : Authenticator {
     @Throws(IOException::class)
     override fun authenticate(route: Route?, response: Response): Request? {
 
-        val newAccessToken = service.getAccessToken(refreshToken = "");
+        if (response.code == 401) {
+            val req = service.getAccessToken(refreshToken = prefManager.authToken.toString()).execute()
+            if(req.isSuccessful){
+                val newAccessToken = req.body()?.user?.accessToken
 
-        // Add new header to rejected request and retry it
-        return response.request.newBuilder()
-            .header(AUTHORIZATION, "Bearer $newAccessToken")
-            .build();
+
+                    // Add new header to rejected request and retry it
+                    return response.request.newBuilder()
+                        .header(AUTHORIZATION, "Bearer $newAccessToken")
+                        .build();
+
+            }
+
+        }
+
+        return response.request.newBuilder().build()
 
     }
 
