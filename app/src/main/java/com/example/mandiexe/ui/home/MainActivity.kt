@@ -122,8 +122,6 @@ class MainActivity : AppCompatActivity(), Communicator {
 
     private fun fetchSuggestions(query: String) {
 
-        //This is not yet made
-        Log.e("Main", "In fetch ams query " + query)
         val service = RetrofitClient.makeCallsForSupplies(this)
 
         val body = CropSearchAutoCompleteBody(query)
