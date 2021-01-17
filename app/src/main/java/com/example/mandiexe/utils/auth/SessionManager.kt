@@ -9,14 +9,11 @@ class SessionManager(context: Context) {
 
 
     private var prefs: SharedPreferences =
-        context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
-
-    private var prefRefresh: SharedPreferences =
-        context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
+        context.getSharedPreferences(context.getString(R.string.app_name_main), Context.MODE_PRIVATE)
 
     companion object {
-        var USER_ACCESS_TOKEN = null
-        var USER_REFRESH_TOKEN = null
+        private var USER_ACCESS_TOKEN = null
+        private var USER_REFRESH_TOKEN = null
     }
 
     /**
@@ -34,7 +31,7 @@ class SessionManager(context: Context) {
 
     fun saveAuth_refresh_Token(token: String) {
 
-        val editor = prefRefresh.edit()
+        val editor = prefs.edit()
         editor.putString(USER_REFRESH_TOKEN, token)
         editor.apply()
 
@@ -49,7 +46,7 @@ class SessionManager(context: Context) {
     }
 
     fun fetchRefreshToken(): String? {
-        return prefRefresh.getString(USER_REFRESH_TOKEN, null)
+        return prefs.getString(USER_REFRESH_TOKEN, null)
     }
 
 }

@@ -21,6 +21,7 @@ object RetrofitClient {
     private fun okhttpClient(context: Context): OkHttpClient {
 
         val tAuthenticator = TokenAuthenticator(context)
+        Log.e(TAG, "Token Aiutgh" + tAuthenticator)
 
         return OkHttpClient.Builder()
             .addInterceptor(
@@ -34,9 +35,6 @@ object RetrofitClient {
             .addInterceptor(LanguageInterceptor())
             .followRedirects(false)
             .writeTimeout(20, TimeUnit.SECONDS)
-            .authenticator(
-                tAuthenticator
-            )
             .build()
     }
 

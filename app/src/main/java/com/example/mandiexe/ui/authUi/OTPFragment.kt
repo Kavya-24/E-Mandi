@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.example.mandiexe.R
 import com.example.mandiexe.interfaces.RetrofitClient
@@ -37,8 +38,6 @@ import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
 import kotlinx.android.synthetic.main.o_t_fragment.*
-import retrofit2.Call
-import retrofit2.Response
 import java.util.concurrent.TimeUnit
 
 
@@ -74,7 +73,6 @@ class OTPFragment : Fragment() {
     private val mySupplyService = RetrofitClient.getAuthInstance()
 
     private lateinit var tvTimer: TextView
-    private var mMessage = ""
 
     private lateinit var timer: CountDownTimer
 
@@ -254,7 +252,7 @@ class OTPFragment : Fragment() {
                 root.findViewById<TextView>(R.id.tv_phoneNumber).setText(R.string.otpSend)
 
 
-                timer = object : CountDownTimer(30000, 1000) {
+                timer = object : CountDownTimer(300000, 1000) {
                     override fun onTick(millisUntilFinished: Long) {
                         tvTimer.text =
                             (millisUntilFinished / 1000).toString()
@@ -382,61 +380,18 @@ class OTPFragment : Fragment() {
 
     private fun makeCall(body: LoginBody, str: String) {
 
-        var mResponse = LoginResponse("", LoginResponse.User("", "", true, "", "", ""), "")
-
-
-        mySupplyService.getLogin(
-            mLoginBody = body
-        )
-            .enqueue(object : retrofit2.Callback<LoginResponse> {
-
-
-                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-
-                    Log.e(TAG, "Throwable message " + t.message + " Cause " + t.cause)
-                    mMessage = ExternalUtils.returnStateMessageForThrowable(t)
-
+        viewModel.lgnFunction(body).observe(viewLifecycleOwner, Observer { mResponse ->
+            val success = viewModel.successful.value
+            if (success != null) {
+                if (success) {
+                    //Either login or new reg
+                    checkResponse(mResponse, str, viewModel.message.value!!)
+                } else {
+                    //Create a snackbar
+                    createSnackbar(viewModel.message.value, requireContext(), container_frag_otp)
                 }
-
-                override fun onResponse(
-                    call: Call<LoginResponse>,
-                    response: Response<LoginResponse>
-                ) {
-
-                    Log.e(
-                        TAG,
-                        " In on response " + response.message() + response.body()?.msg + response.body()
-                            .toString() + response.body()?.user.toString()
-                    )
-
-
-                    if (response.isSuccessful) {
-
-
-                        if (response.body()?.msg == "Login successful.") {
-                            successLogin(response.body())
-                            mMessage =
-                                requireContext().resources.getString(R.string.loginSuceed)
-
-
-                        } else if (response.body()?.msg == "Phone Number not registered.") {
-                            mMessage = requireContext().resources.getString(R.string.loginNew)
-                            checkResponse(response.body()!!, str, mMessage)
-
-                        } else {
-                            mMessage = response.body()?.msg.toString()
-                        }
-
-
-                    } else {
-                        mMessage = response.body()?.msg.toString()
-                    }
-
-                    mResponse = response.body()!!
-                }
-            })
-
-        checkResponse(mResponse, str, mMessage)
+            }
+        })
     }
 
     private fun checkResponse(mResponse: LoginResponse, str: String, message: String) {
@@ -470,10 +425,10 @@ class OTPFragment : Fragment() {
 
         Log.e(TAG, "Success Login and response is " + response.toString())
 
-        response?.user?.accessToken?.let { sessionManager.saveAuth_access_Token(it) }
-
-        //response?.user?.refreshToken?.let { sessionManager.saveAuth_refresh_Token(it) }
-        response?.user?.refreshToken?.let { preferenceManager.putAuthToken(it) }
+//        response?.user?.accessToken?.let { sessionManager.saveAuth_access_Token(it) }
+//
+//        response?.user?.refreshToken?.let { sessionManager.saveAuth_refresh_Token(it) }
+//        response?.user?.refreshToken?.let { preferenceManager.putAuthToken(it) }
 
         Log.e(TAG, "AT: \n" + sessionManager.fetchAcessToken().toString())
         Log.e(TAG, "RT: \n" + sessionManager.fetchRefreshToken().toString())

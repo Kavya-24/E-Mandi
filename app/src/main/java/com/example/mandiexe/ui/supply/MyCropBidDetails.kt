@@ -25,16 +25,12 @@ import com.example.mandiexe.models.responses.supply.DeleteSupplyResponse
 import com.example.mandiexe.models.responses.supply.ModifySupplyResponse
 import com.example.mandiexe.models.responses.supply.ViewSupplyResponse
 import com.example.mandiexe.utils.ExternalUtils
-import com.example.mandiexe.utils.ExternalUtils.convertJSONToEnglish
 import com.example.mandiexe.utils.ExternalUtils.createToast
 import com.example.mandiexe.utils.ExternalUtils.setAppLocale
 import com.example.mandiexe.viewmodels.MyCropBidDetailsViewModel
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
-import com.google.gson.Gson
 import com.jjoe64.graphview.DefaultLabelFormatter
 import com.jjoe64.graphview.GraphView
 import com.jjoe64.graphview.series.DataPoint
@@ -198,7 +194,6 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
         viewModelCrop.getFunction(body).observe(this, Observer { mResponse ->
             if (viewModelCrop.successfulSupply.value != null) {
                 if (viewModelCrop.successfulSupply.value!!) {
-                    Log.e(TAG, "Response is " + mResponse.toString())
                     initViews(mResponse)
                 } else {
                     createSnackbar(viewModelCrop.messageCancel.value)
@@ -445,26 +440,28 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
     private fun initViews(value: ViewSupplyResponse) {
 
-        val gson = Gson()
-        val jsonString: String = gson.toJson(value.supply)
-
-        val xValue = convertJSONToEnglish(jsonString)
-        //This is a nested converted string
-        //Now convrt it in Java Object
-
-        //Jackson mapper
-        val mapper = jacksonObjectMapper()
-
-        try {
-            val mResponse: ViewSupplyResponse.Supply =
-                mapper.readValue<ViewSupplyResponse.Supply>(xValue)
-            Log.e(
-                TAG,
-                "Finally he value is given by of the class obj " + "\n\nmJson is " + xValue + "\nreposne s \n" + mResponse
-            )
-        } catch (e: Exception) {
-            Log.e("Exception in mapping", e.message.toString())
-        }
+//        val gson = Gson()
+//        val jsonString: String = gson.toJson(value.supply)
+//
+//        val xValue = convertJSONToEnglish(jsonString)
+//        //This is a nested converted string
+//        //Now convrt it in Java Object
+//
+//        //Jackson mapper
+//        val mapper = jacksonObjectMapper()
+//
+//        try {
+//            val mResponse: ViewSupplyResponse.Supply =
+//                mapper.readValue<ViewSupplyResponse.Supply>(xValue)
+//            Log.e(
+//                TAG,
+//                "Finally he value is given by of the class obj " + "\n\nmJson is " + xValue + "\nreposne s \n" + mResponse
+//            )
+//        } catch (e: Exception) {
+//            Log.e("Exception in mapping", e.message.toString())
+//        }
+//
+//
         findViewById<ConstraintLayout>(R.id.mLayoutSup).visibility = View.VISIBLE
         findViewById<ProgressBar>(R.id.pb_my_crops_details).visibility = View.GONE
 

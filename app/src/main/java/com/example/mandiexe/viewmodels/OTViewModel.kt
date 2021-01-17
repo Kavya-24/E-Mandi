@@ -54,7 +54,7 @@ class OTViewModel : ViewModel() {
                     successful.value = false
                     message.value = ExternalUtils.returnStateMessageForThrowable(t)
                     //Response is null
-                    Log.e(TAG, "In on Failure")
+                    Log.e(TAG, "In on Failure with cause " + t.cause)
                     mLogin.value
 
                 }
@@ -66,7 +66,7 @@ class OTViewModel : ViewModel() {
 
                     Log.e(
                         TAG,
-                        " In on response " + response.message() + response.body()?.msg + response.body()
+                        " In on response and values  " + response.message() + response.body()?.msg + response.body()
                             .toString() + response.body()?.user.toString()
                     )
 
@@ -75,9 +75,45 @@ class OTViewModel : ViewModel() {
 
 
                         if (response.body()?.msg == "Login successful.") {
+
+                            Log.e(
+                                TAG,
+                                " In on response and values  " + response.message() + response.body()?.msg + response.body()
+                                    .toString() + response.body()?.user.toString()
+                            )
+
                             successful.value = true
                             message.value =
                                 context.resources.getString(R.string.loginSuceed)
+                            LoginResponse(
+                                response.body()!!.msg,
+                                response.body()!!.user,
+                                ""
+                            ).user?.accessToken?.let {
+                                sessionManager.saveAuth_access_Token(
+                                    it
+                                )
+                            }
+
+                            (LoginResponse(
+                                response.body()!!.msg,
+                                response.body()!!.user,
+                                ""
+                            )).user?.refreshToken?.let {
+                                sessionManager.saveAuth_refresh_Token(
+                                    it
+                                )
+                            }
+
+                            (LoginResponse(
+                                response.body()!!.msg,
+                                response.body()!!.user,
+                                ""
+                            )).user?.accessToken?.let {
+                                preferenceManager.putAuthToken(
+                                    it
+                                )
+                            }
 
 
                         } else if (response.body()?.msg == "Phone Number not registered.") {
