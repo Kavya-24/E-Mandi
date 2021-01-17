@@ -26,17 +26,6 @@
         android:label="@string/myBidHistory"
         tools:layout="@layout/farmer_bid_history_fragment" />
 
-    <!--    <fragment-->
-<!--        android:id="@+id/nav_add_stock_2"-->
-<!--        android:name="com.example.mandiexe.ui.supply.AddStock"-->
-<!--        android:label="AddStock"-->
-<!--        tools:layout="@layout/add_stock_fragment">-->
-<!--        <argument-->
-<!--            android:name="fetchedLocation"-->
-<!--            app:argType="string"-->
-<!--            app:nullable="true" />-->
-
-<!--    </fragment>-->
 <!--    &lt;!&ndash;    <fragment&ndash;&gt;-->
     <!--        android:id="@+id/myBidDetails"-->
     <!--        android:name="com.example.mandiexe.ui.supply.MyCropBidDetails"-->
@@ -97,5 +86,13 @@
         <action
             android:id="@+id/action_nav_my_supplies_to_nav_my_requirements"
             app:destination="@id/nav_my_requirements" />
+        <action
+            android:id="@+id/action_nav_my_supplies_to_addStock"
+            app:destination="@id/nav_add_stock" />
     </fragment>
+    <fragment
+        android:id="@+id/nav_add_stock"
+        tools:layout="@layout/add_stock_fragment"
+        android:name="com.example.mandiexe.ui.supply.AddStock"
+        android:label="@string/add_stock" />
 </navigation>

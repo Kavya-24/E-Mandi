@@ -251,7 +251,7 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
         mResponse?.msg?.let { createToast(it, this, container_crop_bids_details) }
         Log.e(TAG, "In manage cancel response")
-        onDestroy()
+        onBackPressed()
     }
 
     private fun modifyStock() {

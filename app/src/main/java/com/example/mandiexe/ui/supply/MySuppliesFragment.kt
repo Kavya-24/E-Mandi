@@ -82,13 +82,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
 
         root.findViewById<FloatingActionButton>(R.id.fab_add_my_stock).setOnClickListener {
 
-            //Use communicators
-            //Replace containers
-            val i = Intent(requireContext(), AddStock::class.java)
-            startActivity(i)
-//            val navController = root.findNavController()
-//            navController.navigateUp()
-//            navController.navigate(R.id.action_nav_home_to_nav_add_stock_2)
+            root.findNavController().navigate(R.id.action_nav_my_supplies_to_addStock)
 
         }
 
