@@ -21,7 +21,6 @@ import androidx.core.os.bundleOf
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -30,8 +29,6 @@ import com.example.mandiexe.R
 import com.example.mandiexe.interfaces.RetrofitClient
 import com.example.mandiexe.models.body.supply.CropSearchAutoCompleteBody
 import com.example.mandiexe.models.responses.supply.CropSearchAutocompleteResponse
-import com.example.mandiexe.ui.myrequirements.RequirementFragment
-import com.example.mandiexe.ui.supply.MySuppliesFragment
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.Communicator
 import com.example.mandiexe.utils.ExternalUtils
@@ -127,7 +124,7 @@ class MainActivity : AppCompatActivity(), Communicator {
         val body = CropSearchAutoCompleteBody(query)
         service.getCropAutoComplete(
             body = body,
-     ).enqueue(object : retrofit2.Callback<CropSearchAutocompleteResponse> {
+        ).enqueue(object : retrofit2.Callback<CropSearchAutocompleteResponse> {
             override fun onFailure(call: Call<CropSearchAutocompleteResponse>, t: Throwable) {
 
                 val message = ExternalUtils.returnStateMessageForThrowable(t)
@@ -387,28 +384,6 @@ class MainActivity : AppCompatActivity(), Communicator {
 
     override fun onBackPressed() {
         super.onBackPressed()
-
-        val navHostFragment: NavHostFragment? =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
-
-        val mFragment = navHostFragment?.getChildFragmentManager()?.getFragments()?.get(0)
-
-        Log.e("MAIN", "Current frag is " + mFragment.toString())
-
-        val f2 = supportFragmentManager.findFragmentById(R.id.frame_main)
-
-        Log.e("MAIN f2", f2.toString())
-
-        if (f2 != null && (f2 == HomeFragment() || f2 == MySuppliesFragment() || f2 == RequirementFragment())) {
-            Log.e("MAIN", "In t");
-            finish()
-        }
-
-        if (mFragment == HomeFragment() && (mFragment.isHidden || mFragment.isVisible)) {
-            Log.e("MAIN", "In true")
-            finishAffinity()
-        }
-
 
     }
 
