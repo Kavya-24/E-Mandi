@@ -440,9 +440,12 @@ class OTPFragment : Fragment() {
             .show()
 
         val intent = Intent(requireContext(), MainActivity::class.java)
+
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP and Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK)
         hideKeyboard(requireActivity(), requireContext())
         startActivity(intent)
+        //Finish activity
+        activity?.finish()
 
 
     }
