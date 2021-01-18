@@ -3,7 +3,7 @@ package com.example.mandiexe.ui.supply
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Intent
-import android.icu.text.Transliterator
+import android.os.Build
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.util.Log
@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -454,8 +455,9 @@ class AddStock : Fragment() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-      //   super.onActivityResult(requestCode, resultCode, data)
+        //   super.onActivityResult(requestCode, resultCode, data)
 
         //Get the map data result
         Log.e(
@@ -475,12 +477,9 @@ class AddStock : Fragment() {
                     data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
                 val resultInEnglish = res?.get(0)
                 val conversionTable = ConversionTable()
-                val transformedString: String? = resultInEnglish?.let { conversionTable.transform(it) }
-
-                //Val translietrated
-              //  val tx = resultInEnglish?.let { ExternalUtils.transliterateFromEnglishToDefault(it) }
-                cropName.setText(transformedString)
-              //  Log.e(TAG, "Res in eng " + resultInEnglish + " transf" + transformedString + tx)
+                val transformedString: String? =
+                    resultInEnglish?.let { conversionTable.transform(it) }
+                cropName.setText(ExternalUtils.transliterateToDefault(resultInEnglish))
 
             }
         } else if (requestCode == RC_TYPE) {
@@ -488,7 +487,11 @@ class AddStock : Fragment() {
                 //Put result
                 val res: java.util.ArrayList<String>? =
                     data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
-                cropType.setText(res?.get((0)), false)
+                val resultInEnglish = res?.get(0)
+                val conversionTable = ConversionTable()
+                val transformedString: String? =
+                    resultInEnglish?.let { conversionTable.transform(it) }
+                cropType.setText(ExternalUtils.transliterateToDefault(resultInEnglish))
             }
         }
 
