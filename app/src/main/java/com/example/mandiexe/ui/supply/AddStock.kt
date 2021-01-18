@@ -455,7 +455,7 @@ class AddStock : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        //  super.onActivityResult(requestCode, resultCode, data)
+      //   super.onActivityResult(requestCode, resultCode, data)
 
         //Get the map data result
         Log.e(
@@ -478,9 +478,9 @@ class AddStock : Fragment() {
                 val transformedString: String? = resultInEnglish?.let { conversionTable.transform(it) }
 
                 //Val translietrated
-                val tx = resultInEnglish?.let { ExternalUtils.transliterateFromEnglishToDefault(it) }
-                cropName.setText(tx)
-                Log.e(TAG, "Res in eng " + resultInEnglish + " transf" + transformedString + tx)
+              //  val tx = resultInEnglish?.let { ExternalUtils.transliterateFromEnglishToDefault(it) }
+                cropName.setText(transformedString)
+              //  Log.e(TAG, "Res in eng " + resultInEnglish + " transf" + transformedString + tx)
 
             }
         } else if (requestCode == RC_TYPE) {

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
 import com.example.mandiexe.models.responses.supply.FarmerSuppliesResponse
 import com.example.mandiexe.utils.ExternalUtils
+import com.example.mandiexe.utils.auth.PreferenceUtil
 
 
 class MySuppliesAdapter(val itemClick: OnMyStockClickListener) :
@@ -33,15 +34,17 @@ class MySuppliesAdapter(val itemClick: OnMyStockClickListener) :
         val CROP_CHANGE = itemView.findViewById<ImageView>(R.id.iv_stock_image)
         val CROP_CARD = itemView.findViewById<CardView>(R.id.cv_item_stock)
 
+        val pref = PreferenceUtil
 
         //Bind a single item
         fun bindPost(_listItem: FarmerSuppliesResponse.Supply, itemClick: OnMyStockClickListener) {
             with(_listItem) {
 
-                CROP_NAME.text = _listItem.crop
-                CROP_TYPE.text = _listItem.variety
+                //Translate
+                CROP_NAME.text = ExternalUtils.translateTextToDefault(_listItem.crop, "en", pref.getLanguageFromPreference().toString())
+                CROP_TYPE.text = ExternalUtils.translateTextToDefault(_listItem.variety, "en", pref.getLanguageFromPreference().toString())
 
-
+                //No Translations/Transliterations
                 CROP_QUANTITY.text = _listItem.qty.toString()
                 CROP_EXP.text = ExternalUtils.convertTimeToEpoch(_listItem.expiry)
                 CROP_CURRENT_BID.text = _listItem.currentBid.toString()

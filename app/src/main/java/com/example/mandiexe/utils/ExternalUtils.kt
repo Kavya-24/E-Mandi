@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.icu.text.Transliterator
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
@@ -21,9 +22,6 @@ import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.github.wnameless.json.flattener.JsonFlattener
 import com.github.wnameless.json.unflattener.JsonUnflattener
 import com.google.android.material.snackbar.Snackbar
-import com.google.cloud.translate.Translate
-import com.google.cloud.translate.TranslateOptions
-import com.google.cloud.translate.Translation
 import org.json.JSONObject
 import retrofit2.HttpException
 import java.io.IOException
@@ -267,6 +265,10 @@ object ExternalUtils {
         dstLanguage: String
     ): String? {
 
+        if (PreferenceUtil.getLanguageFromPreference() == "en") {
+            return mText
+        }
+
         val translateAPI = TranslateAPI(
             srcLanguage,  //Source Language
             Language.ENGLISH,  //Target Language
@@ -297,13 +299,17 @@ object ExternalUtils {
         dstLanguage: String
     ): String {
 
+        if (PreferenceUtil.getLanguageFromPreference() == "en") {
+            return mText
+        }
+
         val translateAPI = TranslateAPI(
             Language.ENGLISH,  //Source Language
             dstLanguage,  //Target Language
             mText
         ) //Query Text
 
-        var q = mText
+        var q = ""
 
         translateAPI.setTranslateListener(object : TranslateAPI.TranslateListener {
             override fun onSuccess(translatedText: String?) {
@@ -343,24 +349,43 @@ object ExternalUtils {
 
     }
 
-    //Transliterate
-    fun transliterateFromEnglishToDefault(query: String): String? {
-
-        val translate: Translate = TranslateOptions.getDefaultInstance().getService()
+    @RequiresApi(Build.VERSION_CODES.Q)
+    fun transliterateToDefault(latinString: String?): String? {
 
 
-        // Translates some text into Russian
-        val translation: Translation = translate.translate(
-            query,
-            com.google.cloud.translate.Translate.TranslateOption.sourceLanguage("en"),
-            com.google.cloud.translate.Translate.TranslateOption.targetLanguage("hi")
+        //Dont translate if the default lamguage is en
+        if (PreferenceUtil.getLanguageFromPreference() == "en") {
+            return latinString
+        }
+
+        Log.e(
+            "Ext",
+            "Tranliterator  " + Transliterator.getDisplayName(
+                "en-" + PreferenceUtil.getLanguageFromPreference().toString(),
+                Locale(PreferenceUtil.getLanguageFromPreference().toString())
+            )
         )
-    
+        val toDevnagiri = Transliterator.getInstance(
+            "en-" + PreferenceUtil.getLanguageFromPreference().toString()
+        )
+        return toDevnagiri.transliterate(latinString)
+    }
 
-        System.out.printf("Text: %s%n", query)
-        System.out.printf("Translation: %s%n", translation.translatedText)
-        Log.e("Ext", "TExt is " + query + " Trans " + translation.translatedText)
-        return translation.translatedText
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    fun transliterateToEnglish(latinString: String?): String? {
+
+        //Dont translate if the default lamguage is en
+        if (PreferenceUtil.getLanguageFromPreference() == "en") {
+            return latinString
+        }
+        Log.e("Ext", "Tranliterator  " + Transliterator.getDisplayName("en-hi", Locale("hi")))
+
+        val toEnglish = Transliterator.getInstance(
+            PreferenceUtil.getLanguageFromPreference().toString() + "-en"
+        )
+        return toEnglish.transliterate(latinString)
+
     }
 
 

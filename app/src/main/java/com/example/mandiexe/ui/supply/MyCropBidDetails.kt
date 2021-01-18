@@ -3,11 +3,13 @@ package com.example.mandiexe.ui.supply
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
@@ -82,6 +84,7 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
     private val pref = com.example.mandiexe.utils.auth.PreferenceUtil
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setAppLocale(pref.getLanguageFromPreference(), this)
@@ -179,6 +182,7 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun makeCall() {
 
         Log.e(TAG, SUPPLY_ID + " is supply id")
@@ -254,6 +258,7 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
         onBackPressed()
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun modifyStock() {
 
         d = androidx.appcompat.app.AlertDialog.Builder(this)
@@ -372,6 +377,7 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun confirmModify() {
         tempRef.dismiss()
 
@@ -390,6 +396,7 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun manageModifyResponse(mResponse: ModifySupplyResponse?) {
         createSnackbar(mResponse?.msg.toString())
 
@@ -438,37 +445,30 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
         return isValid
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun initViews(value: ViewSupplyResponse) {
 
-//        val gson = Gson()
-//        val jsonString: String = gson.toJson(value.supply)
-//
-//        val xValue = convertJSONToEnglish(jsonString)
-//        //This is a nested converted string
-//        //Now convrt it in Java Object
-//
-//        //Jackson mapper
-//        val mapper = jacksonObjectMapper()
-//
-//        try {
-//            val mResponse: ViewSupplyResponse.Supply =
-//                mapper.readValue<ViewSupplyResponse.Supply>(xValue)
-//            Log.e(
-//                TAG,
-//                "Finally he value is given by of the class obj " + "\n\nmJson is " + xValue + "\nreposne s \n" + mResponse
-//            )
-//        } catch (e: Exception) {
-//            Log.e("Exception in mapping", e.message.toString())
-//        }
-//
-//
         findViewById<ConstraintLayout>(R.id.mLayoutSup).visibility = View.VISIBLE
         findViewById<ProgressBar>(R.id.pb_my_crops_details).visibility = View.GONE
 
-        findViewById<TextView>(R.id.tv_stock_detail_crop_name).text = value.supply.crop
-        findViewById<TextView>(R.id.tv_stock_detail_crop_type).text = value.supply.variety
+        //#TRANSLATION
+        findViewById<TextView>(R.id.tv_stock_detail_crop_name).text =
+            ExternalUtils.translateTextToDefault(
+                value.supply.crop,
+                "en",
+                pref.getLanguageFromPreference() ?: "en"
+            )
+        findViewById<TextView>(R.id.tv_stock_detail_crop_type).text =
+            ExternalUtils.translateTextToDefault(
+                value.supply.variety,
+                "en",
+                pref.getLanguageFromPreference() ?: "en"
+            )
         findViewById<TextView>(R.id.tv_stock_detail_crop_description).text =
-            value.supply.description
+            ExternalUtils.translateTextToDefault(
+                value.supply.description, "en", pref.getLanguageFromPreference() ?: "en"
+            )
+
 
         findViewById<TextView>(R.id.ans_detail_crop_quanity).text = value.supply.qty.toString()
         findViewById<TextView>(R.id.ans_detail_crop_exp).text =

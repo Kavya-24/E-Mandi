@@ -349,6 +349,11 @@ class MainActivity : AppCompatActivity(), Communicator {
                 val res: java.util.ArrayList<String>? =
                     data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
                 searchView.setQuery(res?.get((0)), false)
+                val resultInEnglish = res?.get(0)
+
+                //  val tx =
+                //    resultInEnglish?.let { ExternalUtils.transliterateFromEnglishToDefault(it) }
+                //Log.e("Main", "Res in eng " + resultInEnglish + " transf" + tx)
 
             }
 

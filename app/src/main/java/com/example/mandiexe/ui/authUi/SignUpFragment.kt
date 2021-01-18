@@ -1,6 +1,7 @@
 package com.example.mandiexe.ui.authUi
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
+import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -50,6 +52,7 @@ class SignUpFragment : Fragment() {
     private var TOKEN = ""
     private var PHONE = ""
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -105,31 +108,27 @@ class SignUpFragment : Fragment() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun goToMapActivity() {
 
         val i = Intent(requireContext(), MapActivity::class.java)
 
-        //Transliterate data (Name, area, village)
-        transliterateData()
 
         val b = bundleOf(
             "TOKEN" to TOKEN,
             "PHONE" to PHONE,
             "RC" to mapFromSignUp,                          //For the thing that it goes from Login to Map Activity
-            "NAME" to etName.text.toString(),//(T)
+            "NAME" to ExternalUtils.transliterateToEnglish(etName.text.toString()),//(T)
             "AREA" to etArea.text.toString(),
             "AREA_UNIT" to etAreaUnit.text.toString(),
-            "ADDRESS_USER" to etAddress.text.toString()//(T)         //This is the village
+            "ADDRESS_USER" to ExternalUtils.transliterateToEnglish(etAddress.text.toString())//(T)         //This is the village
         )
 
+        Log.e("SignUp ", "Bundle passed is " + b.toString())
 
         i.putExtra("bundle", b)
         Log.e("SIGN", PreferenceUtil.getLanguageFromPreference().toString())
         startActivityForResult(i, RC_MAP_SIGNUP)
-    }
-
-    private fun transliterateData() {
-
     }
 
 

@@ -130,7 +130,6 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
         val adapter = MySuppliesAdapter(this)
 
         if (mResponse != null) {
-            Log.e("I", "In empty list")
             if (mResponse.supplies.isEmpty()) {
                 root.findViewById<AppCompatTextView>(R.id.tvEmptyListCrop).visibility = View.VISIBLE
                 root.findViewById<AppCompatTextView>(R.id.tvEmptyListCrop).text =
