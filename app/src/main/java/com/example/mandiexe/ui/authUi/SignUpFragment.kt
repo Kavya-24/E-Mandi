@@ -21,6 +21,7 @@ import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.viewmodels.SignUpViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
+import java.util.*
 
 class SignUpFragment : Fragment() {
 
@@ -118,10 +119,12 @@ class SignUpFragment : Fragment() {
             "TOKEN" to TOKEN,
             "PHONE" to PHONE,
             "RC" to mapFromSignUp,                          //For the thing that it goes from Login to Map Activity
-            "NAME" to ExternalUtils.transliterateToEnglish(etName.text.toString()),//(T)
+            "NAME" to ExternalUtils.transliterateToEnglish(etName.text.toString()).toString()
+                .capitalize(Locale.ROOT),//(T)
             "AREA" to etArea.text.toString(),
             "AREA_UNIT" to etAreaUnit.text.toString(),
-            "ADDRESS_USER" to ExternalUtils.transliterateToEnglish(etAddress.text.toString())//(T)         //This is the village
+            "ADDRESS_USER" to ExternalUtils.transliterateToEnglish(etAddress.text.toString())
+                .toString().capitalize(Locale.ROOT)//(T)         //This is the village
         )
 
         Log.e("SignUp ", "Bundle passed is " + b.toString())

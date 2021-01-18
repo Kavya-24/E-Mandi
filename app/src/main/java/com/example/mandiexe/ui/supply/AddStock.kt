@@ -290,12 +290,13 @@ class AddStock : Fragment() {
             cropName.text.toString(),
             pref.getLanguageFromPreference().toString(),
             "en"
-        )
+        ).toString().capitalize(Locale.ROOT)
+
         val transCropType = ExternalUtils.translateTextToEnglish(
             cropType.text.toString(),
             pref.getLanguageFromPreference().toString(),
             "en"
-        )
+        ).toString().capitalize(Locale.ROOT)
 
         var transDesc = "-"
         if (str != resources.getString(R.string.noDesc)) {
@@ -303,7 +304,7 @@ class AddStock : Fragment() {
                 str,
                 pref.getLanguageFromPreference().toString(),
                 "en"
-            ).toString()
+            ).toString().capitalize(Locale.ROOT)
         }
 
 
@@ -311,21 +312,21 @@ class AddStock : Fragment() {
 
         val body = AddSupplyBody(
             offerPrice.text.toString(),
-            transCropName ?: cropName.text.toString(),
+            transCropName ?: cropName.text.toString().capitalize(Locale.ROOT),
             ExternalUtils.convertDateToReqForm(etEst.text.toString()),
-            transDesc ?: str,
+            transDesc ?: str.capitalize(Locale.ROOT),
             ExternalUtils.convertDateToReqForm(etExp.text.toString()),
             "0",
-            transCropType ?: cropType.text.toString()
+            transCropType ?: cropType.text.toString().capitalize(Locale.ROOT)
         )
 
         //Create growth
         val growthBody = AddGrowthBody(
-            transCropName ?: cropName.text.toString(),
+            transCropName ?: cropName.text.toString().capitalize(Locale.ROOT),
             ExternalUtils.convertDateToReqForm(etEst.text.toString()),
             ExternalUtils.convertDateToReqForm(root.findViewById<EditText>(R.id.etSowDate).text.toString()),
             cropQuantity.text.toString(),
-            transCropType ?: cropType.text.toString()
+            transCropType ?: cropType.text.toString().capitalize(Locale.ROOT)
         )
 
         Log.e(TAG, "AddSupply Body " + body.toString() + " Add growth body" + growthBody.toString())
