@@ -280,6 +280,7 @@
     <string name="eMandi">E-Mandi</string>
     <string name="desc">Update the crop details</string>
     <string name="no_bids_founds">No bids founds</string>
+    <string name="noDesc">-</string>
 
 
 </resources>

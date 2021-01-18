@@ -279,29 +279,58 @@ class AddStock : Fragment() {
     private fun createStock() {
 
         val des = root.findViewById<EditText>(R.id.etDescription_add_stock)
-        var str = "NA"
+        var str = resources.getString(R.string.noDesc)
+
         if (!des.text.isEmpty()) {
             str = des.text.toString()
         }
 
+        //Translate three words
+        val transCropName = ExternalUtils.translateTextToEnglish(
+            cropName.text.toString(),
+            pref.getLanguageFromPreference().toString(),
+            "en"
+        )
+        val transCropType = ExternalUtils.translateTextToEnglish(
+            cropType.text.toString(),
+            pref.getLanguageFromPreference().toString(),
+            "en"
+        )
+
+        var transDesc = "-"
+        if (str != resources.getString(R.string.noDesc)) {
+            transDesc = ExternalUtils.translateTextToEnglish(
+                str,
+                pref.getLanguageFromPreference().toString(),
+                "en"
+            ).toString()
+        }
+
+
+        Log.e(TAG, "Translated values are " + transCropName + transCropType + transDesc)
+
         val body = AddSupplyBody(
             offerPrice.text.toString(),
-            cropName.text.toString(),
+            transCropName ?: cropName.text.toString(),
             ExternalUtils.convertDateToReqForm(etEst.text.toString()),
-            str,
+            transDesc ?: str,
             ExternalUtils.convertDateToReqForm(etExp.text.toString()),
             "0",
-            cropType.text.toString()
+            transCropType ?: cropType.text.toString()
         )
 
         //Create growth
         val growthBody = AddGrowthBody(
-            cropName.text.toString(),
+            transCropName ?: cropName.text.toString(),
             ExternalUtils.convertDateToReqForm(etEst.text.toString()),
             ExternalUtils.convertDateToReqForm(root.findViewById<EditText>(R.id.etSowDate).text.toString()),
             cropQuantity.text.toString(),
-            cropType.text.toString()
+            transCropType ?: cropType.text.toString()
         )
+
+        Log.e(TAG, "AddSupply Body " + body.toString() + " Add growth body" + growthBody.toString())
+
+
         viewModel.growthFunction(growthBody).observe(viewLifecycleOwner, Observer { mResponse ->
             val success = viewModel.successfulGrowth.value
             if (success != null) {
