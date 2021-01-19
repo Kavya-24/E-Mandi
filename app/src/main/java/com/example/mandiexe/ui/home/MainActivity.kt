@@ -33,6 +33,7 @@ import com.example.mandiexe.R
 import com.example.mandiexe.adapter.LanguagesAdapter
 import com.example.mandiexe.adapter.OnMyLanguageListener
 import com.example.mandiexe.interfaces.RetrofitClient
+import com.example.mandiexe.lib.OfflineTranslate
 import com.example.mandiexe.models.body.LanguageBody
 import com.example.mandiexe.models.body.supply.CropSearchAutoCompleteBody
 import com.example.mandiexe.models.responses.supply.CropSearchAutocompleteResponse
@@ -107,6 +108,12 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener {
         //Get the search view
         updateDrawerDetails()
 
+        val q = "हिंदी"
+
+        Log.e(
+            "MAIN",
+            "\n\n\nTranslation for हिंदी " + OfflineTranslate.translateToEnglish(this, q)
+        )
 
         //Search Init
 

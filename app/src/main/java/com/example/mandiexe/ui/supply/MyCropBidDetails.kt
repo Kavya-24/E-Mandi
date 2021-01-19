@@ -19,6 +19,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.mandiexe.R
 import com.example.mandiexe.adapter.MyBidHistoryAdapter
 import com.example.mandiexe.adapter.OnBidHistoryClickListener
+import com.example.mandiexe.lib.OfflineTranslate
 import com.example.mandiexe.models.body.BidHistoryBody
 import com.example.mandiexe.models.body.supply.DeleteSupplyBody
 import com.example.mandiexe.models.body.supply.ModifySupplyBody
@@ -452,22 +453,11 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
         findViewById<ProgressBar>(R.id.pb_my_crops_details).visibility = View.GONE
 
         //#TRANSLATION
-        findViewById<TextView>(R.id.tv_stock_detail_crop_name).text =
-            ExternalUtils.translateTextToDefault(
-                value.supply.crop,
-                "en",
-                pref.getLanguageFromPreference() ?: "en"
-            )
+        findViewById<TextView>(R.id.tv_stock_detail_crop_name).text = OfflineTranslate.translateToDefault(this,value.supply.crop)
         findViewById<TextView>(R.id.tv_stock_detail_crop_type).text =
-            ExternalUtils.translateTextToDefault(
-                value.supply.variety,
-                "en",
-                pref.getLanguageFromPreference() ?: "en"
-            )
+            OfflineTranslate.translateToDefault(this,value.supply.variety)
         findViewById<TextView>(R.id.tv_stock_detail_crop_description).text =
-            ExternalUtils.translateTextToDefault(
-                value.supply.description, "en", pref.getLanguageFromPreference() ?: "en"
-            )
+            OfflineTranslate.translateToDefault(this,value.supply.description)
 
 
         findViewById<TextView>(R.id.ans_detail_crop_quanity).text = value.supply.qty.toString()

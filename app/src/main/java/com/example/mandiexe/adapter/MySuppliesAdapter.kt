@@ -41,11 +41,11 @@ class MySuppliesAdapter(val itemClick: OnMyStockClickListener) :
         fun bindPost(_listItem: FarmerSuppliesResponse.Supply, itemClick: OnMyStockClickListener) {
             with(_listItem) {
 
-                //Translate
-//                CROP_NAME.text = OfflineTranslate.translateOfflineToDefault(_listItem.crop)
-//                CROP_TYPE.text = OfflineTranslate.translateOfflineToDefault(_listItem.variety)
-                CROP_NAME.text = ExternalUtils.translateTextToDefault(_listItem.crop, "en", pref.getLanguageFromPreference().toString())
-                CROP_TYPE.text = ExternalUtils.translateTextToDefault(_listItem.variety, "en", pref.getLanguageFromPreference().toString())
+                //#Translation
+                CROP_NAME.text =
+                    OfflineTranslate.translateToDefault(itemView.context, _listItem.crop)
+                CROP_TYPE.text =
+                    OfflineTranslate.translateToDefault(itemView.context, _listItem.variety)
 
                 //No Translations/Transliterations
                 CROP_QUANTITY.text = _listItem.qty.toString()

@@ -231,94 +231,93 @@ object ExternalUtils {
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    fun translateTextToEnglish(
-        mText: String,
-        srcLanguage: String,
-        dstLanguage: String
-    ): String? {
-
-        if (PreferenceUtil.getLanguageFromPreference() == "en") {
-            return mText
-        }
-
-        val translateAPI = TranslateAPI(
-            srcLanguage,  //Source Language
-            Language.ENGLISH,  //Target Language
-            mText
-        ) //Query Text
-
-        var q = ""
-
-        translateAPI.setTranslateListener(object : TranslateAPI.TranslateListener {
-            override fun onSuccess(translatedText: String?) {
-                Log.e("EXternal Utils", "In language conversion error " + translatedText)
-                q = translatedText!!
-            }
-
-            override fun onFailure(ErrorText: String?) {
-                Log.e("EXternal Utils", "In language conversion error " + ErrorText)
-
-            }
-        })
-
-        return q
-    }
-
-    fun translateTextToDefault(
-        mText: String,
-        srcLanguage: String,
-        dstLanguage: String
-    ): String {
-
-        if (PreferenceUtil.getLanguageFromPreference() == "en") {
-            return mText
-        }
-
-        val translateAPI = TranslateAPI(
-            Language.ENGLISH,  //Source Language
-            dstLanguage,  //Target Language
-            mText
-        ) //Query Text
-
-        var q = ""
-
-        translateAPI.setTranslateListener(object : TranslateAPI.TranslateListener {
-            override fun onSuccess(translatedText: String?) {
-                Log.e(
-                    "CONVERT DEF",
-                    "Translateing" + mText + "-" + translatedText
-                )
-                q = translatedText!!
-            }
-
-            override fun onFailure(ErrorText: String?) {
-                Log.e("CONVERT DEF", "In language conversion error " + ErrorText)
-
-            }
-        })
-
-        return q
-    }
-
-
-    //Flatten and unflatten objects
-    private fun flattenJsonString(mJson: String): String {
-
-        //Returns the flattened json structure
-        val jsonStr: String = JsonFlattener.flatten(mJson)
-        println(jsonStr)
-        Log.e("FLATTEN", jsonStr)
-        return jsonStr
-    }
-
-    private fun unflattenJSONString(jsonStr: String): String {
-
-        val nestedJson: String = JsonUnflattener.unflatten(jsonStr)
-        println(nestedJson)
-        Log.e("UNFLATTEN", nestedJson)
-        return nestedJson
-
-    }
+//    fun translateTextToEnglish(
+//        mText: String,
+//        srcLanguage: String,
+//        dstLanguage: String
+//    ): String? {
+//
+//        if (PreferenceUtil.getLanguageFromPreference() == "en") {
+//            return mText
+//        }
+//
+//        val translateAPI = TranslateAPI(
+//            srcLanguage,  //Source Language
+//            Language.ENGLISH,  //Target Language
+//            mText
+//        ) //Query Text
+//
+//        var q = ""
+//
+//        translateAPI.setTranslateListener(object : TranslateAPI.TranslateListener {
+//            override fun onSuccess(translatedText: String?) {
+//                Log.e("EXternal Utils", "In language conversion error " + translatedText)
+//                q = translatedText!!
+//            }
+//
+//            override fun onFailure(ErrorText: String?) {
+//                Log.e("EXternal Utils", "In language conversion error " + ErrorText)
+//
+//            }
+//        })
+//
+//        return q
+//    }
+//
+//    fun translateTextToDefault(
+//        mText: String,
+//        srcLanguage: String,
+//        dstLanguage: String
+//    ): String {
+//
+//        if (PreferenceUtil.getLanguageFromPreference() == "en") {
+//            return mText
+//        }
+//
+//        val translateAPI = TranslateAPI(
+//            Language.ENGLISH,  //Source Language
+//            dstLanguage,  //Target Language
+//            mText
+//        ) //Query Text
+//
+//        var q = ""
+//
+//        translateAPI.setTranslateListener(object : TranslateAPI.TranslateListener {
+//            override fun onSuccess(translatedText: String?) {
+//                Log.e(
+//                    "CONVERT DEF",
+//                    "Translateing" + mText + "-" + translatedText
+//                )
+//                q = translatedText!!
+//            }
+//
+//            override fun onFailure(ErrorText: String?) {
+//                Log.e("CONVERT DEF", "In language conversion error " + ErrorText)
+//
+//            }
+//        })
+//
+//        return q
+//    }
+//
+//    //Flatten and unflatten objects
+//    private fun flattenJsonString(mJson: String): String {
+//
+//        //Returns the flattened json structure
+//        val jsonStr: String = JsonFlattener.flatten(mJson)
+//        println(jsonStr)
+//        Log.e("FLATTEN", jsonStr)
+//        return jsonStr
+//    }
+//
+//    private fun unflattenJSONString(jsonStr: String): String {
+//
+//        val nestedJson: String = JsonUnflattener.unflatten(jsonStr)
+//        println(nestedJson)
+//        Log.e("UNFLATTEN", nestedJson)
+//        return nestedJson
+//
+//    }
 
     @RequiresApi(Build.VERSION_CODES.Q)
     fun transliterateToDefault(latinString: String?): String? {

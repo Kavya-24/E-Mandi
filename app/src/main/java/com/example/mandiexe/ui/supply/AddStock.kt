@@ -269,25 +269,21 @@ class AddStock : Fragment() {
         }
 
         //Translate three words
-        val transCropName = ExternalUtils.translateTextToEnglish(
-            cropName.text.toString(),
-            pref.getLanguageFromPreference().toString(),
-            "en"
-        ).toString().capitalize(Locale.ROOT)
+        val transCropName =
+            OfflineTranslate.translateToEnglish(requireContext(), cropName.text.toString())
+                .toString().capitalize(Locale.ROOT)
 
-        val transCropType = ExternalUtils.translateTextToEnglish(
-            cropType.text.toString(),
-            pref.getLanguageFromPreference().toString(),
-            "en"
-        ).toString().capitalize(Locale.ROOT)
+        val transCropType =
+            OfflineTranslate.translateToEnglish(requireContext(), cropType.text.toString())
+                .toString().capitalize(Locale.ROOT)
+
 
         var transDesc = "-"
+
         if (str != resources.getString(R.string.noDesc)) {
-            transDesc = ExternalUtils.translateTextToEnglish(
-                str,
-                pref.getLanguageFromPreference().toString(),
-                "en"
-            ).toString().capitalize(Locale.ROOT)
+            transDesc = OfflineTranslate.translateToEnglish(requireContext(), str)
+                .toString().capitalize(Locale.ROOT)
+
         }
 
 
