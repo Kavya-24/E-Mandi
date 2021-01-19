@@ -271,8 +271,9 @@ class AddRequirement : AppCompatActivity(), OnNewReqClockListener {
 
         )
 
-        //val i = Intent(this, OpenNewRequirementFragment::class.java)
-        //Use Intent as new activty or add a new graph
+        val i = Intent(this, OpenNewRequirementFragment::class.java)
+        i.putExtra("bundle", bundle)
+        startActivity(i)
 
     }
 

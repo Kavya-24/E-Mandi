@@ -225,6 +225,7 @@
     <string name="etEstLessIncomplete">फसल फसल की तारीख बुवाई के 20 दिनों के पहले नहीं हो सकती है।</string>
     <string name="expLess">बोली की समाप्ति तिथि बुवाई की तारीख से पहले नहीं हो सकती है</string>
     <string name="NoNewReqFound">कोई आवश्यकता नहीं मिली</string>
+    <string name="asia">asia</string>
 
     <string-array name="arr_crop_names">
         <item>@string/rice</item>

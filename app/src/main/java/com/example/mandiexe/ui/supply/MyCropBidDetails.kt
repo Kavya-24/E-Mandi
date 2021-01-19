@@ -97,6 +97,7 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
         args = intent?.getBundleExtra("bundle")!!
         //Set the address in the box trimmed
         SUPPLY_ID = args.getString("SUPPLY_ID").toString()
+
         val tb = findViewById<Toolbar>(R.id.toolbarExternal)
         tb.title = resources.getString(R.string.details)
         tb.setNavigationOnClickListener {
