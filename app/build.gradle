@@ -242,6 +242,13 @@ dependencies {
     //Transliterate
     implementation 'com.google.cloud:google-cloud-translate:1.85.0'
 
+    //ML Firebase offline translation
+    //#Add in do not change
+    implementation 'com.google.firebase:firebase-ml-natural-language:22.0.1'
+    //implementation 'com.google.firebase:firebase-ml-natural-language-language-id-model:20.0.8'  //For detecting the language of text
+    implementation 'com.google.firebase:firebase-ml-natural-language-translate:22.0.2'  //For translating text
+  //  implementation 'com.google.firebase:firebase-ml-vision:24.1.0'  //For detecting text from Image
+
 }
 
 

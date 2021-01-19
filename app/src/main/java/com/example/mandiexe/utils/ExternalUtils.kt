@@ -18,11 +18,11 @@ import androidx.annotation.RequiresApi
 import com.example.mandiexe.R
 import com.example.mandiexe.lib.Language
 import com.example.mandiexe.lib.TranslateAPI
+import com.example.mandiexe.models.body.LanguageBody
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.github.wnameless.json.flattener.JsonFlattener
 import com.github.wnameless.json.unflattener.JsonUnflattener
 import com.google.android.material.snackbar.Snackbar
-import org.json.JSONObject
 import retrofit2.HttpException
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -156,6 +156,7 @@ object ExternalUtils {
     }
 
     @SuppressLint("SimpleDateFormat")
+    //Convert the calenadr dates
     fun convertDateToReqForm(value: String): String {
 
         val calendar = Calendar.getInstance()
@@ -177,17 +178,20 @@ object ExternalUtils {
 
     }
 
+    fun validateName(name: String): Boolean {
+        //If the string does not have any numbers, slashes, or -
+        var isValid = true
+        for (c in name) {
+            when (c) {
+                in '0'..'9' -> isValid = false
+                in '!'..'/' -> isValid = false
+                in ':'..'@' -> isValid = false
+                in '['..'`' -> isValid = false
+                in '{'..'~' -> isValid = false
+            }
+        }
 
-    fun validateName(string: String): Boolean {
-//////        Check if the name has only alphabets and not special characters or numbers
-//
-//        for (c in string) {
-//            if (c !in 'A'..'Z' && c !in 'a'..'z' && c != ' ') {
-//                return false
-//            }
-//        }
-//
-        return true
+        return isValid
     }
 
     fun setAppLocale(languageFromPreference: String?, context: Context) {
@@ -215,7 +219,6 @@ object ExternalUtils {
         Toast.makeText(context, value, Toast.LENGTH_SHORT).show()
     }
 
-
     fun hideKeyboard(activity: Activity, context: Context) {
         val imm: InputMethodManager =
             context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -226,37 +229,6 @@ object ExternalUtils {
             view = View(activity)
         }
         imm.hideSoftInputFromWindow(view.windowToken, 0)
-    }
-
-    fun convertJSONToEnglish(jsonString: String): String {
-
-        //For all the values in the JSON parser map
-        //Make JSON string
-        //jsonString is nested
-        //Flatten it
-        val mJson = flattenJsonString(jsonString)
-        Log.e("Flattened json ", mJson)
-        //Create JSONOBject for this
-        val jsonObject = JSONObject(mJson)
-
-        //Access the keys for this
-        val keys: Iterator<String> = jsonObject.keys()
-
-        keys.forEach { mKey ->
-            //For each key, we need a value
-            val mValue = jsonObject.get(mKey).toString()       //
-            jsonObject.put(mKey, translateTextToDefault(mValue, "en", "hi"))
-            Log.e("In For each", "mKey is " + mKey + " mValue is " + mValue)
-        }
-
-        //Make a string of the object
-        val finalJson = jsonObject.toString()
-        Log.e("Final json", finalJson)
-        //Unflatten it
-
-        val unfalttenedJson = unflattenJSONString(finalJson)
-        Log.e("Unflattened json", unfalttenedJson)
-        return unfalttenedJson
     }
 
     fun translateTextToEnglish(
@@ -291,7 +263,6 @@ object ExternalUtils {
 
         return q
     }
-
 
     fun translateTextToDefault(
         mText: String,
@@ -388,5 +359,69 @@ object ExternalUtils {
 
     }
 
+    //Date Util
+    fun getDateInstanceFromString(mDate: String): Date {
+        val myFormat = SimpleDateFormat("dd/MM/yyyy") //In which you need put here
+        return myFormat.parse(mDate)!!
+    }
 
+    //Get the list of supported language
+    fun getSupportedLanguageList(): MutableList<LanguageBody> {
+        val mLanguages: MutableList<LanguageBody> = mutableListOf()
+
+        //0
+        mLanguages.add(LanguageBody("English", "en"))
+
+        //1
+        mLanguages.add(LanguageBody("हिंदी", "hi"))
+
+        //2
+        mLanguages.add(LanguageBody("বাংলা", "bn"))
+
+        //3
+        mLanguages.add(LanguageBody("मराठी", "mr"))
+
+        //4 Tamil
+        mLanguages.add(LanguageBody("தமிழ்", "ta"))
+
+        //5 Telugu
+        mLanguages.add(LanguageBody("తెలుగు", "te"))
+
+        return mLanguages
+    }
+
+    fun getLocaleFromAdapterIndex(mPosition: Int): String {
+        var str = "en"
+
+        when (mPosition) {
+
+            0 -> {
+                str = "en"
+            }
+            1 -> {
+                str = "hi"
+            }
+            2 -> {
+                str = "bn"
+            }
+
+            3 -> {
+                str = "mr"
+
+            }
+            4 -> {
+                str = "ta"
+            }
+            5 -> {
+                str = "te"
+            }
+
+
+            else -> {
+                str = "en"
+            }
+
+        }
+        return str
+    }
 }

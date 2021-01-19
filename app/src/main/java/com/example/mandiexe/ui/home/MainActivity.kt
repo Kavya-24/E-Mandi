@@ -3,6 +3,8 @@ package com.example.mandiexe.ui.home
 import android.app.Activity
 import android.app.SearchManager
 import android.content.Intent
+import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.database.Cursor
 import android.database.MatrixCursor
 import android.os.Bundle
@@ -25,8 +27,13 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
+import com.example.mandiexe.adapter.LanguagesAdapter
+import com.example.mandiexe.adapter.OnMyLanguageListener
 import com.example.mandiexe.interfaces.RetrofitClient
+import com.example.mandiexe.models.body.LanguageBody
 import com.example.mandiexe.models.body.supply.CropSearchAutoCompleteBody
 import com.example.mandiexe.models.responses.supply.CropSearchAutocompleteResponse
 import com.example.mandiexe.utils.ApplicationUtils
@@ -47,7 +54,7 @@ import retrofit2.Call
 import retrofit2.Response
 import java.util.*
 
-class MainActivity : AppCompatActivity(), Communicator {
+class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navView: NavigationView
@@ -66,6 +73,10 @@ class MainActivity : AppCompatActivity(), Communicator {
 
     private val ACTION_VOICE_SEARCH = "com.google.android.gms.actions.SEARCH_ACTION"
     private val VOICE_REC_CODE = 1234
+
+    //Change Language
+    private lateinit var d: androidx.appcompat.app.AlertDialog.Builder
+    private lateinit var tempRef: androidx.appcompat.app.AlertDialog
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -255,7 +266,7 @@ class MainActivity : AppCompatActivity(), Communicator {
 
             R.id.action_change_language -> changeLanguage()
             //  R.id.action_notification -> showNotification()
-            R.id.action_show_walkthrough -> showWalkthrough()
+            // R.id.action_show_walkthrough -> showWalkthrough()
             R.id.action_main_search -> searchCrop()
 
 
@@ -294,6 +305,33 @@ class MainActivity : AppCompatActivity(), Communicator {
     }
 
     private fun changeLanguage() {
+        //Create dialog
+        d = androidx.appcompat.app.AlertDialog.Builder(this)
+
+        val v = layoutInflater.inflate(R.layout.layout_language_change, null)
+        d.setView(v)
+
+        val rv = v.findViewById<RecyclerView>(R.id.rv_language_options) as RecyclerView
+        fillLanguages(rv)
+
+
+        d.setNegativeButton(resources.getString(R.string.cancel)) { _, _ ->
+            //Do nothing
+        }
+        d.create()
+
+        tempRef = d.create()
+        d.show()
+
+
+    }
+
+    private fun fillLanguages(rv: RecyclerView) {
+        val mLanguages = ExternalUtils.getSupportedLanguageList()
+        val adapter = LanguagesAdapter(this)
+        adapter.lst = mLanguages
+        rv.layoutManager = LinearLayoutManager(this)
+        rv.adapter = adapter
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -391,5 +429,41 @@ class MainActivity : AppCompatActivity(), Communicator {
         super.onBackPressed()
 
     }
+
+    override fun selectLanguage(_listItem: LanguageBody, position: Int) {
+        val newLocale = ExternalUtils.getLocaleFromAdapterIndex(position)
+        setLocale(newLocale)
+        //Now we need to recreate this activty
+        recreate()
+
+    }
+
+
+    private fun setLocale(s: String) {
+        val locale = Locale(s)
+        Locale.setDefault(locale)
+
+        val config = Configuration()
+        config.locale = locale
+        ApplicationUtils.getContext().resources.updateConfiguration(
+            config,
+            ApplicationUtils.getContext().resources.displayMetrics
+        )
+
+        //Save data to the shared preference
+        pref.setLanguageFromPreference(s)
+
+
+        //Now for the system
+        val editor: SharedPreferences.Editor = getSharedPreferences(
+            "Settings",
+            MODE_PRIVATE
+        )!!.edit()
+        editor.putString("My_Lang", s)
+        editor.apply()
+
+
+    }
+
 
 }

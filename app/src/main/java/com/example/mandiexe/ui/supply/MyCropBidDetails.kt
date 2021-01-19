@@ -561,15 +561,20 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
             // set manual x bounds to have nice steps
 
             if (!item.isEmpty()) {
-                ExternalUtils.convertDateTimestampUtil(item.get(0).timestamp)?.time?.toDouble()
-                    ?.let {
-                        graph.viewport.setMinX(
-                            it
-                        )
-                    }
-                //graph.getViewport().setMaxX(getEndingDate(item).time.toDouble());
+                Log.e(
+                    TAG,
+                    "Start X is " + ExternalUtils.convertDateTimestampUtil(item.get(0).timestamp)
+                        .toString()
+                )
+
+                ExternalUtils.convertDateTimestampUtil(item.get(0).timestamp)?.time?.toDouble()?.let {
+                    graph.getViewport().setMinX(
+                        it
+                    )
+                };
                 graph.viewport.isXAxisBoundsManual = true
             }
+
             graph.title = resources.getString(R.string.myBidHistory)
             graph.titleColor = Color.BLACK
 
@@ -595,6 +600,11 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
                 )
             )
 
+            Log.e(
+                TAG,
+                "In get series data point " + ExternalUtils.convertDateTimestampUtil(element.timestamp)
+                    .toString() +" Amount : "+  element.amount.toDouble() + " Num" + numberOfBid.toString()
+            )
         }
 
 

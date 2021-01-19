@@ -18,6 +18,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.mandiexe.R
 import com.example.mandiexe.lib.ConversionTable
+import com.example.mandiexe.lib.OfflineTranslate
 import com.example.mandiexe.models.body.supply.AddGrowthBody
 import com.example.mandiexe.models.body.supply.AddSupplyBody
 import com.example.mandiexe.models.responses.supply.AddSupplyResponse
@@ -43,7 +44,7 @@ class AddStock : Fragment() {
     private val viewModel: AddStockViewModel by viewModels()
 
     private lateinit var root: View
-    private val myCalendar = Calendar.getInstance()
+    private lateinit var myCalendar: Calendar
     private val TAG = AddStock::class.java.simpleName
 
     //UI variables
@@ -83,12 +84,6 @@ class AddStock : Fragment() {
 
         root = inflater.inflate(R.layout.add_stock_fragment, container, false)
 
-//        val tb = root.findViewById<Toolbar>(R.id.toolbarExternal)
-//        tb.title = resources.getString(R.string.add_stock)
-//        tb.setNavigationOnClickListener {
-//            onBackPressed()
-//        }
-
         //UI Init
         etEst = root.findViewById(R.id.etEstDate)
         etExp = root.findViewById(R.id.etExpDate)
@@ -123,25 +118,31 @@ class AddStock : Fragment() {
 //        }
 
         // disable dates before today
+        myCalendar = Calendar.getInstance()
+        myCalendar.add(Calendar.MONTH, 1)
+
+
         val today = Calendar.getInstance()
         val now = today.timeInMillis
-
+        Log.e(TAG, "Now is " + now.toString())
         //Date Instance
         val dateEst =
             OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
 
-                view.minDate = now
+
+                view.setMinDate(System.currentTimeMillis() - 1000);
                 myCalendar.set(Calendar.YEAR, year)
                 myCalendar.set(Calendar.MONTH, monthOfYear)
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
                 updateLabelOfDate()
             }
 
+
         val dateExp =
             OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
 
 
-                view.minDate = now
+                view.setMinDate(System.currentTimeMillis() - 1000);
                 myCalendar.set(Calendar.YEAR, year)
                 myCalendar.set(Calendar.MONTH, monthOfYear)
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
@@ -152,7 +153,7 @@ class AddStock : Fragment() {
             OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
 
 
-                view.minDate = now
+                view.setMinDate(System.currentTimeMillis() - 1000);
                 myCalendar.set(Calendar.YEAR, year)
                 myCalendar.set(Calendar.MONTH, monthOfYear)
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
@@ -198,24 +199,6 @@ class AddStock : Fragment() {
 //            startActivityForResult(i, RC_MAP_STOCK_ADD)
 //
 //        }
-
-        //For the bidding items
-//        bidSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-//
-//            if (isChecked) {
-//                tilExp.visibility = View.VISIBLE
-//            } else {
-//                tilExp.visibility = View.GONE
-//            }
-//        }
-
-        tilName.setOnClickListener {
-            setUpCropNameSpinner()
-        }
-
-        cropName.setOnClickListener {
-            setUpCropNameSpinner()
-        }
 
 
         root.findViewById<MaterialButton>(R.id.mtb_add_stock).setOnClickListener {
@@ -405,7 +388,6 @@ class AddStock : Fragment() {
         }
 
 
-        //## Case of zero
         if (cropQuantity.text.isEmpty()) {
             isValid = false
             tilQuantity.error = resources.getString(R.string.cropQuanityError)
@@ -422,16 +404,16 @@ class AddStock : Fragment() {
             tilPrice.error = null
         }
 
+        val etSow = root.findViewById<EditText>(R.id.etSowDate)
 
-        if (etEst.text.isEmpty()) {
-            isValid = false
-            tilEst.error = resources.getString(R.string.etEstError)
-        } else {
-            tilEst.error = null
-        }
+        val sowDate = ExternalUtils.getDateInstanceFromString(etSow.text.toString())
+        val estDate = ExternalUtils.getDateInstanceFromString(etEst.text.toString())
+        val expDate = ExternalUtils.getDateInstanceFromString(etExp.text.toString())
 
+        val diff = estDate.time - sowDate.time
+        val duffDayCount = diff / (24 * 60 * 60 * 1000)
 
-        if (root.findViewById<EditText>(R.id.etSowDate).text.isEmpty()) {
+        if (etSow.text.isEmpty()) {
             isValid = false
             root.findViewById<TextInputLayout>(R.id.tilSowDate).error =
                 resources.getString(R.string.etSowError)
@@ -439,28 +421,34 @@ class AddStock : Fragment() {
             root.findViewById<TextInputLayout>(R.id.tilSowDate).error = null
         }
 
-
-//        if (etAddress.text.isEmpty() || etAddress.text.toString() == "null") {
-//            isValid = false
-//            tilAddress.error = resources.getString(R.string.addressError)
-//        } else {
-//            tilAddress.error = null
-//        }
-
-        //    if (bidSwitch.isChecked) {
+        if (etEst.text.isEmpty()) {
+            isValid = false
+            tilEst.error = resources.getString(R.string.etEstError)
+        } else if (estDate.before(sowDate)) {
+            isValid = false
+            tilEst.error = resources.getString(R.string.etEstLessThanSow)
+        } else if (duffDayCount < 20) {
+            isValid = false
+            tilEst.error = resources.getString(R.string.etEstLessIncomplete)
+        } else {
+            tilEst.error = null
+        }
 
         if (etExp.text.isEmpty()) {
             isValid = false
             tilExp.error = resources.getString(R.string.expError)
+        } else if (expDate.before(sowDate)) {
+            isValid = false
+            tilExp.error = resources.getString(R.string.expLess)
         } else {
             tilExp.error = null
         }
-        //  }
 
 
         return isValid
     }
 
+    //Est completion time
     private fun updateLabelOfDate() {
 
         val myFormat = "dd/MM/yyyy" //In which you need put here
@@ -526,6 +514,7 @@ class AddStock : Fragment() {
         }
 
     }
+
 
     override fun onDestroy() {
 

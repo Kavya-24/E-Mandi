@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
+import com.example.mandiexe.lib.OfflineTranslate
 import com.example.mandiexe.models.responses.supply.FarmerSuppliesResponse
 import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.utils.auth.PreferenceUtil
@@ -41,6 +42,8 @@ class MySuppliesAdapter(val itemClick: OnMyStockClickListener) :
             with(_listItem) {
 
                 //Translate
+//                CROP_NAME.text = OfflineTranslate.translateOfflineToDefault(_listItem.crop)
+//                CROP_TYPE.text = OfflineTranslate.translateOfflineToDefault(_listItem.variety)
                 CROP_NAME.text = ExternalUtils.translateTextToDefault(_listItem.crop, "en", pref.getLanguageFromPreference().toString())
                 CROP_TYPE.text = ExternalUtils.translateTextToDefault(_listItem.variety, "en", pref.getLanguageFromPreference().toString())
 

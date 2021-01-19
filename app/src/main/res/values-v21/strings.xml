@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="InconsistentArrays">
     <string name="app_name">E-Mandi</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -167,6 +167,7 @@
         <item>Grey Wheat</item>
         <item>Basmati Rice</item>
         <item>Kala Chana</item>
+        <item>@string/cropvarietyNull</item>
 
     </string-array>
 
@@ -281,6 +282,9 @@
     <string name="desc">Update the crop details</string>
     <string name="no_bids_founds">No bids founds</string>
     <string name="noDesc">-</string>
+    <string name="etEstLessThanSow">Completion date can not be before the date of sowing</string>
+    <string name="etEstLessIncomplete">Crop harvest date can not be before 20 days after sowing.</string>
+    <string name="expLess">Expiration date of the bid can not be before the date of sowing</string>
 
 
 </resources>
