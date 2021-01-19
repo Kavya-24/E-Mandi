@@ -615,6 +615,7 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
 
         for (element in bids) {
+
             val x = element.bids.get(element.bids.size - 1)
             mBids.add(
                 BidHistoryBody(

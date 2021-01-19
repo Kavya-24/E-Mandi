@@ -423,4 +423,8 @@ object ExternalUtils {
         }
         return str
     }
+
+    fun getListForBidsForRecyclerView(){
+
+    }
 }

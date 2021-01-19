@@ -2,16 +2,21 @@ package com.example.mandiexe.ui.myrequirements
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
+import com.example.mandiexe.adapter.MyBidHistoryAdapter
 import com.example.mandiexe.adapter.OnBidHistoryClickListener
 import com.example.mandiexe.interfaces.RetrofitClient
+import com.example.mandiexe.lib.OfflineTranslate
 import com.example.mandiexe.models.body.BidHistoryBody
 import com.example.mandiexe.models.body.bid.AddBidBody
 import com.example.mandiexe.models.body.bid.ViewBidBody
@@ -74,7 +79,7 @@ class OpenNewRequirementFragment : AppCompatActivity(), OnBidHistoryClickListene
 
         findViewById<ImageView>(R.id.iv_new_requirement_call_buyer).setOnClickListener {
             //Call person
-            val i = Intent(Intent.ACTION_CALL, Uri.parse("number"))
+            val i = Intent(Intent.ACTION_CALL, Uri.parse(ownerPhone))
             startActivity(i)
 
         }
@@ -96,6 +101,7 @@ class OpenNewRequirementFragment : AppCompatActivity(), OnBidHistoryClickListene
         service.getFarmerViewParticularBid(
             body
         ).enqueue(object : retrofit2.Callback<ViewBidResponse> {
+            @RequiresApi(Build.VERSION_CODES.Q)
             override fun onResponse(
                 call: Call<ViewBidResponse>,
                 response: Response<ViewBidResponse>
@@ -125,6 +131,7 @@ class OpenNewRequirementFragment : AppCompatActivity(), OnBidHistoryClickListene
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun initViews(value: ViewBidResponse) {
 
         //Init current bid
@@ -136,20 +143,24 @@ class OpenNewRequirementFragment : AppCompatActivity(), OnBidHistoryClickListene
         findViewById<ProgressBar>(R.id.pb_new_req_open).visibility = View.GONE
 
 
-
+        //TRANSLATE
         findViewById<TextView>(R.id.tv_new_requirement_detail_crop_name).text =
-            value.bid.demand.crop
+            OfflineTranslate.translateToDefault(this, value.bid.demand.crop)
         findViewById<TextView>(R.id.tv_new_requirement_detail_crop_type).text =
-            value.bid.demand.variety
+            OfflineTranslate.translateToDefault(this, value.bid.demand.variety)
+        findViewById<TextView>(R.id.tv_new_description).text =
+            OfflineTranslate.translateToDefault(this, value.bid.demand.description)
+
+        //Transliteration
         findViewById<TextView>(R.id.tv_new_requirement_detail_crop_location).text =
-            value.bid.bidder.address.toString()
+            ExternalUtils.transliterateToDefault(value.bid.bidder.address.toString())
 
         findViewById<TextView>(R.id.ans_detail_crop_quanity_open_req).text =
             value.bid.demand.qty.toString()
         findViewById<TextView>(R.id.ans_detail_crop_exp_open_req).text =
-            value.bid.demand.expiry
+            ExternalUtils.convertTimeToEpoch(value.bid.demand.expiry)
         findViewById<TextView>(R.id.ans_detail_init_date_open_req).text =
-            value.bid.demand.demandCreated
+            ExternalUtils.convertTimeToEpoch(value.bid.demand.demandCreated)
 
         findViewById<TextView>(R.id.tv_new_requirement_detail_current_bid).text =
             value.bid.demand.currentBid.toString()
@@ -164,10 +175,17 @@ class OpenNewRequirementFragment : AppCompatActivity(), OnBidHistoryClickListene
 
         }
 
+
+        //Set the buyer
+        //Transliterate
+        findViewById<TextView>(R.id.tv_new_requirement_details_buyer_name).text =
+            ExternalUtils.transliterateToDefault(value.bid.bidder.name)
+        ownerPhone = value.bid.bidder.phone.toString()
         //Else the color is green
 
         findViewById<TextView>(R.id.tv_new_requirement_detail_initial_offer_price).text =
             value.bid.demand.offerPrice.toString()
+
 
         fillRecyclerView(value.bid.bids)
 
@@ -176,26 +194,33 @@ class OpenNewRequirementFragment : AppCompatActivity(), OnBidHistoryClickListene
 
     private fun fillRecyclerView(bids: List<ViewBidResponse.Bid.BidDetails>) {
 
-//        val rv = findViewById<RecyclerView>(R.id.rv_bidHistoryOPneReq)
-//        rv.layoutManager = LinearLayoutManager(context)
-//        val adapter = MyBidHistoryAdapter(this)
+        val rv = findViewById<RecyclerView>(R.id.rv_bidHistoryOPneReq)
+        rv.layoutManager = LinearLayoutManager(this)
+        val adapter = MyBidHistoryAdapter(this)
+
+        //Create list
+        val mBids: MutableList<BidHistoryBody> = mutableListOf()
+
 //
-//        //Create list
-//        //Fill the rv wit
-//        val mBids: MutableList<ViewSupplyResponse.Supply.Bid.BidDetails> = mutableListOf()
 //        for (element in bids) {
+//            val x = element.bids.get(element.bids.size - 1)
 //            mBids.add(
-//                ViewSupplyResponse.Supply.Bid.BidDetails(
-//                    element.amount,
-//                    element.id,
-//                    element.timestamp
+//                BidHistoryBody(
+//                    x.amount,
+//                    x._id,
+//                    x.timestamp,
+//                    element.bidder.name,
+//                    element.bidder.phone,
+//                    element.bidder.address
 //                )
 //            )
 //        }
-//
-//        adapter.lst = mBids
-//        rv.adapter = adapter
 
+        mBids.sortByDescending { it.amount }
+        Log.e(TAG, mBids.toString())
+
+        adapter.lst = mBids
+        rv.adapter = adapter
     }
 
     private fun createBidDialog() {
@@ -261,7 +286,11 @@ class OpenNewRequirementFragment : AppCompatActivity(), OnBidHistoryClickListene
 
                     }
                 } else {
-                    createSnackbar(response.body()?.msg, this@OpenNewRequirementFragment, container_open_new_req)
+                    createSnackbar(
+                        response.body()?.msg,
+                        this@OpenNewRequirementFragment,
+                        container_open_new_req
+                    )
                 }
 
             }
@@ -292,7 +321,7 @@ class OpenNewRequirementFragment : AppCompatActivity(), OnBidHistoryClickListene
     private fun viewBidHistory() {
     }
 
-  
+
     override fun viewBidDetails(_listItem: BidHistoryBody) {
 
     }
