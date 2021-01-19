@@ -160,11 +160,11 @@
     <string name="otpSend">ओटीपी को भेजा गया है:</string>
     <string name="otpResend">ओटीपी पुनः भेजें</string>
     <string name="otpResendInit">ट्रिगर नहीं</string>
-    <string name="resendIn">"Otp में resend"</string>
+    <string name="resendIn">ओटीपी पुनः भेजें</string>
     <string name="invalidCredentials">अवैध प्रत्यय पत्र</string>
     <string name="addNumber">अपना नंबर जोड़ें</string>
     <string name="please_enter_your_mobile_number_to_receive_a_verification_code">सत्यापन कोड प्राप्त करने के लिए कृपया अपना मोबाइल नंबर दर्ज करें</string>
-    <string name="pleaseOtp">। \ N कृपया यहां ओटीपी दर्ज करें</string>
+    <string name="pleaseOtp">कृपया यहां ओटीपी दर्ज करें</string>
     <string name="loggingIn">प्रवेश किया</string>
     <string name="signUpSuccess">पंजीकरण सफल।</string>
     <string name="failedLogin">लॉग इन करने में विफल। कृपया बाद में पुनः प्रयास करें।</string>
@@ -208,7 +208,7 @@
     <string name="permissionPhone">इस ऐप से कॉल डायल करने की अनुमति।</string>
     <string name="permissionHead">अनुमति की जरूरत है</string>
     <string name="ok">ठीक है</string>
-    <string name="sendingOTp">"Otp भेजना"</string>
+    <string name="sendingOTp">"OTP भेजना"</string>
     <string name="num_000000000">9090909090</string>
     <string name="otpSent">ओटीपी भेजा गया</string>
     <string name="successOTP">ओटीपी सफलतापूर्वक पुनर्प्राप्त</string>
@@ -224,6 +224,7 @@
     <string name="etEstLessThanSow">पूर्णता तिथि बुवाई की तारीख से पहले नहीं हो सकती है</string>
     <string name="etEstLessIncomplete">फसल फसल की तारीख बुवाई के 20 दिनों के पहले नहीं हो सकती है।</string>
     <string name="expLess">बोली की समाप्ति तिथि बुवाई की तारीख से पहले नहीं हो सकती है</string>
+    <string name="NoNewReqFound">कोई आवश्यकता नहीं मिली</string>
 
     <string-array name="arr_crop_names">
         <item>@string/rice</item>

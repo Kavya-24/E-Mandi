@@ -280,6 +280,8 @@
     <string name="Hectare">>Hectare</string>
     <string name="acres">>Acres</string>
     <string name="sqrmetres">>Sq Metres</string>
+    <string name="NoNewReqFound">No requirements found.</string>
+    <string name="NoLoadNewReq">Could not load new requirements</string>
 
     <string-array name="arr_area_units">
         <item>@string/Hectare</item>
