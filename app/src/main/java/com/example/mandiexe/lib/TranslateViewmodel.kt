@@ -57,18 +57,27 @@ class TranslateViewmodel(application: Application) : AndroidViewModel(applicatio
         }
 
     init {
+
         // Create a translation result or error object.
+
         val processTranslation =
             OnCompleteListener<String> { task ->
                 if (task.isSuccessful) {
+                    Log.e("TVM", "In success process translation and result is " + task.result)
                     translatedText.value = ResultOrError(task.result, null)
                 } else {
+                    Log.e(
+                        "TVM",
+                        "In failre process translation with error " + task.exception?.cause + task.exception + task.exception?.message
+                    )
                     translatedText.value = ResultOrError(null, task.exception)
                 }
                 // Update the list of downloaded models as more may have been
                 // automatically downloaded due to requested translation.
+
                 fetchDownloadedModels()
             }
+
         // Start translation if any of the following change: input text, source lang, target lang.
         translatedText.addSource(sourceText) { translate().addOnCompleteListener(processTranslation) }
         val languageObserver =
@@ -86,15 +95,23 @@ class TranslateViewmodel(application: Application) : AndroidViewModel(applicatio
 
     // Updates the list of downloaded models available for local translation.
     private fun fetchDownloadedModels() {
+
         modelManager.getDownloadedModels(TranslateRemoteModel::class.java)
             .addOnSuccessListener { remoteModels ->
                 availableModels.value =
                     remoteModels.sortedBy { it.language }.map { it.language }
             }
+            .addOnFailureListener { mException ->
+                Log.e(
+                    "TVM",
+                    "In failed to fetch langauge models " + mException.message + mException.cause
+                )
+            }
     }
 
     // Starts downloading a remote model for local translation.
     internal fun downloadLanguage(language: Language) {
+        Log.e("TVM", "In download langauge")
         val model = getModel(TranslateLanguage.fromLanguageTag(language.code)!!)
         modelManager.download(model, DownloadConditions.Builder().build())
             .addOnCompleteListener { fetchDownloadedModels() }
@@ -102,13 +119,14 @@ class TranslateViewmodel(application: Application) : AndroidViewModel(applicatio
 
     // Deletes a locally stored translation model.
     internal fun deleteLanguage(language: Language) {
+        Log.e("TVM", "In delete langauge")
         val model = getModel(TranslateLanguage.fromLanguageTag(language.code)!!)
         modelManager.deleteDownloadedModel(model).addOnCompleteListener { fetchDownloadedModels() }
     }
 
     fun translate(): Task<String> {
 
-        Log.e("TVM", availableLanguages.toString())
+        Log.e("TVM", "In Translate Language")
         val text = sourceText.value
         val source = sourceLang.value
         val target = targetLang.value
@@ -118,16 +136,19 @@ class TranslateViewmodel(application: Application) : AndroidViewModel(applicatio
         }
         val sourceLangCode = TranslateLanguage.fromLanguageTag(source.code)!!
         val targetLangCode = TranslateLanguage.fromLanguageTag(target.code)!!
+
         val options = TranslatorOptions.Builder()
             .setSourceLanguage(sourceLangCode)
             .setTargetLanguage(targetLangCode)
             .build()
+
+
         return translators[options].downloadModelIfNeeded().continueWithTask { task ->
             if (task.isSuccessful) {
-                Log.e("TVM", "In success ttranslate")
+                Log.e("TVM", "In success translate")
                 translators[options].translate(text)
             } else {
-                Log.e("TranslateVM","In fail translateion")
+                Log.e("TVM", "In fail translateion")
                 Tasks.forException<String>(
                     task.exception
                         ?: Exception()
@@ -181,6 +202,7 @@ class TranslateViewmodel(application: Application) : AndroidViewModel(applicatio
         // Each new instance of a translator needs to be closed appropriately. Here we utilize the
         // ViewModel's onCleared() to clear our LruCache and close each Translator instance when
         // this ViewModel is no longer used and destroyed.
+        Log.e("TVM", "In on Clear")
         translators.evictAll()
     }
 }

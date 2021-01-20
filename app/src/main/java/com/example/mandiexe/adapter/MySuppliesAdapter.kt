@@ -1,14 +1,20 @@
 package com.example.mandiexe.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
 import com.example.mandiexe.lib.OfflineTranslate
+import com.example.mandiexe.lib.TranslateViewmodel
 import com.example.mandiexe.models.responses.supply.FarmerSuppliesResponse
 import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.utils.auth.PreferenceUtil
@@ -35,6 +41,10 @@ class MySuppliesAdapter(val itemClick: OnMyStockClickListener) :
         val CROP_CHANGE = itemView.findViewById<ImageView>(R.id.iv_stock_image)
         val CROP_CARD = itemView.findViewById<CardView>(R.id.cv_item_stock)
 
+        val context = itemView.context
+        private val viewModel =
+            ViewModelProviders.of(context as FragmentActivity)[TranslateViewmodel::class.java]
+
         val pref = PreferenceUtil
 
         //Bind a single item
@@ -42,10 +52,12 @@ class MySuppliesAdapter(val itemClick: OnMyStockClickListener) :
             with(_listItem) {
 
                 //#Translation
-                CROP_NAME.text =
-                    OfflineTranslate.translateToDefault(itemView.context, _listItem.crop)
-                CROP_TYPE.text =
-                    OfflineTranslate.translateToDefault(itemView.context, _listItem.variety)
+                //create tranlation object
+
+                OfflineTranslate.translateToDefault(itemView.context, _listItem.crop, CROP_NAME)
+                OfflineTranslate.translateToDefault(itemView.context, _listItem.variety, CROP_TYPE)
+
+
 
                 //No Translations/Transliterations
                 CROP_QUANTITY.text = _listItem.qty.toString()
@@ -104,7 +116,6 @@ class MySuppliesAdapter(val itemClick: OnMyStockClickListener) :
 
             }
         }
-
 
     }
 

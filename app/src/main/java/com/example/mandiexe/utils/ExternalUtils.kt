@@ -13,15 +13,15 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModelProvider
 import com.example.mandiexe.R
-import com.example.mandiexe.lib.Language
-import com.example.mandiexe.lib.TranslateAPI
+import com.example.mandiexe.lib.TranslateViewmodel
 import com.example.mandiexe.models.body.LanguageBody
 import com.example.mandiexe.utils.auth.PreferenceUtil
-import com.github.wnameless.json.flattener.JsonFlattener
-import com.github.wnameless.json.unflattener.JsonUnflattener
 import com.google.android.material.snackbar.Snackbar
 import retrofit2.HttpException
 import java.io.IOException
@@ -231,94 +231,6 @@ object ExternalUtils {
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-//    fun translateTextToEnglish(
-//        mText: String,
-//        srcLanguage: String,
-//        dstLanguage: String
-//    ): String? {
-//
-//        if (PreferenceUtil.getLanguageFromPreference() == "en") {
-//            return mText
-//        }
-//
-//        val translateAPI = TranslateAPI(
-//            srcLanguage,  //Source Language
-//            Language.ENGLISH,  //Target Language
-//            mText
-//        ) //Query Text
-//
-//        var q = ""
-//
-//        translateAPI.setTranslateListener(object : TranslateAPI.TranslateListener {
-//            override fun onSuccess(translatedText: String?) {
-//                Log.e("EXternal Utils", "In language conversion error " + translatedText)
-//                q = translatedText!!
-//            }
-//
-//            override fun onFailure(ErrorText: String?) {
-//                Log.e("EXternal Utils", "In language conversion error " + ErrorText)
-//
-//            }
-//        })
-//
-//        return q
-//    }
-//
-//    fun translateTextToDefault(
-//        mText: String,
-//        srcLanguage: String,
-//        dstLanguage: String
-//    ): String {
-//
-//        if (PreferenceUtil.getLanguageFromPreference() == "en") {
-//            return mText
-//        }
-//
-//        val translateAPI = TranslateAPI(
-//            Language.ENGLISH,  //Source Language
-//            dstLanguage,  //Target Language
-//            mText
-//        ) //Query Text
-//
-//        var q = ""
-//
-//        translateAPI.setTranslateListener(object : TranslateAPI.TranslateListener {
-//            override fun onSuccess(translatedText: String?) {
-//                Log.e(
-//                    "CONVERT DEF",
-//                    "Translateing" + mText + "-" + translatedText
-//                )
-//                q = translatedText!!
-//            }
-//
-//            override fun onFailure(ErrorText: String?) {
-//                Log.e("CONVERT DEF", "In language conversion error " + ErrorText)
-//
-//            }
-//        })
-//
-//        return q
-//    }
-//
-//    //Flatten and unflatten objects
-//    private fun flattenJsonString(mJson: String): String {
-//
-//        //Returns the flattened json structure
-//        val jsonStr: String = JsonFlattener.flatten(mJson)
-//        println(jsonStr)
-//        Log.e("FLATTEN", jsonStr)
-//        return jsonStr
-//    }
-//
-//    private fun unflattenJSONString(jsonStr: String): String {
-//
-//        val nestedJson: String = JsonUnflattener.unflatten(jsonStr)
-//        println(nestedJson)
-//        Log.e("UNFLATTEN", nestedJson)
-//        return nestedJson
-//
-//    }
-
     @RequiresApi(Build.VERSION_CODES.Q)
     fun transliterateToDefault(latinString: String?): String? {
 
@@ -424,7 +336,70 @@ object ExternalUtils {
         return str
     }
 
-    fun getListForBidsForRecyclerView(){
+    fun translateFunction(query: String, tvInstance: TextView) {
+
+
+//        if (pref.getLanguageFromPreference() == "en") {
+//            tvInstance.setText(query)
+//            return
+//        }
+//
+//        //Else, use external operations
+//
+//
+//        viewModel.sourceLang.value = TranslateViewmodel.Language("en")
+//        viewModel.sourceText.value = query
+//        viewModel.targetLang.value =
+//            TranslateViewmodel.Language(pref.getLanguageFromPreference() ?: "en")
+//
+//
+//        //Observe
+//        viewModel.translatedText.observe(
+//            itemView.context as LifecycleOwner,
+//            Observer { resultOrError ->
+//                resultOrError?.let {
+//                    if (it.error != null) {
+//                        Log.e(
+//                            "OfflineADAPTER",
+//                            "Error for english trans" + resultOrError.error?.localizedMessage
+//                        )
+//                    } else {
+//
+//                        tvInstance.text = resultOrError.result ?: query
+//                        Log.e(
+//                            "OfflineADAPTER",
+//                            "Sucess result for q $query is ${resultOrError.result}"
+//                        )
+//                    }
+//                }
+//            })
+//
+//
+//        //Remove observers
+//
+//        viewModel.sourceText.removeObserver { mObserver ->
+//            val x = mObserver
+//            Log.e("OfflineA", "In remove sText observer")
+//        }
+//
+//        viewModel.sourceLang.removeObserver { mObserver ->
+//            val x = mObserver
+//            Log.e("OfflineA", "In remove sLanf observer")
+//        }
+//        viewModel.targetLang.removeObserver { mObserver ->
+//            val x = mObserver
+//            Log.e("OfflineA", "In remove tLang observer")
+//        }
+//        viewModel.translatedText.removeObserver { mObserver ->
+//            val x = mObserver
+//            Log.e("OfflineA", "In remove tLang observer")
+//        }
+//        viewModel.availableModels.removeObserver { mObserver ->
+//            val x = mObserver
+//        }
+//
 
     }
+
+
 }

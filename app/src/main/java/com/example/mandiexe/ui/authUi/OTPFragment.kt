@@ -439,6 +439,9 @@ class OTPFragment : Fragment() {
         Toast.makeText(context, resources.getString(R.string.loginSuceed), Toast.LENGTH_LONG)
             .show()
 
+        //Remove timer
+        timer.onFinish()
+        timer.cancel()
         val intent = Intent(requireContext(), MainActivity::class.java)
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP and Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -452,6 +455,8 @@ class OTPFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        timer.onFinish()
+        timer.cancel()
         viewModel.successful.removeObservers(this)
         viewModel.successful.value = null
 

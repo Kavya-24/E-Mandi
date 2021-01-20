@@ -144,12 +144,12 @@ class OpenNewRequirementFragment : AppCompatActivity(), OnBidHistoryClickListene
 
 
         //TRANSLATE
-        findViewById<TextView>(R.id.tv_new_requirement_detail_crop_name).text =
-            OfflineTranslate.translateToDefault(this, value.bid.demand.crop)
-        findViewById<TextView>(R.id.tv_new_requirement_detail_crop_type).text =
-            OfflineTranslate.translateToDefault(this, value.bid.demand.variety)
-        findViewById<TextView>(R.id.tv_new_description).text =
-            OfflineTranslate.translateToDefault(this, value.bid.demand.description)
+//        findViewById<TextView>(R.id.tv_new_requirement_detail_crop_name).text =
+//            OfflineTranslate.translateToDefault(this, value.bid.demand.crop)
+//        findViewById<TextView>(R.id.tv_new_requirement_detail_crop_type).text =
+//            OfflineTranslate.translateToDefault(this, value.bid.demand.variety)
+//        findViewById<TextView>(R.id.tv_new_description).text =
+//            OfflineTranslate.translateToDefault(this, value.bid.demand.description)
 
         //Transliteration
         findViewById<TextView>(R.id.tv_new_requirement_detail_crop_location).text =

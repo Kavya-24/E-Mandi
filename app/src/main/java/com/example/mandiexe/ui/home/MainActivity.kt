@@ -108,14 +108,6 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener {
         //Get the search view
         updateDrawerDetails()
 
-        val q = "हिंदी"
-
-        Log.e(
-            "MAIN",
-            "\n\n\nTranslation for हिंदी " + OfflineTranslate.translateToEnglish(this, q)
-        )
-
-        //Search Init
 
 
     }
