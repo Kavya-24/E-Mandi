@@ -16,7 +16,7 @@ class SuggestionsAdapter(val itemClick: mSearchViewOnSuggestionClick) :
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val NAME = itemView.findViewById<TextView>(R.id.tvSearch)
+        // val NAME = itemView.findViewById<TextView>(R.id.tvSearch)
         val DEFAULT = itemView.findViewById<TextView>(R.id.tvSearchDefault)
 
         fun bindPost(
@@ -30,7 +30,7 @@ class SuggestionsAdapter(val itemClick: mSearchViewOnSuggestionClick) :
                 _listItem.name,
                 DEFAULT
             )
-            NAME.text = _listItem.name
+            // NAME.text = _listItem.name
 
 
         }

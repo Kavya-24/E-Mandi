@@ -316,14 +316,12 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
         OfflineTranslate.translateToEnglish(
             this,
-            OfflineTranslate.transliterateToEnglish(cropType.text.toString())
-                ?: cropType.text.toString(),
+            cropType.text.toString(),
             v.findViewById<TextView>(R.id.tvTempCropTypeModify)
         )
         OfflineTranslate.translateToEnglish(
             this,
-            OfflineTranslate.transliterateToEnglish(desc.text.toString())
-                ?: desc.text.toString(),
+            desc.text.toString(),
             v.findViewById<TextView>(R.id.tvTempCropDescModify)
         )
 

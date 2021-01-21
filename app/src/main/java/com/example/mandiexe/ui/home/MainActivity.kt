@@ -42,6 +42,7 @@ import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.auth.SessionManager
 import com.example.mandiexe.utils.usables.ExternalUtils
 import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
+import com.example.mandiexe.utils.usables.OfflineTranslate
 import com.example.mandiexe.utils.usables.UIUtils.hideKeyboard
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -127,9 +128,30 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener {
 
     private fun fetchSuggestions(query: String) {
 
+        //Clear adapter
+
         val service = RetrofitClient.makeCallsForSupplies(this)
 
-        val body = CropSearchAutoCompleteBody(query)
+        //Translate to English to get the English version
+
+        //Gte the temp tv
+        val mTV = findViewById<TextView>(R.id.tempTvMain)
+        val eTV = findViewById<TextView>(R.id.tempTvMainToEng)
+
+        //Use Translate ViewModel
+        OfflineTranslate.translateToEnglish(this, query, eTV)
+
+
+        //Pause
+        val mHandler = Handler()
+
+        if (eTV.text == resources.getString(R.string.noDesc)) {
+            mHandler.postDelayed({}, 2000)
+        }
+
+        val body = CropSearchAutoCompleteBody(eTV.text.toString())
+
+
         service.getCropAutoComplete(
             body = body,
         ).enqueue(object : retrofit2.Callback<CropSearchAutocompleteResponse> {
@@ -145,9 +167,11 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener {
             ) {
                 Log.e("Main", "In search response " + response.body()?.suggestions)
                 if (response.isSuccessful) {
+
                     val strAr = mutableListOf<String>()
                     for (y: CropSearchAutocompleteResponse.Suggestion in response.body()!!.suggestions) {
-                        strAr.add(y.name)
+                        OfflineTranslate.translateToDefault(this@MainActivity, y.name, mTV)
+                        strAr.add(mTV.text.toString())
                     }
 
                     Log.e("STr", strAr.toString())
@@ -186,7 +210,8 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener {
         searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
 
         val from = arrayOf("suggestionList")
-        val to = intArrayOf(R.id.tvSearch)
+        val to = intArrayOf(R.id.tvSearchDefault)
+        // val toDefault = intArrayOf(R.id.tvSearchDefault)
 
         mAdapter = SimpleCursorAdapter(
             this,
@@ -196,6 +221,7 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener {
             to,
             CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER
         )
+
 
         searchView.suggestionsAdapter = mAdapter
         searchView.isIconifiedByDefault = true
@@ -211,6 +237,20 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener {
 
                 val cursor: Cursor = mAdapter!!.getItem(position) as Cursor
                 val txt = cursor.getString(cursor.getColumnIndex("suggestionList"))
+                val eTV = findViewById<TextView>(R.id.tempTvMainToFinalSug)
+
+                com.example.mandiexe.utils.usables.OfflineTranslate.translateToEnglish(
+                    this@MainActivity,
+                    txt,
+                    eTV
+                )
+                val mHandler = Handler()
+
+                if (eTV.text == resources.getString(R.string.noDesc)) {
+                    //Not translated yet
+                    //Wait for 3 secomds
+                    mHandler.postDelayed({}, 2000)
+                }
 
                 val bundle = bundleOf(
                     "crop" to txt,
@@ -246,6 +286,7 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener {
             hideKeyboard(this@MainActivity, this@MainActivity)
             searchView.clearFocus()
             searchView.isIconified = false
+            Log.e("MAIN", "In close")
 
             false
         }
@@ -253,7 +294,6 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener {
 
         searchView.setOnSearchClickListener {
             Log.e("MAIN", "In search click")
-            searchView.onActionViewExpanded()
 
         }
 
@@ -275,7 +315,6 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener {
 
         return super.onOptionsItemSelected(item)
     }
-
 
     private fun searchCrop() {
 
@@ -307,7 +346,6 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener {
 
 
     }
-
 
     private fun showWalkthrough() {
     }
@@ -432,7 +470,6 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener {
 
     //Comunicator function
     override fun goToAddStocks(fragment: Fragment) {
-
 
     }
 

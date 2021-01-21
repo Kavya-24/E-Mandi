@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
+            android:layout_margin="@dimen/space"
             tools:context=".ui.home.SearchResultActivity">
 
             <!--    Youtube Links-->
@@ -165,6 +166,14 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rv_youtubeLinks" />
+
+            <TextView
+                android:id="@+id/tempTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/noDesc"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
