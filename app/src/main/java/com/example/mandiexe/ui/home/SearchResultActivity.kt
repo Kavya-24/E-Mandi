@@ -2,6 +2,7 @@ package com.example.mandiexe.ui.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
@@ -34,31 +35,37 @@ class SearchResultActivity : AppCompatActivity() {
     private val sessionManager = SessionManager(ApplicationUtils.getContext())
 
     private var crop = ""
-
+    private val mHandler = Handler()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setAppLocale(pref.getLanguageFromPreference(), this)
-        setContentView(R.layout.activity_search_result)
+        this.setContentView(R.layout.activity_search_result)
 
         //Get arugmenent
 
         args = intent?.getBundleExtra("bundle")!!
-        crop = args.getString("crop").toString()
 
-        val t = findViewById<TextView>(R.id.tempTv)
-        OfflineTranslate.translateToDefault(this, crop, t)
+        //Porcess the crop here
+
+        crop = args.getString("crop").toString()
         val tb = findViewById<Toolbar>(R.id.toolbarExternal)
-        tb.title = t.text
+        tb.title = crop
         tb.setNavigationOnClickListener {
             onBackPressed()
         }
 
         val aBar = findViewById<AppBarLayout>(R.id.appbarlayoutExternal)
+        findViewById<ProgressBar>(R.id.pb_searchCrop).visibility = View.VISIBLE
 
+        val t = findViewById<TextView>(R.id.tempTv)
+        OfflineTranslate.translateToEnglish(this, crop, t)
 
+        if (t.text != resources.getString(R.string.noDesc)) {
+            searchCrops()
+        } else {
+            mHandler.postDelayed({ searchCrops() }, 2000)
+        }
 
-
-        searchCrops()
 
         findViewById<ExtendedFloatingActionButton>(R.id.eFab_grow).setOnClickListener {
             addStock()
@@ -76,7 +83,6 @@ class SearchResultActivity : AppCompatActivity() {
 
         Log.e("SEARCH RES", "Crop" + crop)
 
-        findViewById<ProgressBar>(R.id.pb_searchCrop).visibility = View.VISIBLE
         val service = RetrofitClient.makeCallsForSupplies(this)
         val body = SearchGlobalCropBody(crop)
 
@@ -90,8 +96,9 @@ class SearchResultActivity : AppCompatActivity() {
                 ) {
                     if (response.isSuccessful) {
 
-                        response.body()?.let { loadItemsFunction(it) }
-
+                        if (response.body() != null) {
+                            loadItemsFunction(response.body()!!)
+                        }
                     }
                 }
 
@@ -112,14 +119,16 @@ class SearchResultActivity : AppCompatActivity() {
 
         findViewById<ConstraintLayout>(R.id.clVis).visibility = View.VISIBLE
         Log.e("SEARCH RES", "response " + response.toString())
+        try {
+            findViewById<TextView>(R.id.tvInCountry).text = response.country.total.toString()
+            findViewById<TextView>(R.id.tvInState).text = response.state.total.toString()
+            findViewById<TextView>(R.id.tvInVillage).text = response.village.qty.toString()
+            findViewById<TextView>(R.id.tvInDistrict).text = response.district.total.toString()
 
-        findViewById<TextView>(R.id.tvInCountry).text = response.country.total.toString()
-        findViewById<TextView>(R.id.tvInState).text = response.state.total.toString()
-        findViewById<TextView>(R.id.tvInVillage).text = response.village.qty.toString()
-        findViewById<TextView>(R.id.tvInDistrict).text = response.district.total.toString()
-
-        loadYoutubeLinks(response.links)
-
+            loadYoutubeLinks(response.links)
+        } catch (e: Exception) {
+            Log.e("SEARCh", e.message + e.cause + " Error")
+        }
     }
 
     private fun loadYoutubeLinks(links: List<SearchGlobalCropResponse.Link>) {

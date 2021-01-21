@@ -244,6 +244,7 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener {
                     txt,
                     eTV
                 )
+
                 val mHandler = Handler()
 
                 if (eTV.text == resources.getString(R.string.noDesc)) {
