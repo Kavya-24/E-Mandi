@@ -136,6 +136,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
                     context?.resources?.getString(R.string.noSupply)
 
             } else {
+                root.findViewById<AppCompatTextView>(R.id.tvEmptyListCrop).visibility = View.GONE
                 adapter.lst = mResponse.supplies
                 rv.layoutManager = LinearLayoutManager(context)
                 rv.adapter = adapter

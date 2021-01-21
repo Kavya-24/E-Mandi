@@ -454,11 +454,11 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
                 value.supply.currentBid.toString()
             if (value.supply.currentBid < value.supply.askPrice) {
                 findViewById<TextView>(R.id.tv_stock_detail_current_bid)
-                    .setTextColor(resources.getColor(R.color.red_A700))
+                    .setTextColor(resources.getColor(R.color.deltaRed))
 
             } else if (value.supply.currentBid == value.supply.askPrice) {
                 findViewById<TextView>(R.id.tv_stock_detail_current_bid)
-                    .setTextColor(resources.getColor(R.color.blue_A700))
+                    .setTextColor(resources.getColor(R.color.wildColor))
 
             }
 

@@ -57,6 +57,7 @@ class SupplyHistoryAdapter(val itemClick: OnMySupplyHistoryClickListener) :
                     TimeConversionUtils.convertLastModified(_listItem.lastModified)
 
                 if (_listItem.active) {
+
                     CROP_DELTA.text = itemView.context.resources.getString(R.string.activeSupply)
                     CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaGreen))
                     //If stock is active show the icon and make it greem
@@ -83,8 +84,8 @@ class SupplyHistoryAdapter(val itemClick: OnMySupplyHistoryClickListener) :
                         } else if (ans == 0) {
 
                             CROP_DELTA.text = ans.toString()
-                            CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.blue_A700))
-                            CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.blue_A700))
+                            CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.wildColor))
+                            CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.wildColor))
                             CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightGreenTest))
 
                         }

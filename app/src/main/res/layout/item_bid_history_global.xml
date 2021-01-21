@@ -56,7 +56,7 @@
                 android:layout_margin="@dimen/space"
                 android:maxLines="2"
                 android:text="@string/delta"
-                android:textColor="@color/green_A700"
+                android:textColor="@color/deltaGreen"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_bid_history_image" />

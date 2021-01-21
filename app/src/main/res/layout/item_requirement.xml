@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space"
                 android:text="@string/delta"
-                android:textColor="@color/green_A700"
+                android:textColor="@color/deltaGreen"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="@id/tv_requirement_crop_location"
                 app:layout_constraintEnd_toEndOf="parent"

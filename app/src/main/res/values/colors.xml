@@ -9,7 +9,7 @@
 
 
     <color name="deltaGreen">@color/useDarkGreenOriginal</color>
-    <color name="deltaRed">@color/red_A700</color>
+    <color name="deltaRed">@color/crimson</color>
 
     <color name="stockMarketGreen">#32CD32</color>
     <color name="stockMarketRed"></color>

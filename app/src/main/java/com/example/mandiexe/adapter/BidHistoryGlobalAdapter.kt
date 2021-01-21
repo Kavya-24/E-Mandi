@@ -54,11 +54,11 @@ class BidHistoryAdapter(val itemClick: OnMyBidHistoryGlobalClickListener) :
 
                 if (_listItem.active == true) {
 
-                    CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.green_A700))
+                    CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaGreen))
                     CROP_DELTA.text = itemView.context.resources.getString(R.string.activeBid)
                 } else {
 
-                    CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.red_A700))
+                    CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
                     CROP_DELTA.text = itemView.context.resources.getString(R.string.inactiveBid)
 
                 }
@@ -73,14 +73,14 @@ class BidHistoryAdapter(val itemClick: OnMyBidHistoryGlobalClickListener) :
 
                     if (ans > 0) {
 
-                        CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.green_A700))
+                        CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaGreen))
 
                     } else if (ans < 0) {
-                        CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.red_A700))
+                        CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaRed))
 
                     } else if (ans == 0) {
-                        CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.blue_A700))
-                        CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.blue_A700))
+                        CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.wildColor))
+                        CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.wildColor))
 
                     }
 
