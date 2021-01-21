@@ -4,8 +4,8 @@ package com.example.mandiexe.models.body.authBody
 import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
-@Keep
-data class SignUpBody(
+
+@Keep data class SignUpBody(
 
     @Json(name = "address")
     val address: String, // b381, asia

@@ -2,8 +2,8 @@ package com.example.mandiexe.models.body
 
 import androidx.annotation.Keep
 
-@Keep
-data class AddressBlock(
+
+@Keep data class AddressBlock(
     val district: String,
     val village: String,
     val state: String,

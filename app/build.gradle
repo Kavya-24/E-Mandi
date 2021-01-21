@@ -231,13 +231,6 @@ dependencies {
     //GraphView
     implementation 'com.jjoe64:graphview:4.2.2'
 
-    implementation 'com.github.iammannan:TranslateAPI:1.1'
-
-    //Flatten/Unflatten API
-    implementation 'com.github.wnameless.json:json-flattener:0.12.0'
-
-    //Jackson
-    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.8.8'
 
     //Transliterate
     implementation 'com.google.cloud:google-cloud-translate:1.85.0'

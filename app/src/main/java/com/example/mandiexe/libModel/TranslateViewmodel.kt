@@ -1,4 +1,4 @@
-package com.example.mandiexe.lib
+package com.example.mandiexe.libModel
 
 import android.app.Application
 import android.util.Log

@@ -1,8 +1,10 @@
 package com.example.mandiexe.models.responses.supply
 
 
+import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
+@Keep
 data class ViewSupplyResponse(
 
     @Json(name = "msg")
@@ -11,7 +13,7 @@ data class ViewSupplyResponse(
     @Json(name = "supply")
     val supply: Supply
 ) {
-    data class Supply(
+    @Keep data class Supply(
 
         @Json(name = "active")
         val active: Boolean, // true
@@ -67,7 +69,7 @@ data class ViewSupplyResponse(
         @Json(name = "variety")
         val variety: String // sweet
     ) {
-        data class Bid(
+        @Keep data class Bid(
 
             @Json(name = "active")
             val active: Boolean, // true
@@ -96,7 +98,7 @@ data class ViewSupplyResponse(
             @Json(name = "__v")
             val v: Int // 0
         ) {
-            data class Bidder(
+            @Keep data class Bidder(
 
                 @Json(name = "address")
                 val address: String, // b381, asia
@@ -115,7 +117,7 @@ data class ViewSupplyResponse(
                 @Json(name = "village")
                 val village: String // greno
             ) {
-                data class Location(
+                @Keep data class Location(
                     @Json(name = "coordinates")
                     val coordinates: List<Double>,
                     @Json(name = "type")
@@ -123,7 +125,7 @@ data class ViewSupplyResponse(
                 )
             }
 
-            data class BidDetails(
+            @Keep data class BidDetails(
                 @Json(name = "amount")
                 val amount: Int, // 1000
                 @Json(name = "_id")
@@ -133,7 +135,7 @@ data class ViewSupplyResponse(
             )
         }
 
-        data class LastBid(
+        @Keep data class LastBid(
             @Json(name = "amount")
             val amount: Int, // 0
             @Json(name = "_id")
@@ -142,14 +144,14 @@ data class ViewSupplyResponse(
             val timestamp: String // 2020-12-26T16:05:16.797Z
         )
 
-        data class Location(
+        @Keep data class Location(
             @Json(name = "coordinates")
             val coordinates: List<Double>,
             @Json(name = "type")
             val type: String // Point
         )
 
-        data class Supplier(
+        @Keep data class Supplier(
             @Json(name = "accountCreated")
             val accountCreated: String, // 2020-12-24T14:12:31.396Z
             @Json(name = "address")
@@ -179,14 +181,14 @@ data class ViewSupplyResponse(
             @Json(name = "village")
             val village: String // greno
         ) {
-            data class Area(
+            @Keep data class Area(
                 @Json(name = "numerical")
                 val numerical: Int, // 100
                 @Json(name = "unit")
                 val unit: String // acre
             )
 
-            data class Location(
+            @Keep data class Location(
                 @Json(name = "coordinates")
                 val coordinates: List<Double>,
                 @Json(name = "type")

@@ -1,9 +1,11 @@
 package com.example.mandiexe.models.body.supply
 
 
+import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
-data class AddGrowthBody(
+ @Keep
+ data class AddGrowthBody(
     @Json(name = "crop")
     val crop: String, // Rice
     @Json(name = "dateOfHarvest")

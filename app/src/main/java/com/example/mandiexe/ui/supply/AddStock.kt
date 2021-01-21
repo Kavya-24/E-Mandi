@@ -16,8 +16,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.mandiexe.R
-import com.example.mandiexe.lib.ConversionTable
-import com.example.mandiexe.lib.TranslateViewmodel
+
+import com.example.mandiexe.libModel.TranslateViewmodel
 import com.example.mandiexe.models.body.supply.AddGrowthBody
 import com.example.mandiexe.models.body.supply.AddSupplyBody
 import com.example.mandiexe.models.responses.supply.AddSupplyResponse
@@ -437,9 +437,6 @@ class AddStock : Fragment() {
                 val res: java.util.ArrayList<String>? =
                     data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
                 val resultInEnglish = res?.get(0)
-                val conversionTable = ConversionTable()
-                val transformedString: String? =
-                    resultInEnglish?.let { conversionTable.transform(it) }
                 cropName.setText(OfflineTranslate.transliterateToDefault(resultInEnglish))
 
 
@@ -450,9 +447,7 @@ class AddStock : Fragment() {
                 val res: java.util.ArrayList<String>? =
                     data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
                 val resultInEnglish = res?.get(0)
-                val conversionTable = ConversionTable()
-                val transformedString: String? =
-                    resultInEnglish?.let { conversionTable.transform(it) }
+              //  val conversionTable = onversionTable()
                 cropType.setText(OfflineTranslate.transliterateToDefault(resultInEnglish))
 
             }
