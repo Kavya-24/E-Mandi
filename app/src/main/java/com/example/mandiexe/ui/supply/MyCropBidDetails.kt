@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -51,6 +52,7 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
     private val viewModelCrop: MyCropBidDetailsViewModel by viewModels()
     private lateinit var graph: GraphView
     private lateinit var args: Bundle
+    private val mHandler = Handler()
 
 
     private lateinit var d: androidx.appcompat.app.AlertDialog.Builder
@@ -79,6 +81,8 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
     private lateinit var offerPrice: EditText
     private lateinit var cropType: EditText
     private lateinit var etExp: EditText
+    private lateinit var desc: EditText
+    private lateinit var v: View
 
     private val pref = com.example.mandiexe.utils.auth.PreferenceUtil
 
@@ -229,7 +233,7 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
         d = androidx.appcompat.app.AlertDialog.Builder(this)
 
-        val v = layoutInflater.inflate(R.layout.layout_modify_supply, null)
+        v = layoutInflater.inflate(R.layout.layout_modify_supply, null)
         d.setView(v)
 
 
@@ -239,7 +243,7 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
         cropType = v.findViewById(R.id.actvEdit_crop_type) as EditText
 
         offerPrice = v.findViewById(R.id.actvEdit_price) as EditText
-        val desc = v.findViewById(R.id.etEditDescription) as EditText
+        desc = v.findViewById(R.id.etEditDescription) as EditText
 
         //Auto fill these
         etEst.setText(TimeConversionUtils.reverseToReq(modifyBody.dateOfHarvest))
@@ -278,19 +282,9 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
         d.setPositiveButton(resources.getString(R.string.modifyCrop)) { _, _ ->
 
             if (isValidate()) {
-                modifyBody = ModifySupplyBody.Update(
-                    offerPrice.text.toString().toInt(),
-                    cropType.text.toString(),
-                    desc.text.toString(),
-                    TimeConversionUtils.convertDateToReqForm(etExp.text.toString()),
-                    TimeConversionUtils.convertDateToReqForm(etEst.text.toString())
-                )
-
                 confirmModify()
             }
-
         }
-
 
         d.setNegativeButton(resources.getString(R.string.cancel)) { _, _ ->
 
@@ -304,9 +298,76 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun confirmModify() {
-        tempRef.dismiss()
+
+        findViewById<ProgressBar>(R.id.pb_my_crops_details).visibility = View.VISIBLE
+        getTranslations()
+
+        if (getValidTranslations()) {
+            makeModifyCalls()
+        } else {
+            mHandler.postDelayed({ makeModifyCalls() }, 5000)
+
+        }
+        findViewById<ProgressBar>(R.id.pb_my_crops_details).visibility = View.GONE
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun getTranslations() {
+
+        OfflineTranslate.translateToEnglish(
+            this,
+            OfflineTranslate.transliterateToEnglish(cropType.text.toString())
+                ?: cropType.text.toString(),
+            v.findViewById<TextView>(R.id.tvTempCropTypeModify)
+        )
+        OfflineTranslate.translateToEnglish(
+            this,
+            OfflineTranslate.transliterateToEnglish(desc.text.toString())
+                ?: desc.text.toString(),
+            v.findViewById<TextView>(R.id.tvTempCropDescModify)
+        )
+
+    }
+
+    private fun getValidTranslations(): Boolean {
+
+        return ValidationObject.validateTranslations(
+            v.findViewById<TextView>(R.id.tvTempCropTypeModify),
+            this
+        ) && ValidationObject.validateTranslations(
+            v.findViewById<TextView>(R.id.tvTempCropDescModify),
+            this
+        )
+
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun makeModifyCalls() {
+
+        val transCropType =
+            v.findViewById<TextView>(R.id.tvTempCropTypeModify).text.toString()
+                .capitalize((Locale("en")))
+        var transDesc = desc.text.toString()
+
+        if (desc.text.toString() != resources.getString(R.string.noDesc)) {
+            //If it has something, use uts translated values
+            transDesc = v.findViewById<TextView>(R.id.tvTempCropDescModify).text.toString()
+                .capitalize((Locale("en")))
+
+        }
+
+        modifyBody = ModifySupplyBody.Update(
+            offerPrice.text.toString().toInt(),
+            transCropType,
+            transDesc,
+            TimeConversionUtils.convertDateToReqForm(etExp.text.toString()),
+            TimeConversionUtils.convertDateToReqForm(etEst.text.toString())
+        )
 
         val body = ModifySupplyBody(SUPPLY_ID, modifyBody)
+        tempRef.dismiss()
+
 
         viewModelCrop.updateFunction(body).observe(this, Observer { mResponse ->
 
