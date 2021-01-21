@@ -9,6 +9,7 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
 import com.example.mandiexe.models.responses.supply.SupplyHistoryResponse
+import com.example.mandiexe.utils.usables.OfflineTranslate
 import com.example.mandiexe.utils.usables.TimeConversionUtils
 
 class SupplyHistoryAdapter(val itemClick: OnMySupplyHistoryClickListener) :
@@ -41,8 +42,9 @@ class SupplyHistoryAdapter(val itemClick: OnMySupplyHistoryClickListener) :
         ) {
             with(_listItem) {
 
-                CROP_NAME.text = _listItem.crop
-                CROP_TYPE.text = _listItem.variety
+
+                OfflineTranslate.translateToDefault(itemView.context, _listItem.crop, CROP_NAME)
+                OfflineTranslate.translateToDefault(itemView.context, _listItem.variety, CROP_TYPE)
 
 
                 CROP_QUANTITY.text = _listItem.qty.toString()

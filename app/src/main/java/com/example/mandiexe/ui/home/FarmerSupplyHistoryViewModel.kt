@@ -42,6 +42,10 @@ class FarmerSupplyHistoryViewModel : ViewModel() {
                     successful.value = false
                     message.value = ExternalUtils.returnStateMessageForThrowable(t)
                     //Response is null
+                    Log.e(
+                        TAG,
+                        "Failed in Supply Hsitory because " + t.message + t.cause + " Setting" + message.value
+                    )
                 }
 
                 override fun onResponse(

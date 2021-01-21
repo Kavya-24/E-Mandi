@@ -1,6 +1,5 @@
 package com.example.mandiexe.ui.myrequirements
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -112,16 +111,16 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
 
     }
 
-    @SuppressLint("CutPasteId")
     private fun manageReqLoadedResponses(mResponse: FamerBidsResponse?) {
         //Create rv
         val rv = root.findViewById<RecyclerView>(R.id.rv_requirement)
         val adapter = MyRequirementAdapter(this)
 
+        val mTV = root.findViewById<AppCompatTextView>(R.id.tvEmptyList)
         if (mResponse != null) {
             if (mResponse.bids.isEmpty()) {
-                root.findViewById<AppCompatTextView>(R.id.tvEmptyList).visibility = View.VISIBLE
-                root.findViewById<AppCompatTextView>(R.id.tvEmptyList).text =
+                mTV.visibility = View.VISIBLE
+                mTV.text =
                     context?.resources?.getString(R.string.noDemand)
 
             } else {

@@ -277,6 +277,7 @@ class AddStock : Fragment() {
 
             //Check with the sucessful of it
             if (viewModel.successful.value == false) {
+                Log.e(TAG, viewModel.message.toString())
                 UIUtils.createSnackbar(
                     viewModel.message.value,
                     requireContext(),

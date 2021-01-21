@@ -46,11 +46,11 @@ class AddStockViewModel : ViewModel() {
 
         mySupplyService.getAddSupply(
             mAddSupply = body,
-     )
+        )
             .enqueue(object : retrofit2.Callback<AddSupplyResponse> {
                 override fun onFailure(call: Call<AddSupplyResponse>, t: Throwable) {
-                    successfulGrowth.value = false
-                    messageGrowth.value = ExternalUtils.returnStateMessageForThrowable(t)
+                    successful.value = false
+                    message.value = ExternalUtils.returnStateMessageForThrowable(t)
                     Log.e(TAG, "Throwable  Supply" + t.message + t.cause)
 
                     //Response is null
@@ -69,20 +69,20 @@ class AddStockViewModel : ViewModel() {
 
                     if (response.isSuccessful) {
                         if (response.body()?.msg == "Crop growth added successfully.") {
-                            successfulGrowth.value = true
-                            messageGrowth.value =
+                            successful.value = true
+                            message.value =
                                 context.resources.getString(R.string.supplyAdded)
 
                         } else {
-                            successfulGrowth.value = false
-                            messageGrowth.value = response.body()?.msg.toString()
+                            successful.value = false
+                            message.value = response.body()?.msg.toString()
                         }
 
                         addStock.value = response.body()!!
 
                     } else {
-                        successfulGrowth.value = false
-                        messageGrowth.value = response.body()?.msg.toString()
+                        successful.value = false
+                        message.value = response.body()?.msg.toString()
                     }
                     addStock.value = response.body()!!
 
@@ -109,11 +109,11 @@ class AddStockViewModel : ViewModel() {
 
         mySupplyService.getFarmerGrowthAdd(
             body = body,
-     )
+        )
             .enqueue(object : retrofit2.Callback<AddGrowthResponse> {
                 override fun onFailure(call: Call<AddGrowthResponse>, t: Throwable) {
-                    successful.value = false
-                    message.value = ExternalUtils.returnStateMessageForThrowable(t)
+                    successfulGrowth.value = false
+                    messageGrowth.value = ExternalUtils.returnStateMessageForThrowable(t)
                     Log.e(TAG, "Throwable " + t.message + t.cause)
                     //Response is null
                 }
@@ -131,20 +131,20 @@ class AddStockViewModel : ViewModel() {
 
                     if (response.isSuccessful) {
                         if (response.body()?.msg == "Growth added successfully.") {
-                            successful.value = true
-                            message.value =
+                            successfulGrowth.value = true
+                            messageGrowth.value =
                                 context.resources.getString(R.string.GrowthAdded)
 
                         } else {
-                            successful.value = false
-                            message.value = response.body()?.msg.toString()
+                            successfulGrowth.value = false
+                            messageGrowth.value = response.body()?.msg.toString()
                         }
 
                         growthStock.value = response.body()!!
 
                     } else {
-                        successful.value = false
-                        message.value = response.body()?.msg.toString()
+                        successfulGrowth.value = false
+                        messageGrowth.value = response.body()?.msg.toString()
                     }
 
                     growthStock.value = response.body()!!
