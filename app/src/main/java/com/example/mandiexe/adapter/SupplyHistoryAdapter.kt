@@ -95,7 +95,7 @@ class SupplyHistoryAdapter(val itemClick: OnMySupplyHistoryClickListener) :
                 } else {
                     CROP_DELTA.text = itemView.context.resources.getString(R.string.inactiveSupply)
                     CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
-                    CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaRed))
+                    CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.wildColor))
                     //rEMOVE THE Image
                    // CROP_CHANGE.visibility = View.GONE
                     CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.cardOffWhite))
