@@ -286,7 +286,7 @@ class AddStock : Fragment() {
                     requireContext(),
                     container_add_stock
                 )
-            } else {
+            } else if (viewModel.message.value == "Supply added successfully") {
                 manageStockCreateResponses(viewModel.addStock.value)
             }
         })

@@ -78,6 +78,7 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener {
     private lateinit var d: androidx.appcompat.app.AlertDialog.Builder
     private lateinit var tempRef: androidx.appcompat.app.AlertDialog
 
+    private lateinit var mMenu: Menu
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,7 +88,6 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener {
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         navView = findViewById(R.id.nav_view)
@@ -106,7 +106,6 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener {
         //Update the drawer
         //Get the search view
         updateDrawerDetails()
-
 
 
     }
@@ -168,17 +167,22 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener {
             }
         })
 
+        searchView.setOnClickListener {
+            searchCrop()
+        }
 
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
-
-        //Get reference for the search view
-        val searchManager = getSystemService(SEARCH_SERVICE) as SearchManager
+        mMenu = menu
         searchView =
-            menu.findItem(R.id.action_main_search).actionView as android.widget.SearchView
+            mMenu.findItem(R.id.action_main_search).actionView as android.widget.SearchView
+
+
+        Log.e("MAIN", "In onCreateOptions")
+        val searchManager = getSystemService(SEARCH_SERVICE) as SearchManager
         searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
 
         val from = arrayOf("suggestionList")
@@ -196,7 +200,6 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener {
         searchView.suggestionsAdapter = mAdapter
         searchView.isIconifiedByDefault = true
 
-        Log.e("Main", "In search")
 
         searchView.setOnSuggestionListener(object : SearchView.OnSuggestionListener {
 
@@ -237,12 +240,6 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener {
             }
         })
 
-        val mic = resources.getIdentifier("android:id/search_voice_btn", null, null)
-        val micImage = searchView.findViewById<View>(mic) as ImageView
-        micImage.setOnClickListener {
-            searchCrop()
-        }
-
 
         //Close searchView
         searchView.setOnCloseListener {
@@ -254,12 +251,18 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener {
         }
 
 
+        searchView.setOnSearchClickListener {
+            Log.e("MAIN", "In search click")
+            searchView.onActionViewExpanded()
+
+        }
+
 
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
+        Log.e("MAIN", "In onSelected")
         when (item.itemId) {
 
             R.id.action_change_language -> changeLanguage()
@@ -273,28 +276,38 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener {
         return super.onOptionsItemSelected(item)
     }
 
+
     private fun searchCrop() {
 
+        Log.e("MAIN", "In search crop")
+        val mic = resources.getIdentifier("android:id/search_voice_btn", null, null)
+        val micImage = searchView.findViewById<View>(mic) as ImageView
+        micImage.setOnClickListener {
 
-        val Voiceintent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-        Voiceintent.putExtra(
-            RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-        )
+            Log.e("MAIN", "In voice intent")
+            val Voiceintent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+            Voiceintent.putExtra(
+                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+            )
 
-        //Put language
-        Voiceintent.putExtra(
-            RecognizerIntent.EXTRA_LANGUAGE,
-            Locale(pref.getLanguageFromPreference() + "-IN")
-        )
-        Voiceintent.putExtra(
-            RecognizerIntent.EXTRA_PROMPT,
-            resources.getString(R.string.searchHead)
-        )
-        startActivityForResult(Voiceintent, VOICE_REC_CODE)
+            //Put language
+            Voiceintent.putExtra(
+                RecognizerIntent.EXTRA_LANGUAGE,
+                Locale(pref.getLanguageFromPreference() + "-IN")
+            )
+            Voiceintent.putExtra(
+                RecognizerIntent.EXTRA_PROMPT,
+                resources.getString(R.string.searchHead)
+            )
+            startActivityForResult(Voiceintent, VOICE_REC_CODE)
+
+
+        }
 
 
     }
+
 
     private fun showWalkthrough() {
     }

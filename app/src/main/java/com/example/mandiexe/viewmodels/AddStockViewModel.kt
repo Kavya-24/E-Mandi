@@ -42,7 +42,6 @@ class AddStockViewModel : ViewModel() {
 
     fun addStockFunction(body: AddSupplyBody): MutableLiveData<AddSupplyResponse> {
 
-        Log.e(TAG, "In add stpck")
 
         mySupplyService.getAddSupply(
             mAddSupply = body,
@@ -51,7 +50,7 @@ class AddStockViewModel : ViewModel() {
                 override fun onFailure(call: Call<AddSupplyResponse>, t: Throwable) {
                     successful.value = false
                     message.value = ExternalUtils.returnStateMessageForThrowable(t)
-                    Log.e(TAG, "Throwable  Supply" + t.message + t.cause)
+                    Log.e(TAG, "Throwable  Supply" + t.message + t.cause + message.value)
 
                     //Response is null
                 }

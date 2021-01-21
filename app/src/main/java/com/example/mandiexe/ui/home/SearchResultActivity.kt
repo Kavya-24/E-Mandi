@@ -20,6 +20,7 @@ import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.auth.SessionManager
 import com.example.mandiexe.utils.usables.ExternalUtils
 import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
+import com.example.mandiexe.utils.usables.OfflineTranslate
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import retrofit2.Call
@@ -44,8 +45,10 @@ class SearchResultActivity : AppCompatActivity() {
         args = intent?.getBundleExtra("bundle")!!
         crop = args.getString("crop").toString()
 
+        val t = findViewById<TextView>(R.id.tempTv)
+        OfflineTranslate.translateToDefault(this, crop, t)
         val tb = findViewById<Toolbar>(R.id.toolbarExternal)
-        tb.title = crop
+        tb.title = t.text
         tb.setNavigationOnClickListener {
             onBackPressed()
         }
@@ -79,7 +82,7 @@ class SearchResultActivity : AppCompatActivity() {
 
         service.getSearchCropGlobally(
             body,
-     )
+        )
             .enqueue(object : retrofit2.Callback<SearchGlobalCropResponse> {
                 override fun onResponse(
                     call: Call<SearchGlobalCropResponse>,
