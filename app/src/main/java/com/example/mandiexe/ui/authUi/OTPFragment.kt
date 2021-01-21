@@ -403,7 +403,10 @@ class OTPFragment : Fragment() {
                 requireContext(),
                 container_frag_otp
             )
-            root.findNavController().navigate(R.id.action_nav_otp_to_nav_signup, bundle)
+
+            val navController = root.findNavController()
+            navController.navigateUp()
+            navController.navigate(R.id.action_nav_login_to_nav_signup, bundle)
 
         } else if (mResponse.msg == "Login successful.") {
             successLogin(mResponse)

@@ -162,72 +162,80 @@ class MapActivity : AppCompatActivity() {
         pb = ProgressDialog(this)
         pb.setMessage(resources.getString(R.string.creatinguser))
 
-        //All body in English
-        val mCountry = fetchedEnglishAddress.countryName
-        val mDistrict = fetchedEnglishAddress.subAdminArea
-        val mState = fetchedEnglishAddress.adminArea
-        val village = args?.getString("ADDRESS_USER")!!
-        val mAddress = "$village,$mDistrict"
-        val lat = fetchedEnglishAddress.latitude.toString()
-        val long = fetchedEnglishAddress.longitude.toString()
-        val token = args?.getString("TOKEN")
-        val name = args?.getString("NAME").toString()
-        val area = args?.getString("AREA").toString().toInt()
-        val area_unit = args?.getString("AREA_UNIT").toString()
-        val phone = args?.getString("PHONE").toString()
-
-        //val phone = args?.getString("PHONE")!!.drop(2).toString()
-
-        body = SignUpBody(
-            mAddress,
-            area,
-            area_unit,
-            mCountry,
-            mDistrict,
-            lat,
-            long,
-            name,
-            phone,
-            mState,
-            token!!,
-            village
-        )
-
-        Log.e(TAG, "Map SignUp body number is ph " + phone)
-
-        Log.e(
-            TAG, "Map variates fA line 1 in Default lamnguage " + fetchedAddress.getAddressLine(0)
-                    + "\nfA l2 " + fetchedAddress.getAddressLine(1)
-                    + "\ncuty locale " + fetchedAddress.locality
-                    + " \n country and sub " + fetchedAddress.countryName + fetchedAddress.subLocality
-                    + "Admin area, sub" + fetchedAddress.adminArea + fetchedAddress.subAdminArea
-                    + "Map variates fA line 1 in Englise " + fetchedEnglishAddress.getAddressLine(0)
-                    + "\nfA l2 " + fetchedEnglishAddress.getAddressLine(1)
-                    + "\ncuty locale " + fetchedEnglishAddress.locality
-                    + " \n country and sub " + fetchedEnglishAddress.countryName + fetchedEnglishAddress.subLocality
-                    + "Admin area, sub" + fetchedEnglishAddress.adminArea + fetchedEnglishAddress.subAdminArea
+        try {
 
 
-        )
+            //All body in English
+            val mCountry = fetchedEnglishAddress.countryName
+            val mDistrict = fetchedEnglishAddress.subAdminArea
+            val mState = fetchedEnglishAddress.adminArea
+            val village = args?.getString("ADDRESS_USER")!!
+            val mAddress = "$village,$mDistrict"
+            val lat = fetchedEnglishAddress.latitude.toString()
+            val long = fetchedEnglishAddress.longitude.toString()
+            val token = args?.getString("TOKEN")
+            val name = args?.getString("NAME").toString()
+            val area = args?.getString("AREA").toString().toInt()
+            val area_unit = args?.getString("AREA_UNIT").toString()
+            val phone = args?.getString("PHONE").toString()
 
-        viewModel.signFunction(body).observe(this, Observer { mResponse ->
-            val success = viewModel.successful.value
-            if (success != null) {
-                if (success) {
-                    manageSignUpResponse(viewModel.mSignUp.value)
-                } else {
-                    UIUtils.createSnackbar(
-                        viewModel.message.value,
-                        this,
-                        container_map
-                    )
+            //val phone = args?.getString("PHONE")!!.drop(2).toString()
+
+            body = SignUpBody(
+                mAddress,
+                area,
+                area_unit,
+                mCountry,
+                mDistrict,
+                lat,
+                long,
+                name,
+                phone,
+                mState,
+                token!!,
+                village
+            )
+
+            Log.e(TAG, "Map SignUp body number is ph " + phone)
+
+            Log.e(
+                TAG,
+                "Map variates fA line 1 in Default lamnguage " + fetchedAddress.getAddressLine(0)
+                        + "\nfA l2 " + fetchedAddress.getAddressLine(1)
+                        + "\ncuty locale " + fetchedAddress.locality
+                        + " \n country and sub " + fetchedAddress.countryName + fetchedAddress.subLocality
+                        + "Admin area, sub" + fetchedAddress.adminArea + fetchedAddress.subAdminArea
+                        + "Map variates fA line 1 in Englise " + fetchedEnglishAddress.getAddressLine(
+                    0
+                )
+                        + "\nfA l2 " + fetchedEnglishAddress.getAddressLine(1)
+                        + "\ncuty locale " + fetchedEnglishAddress.locality
+                        + " \n country and sub " + fetchedEnglishAddress.countryName + fetchedEnglishAddress.subLocality
+                        + "Admin area, sub" + fetchedEnglishAddress.adminArea + fetchedEnglishAddress.subAdminArea
+
+
+            )
+
+            viewModel.signFunction(body).observe(this, Observer { mResponse ->
+                val success = viewModel.successful.value
+                if (success != null) {
+                    if (success) {
+                        manageSignUpResponse(viewModel.mSignUp.value)
+                    } else {
+                        UIUtils.createSnackbar(
+                            viewModel.message.value,
+                            this,
+                            container_map
+                        )
+                    }
                 }
-            }
 
-        })
+            })
 
-        pb.dismiss()
-
+            pb.dismiss()
+        } catch (e: java.lang.Exception) {
+            createSnackbar(resources.getString(R.string.unableMaps), this, container_map)
+        }
     }
 
     private fun manageSignUpResponse(value: SignUpResponse?) {

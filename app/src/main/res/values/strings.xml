@@ -277,14 +277,15 @@
     </string-array>
 
 
-    <string name="Hectare">>Hectare</string>
-    <string name="acres">>Acres</string>
-    <string name="sqrmetres">>Sq Metres</string>
+    <string name="Hectare">Hectare</string>
+    <string name="acres">Acres</string>
+    <string name="sqrmetres">Sq Metres</string>
     <string name="NoNewReqFound">No requirements found.</string>
     <string name="NoLoadNewReq" tools:ignore="MissingTranslation">Could not load new requirements</string>
     <string name="asia">asia</string>
     <string name="temp">temp</string>
     <string name="expm20">Expiry of bid should be after at least 20 days from sowing date</string>
+    <string name="unableMaps">Unable to get location.</string>
 
     <string-array name="arr_area_units">
         <item>@string/Hectare</item>

@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_nav_login_to_OTPFragment"
             app:destination="@id/nav_otp" />
+        <action
+            android:id="@+id/action_nav_login_to_nav_signup"
+            app:destination="@id/nav_signup" />
     </fragment>
 
     <fragment
