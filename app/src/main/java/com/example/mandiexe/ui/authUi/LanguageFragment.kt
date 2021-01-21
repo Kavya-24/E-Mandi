@@ -12,8 +12,8 @@ import com.example.mandiexe.adapter.LanguagesAdapter
 import com.example.mandiexe.adapter.OnMyLanguageListener
 import com.example.mandiexe.models.body.LanguageBody
 import com.example.mandiexe.utils.ApplicationUtils
-import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.utils.auth.PreferenceUtil
+import com.example.mandiexe.utils.usables.ExternalUtils
 import com.example.mandiexe.viewmodels.LanguageViewModel
 import java.util.*
 

@@ -1,6 +1,5 @@
 package com.example.mandiexe.ui.home
 
-import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.speech.RecognizerIntent
@@ -13,17 +12,19 @@ import com.example.mandiexe.R
 import com.example.mandiexe.models.body.supply.AddGrowthBody
 import com.example.mandiexe.models.body.supply.AddSupplyBody
 import com.example.mandiexe.models.responses.supply.AddSupplyResponse
-import com.example.mandiexe.utils.ExternalUtils
-import com.example.mandiexe.utils.ExternalUtils.createToast
-import com.example.mandiexe.utils.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.auth.PreferenceUtil
+import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
+import com.example.mandiexe.utils.usables.TimeConversionUtils
+import com.example.mandiexe.utils.usables.TimeConversionUtils.convertDateToReqForm
+import com.example.mandiexe.utils.usables.UIUtils
+import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
+import com.example.mandiexe.utils.usables.UIUtils.createToast
+import com.example.mandiexe.utils.usables.ValidationObject
 import com.example.mandiexe.viewmodels.AddStockViewModel
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_grow.*
-import java.text.SimpleDateFormat
 import java.util.*
 
 class GrowActivity : AppCompatActivity() {
@@ -44,6 +45,7 @@ class GrowActivity : AppCompatActivity() {
     private lateinit var cropQuantity: EditText
     private lateinit var offerPrice: EditText
     private lateinit var bidSwitch: Switch
+    private lateinit var etSow: EditText
 
     //TILs
     private lateinit var tilName: TextInputLayout
@@ -54,6 +56,7 @@ class GrowActivity : AppCompatActivity() {
     // private lateinit var tilAddress: TextInputLayout
     private lateinit var tilEst: TextInputLayout
     private lateinit var tilExp: TextInputLayout
+    private lateinit var tilSow: TextInputLayout
 
 
     private val RC_MAP_STOCK_ADD = 111
@@ -72,6 +75,7 @@ class GrowActivity : AppCompatActivity() {
         //UI Init
         etEst = findViewById(R.id.growth_etEstDate)
         etExp = findViewById(R.id.growth_etExpDate)
+        etSow = findViewById(R.id.growth_etSowDate)
         //ivLocation = findViewById(R.id.growth_iv_location)
         //  etAddress = findViewById(R.id.growth_actv_address)
         cropName = findViewById(R.id.growth_actv_which_crop)
@@ -87,7 +91,7 @@ class GrowActivity : AppCompatActivity() {
         //tilAddress = findViewById(R.id.growth_tv_address)
         tilEst = findViewById(R.id.growth_tilEstDate)
         tilExp = findViewById(R.id.growth_tilExpDate)
-
+        tilSow = findViewById(R.id.growth_tilSowDate)
         //Toolbar configuration
         val tb = findViewById<Toolbar>(R.id.toolbarExternal)
         tb.setTitle(R.string.add_growth)
@@ -102,78 +106,18 @@ class GrowActivity : AppCompatActivity() {
         setUpCropNameSpinner()
         setUpVaietyNameSpinner()
 
-        // disable dates before today
-
-        // disable dates before today
-        val today = Calendar.getInstance()
-        val now = today.timeInMillis
-
-        //Date Instance
-        val dateEst =
-            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-
-                view.minDate = now
-                myCalendar.set(Calendar.YEAR, year)
-                myCalendar.set(Calendar.MONTH, monthOfYear)
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                updateLabelOfDate()
-            }
-
-        val dateExp =
-            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-
-
-                view.minDate = now
-                myCalendar.set(Calendar.YEAR, year)
-                myCalendar.set(Calendar.MONTH, monthOfYear)
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                updateLabelOfExpiry()
-            }
-
-        val dateSow =
-            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-
-
-                view.minDate = now
-                myCalendar.set(Calendar.YEAR, year)
-                myCalendar.set(Calendar.MONTH, monthOfYear)
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                updateLabelOfSowing()
-            }
-
-        //##Requires N
         etEst.setOnClickListener {
-            this.let { it1 ->
-                DatePickerDialog(
-                    it1, dateEst, myCalendar[Calendar.YEAR],
-                    myCalendar[Calendar.MONTH],
-                    myCalendar[Calendar.DAY_OF_MONTH]
-                ).show()
-            }
+            TimeConversionUtils.clickOnDateObject(myCalendar, etEst, this)
         }
 
         //##Requires N
         etExp.setOnClickListener {
-            this.let { it1 ->
-                DatePickerDialog(
-                    it1, dateExp, myCalendar[Calendar.YEAR],
-                    myCalendar[Calendar.MONTH],
-                    myCalendar[Calendar.DAY_OF_MONTH]
-                ).show()
-            }
+            TimeConversionUtils.clickOnDateObject(myCalendar, etExp, this)
         }
 
-
-        findViewById<EditText>(R.id.growth_etSowDate).setOnClickListener {
-            this.let { it1 ->
-                DatePickerDialog(
-                    it1, dateSow, myCalendar[Calendar.YEAR],
-                    myCalendar[Calendar.MONTH],
-                    myCalendar[Calendar.DAY_OF_MONTH]
-                ).show()
-            }
+        etSow.setOnClickListener {
+            TimeConversionUtils.clickOnDateObject(myCalendar, etSow, this)
         }
-
 
         //For the bidding items
         bidSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -231,8 +175,8 @@ class GrowActivity : AppCompatActivity() {
 
         val growthBody = AddGrowthBody(
             cropName.text.toString(),
-            ExternalUtils.convertDateToReqForm(etEst.text.toString()),
-            ExternalUtils.convertDateToReqForm(findViewById<EditText>(R.id.growth_etSowDate).text.toString()),
+            convertDateToReqForm(etEst.text.toString()),
+            convertDateToReqForm(findViewById<EditText>(R.id.growth_etSowDate).text.toString()),
             cropQuantity.text.toString(),
             cropType.text.toString()
         )
@@ -253,7 +197,7 @@ class GrowActivity : AppCompatActivity() {
                 } else if (mResponse.msg == "Crop growth added successfully." && bidSwitch.isChecked) {
                     makeAddCall()
                 } else {
-                    createSnackbar(mResponse.msg)
+                    createSnackbar(mResponse.msg, this, growth_container_grow)
                 }
 
             })
@@ -274,9 +218,9 @@ class GrowActivity : AppCompatActivity() {
         val body = AddSupplyBody(
             offerPrice.text.toString(),
             cropName.text.toString(),
-            ExternalUtils.convertDateToReqForm(etEst.text.toString()),
+            TimeConversionUtils.convertDateToReqForm(etEst.text.toString()),
             str,
-            ExternalUtils.convertDateToReqForm(etExp.text.toString()),
+            TimeConversionUtils.convertDateToReqForm(etExp.text.toString()),
             "0",
             cropType.text.toString()
         )
@@ -287,12 +231,11 @@ class GrowActivity : AppCompatActivity() {
             if (mResponse.msg == "Supply added successfully.") {
                 manageStockCreateResponses(mResponse)
             } else {
-                createSnackbar(mResponse.msg)
+                UIUtils.createSnackbar(mResponse.msg, this, growth_container_grow)
             }
         })
 
     }
-
 
     private fun makeSearchForItems(code: Int) {
         val Voiceintent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
@@ -314,20 +257,6 @@ class GrowActivity : AppCompatActivity() {
 
     }
 
-    private fun setUpVaietyNameSpinner() {
-
-        val array: Array<String> = resources.getStringArray(R.array.arr_crop_types)
-
-        val adapter: ArrayAdapter<String>? = this.let {
-            ArrayAdapter<String>(
-                it, android.R.layout.simple_spinner_item,
-                array
-            )
-        }
-        cropType.setAdapter(adapter)
-
-    }
-
     private fun manageStockCreateResponses(mResponse: AddSupplyResponse?) {
         //On creating this stock
 
@@ -337,136 +266,88 @@ class GrowActivity : AppCompatActivity() {
         destroyActivity()
     }
 
-    private fun destroyActivity() {
-
-        Log.e("GROW", "In on destroy")
-        onBackPressed()
-    }
-
-    private fun createSnackbar(value: String?) {
-        Snackbar.make(growth_container_grow, value.toString(), Snackbar.LENGTH_SHORT).show()
-    }
 
     private fun setUpCropNameSpinner() {
+        UIUtils.getSpinnerAdapter(R.array.arr_crop_names, cropName, this)
+    }
 
-        //Crop names
+    private fun setUpVaietyNameSpinner() {
 
-        val array: Array<String> = resources.getStringArray(R.array.arr_crop_names)
-        val adapter: ArrayAdapter<String>? = this.let {
-            ArrayAdapter<String>(
-                it, android.R.layout.simple_spinner_item,
-                array
-            )
-        }
-        cropName.setAdapter(adapter)
-
-
+        UIUtils.getSpinnerAdapter(R.array.arr_crop_types, cropType, this)
     }
 
     private fun isValidate(): Boolean {
 
-        var isValid = true
+        var bool1 = true
+        var bool2 = true
 
-        if (cropName.text.isEmpty()) {
-            isValid = false
-            tilName.error = resources.getString(R.string.cropNameError)
-        } else {
-            tilName.error = null
-        }
-
-
-
-        if (cropType.text.isEmpty()) {
-            isValid = false
-            tilType.error = resources.getString(R.string.cropTypeError)
-        } else {
-            tilType.error = null
-        }
-
-
-        //## Case of zero
-        if (cropQuantity.text.isEmpty()) {
-            isValid = false
-            tilQuantity.error = resources.getString(R.string.cropQuanityError)
-        } else {
-            tilQuantity.error = null
-        }
-
-
-
-
-
-        if (etEst.text.isEmpty()) {
-            isValid = false
-            tilEst.error = resources.getString(R.string.etEstError)
-        } else {
-            tilEst.error = null
-        }
-
-
-        if (findViewById<EditText>(R.id.growth_etSowDate).text.isEmpty()) {
-            isValid = false
-            findViewById<TextInputLayout>(R.id.growth_tilSowDate).error =
-                resources.getString(R.string.etSowError)
-        } else {
-            findViewById<TextInputLayout>(R.id.growth_tilSowDate).error = null
-        }
+        bool1 = ValidationObject.validateEmptyView(
+            cropName,
+            tilName,
+            R.string.cropNameError,
+            this
+        )
+                && ValidationObject.validateEmptyView(
+            cropType,
+            tilType,
+            R.string.cropTypeError,
+            this
+        )
+                && ValidationObject.validateEmptyEditText(
+            cropQuantity,
+            tilQuantity,
+            R.string.cropQuanityError,
+            this
+        ) && ValidationObject.validateEmptyEditText(
+            etSow,
+            tilSow,
+            R.string.etSowError,
+            this
+        ) && ValidationObject.validateEmptyEditText(
+            etEst,
+            tilEst,
+            R.string.etEstError,
+            this
+        ) && TimeConversionUtils.validateDates(
+            etSow,
+            etEst,
+            R.string.etEstLessThanSow,
+            R.string.etEstLessIncomplete,
+            etEst,
+            tilEst,
+            this
+        )
 
 
-//        if (etAddress.text.isEmpty() || etAddress.text.toString() == "null") {
-//            isValid = false
-//            tilAddress.error = resources.getString(R.string.addressError)
-//        } else {
-//            tilAddress.error = null
-//        }
 
 
         if (bidSwitch.isChecked) {
 
-            if (etExp.text.isEmpty()) {
-                isValid = false
-                tilExp.error = resources.getString(R.string.expError)
-            } else {
-                tilExp.error = null
-            }
-
-
-            if (offerPrice.text.isEmpty()) {
-                isValid = false
-                tilPrice.error = resources.getString(R.string.offerPriceError)
-            } else {
-                tilPrice.error = null
-            }
+            bool2 = ValidationObject.validateEmptyEditText(
+                offerPrice,
+                tilPrice,
+                R.string.offerPriceError,
+                this
+            ) && ValidationObject.validateEmptyEditText(
+                etExp,
+                tilExp,
+                R.string.expError,
+                this
+            ) && TimeConversionUtils.validateDates(
+                etSow,
+                etExp,
+                R.string.expLess,
+                R.string.expm20,
+                etExp,
+                tilExp,
+                this
+            )
 
 
         }
 
 
-        return isValid
-    }
-
-    private fun updateLabelOfDate() {
-
-        val myFormat = "dd/MM/yyyy" //In which you need put here
-        val sdf = SimpleDateFormat(myFormat, Locale.US)
-        etEst.setText(sdf.format(myCalendar.time))
-
-    }
-
-    private fun updateLabelOfSowing() {
-
-        val myFormat = "dd/MM/yyyy" //In which you need put here
-        val sdf = SimpleDateFormat(myFormat, Locale.US)
-        findViewById<EditText>(R.id.growth_etSowDate).setText(sdf.format(myCalendar.time))
-
-    }
-
-    private fun updateLabelOfExpiry() {
-
-        val myFormat = "dd/MM/yyyy" //In which you need put here
-        val sdf = SimpleDateFormat(myFormat, Locale.US)
-        etExp.setText(sdf.format(myCalendar.time))
-
+        return bool1 && bool2
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -517,4 +398,11 @@ class GrowActivity : AppCompatActivity() {
 
         finish()
     }
+
+    private fun destroyActivity() {
+
+        Log.e("GROW", "In on destroy")
+        onBackPressed()
+    }
+
 }

@@ -26,12 +26,12 @@ import com.example.mandiexe.models.body.authBody.SignUpBody
 import com.example.mandiexe.models.responses.auth.LoginResponse
 import com.example.mandiexe.models.responses.auth.SignUpResponse
 import com.example.mandiexe.utils.ApplicationUtils
-import com.example.mandiexe.utils.ExternalUtils
-import com.example.mandiexe.utils.ExternalUtils.createSnackbar
-import com.example.mandiexe.utils.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.auth.PreferenceManager
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.auth.SessionManager
+import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
+import com.example.mandiexe.utils.usables.UIUtils
+import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import com.example.mandiexe.viewmodels.MapViewmodel
 import com.example.mandiexe.viewmodels.OTViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -216,7 +216,7 @@ class MapActivity : AppCompatActivity() {
                 if (success) {
                     manageSignUpResponse(viewModel.mSignUp.value)
                 } else {
-                    ExternalUtils.createSnackbar(
+                    UIUtils.createSnackbar(
                         viewModel.message.value,
                         this,
                         container_map
@@ -349,7 +349,7 @@ class MapActivity : AppCompatActivity() {
             .show()
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP and Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        ExternalUtils.hideKeyboard(this, this)
+        UIUtils.hideKeyboard(this, this)
         startActivity(intent)
         finish()
 

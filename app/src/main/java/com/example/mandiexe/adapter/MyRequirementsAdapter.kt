@@ -8,7 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
 import com.example.mandiexe.models.responses.bids.FamerBidsResponse
-import com.example.mandiexe.utils.ExternalUtils
+import com.example.mandiexe.utils.usables.TimeConversionUtils
+import com.example.mandiexe.utils.usables.TimeConversionUtils.convertTimeToEpoch
 
 class MyRequirementAdapter(val itemClick: OnMyBidClickListener) :
     RecyclerView.Adapter<MyRequirementAdapter.MyViewHolder>() {
@@ -41,13 +42,13 @@ class MyRequirementAdapter(val itemClick: OnMyBidClickListener) :
                 //CROP_LOCATION = _listItem.demand.demander.
 
                 CROP_QUANTITY.text = _listItem.qty.toString()
-                CROP_EXP.text = ExternalUtils.convertTimeToEpoch(_listItem.demand.expiry)
+                CROP_EXP.text = TimeConversionUtils.convertTimeToEpoch(_listItem.demand.expiry)
 
                 CROP_CURRENT_BID.text = _listItem.demand.lastBid.toString()
                 CROP_IOP.text = _listItem.demand.offerPrice.toString()
 
 
-                CROP_LAST_UPDATED.text = ExternalUtils.convertTimeToEpoch(_listItem.lastModified)
+                CROP_LAST_UPDATED.text = convertTimeToEpoch(_listItem.lastModified)
 
                 CROP_MY_BID.text = _listItem.currentBid.toString()
 

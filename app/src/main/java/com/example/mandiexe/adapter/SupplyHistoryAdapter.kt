@@ -1,6 +1,5 @@
 package com.example.mandiexe.adapter
 
-import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,7 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
 import com.example.mandiexe.models.responses.supply.SupplyHistoryResponse
-import com.example.mandiexe.utils.ExternalUtils
+import com.example.mandiexe.utils.usables.TimeConversionUtils
 
 class SupplyHistoryAdapter(val itemClick: OnMySupplyHistoryClickListener) :
     RecyclerView.Adapter<SupplyHistoryAdapter.MyViewHolder>() {
@@ -47,12 +46,13 @@ class SupplyHistoryAdapter(val itemClick: OnMySupplyHistoryClickListener) :
 
 
                 CROP_QUANTITY.text = _listItem.qty.toString()
-                CROP_EXP.text = ExternalUtils.convertTimeToEpoch(_listItem.expiry)
+                CROP_EXP.text = TimeConversionUtils.convertTimeToEpoch(_listItem.expiry)
 
                 CROP_CURRENT_BID.text = _listItem.currentBid.toString()
                 TV_LAST_BIS.text = itemView.context.resources.getString(R.string.lastPrice)
                 CROP_IOP.text = _listItem.askPrice.toString()
-                CROP_LAST_UPDATED.text = ExternalUtils.convertLastModified(_listItem.lastModified)
+                CROP_LAST_UPDATED.text =
+                    TimeConversionUtils.convertLastModified(_listItem.lastModified)
 
                 if (_listItem.active) {
                     CROP_DELTA.text = itemView.context.resources.getString(R.string.activeSupply)

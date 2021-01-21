@@ -24,13 +24,12 @@ import com.example.mandiexe.models.body.authBody.LoginBody
 import com.example.mandiexe.models.responses.auth.LoginResponse
 import com.example.mandiexe.ui.home.MainActivity
 import com.example.mandiexe.utils.ApplicationUtils
-import com.example.mandiexe.utils.ExternalUtils
-import com.example.mandiexe.utils.ExternalUtils.createSnackbar
-import com.example.mandiexe.utils.ExternalUtils.createToast
-import com.example.mandiexe.utils.ExternalUtils.hideKeyboard
 import com.example.mandiexe.utils.auth.PreferenceManager
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.auth.SessionManager
+import com.example.mandiexe.utils.usables.UIUtils
+import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
+import com.example.mandiexe.utils.usables.ValidationObject
 import com.example.mandiexe.viewmodels.OTViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.FirebaseException
@@ -113,8 +112,15 @@ class OTPFragment : Fragment() {
 
         root.findViewById<MaterialButton>(R.id.mtb_verify_otp).setOnClickListener {
             pb.visibility = View.VISIBLE
-            if (isValidOtp()) {
+            if (ValidationObject.validateOTP(mOtp)) {
                 verifyPhoneNumberWithCode(storedVerificationId, mOtp)
+            } else {
+                //Invalid OTP
+                createSnackbar(
+                    resources.getString(R.string.invalidOtp),
+                    requireContext(),
+                    container_frag_otp
+                )
             }
 
             pb.visibility = View.GONE
@@ -152,20 +158,6 @@ class OTPFragment : Fragment() {
 
     }
 
-    private fun isValidOtp(): Boolean {
-
-        var isValid = true
-        if (mOtp.length < 6) {
-            isValid = false
-            Toast.makeText(
-                context,
-                resources.getString(R.string.invalidOtp),
-                Toast.LENGTH_LONG
-            ).show()
-        }
-
-        return isValid
-    }
 
     private fun getOTP() {
 
@@ -194,14 +186,14 @@ class OTPFragment : Fragment() {
                 pb.visibility = View.GONE
                 Log.e(TAG, "on ver failed " + e)
                 if (e is FirebaseAuthInvalidCredentialsException) {
-                    ExternalUtils.createSnackbar(
+                    UIUtils.createSnackbar(
                         resources.getString(R.string.invalidRequest),
                         requireContext(),
                         container_frag_otp
                     )
 
                 } else if (e is FirebaseTooManyRequestsException) {
-                    ExternalUtils.createSnackbar(
+                    UIUtils.createSnackbar(
                         resources.getString(R.string.quotaRequest),
                         requireContext(),
                         container_frag_otp
@@ -212,7 +204,7 @@ class OTPFragment : Fragment() {
                     val error = e.localizedMessage!!
                     Log.e(TAG, "Lovcal messgae" + error + " normat messgae " + e.message.toString())
 
-                    ExternalUtils.createSnackbar(
+                    UIUtils.createSnackbar(
                         resources.getString(R.string.invalidRequest),
                         requireContext(),
                         container_frag_otp
@@ -406,7 +398,7 @@ class OTPFragment : Fragment() {
                 "PHONE" to phoneNumber
             )
 
-            createToast(
+            UIUtils.createToast(
                 resources.getString(R.string.numberVerifed),
                 requireContext(),
                 container_frag_otp
@@ -445,7 +437,7 @@ class OTPFragment : Fragment() {
         val intent = Intent(requireContext(), MainActivity::class.java)
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP and Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        hideKeyboard(requireActivity(), requireContext())
+        UIUtils.hideKeyboard(requireActivity(), requireContext())
         startActivity(intent)
         //Finish activity
         activity?.finish()

@@ -16,8 +16,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.example.mandiexe.R
 import com.example.mandiexe.ui.home.MapActivity
-import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.utils.auth.PreferenceUtil
+import com.example.mandiexe.utils.usables.OfflineTranslate
+import com.example.mandiexe.utils.usables.ValidationObject
 import com.example.mandiexe.viewmodels.SignUpViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
@@ -119,11 +120,11 @@ class SignUpFragment : Fragment() {
             "TOKEN" to TOKEN,
             "PHONE" to PHONE,
             "RC" to mapFromSignUp,                          //For the thing that it goes from Login to Map Activity
-            "NAME" to ExternalUtils.transliterateToEnglish(etName.text.toString()).toString()
+            "NAME" to OfflineTranslate.transliterateToEnglish(etName.text.toString()).toString()
                 .capitalize(Locale.ROOT),//(T)
             "AREA" to etArea.text.toString(),
             "AREA_UNIT" to etAreaUnit.text.toString(),
-            "ADDRESS_USER" to ExternalUtils.transliterateToEnglish(etAddress.text.toString())
+            "ADDRESS_USER" to OfflineTranslate.transliterateToEnglish(etAddress.text.toString())
                 .toString().capitalize(Locale.ROOT)//(T)         //This is the village
         )
 
@@ -143,7 +144,7 @@ class SignUpFragment : Fragment() {
                 isValid = false
                 tilName.error = resources.getString(R.string.emptyName)
             }
-            !ExternalUtils.validateName(etName.text.toString()) -> {
+            !ValidationObject.validateName(etName.text.toString()) -> {
                 isValid = false
                 tilName.error = resources.getString(R.string.invalidName)
             }

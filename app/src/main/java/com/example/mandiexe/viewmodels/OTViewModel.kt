@@ -8,9 +8,9 @@ import com.example.mandiexe.interfaces.RetrofitClient
 import com.example.mandiexe.models.body.authBody.LoginBody
 import com.example.mandiexe.models.responses.auth.LoginResponse
 import com.example.mandiexe.utils.ApplicationUtils
-import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.utils.auth.PreferenceManager
 import com.example.mandiexe.utils.auth.SessionManager
+import com.example.mandiexe.utils.usables.ExternalUtils
 import retrofit2.Call
 import retrofit2.Response
 

@@ -23,7 +23,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
 import com.example.mandiexe.models.body.BidHistoryBody
 import com.example.mandiexe.utils.ApplicationUtils
-import com.example.mandiexe.utils.ExternalUtils
+import com.example.mandiexe.utils.usables.OfflineTranslate
+import com.example.mandiexe.utils.usables.OfflineTranslate.transliterateToDefault
 
 
 class MyBidHistoryAdapter(val itemClick: OnBidHistoryClickListener) :
@@ -62,14 +63,14 @@ class MyBidHistoryAdapter(val itemClick: OnBidHistoryClickListener) :
 
                 RANK.text = (position + 1).toString() + "."
                 //NAme is Transliterated
-                NAME.text = ExternalUtils.transliterateToDefault(_listItem.name)
+                NAME.text = OfflineTranslate.transliterateToDefault(_listItem.name)
 
 
                 AMOUNT.text =
                     itemView.context.resources.getString(R.string.rs) + _listItem.amount.toString()
                 mNumber = _listItem.phone
 
-//                TIME.text = ExternalUtils.convertTimeToEpoch(
+//                TIME.text = convertTimeToEpoch(
 //                    _listItem.timestamp
 //                ).toString()
                 INFO.setOnClickListener {
@@ -100,8 +101,8 @@ class MyBidHistoryAdapter(val itemClick: OnBidHistoryClickListener) :
 
             //Set the data
             //#Transliterator
-            name.text = ExternalUtils.transliterateToDefault(_listItem.name)
-            address.text = ExternalUtils.transliterateToDefault(_listItem.address)
+            name.text = transliterateToDefault(_listItem.name)
+            address.text = transliterateToDefault(_listItem.address)
             number.text = _listItem.phone
             call.setOnClickListener {
 

@@ -1,6 +1,5 @@
 package com.example.mandiexe.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,16 +7,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
-import com.example.mandiexe.lib.OfflineTranslate
 import com.example.mandiexe.lib.TranslateViewmodel
 import com.example.mandiexe.models.responses.supply.FarmerSuppliesResponse
-import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.utils.auth.PreferenceUtil
+import com.example.mandiexe.utils.usables.OfflineTranslate
+import com.example.mandiexe.utils.usables.TimeConversionUtils
+import com.example.mandiexe.utils.usables.TimeConversionUtils.convertLastModified
 
 
 class MySuppliesAdapter(val itemClick: OnMyStockClickListener) :
@@ -58,13 +56,12 @@ class MySuppliesAdapter(val itemClick: OnMyStockClickListener) :
                 OfflineTranslate.translateToDefault(itemView.context, _listItem.variety, CROP_TYPE)
 
 
-
                 //No Translations/Transliterations
                 CROP_QUANTITY.text = _listItem.qty.toString()
-                CROP_EXP.text = ExternalUtils.convertTimeToEpoch(_listItem.expiry)
+                CROP_EXP.text = TimeConversionUtils.convertTimeToEpoch(_listItem.expiry)
                 CROP_CURRENT_BID.text = _listItem.currentBid.toString()
                 CROP_IOP.text = _listItem.askPrice.toString()
-                CROP_LAST_UPDATED.text = ExternalUtils.convertLastModified(_listItem.lastModified)
+                CROP_LAST_UPDATED.text = convertLastModified(_listItem.lastModified)
 
 
                 if (currentBid != 0) {

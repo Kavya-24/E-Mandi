@@ -1,4 +1,4 @@
-package com.example.mandiexe.utils
+package com.example.mandiexe.utils.usables
 
 import android.annotation.TargetApi
 import android.content.Context

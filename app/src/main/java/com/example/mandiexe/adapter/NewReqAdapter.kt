@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
 import com.example.mandiexe.models.responses.SearchCropReqResponse
-import com.example.mandiexe.utils.ExternalUtils
+import com.example.mandiexe.utils.usables.TimeConversionUtils
 
 class NewReqAdapter(val itemClick: OnNewReqClockListener) :
     RecyclerView.Adapter<NewReqAdapter.MyViewHolder>() {
@@ -44,13 +44,14 @@ class NewReqAdapter(val itemClick: OnNewReqClockListener) :
                 CROP_NAME.text = _listItem.crop
 
                 CROP_QUANTITY.text = _listItem.qty.toString()
-                CROP_EXP.text = ExternalUtils.convertTimeToEpoch(_listItem.expiry)
+                CROP_EXP.text = TimeConversionUtils.convertTimeToEpoch(_listItem.expiry)
 
                 CROP_CURRENT_BID.text = _listItem.lastBid.toString()
                 CROP_IOP.text = _listItem.askPrice.toString()
 
 
-                CROP_LAST_UPDATED.text = ExternalUtils.convertTimeToEpoch(_listItem.lastModified)
+                CROP_LAST_UPDATED.text =
+                    TimeConversionUtils.convertTimeToEpoch(_listItem.lastModified)
 
 
                 val currentBid = _listItem.lastBid.get(0).amount

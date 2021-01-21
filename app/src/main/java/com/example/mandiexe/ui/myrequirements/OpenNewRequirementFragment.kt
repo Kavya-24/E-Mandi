@@ -16,18 +16,19 @@ import com.example.mandiexe.R
 import com.example.mandiexe.adapter.MyBidHistoryAdapter
 import com.example.mandiexe.adapter.OnBidHistoryClickListener
 import com.example.mandiexe.interfaces.RetrofitClient
-import com.example.mandiexe.lib.OfflineTranslate
 import com.example.mandiexe.models.body.BidHistoryBody
 import com.example.mandiexe.models.body.bid.AddBidBody
 import com.example.mandiexe.models.body.bid.ViewBidBody
 import com.example.mandiexe.models.responses.bids.AddBidResponse
 import com.example.mandiexe.models.responses.bids.ViewBidResponse
-import com.example.mandiexe.utils.ExternalUtils
-import com.example.mandiexe.utils.ExternalUtils.createSnackbar
-import com.example.mandiexe.utils.ExternalUtils.createToast
-import com.example.mandiexe.utils.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.auth.SessionManager
+import com.example.mandiexe.utils.usables.ExternalUtils
+import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
+import com.example.mandiexe.utils.usables.OfflineTranslate
+import com.example.mandiexe.utils.usables.TimeConversionUtils
+import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
+import com.example.mandiexe.utils.usables.UIUtils.createToast
 import com.example.mandiexe.viewmodels.OpenNewRequirementViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
@@ -144,23 +145,32 @@ class OpenNewRequirementFragment : AppCompatActivity(), OnBidHistoryClickListene
 
 
         //TRANSLATE
-//        findViewById<TextView>(R.id.tv_new_requirement_detail_crop_name).text =
-//            OfflineTranslate.translateToDefault(this, value.bid.demand.crop)
-//        findViewById<TextView>(R.id.tv_new_requirement_detail_crop_type).text =
-//            OfflineTranslate.translateToDefault(this, value.bid.demand.variety)
-//        findViewById<TextView>(R.id.tv_new_description).text =
-//            OfflineTranslate.translateToDefault(this, value.bid.demand.description)
+        OfflineTranslate.translateToDefault(
+            this,
+            value.bid.demand.crop,
+            findViewById<TextView>(R.id.tv_new_requirement_detail_crop_name)
+        )
+        OfflineTranslate.translateToDefault(
+            this,
+            value.bid.demand.variety,
+            findViewById<TextView>(R.id.tv_new_requirement_detail_crop_type)
+        )
+        OfflineTranslate.translateToDefault(
+            this,
+            value.bid.demand.description,
+            findViewById<TextView>(R.id.tv_new_description)
+        )
 
         //Transliteration
         findViewById<TextView>(R.id.tv_new_requirement_detail_crop_location).text =
-            ExternalUtils.transliterateToDefault(value.bid.bidder.address.toString())
+            OfflineTranslate.transliterateToDefault(value.bid.bidder.address.toString())
 
         findViewById<TextView>(R.id.ans_detail_crop_quanity_open_req).text =
             value.bid.demand.qty.toString()
         findViewById<TextView>(R.id.ans_detail_crop_exp_open_req).text =
-            ExternalUtils.convertTimeToEpoch(value.bid.demand.expiry)
+            TimeConversionUtils.convertTimeToEpoch(value.bid.demand.expiry)
         findViewById<TextView>(R.id.ans_detail_init_date_open_req).text =
-            ExternalUtils.convertTimeToEpoch(value.bid.demand.demandCreated)
+            TimeConversionUtils.convertTimeToEpoch(value.bid.demand.demandCreated)
 
         findViewById<TextView>(R.id.tv_new_requirement_detail_current_bid).text =
             value.bid.demand.currentBid.toString()
@@ -179,7 +189,7 @@ class OpenNewRequirementFragment : AppCompatActivity(), OnBidHistoryClickListene
         //Set the buyer
         //Transliterate
         findViewById<TextView>(R.id.tv_new_requirement_details_buyer_name).text =
-            ExternalUtils.transliterateToDefault(value.bid.bidder.name)
+            OfflineTranslate.transliterateToDefault(value.bid.bidder.name)
         ownerPhone = value.bid.bidder.phone.toString()
         //Else the color is green
 

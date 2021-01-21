@@ -1,7 +1,6 @@
 package com.example.mandiexe.ui.supply
 
 import android.app.AlertDialog
-import android.app.DatePickerDialog
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -19,7 +18,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.mandiexe.R
 import com.example.mandiexe.adapter.MyBidHistoryAdapter
 import com.example.mandiexe.adapter.OnBidHistoryClickListener
-import com.example.mandiexe.lib.OfflineTranslate
 import com.example.mandiexe.models.body.BidHistoryBody
 import com.example.mandiexe.models.body.supply.DeleteSupplyBody
 import com.example.mandiexe.models.body.supply.ModifySupplyBody
@@ -27,9 +25,11 @@ import com.example.mandiexe.models.body.supply.ViewSupplyBody
 import com.example.mandiexe.models.responses.supply.DeleteSupplyResponse
 import com.example.mandiexe.models.responses.supply.ModifySupplyResponse
 import com.example.mandiexe.models.responses.supply.ViewSupplyResponse
-import com.example.mandiexe.utils.ExternalUtils
-import com.example.mandiexe.utils.ExternalUtils.createToast
-import com.example.mandiexe.utils.ExternalUtils.setAppLocale
+import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
+import com.example.mandiexe.utils.usables.OfflineTranslate
+import com.example.mandiexe.utils.usables.TimeConversionUtils
+import com.example.mandiexe.utils.usables.UIUtils
+import com.example.mandiexe.utils.usables.ValidationObject
 import com.example.mandiexe.viewmodels.MyCropBidDetailsViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
@@ -49,9 +49,6 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
     }
 
     private val viewModelCrop: MyCropBidDetailsViewModel by viewModels()
-    //private lateinit var root: View
-
-    // private lateinit var lineChart: LineChart
     private lateinit var graph: GraphView
     private lateinit var args: Bundle
 
@@ -151,39 +148,6 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
     }
 
-
-    private fun closeBidHistory() {
-        isOpen = false
-
-        findViewById<RecyclerView>(R.id.rv_bidHistory).visibility = View.GONE
-        findViewById<TextView>(R.id.tv_view_bid_history_stocks).text =
-            resources.getString(R.string.view_bid_history)
-
-        findViewById<ImageView>(R.id.iv_dropdown_bid_history)
-            .setImageDrawable(resources.getDrawable(R.drawable.ic_down))
-
-    }
-
-    private fun openBidHistory() {
-
-        isOpen = true
-        findViewById<RecyclerView>(R.id.rv_bidHistory).visibility = View.VISIBLE
-        findViewById<TextView>(R.id.tv_view_bid_history_stocks).text =
-            resources.getString(R.string.myBidHistory)
-
-        findViewById<ImageView>(R.id.iv_dropdown_bid_history)
-            .setImageDrawable(resources.getDrawable(R.drawable.ic_top))
-
-        if (adapter.lst.size == 0) {
-            ExternalUtils.createSnackbar(
-                resources.getString(R.string.emptyRV),
-                this,
-                container_crop_bids_details
-            )
-        }
-
-    }
-
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun makeCall() {
 
@@ -255,7 +219,7 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
     private fun manageCancelResponses(mResponse: DeleteSupplyResponse?) {
 
-        mResponse?.msg?.let { createToast(it, this, container_crop_bids_details) }
+        mResponse?.msg?.let { UIUtils.createToast(it, this, container_crop_bids_details) }
         Log.e(TAG, "In manage cancel response")
         onBackPressed()
     }
@@ -278,8 +242,8 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
         val desc = v.findViewById(R.id.etEditDescription) as EditText
 
         //Auto fill these
-        etEst.setText(ExternalUtils.reverseToReq(modifyBody.dateOfHarvest))
-        etExp.setText(ExternalUtils.reverseToReq(modifyBody.expiry))
+        etEst.setText(TimeConversionUtils.reverseToReq(modifyBody.dateOfHarvest))
+        etExp.setText(TimeConversionUtils.reverseToReq(modifyBody.expiry))
         offerPrice.setText(modifyBody.askPrice.toString())
         desc.setText(modifyBody.description)
         cropType.setText(modifyBody.variety)
@@ -299,56 +263,15 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
         //Create observer on Textof dates
         //Date Instance
 
-        val myFormat = "dd/MM/yyyy" //In which you need put here
-        val sdf = SimpleDateFormat(myFormat, Locale.US)
-
-        val dateEst =
-            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-
-                val now = myCalendar.timeInMillis
-                view.minDate = now
-
-                myCalendar.set(Calendar.YEAR, year)
-                myCalendar.set(Calendar.MONTH, monthOfYear)
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                etEst.setText(sdf.format(myCalendar.time))
-
-            }
-
-        val dateExp =
-            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-
-
-                val now = myCalendar.timeInMillis
-                view.minDate = now
-                myCalendar.set(Calendar.YEAR, year)
-                myCalendar.set(Calendar.MONTH, monthOfYear)
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                etExp.setText(sdf.format(myCalendar.time))
-
-            }
-
-
         //##Requires N
         etEst.setOnClickListener {
-            let { it1 ->
-                DatePickerDialog(
-                    it1, dateEst, myCalendar[Calendar.YEAR],
-                    myCalendar[Calendar.MONTH],
-                    myCalendar[Calendar.DAY_OF_MONTH]
-                ).show()
-            }
+
+            TimeConversionUtils.clickOnDateObject(myCalendar, etEst, this)
         }
 
         //##Requires N
         etExp.setOnClickListener {
-            let { it1 ->
-                DatePickerDialog(
-                    it1, dateExp, myCalendar[Calendar.YEAR],
-                    myCalendar[Calendar.MONTH],
-                    myCalendar[Calendar.DAY_OF_MONTH]
-                ).show()
-            }
+            TimeConversionUtils.clickOnDateObject(myCalendar, etExp, this)
         }
 
 
@@ -359,8 +282,8 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
                     offerPrice.text.toString().toInt(),
                     cropType.text.toString(),
                     desc.text.toString(),
-                    ExternalUtils.convertDateToReqForm(etExp.text.toString()),
-                    ExternalUtils.convertDateToReqForm(etEst.text.toString())
+                    TimeConversionUtils.convertDateToReqForm(etExp.text.toString()),
+                    TimeConversionUtils.convertDateToReqForm(etEst.text.toString())
                 )
 
                 confirmModify()
@@ -408,43 +331,28 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
     private fun isValidate(): Boolean {
 
-        var isValid = true
+        return ValidationObject.validateEmptyEditText(
+            cropType,
+            tilType,
+            R.string.cropTypeError,
+            this
+        ) && ValidationObject.validateEmptyEditText(
+            offerPrice,
+            tilPrice,
+            R.string.offerPriceError,
+            this
+        ) && ValidationObject.validateEmptyEditText(
+            etEst,
+            tilEst,
+            R.string.etEstError,
+            this
+        ) && ValidationObject.validateEmptyEditText(
+            etExp,
+            tilExp,
+            R.string.expError,
+            this
+        )
 
-
-        if (cropType.text.isEmpty()) {
-            isValid = false
-            tilType.error = resources.getString(R.string.cropTypeError)
-        } else {
-            tilType.error = null
-        }
-
-
-
-        if (offerPrice.text.isEmpty()) {
-            isValid = false
-            tilPrice.error = resources.getString(R.string.offerPriceError)
-        } else {
-            tilPrice.error = null
-        }
-
-
-        if (etEst.text.isEmpty()) {
-            isValid = false
-            tilEst.error = resources.getString(R.string.etEstError)
-        } else {
-            tilEst.error = null
-        }
-
-
-        if (etExp.text.isEmpty()) {
-            isValid = false
-            tilExp.error = resources.getString(R.string.expError)
-        } else {
-            tilExp.error = null
-        }
-
-
-        return isValid
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -454,18 +362,30 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
         findViewById<ProgressBar>(R.id.pb_my_crops_details).visibility = View.GONE
 
         //#TRANSLATION
-        OfflineTranslate.translateToDefault(this,value.supply.crop,findViewById<TextView>(R.id.tv_stock_detail_crop_name))
-        OfflineTranslate.translateToDefault(this,value.supply.variety,findViewById<TextView>(R.id.tv_stock_detail_crop_type))
-        OfflineTranslate.translateToDefault(this,value.supply.description,findViewById<TextView>(R.id.tv_stock_detail_crop_description))
+        OfflineTranslate.translateToDefault(
+            this,
+            value.supply.crop,
+            findViewById<TextView>(R.id.tv_stock_detail_crop_name)
+        )
+        OfflineTranslate.translateToDefault(
+            this,
+            value.supply.variety,
+            findViewById<TextView>(R.id.tv_stock_detail_crop_type)
+        )
+        OfflineTranslate.translateToDefault(
+            this,
+            value.supply.description,
+            findViewById<TextView>(R.id.tv_stock_detail_crop_description)
+        )
 
 
 
 
         findViewById<TextView>(R.id.ans_detail_crop_quanity).text = value.supply.qty.toString()
         findViewById<TextView>(R.id.ans_detail_crop_exp).text =
-            ExternalUtils.convertTimeToEpoch(value.supply.expiry)
+            TimeConversionUtils.convertTimeToEpoch(value.supply.expiry)
         findViewById<TextView>(R.id.ans_detail_init_date).text =
-            ExternalUtils.convertTimeToEpoch(value.supply.supplyCreated)
+            TimeConversionUtils.convertTimeToEpoch(value.supply.supplyCreated)
 
         findViewById<TextView>(R.id.tv_stock_detail_current_bid).text =
             value.supply.currentBid.toString()
@@ -554,15 +474,16 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
             if (!item.isEmpty()) {
                 Log.e(
                     TAG,
-                    "Start X is " + ExternalUtils.convertDateTimestampUtil(item.get(0).timestamp)
+                    "Start X is " + TimeConversionUtils.convertDateTimestampUtil(item.get(0).timestamp)
                         .toString()
                 )
 
-                ExternalUtils.convertDateTimestampUtil(item.get(0).timestamp)?.time?.toDouble()?.let {
-                    graph.getViewport().setMinX(
-                        it
-                    )
-                };
+                TimeConversionUtils.convertDateTimestampUtil(item.get(0).timestamp)?.time?.toDouble()
+                    ?.let {
+                        graph.getViewport().setMinX(
+                            it
+                        )
+                    };
                 graph.viewport.isXAxisBoundsManual = true
             }
 
@@ -573,7 +494,6 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
         }
         numberOfBid = 0
     }
-
 
     private fun getSeriesPoints(item: MutableList<ViewSupplyResponse.Supply.LastBid>): Array<DataPoint>? {
 
@@ -586,15 +506,15 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
             arrayDataPoints.add(
                 DataPoint(
-                    ExternalUtils.convertDateTimestampUtil(element.timestamp),
+                    TimeConversionUtils.convertDateTimestampUtil(element.timestamp),
                     element.amount.toDouble()
                 )
             )
 
             Log.e(
                 TAG,
-                "In get series data point " + ExternalUtils.convertDateTimestampUtil(element.timestamp)
-                    .toString() +" Amount : "+  element.amount.toDouble() + " Num" + numberOfBid.toString()
+                "In get series data point " + TimeConversionUtils.convertDateTimestampUtil(element.timestamp)
+                    .toString() + " Amount : " + element.amount.toDouble() + " Num" + numberOfBid.toString()
             )
         }
 
@@ -634,6 +554,38 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
         adapter.lst = mBids
         rv.adapter = adapter
+    }
+
+    private fun closeBidHistory() {
+        isOpen = false
+
+        findViewById<RecyclerView>(R.id.rv_bidHistory).visibility = View.GONE
+        findViewById<TextView>(R.id.tv_view_bid_history_stocks).text =
+            resources.getString(R.string.view_bid_history)
+
+        findViewById<ImageView>(R.id.iv_dropdown_bid_history)
+            .setImageDrawable(resources.getDrawable(R.drawable.ic_down))
+
+    }
+
+    private fun openBidHistory() {
+
+        isOpen = true
+        findViewById<RecyclerView>(R.id.rv_bidHistory).visibility = View.VISIBLE
+        findViewById<TextView>(R.id.tv_view_bid_history_stocks).text =
+            resources.getString(R.string.myBidHistory)
+
+        findViewById<ImageView>(R.id.iv_dropdown_bid_history)
+            .setImageDrawable(resources.getDrawable(R.drawable.ic_top))
+
+        if (adapter.lst.size == 0) {
+            UIUtils.createSnackbar(
+                resources.getString(R.string.emptyRV),
+                this,
+                container_crop_bids_details
+            )
+        }
+
     }
 
     override fun onBackPressed() {

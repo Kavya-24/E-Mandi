@@ -18,7 +18,7 @@ import com.example.mandiexe.adapter.OnMySupplyHistoryClickListener
 import com.example.mandiexe.adapter.SupplyHistoryAdapter
 import com.example.mandiexe.models.responses.supply.SupplyHistoryResponse
 import com.example.mandiexe.utils.ApplicationUtils
-import com.example.mandiexe.utils.ExternalUtils.createSnackbar
+import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import kotlinx.android.synthetic.main.farmer_supply_history_fragment.*
 
 class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {
