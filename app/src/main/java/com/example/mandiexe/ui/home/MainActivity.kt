@@ -3,6 +3,8 @@ package com.example.mandiexe.ui.home
 import android.app.Activity
 import android.app.SearchManager
 import android.content.Intent
+import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.database.Cursor
 import android.database.MatrixCursor
 import android.os.Bundle
@@ -25,17 +27,23 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
+import com.example.mandiexe.adapter.LanguagesAdapter
+import com.example.mandiexe.adapter.OnMyLanguageListener
 import com.example.mandiexe.interfaces.RetrofitClient
+import com.example.mandiexe.models.body.LanguageBody
 import com.example.mandiexe.models.body.supply.CropSearchAutoCompleteBody
 import com.example.mandiexe.models.responses.supply.CropSearchAutocompleteResponse
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.Communicator
-import com.example.mandiexe.utils.ExternalUtils
-import com.example.mandiexe.utils.ExternalUtils.hideKeyboard
-import com.example.mandiexe.utils.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.auth.SessionManager
+import com.example.mandiexe.utils.usables.ExternalUtils
+import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
+import com.example.mandiexe.utils.usables.OfflineTranslate
+import com.example.mandiexe.utils.usables.UIUtils.hideKeyboard
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManager
@@ -47,7 +55,7 @@ import retrofit2.Call
 import retrofit2.Response
 import java.util.*
 
-class MainActivity : AppCompatActivity(), Communicator {
+class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navView: NavigationView
@@ -67,6 +75,11 @@ class MainActivity : AppCompatActivity(), Communicator {
     private val ACTION_VOICE_SEARCH = "com.google.android.gms.actions.SEARCH_ACTION"
     private val VOICE_REC_CODE = 1234
 
+    //Change Language
+    private lateinit var d: androidx.appcompat.app.AlertDialog.Builder
+    private lateinit var tempRef: androidx.appcompat.app.AlertDialog
+
+    private lateinit var mMenu: Menu
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,7 +89,6 @@ class MainActivity : AppCompatActivity(), Communicator {
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         navView = findViewById(R.id.nav_view)
@@ -95,9 +107,6 @@ class MainActivity : AppCompatActivity(), Communicator {
         //Update the drawer
         //Get the search view
         updateDrawerDetails()
-
-
-        //Search Init
 
 
     }
@@ -119,9 +128,30 @@ class MainActivity : AppCompatActivity(), Communicator {
 
     private fun fetchSuggestions(query: String) {
 
+        //Clear adapter
+
         val service = RetrofitClient.makeCallsForSupplies(this)
 
-        val body = CropSearchAutoCompleteBody(query)
+        //Translate to English to get the English version
+
+        //Gte the temp tv
+        val mTV = findViewById<TextView>(R.id.tempTvMain)
+        val eTV = findViewById<TextView>(R.id.tempTvMainToEng)
+
+        //Use Translate ViewModel
+        OfflineTranslate.translateToEnglish(this, query, eTV)
+
+
+        //Pause
+        val mHandler = Handler()
+
+        if (eTV.text == resources.getString(R.string.noDesc)) {
+            mHandler.postDelayed({}, 2000)
+        }
+
+        val body = CropSearchAutoCompleteBody(eTV.text.toString())
+
+
         service.getCropAutoComplete(
             body = body,
         ).enqueue(object : retrofit2.Callback<CropSearchAutocompleteResponse> {
@@ -137,9 +167,11 @@ class MainActivity : AppCompatActivity(), Communicator {
             ) {
                 Log.e("Main", "In search response " + response.body()?.suggestions)
                 if (response.isSuccessful) {
+
                     val strAr = mutableListOf<String>()
                     for (y: CropSearchAutocompleteResponse.Suggestion in response.body()!!.suggestions) {
-                        strAr.add(y.name)
+                        OfflineTranslate.translateToDefault(this@MainActivity, y.name, mTV)
+                        strAr.add(mTV.text.toString())
                     }
 
                     Log.e("STr", strAr.toString())
@@ -159,21 +191,27 @@ class MainActivity : AppCompatActivity(), Communicator {
             }
         })
 
+        searchView.setOnClickListener {
+            searchCrop()
+        }
 
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
-
-        //Get reference for the search view
-        val searchManager = getSystemService(SEARCH_SERVICE) as SearchManager
+        mMenu = menu
         searchView =
-            menu.findItem(R.id.action_main_search).actionView as android.widget.SearchView
+            mMenu.findItem(R.id.action_main_search).actionView as android.widget.SearchView
+
+
+        Log.e("MAIN", "In onCreateOptions")
+        val searchManager = getSystemService(SEARCH_SERVICE) as SearchManager
         searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
 
         val from = arrayOf("suggestionList")
-        val to = intArrayOf(R.id.tvSearch)
+        val to = intArrayOf(R.id.tvSearchDefault)
+        // val toDefault = intArrayOf(R.id.tvSearchDefault)
 
         mAdapter = SimpleCursorAdapter(
             this,
@@ -184,10 +222,10 @@ class MainActivity : AppCompatActivity(), Communicator {
             CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER
         )
 
+
         searchView.suggestionsAdapter = mAdapter
         searchView.isIconifiedByDefault = true
 
-        Log.e("Main", "In search")
 
         searchView.setOnSuggestionListener(object : SearchView.OnSuggestionListener {
 
@@ -199,6 +237,21 @@ class MainActivity : AppCompatActivity(), Communicator {
 
                 val cursor: Cursor = mAdapter!!.getItem(position) as Cursor
                 val txt = cursor.getString(cursor.getColumnIndex("suggestionList"))
+                val eTV = findViewById<TextView>(R.id.tempTvMainToFinalSug)
+
+                com.example.mandiexe.utils.usables.OfflineTranslate.translateToEnglish(
+                    this@MainActivity,
+                    txt,
+                    eTV
+                )
+
+                val mHandler = Handler()
+
+                if (eTV.text == resources.getString(R.string.noDesc)) {
+                    //Not translated yet
+                    //Wait for 3 secomds
+                    mHandler.postDelayed({}, 2000)
+                }
 
                 val bundle = bundleOf(
                     "crop" to txt,
@@ -228,34 +281,34 @@ class MainActivity : AppCompatActivity(), Communicator {
             }
         })
 
-        val mic = resources.getIdentifier("android:id/search_voice_btn", null, null)
-        val micImage = searchView.findViewById<View>(mic) as ImageView
-        micImage.setOnClickListener {
-            searchCrop()
-        }
-
 
         //Close searchView
         searchView.setOnCloseListener {
             hideKeyboard(this@MainActivity, this@MainActivity)
             searchView.clearFocus()
             searchView.isIconified = false
+            Log.e("MAIN", "In close")
 
             false
         }
 
+
+        searchView.setOnSearchClickListener {
+            Log.e("MAIN", "In search click")
+
+        }
 
 
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
+        Log.e("MAIN", "In onSelected")
         when (item.itemId) {
 
             R.id.action_change_language -> changeLanguage()
             //  R.id.action_notification -> showNotification()
-            R.id.action_show_walkthrough -> showWalkthrough()
+            // R.id.action_show_walkthrough -> showWalkthrough()
             R.id.action_main_search -> searchCrop()
 
 
@@ -266,23 +319,31 @@ class MainActivity : AppCompatActivity(), Communicator {
 
     private fun searchCrop() {
 
+        Log.e("MAIN", "In search crop")
+        val mic = resources.getIdentifier("android:id/search_voice_btn", null, null)
+        val micImage = searchView.findViewById<View>(mic) as ImageView
+        micImage.setOnClickListener {
 
-        val Voiceintent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-        Voiceintent.putExtra(
-            RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-        )
+            Log.e("MAIN", "In voice intent")
+            val Voiceintent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+            Voiceintent.putExtra(
+                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+            )
 
-        //Put language
-        Voiceintent.putExtra(
-            RecognizerIntent.EXTRA_LANGUAGE,
-            Locale(pref.getLanguageFromPreference() + "-IN")
-        )
-        Voiceintent.putExtra(
-            RecognizerIntent.EXTRA_PROMPT,
-            resources.getString(R.string.searchHead)
-        )
-        startActivityForResult(Voiceintent, VOICE_REC_CODE)
+            //Put language
+            Voiceintent.putExtra(
+                RecognizerIntent.EXTRA_LANGUAGE,
+                Locale(pref.getLanguageFromPreference() + "-IN")
+            )
+            Voiceintent.putExtra(
+                RecognizerIntent.EXTRA_PROMPT,
+                resources.getString(R.string.searchHead)
+            )
+            startActivityForResult(Voiceintent, VOICE_REC_CODE)
+
+
+        }
 
 
     }
@@ -294,6 +355,33 @@ class MainActivity : AppCompatActivity(), Communicator {
     }
 
     private fun changeLanguage() {
+        //Create dialog
+        d = androidx.appcompat.app.AlertDialog.Builder(this)
+
+        val v = layoutInflater.inflate(R.layout.layout_language_change, null)
+        d.setView(v)
+
+        val rv = v.findViewById<RecyclerView>(R.id.rv_language_options) as RecyclerView
+        fillLanguages(rv)
+
+
+        d.setNegativeButton(resources.getString(R.string.cancel)) { _, _ ->
+            //Do nothing
+        }
+        d.create()
+
+        tempRef = d.create()
+        d.show()
+
+
+    }
+
+    private fun fillLanguages(rv: RecyclerView) {
+        val mLanguages = ExternalUtils.getSupportedLanguageList()
+        val adapter = LanguagesAdapter(this)
+        adapter.lst = mLanguages
+        rv.layoutManager = LinearLayoutManager(this)
+        rv.adapter = adapter
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -349,6 +437,11 @@ class MainActivity : AppCompatActivity(), Communicator {
                 val res: java.util.ArrayList<String>? =
                     data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
                 searchView.setQuery(res?.get((0)), false)
+                val resultInEnglish = res?.get(0)
+
+                //  val tx =
+                //    resultInEnglish?.let { ExternalUtils.transliterateFromEnglishToDefault(it) }
+                //Log.e("Main", "Res in eng " + resultInEnglish + " transf" + tx)
 
             }
 
@@ -379,12 +472,47 @@ class MainActivity : AppCompatActivity(), Communicator {
     //Comunicator function
     override fun goToAddStocks(fragment: Fragment) {
 
-
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
 
     }
+
+    override fun selectLanguage(_listItem: LanguageBody, position: Int) {
+        val newLocale = ExternalUtils.getLocaleFromAdapterIndex(position)
+        setLocale(newLocale)
+        //Now we need to recreate this activty
+        recreate()
+
+    }
+
+
+    private fun setLocale(s: String) {
+        val locale = Locale(s)
+        Locale.setDefault(locale)
+
+        val config = Configuration()
+        config.locale = locale
+        ApplicationUtils.getContext().resources.updateConfiguration(
+            config,
+            ApplicationUtils.getContext().resources.displayMetrics
+        )
+
+        //Save data to the shared preference
+        pref.setLanguageFromPreference(s)
+
+
+        //Now for the system
+        val editor: SharedPreferences.Editor = getSharedPreferences(
+            "Settings",
+            MODE_PRIVATE
+        )!!.edit()
+        editor.putString("My_Lang", s)
+        editor.apply()
+
+
+    }
+
 
 }

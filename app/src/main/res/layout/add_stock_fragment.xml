@@ -15,6 +15,30 @@
         android:paddingBottom="@dimen/space_3x"
         tools:context=".ui.supply.AddStock">
 
+        <TextView
+            android:id="@+id/tvTempCropName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/temp"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvTempCropType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/temp"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvTempCropDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/temp"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <com.google.android.material.textfield.TextInputLayout
 
             android:id="@+id/tilWhichCrop"
@@ -45,6 +69,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tilWhichCrop" />
 
+        <ProgressBar
+            android:id="@+id/pb_add_stock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
 

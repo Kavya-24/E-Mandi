@@ -17,8 +17,7 @@ import com.example.mandiexe.R
 import com.example.mandiexe.adapter.OnMySupplyHistoryClickListener
 import com.example.mandiexe.adapter.SupplyHistoryAdapter
 import com.example.mandiexe.models.responses.supply.SupplyHistoryResponse
-import com.example.mandiexe.utils.ApplicationUtils
-import com.example.mandiexe.utils.ExternalUtils.createSnackbar
+import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import kotlinx.android.synthetic.main.farmer_supply_history_fragment.*
 
 class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {
@@ -65,7 +64,7 @@ class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {
                 } else {
                     createSnackbar(
                         viewModel.message.value,
-                        ApplicationUtils.getContext(),
+                        requireContext(),
                         container_supply_history
                     )
                 }
@@ -83,10 +82,10 @@ class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {
         val rv = root.findViewById<RecyclerView>(R.id.rv_history_supply)
         rv.layoutManager = LinearLayoutManager(requireContext())
         val adapter = SupplyHistoryAdapter(this)
-
+        val mTv = root.findViewById<AppCompatTextView>(R.id.tvEmptyListSupply)
         if (mResponse.supplies.size == 0) {
-            root.findViewById<AppCompatTextView>(R.id.tvEmptyListSupply).visibility = View.VISIBLE
-            root.findViewById<AppCompatTextView>(R.id.tvEmptyListSupply).text =
+            mTv.visibility = View.VISIBLE
+            mTv.text =
                 context?.resources?.getString(R.string.noSupply)
 
 

@@ -23,7 +23,7 @@ import com.example.mandiexe.adapter.MySuppliesAdapter
 import com.example.mandiexe.adapter.OnMyStockClickListener
 import com.example.mandiexe.models.responses.supply.FarmerSuppliesResponse
 import com.example.mandiexe.utils.Communicator
-import com.example.mandiexe.utils.ExternalUtils.createSnackbar
+import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import com.example.mandiexe.viewmodels.MySuppliesViewmodel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
@@ -130,7 +130,6 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
         val adapter = MySuppliesAdapter(this)
 
         if (mResponse != null) {
-            Log.e("I", "In empty list")
             if (mResponse.supplies.isEmpty()) {
                 root.findViewById<AppCompatTextView>(R.id.tvEmptyListCrop).visibility = View.VISIBLE
                 root.findViewById<AppCompatTextView>(R.id.tvEmptyListCrop).text =

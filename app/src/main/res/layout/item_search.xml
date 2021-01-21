@@ -6,7 +6,7 @@
     android:background="@color/white">
 
     <TextView
-        android:id="@+id/tvSearch"
+        android:id="@+id/tvSearchDefault"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/space"
@@ -14,5 +14,15 @@
         android:padding="@dimen/space_half"
         android:textSize="20sp"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/tvSearch"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_margin="@dimen/space"-->
+    <!--        android:gravity="center_vertical"-->
+    <!--        android:padding="@dimen/space_half"-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/tvSearchDefault" />-->
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

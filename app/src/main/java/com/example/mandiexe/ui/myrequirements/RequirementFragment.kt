@@ -1,6 +1,5 @@
 package com.example.mandiexe.ui.myrequirements
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -21,7 +20,7 @@ import com.example.mandiexe.R
 import com.example.mandiexe.adapter.MyRequirementAdapter
 import com.example.mandiexe.adapter.OnMyBidClickListener
 import com.example.mandiexe.models.responses.bids.FamerBidsResponse
-import com.example.mandiexe.utils.ExternalUtils
+import com.example.mandiexe.utils.usables.UIUtils
 import com.example.mandiexe.viewmodels.RequirementsViewmodel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
@@ -97,7 +96,7 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
             //Check with the successful of it
             if (viewModel.successful.value != null) {
                 if (viewModel.successful.value == false) {
-                    ExternalUtils.createSnackbar(
+                    UIUtils.createSnackbar(
                         viewModel.message.value,
                         requireContext(),
                         container_req
@@ -112,16 +111,16 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
 
     }
 
-    @SuppressLint("CutPasteId")
     private fun manageReqLoadedResponses(mResponse: FamerBidsResponse?) {
         //Create rv
         val rv = root.findViewById<RecyclerView>(R.id.rv_requirement)
         val adapter = MyRequirementAdapter(this)
 
+        val mTV = root.findViewById<AppCompatTextView>(R.id.tvEmptyList)
         if (mResponse != null) {
             if (mResponse.bids.isEmpty()) {
-                root.findViewById<AppCompatTextView>(R.id.tvEmptyList).visibility = View.VISIBLE
-                root.findViewById<AppCompatTextView>(R.id.tvEmptyList).text =
+                mTV.visibility = View.VISIBLE
+                mTV.text =
                     context?.resources?.getString(R.string.noDemand)
 
             } else {

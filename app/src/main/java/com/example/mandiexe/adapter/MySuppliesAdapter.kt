@@ -6,10 +6,16 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
+import com.example.mandiexe.libModel.TranslateViewmodel
 import com.example.mandiexe.models.responses.supply.FarmerSuppliesResponse
-import com.example.mandiexe.utils.ExternalUtils
+import com.example.mandiexe.utils.auth.PreferenceUtil
+import com.example.mandiexe.utils.usables.OfflineTranslate
+import com.example.mandiexe.utils.usables.TimeConversionUtils
+import com.example.mandiexe.utils.usables.TimeConversionUtils.convertLastModified
 
 
 class MySuppliesAdapter(val itemClick: OnMyStockClickListener) :
@@ -33,20 +39,29 @@ class MySuppliesAdapter(val itemClick: OnMyStockClickListener) :
         val CROP_CHANGE = itemView.findViewById<ImageView>(R.id.iv_stock_image)
         val CROP_CARD = itemView.findViewById<CardView>(R.id.cv_item_stock)
 
+        val context = itemView.context
+        private val viewModel =
+            ViewModelProviders.of(context as FragmentActivity)[TranslateViewmodel::class.java]
+
+        val pref = PreferenceUtil
 
         //Bind a single item
         fun bindPost(_listItem: FarmerSuppliesResponse.Supply, itemClick: OnMyStockClickListener) {
             with(_listItem) {
 
-                CROP_NAME.text = _listItem.crop
-                CROP_TYPE.text = _listItem.variety
+                //#Translation
+                //create tranlation object
+
+                OfflineTranslate.translateToDefault(itemView.context, _listItem.crop, CROP_NAME)
+                OfflineTranslate.translateToDefault(itemView.context, _listItem.variety, CROP_TYPE)
 
 
+                //No Translations/Transliterations
                 CROP_QUANTITY.text = _listItem.qty.toString()
-                CROP_EXP.text = ExternalUtils.convertTimeToEpoch(_listItem.expiry)
+                CROP_EXP.text = TimeConversionUtils.convertTimeToEpoch(_listItem.expiry)
                 CROP_CURRENT_BID.text = _listItem.currentBid.toString()
                 CROP_IOP.text = _listItem.askPrice.toString()
-                CROP_LAST_UPDATED.text = ExternalUtils.convertLastModified(_listItem.lastModified)
+                CROP_LAST_UPDATED.text = convertLastModified(_listItem.lastModified)
 
 
                 if (currentBid != 0) {
@@ -98,7 +113,6 @@ class MySuppliesAdapter(val itemClick: OnMyStockClickListener) :
 
             }
         }
-
 
     }
 

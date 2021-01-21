@@ -1,33 +1,35 @@
 package com.example.mandiexe.ui.supply
 
-import android.app.DatePickerDialog
-import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Intent
-import android.icu.text.Transliterator
+import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.speech.RecognizerIntent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.mandiexe.R
-import com.example.mandiexe.lib.ConversionTable
+
+import com.example.mandiexe.libModel.TranslateViewmodel
 import com.example.mandiexe.models.body.supply.AddGrowthBody
 import com.example.mandiexe.models.body.supply.AddSupplyBody
 import com.example.mandiexe.models.responses.supply.AddSupplyResponse
-import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.utils.auth.PreferenceUtil
+import com.example.mandiexe.utils.usables.OfflineTranslate
+import com.example.mandiexe.utils.usables.TimeConversionUtils
+import com.example.mandiexe.utils.usables.UIUtils
+import com.example.mandiexe.utils.usables.ValidationObject
 import com.example.mandiexe.viewmodels.AddStockViewModel
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.add_stock_fragment.*
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -40,10 +42,13 @@ class AddStock : Fragment() {
     }
 
     private val viewModel: AddStockViewModel by viewModels()
+    private val translateViewModel: TranslateViewmodel by viewModels()
 
     private lateinit var root: View
-    private val myCalendar = Calendar.getInstance()
+    private lateinit var myCalendar: Calendar
     private val TAG = AddStock::class.java.simpleName
+
+    private lateinit var mHandler: Handler
 
     //UI variables
     private lateinit var etEst: EditText
@@ -53,6 +58,8 @@ class AddStock : Fragment() {
     //private lateinit var etAddress: EditText
     private lateinit var cropName: AutoCompleteTextView
     private lateinit var cropType: AutoCompleteTextView
+    private lateinit var cropDes: EditText
+
     private lateinit var cropQuantity: EditText
     private lateinit var offerPrice: EditText
     private lateinit var bidSwitch: Switch
@@ -75,6 +82,7 @@ class AddStock : Fragment() {
     private val RC_TYPE = 2
     private val pref = PreferenceUtil
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -82,12 +90,7 @@ class AddStock : Fragment() {
 
         root = inflater.inflate(R.layout.add_stock_fragment, container, false)
 
-//        val tb = root.findViewById<Toolbar>(R.id.toolbarExternal)
-//        tb.title = resources.getString(R.string.add_stock)
-//        tb.setNavigationOnClickListener {
-//            onBackPressed()
-//        }
-
+        mHandler = Handler()
         //UI Init
         etEst = root.findViewById(R.id.etEstDate)
         etExp = root.findViewById(R.id.etExpDate)
@@ -96,6 +99,7 @@ class AddStock : Fragment() {
         cropName = root.findViewById(R.id.actv_which_crop)
         cropType = root.findViewById(R.id.actv_crop_type)
         cropQuantity = root.findViewById(R.id.actv_quantity)
+        cropDes = root.findViewById(R.id.etDescription_add_stock)
         offerPrice = root.findViewById(R.id.actv_price)
         //bidSwitch = root.findViewById(R.id.switch_for_bid)
 
@@ -113,107 +117,25 @@ class AddStock : Fragment() {
         setUpVaietyNameSpinner()
 
 
-        //The address will either be preset or will come as an argument from Map Activity
-//        if (arguments != null) {
-//            //Set the address in the box trimmed
-//            etAddress.setText(requireArguments().getString("fetchedLocation").toString())
-//
-//            Log.e(TAG, "Argument str is" + etAddress.text.toString())
-//        }
-
         // disable dates before today
-        val today = Calendar.getInstance()
-        val now = today.timeInMillis
+        myCalendar = Calendar.getInstance()
+        myCalendar.add(Calendar.MONTH, 1)
 
-        //Date Instance
-        val dateEst =
-            OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-
-                view.minDate = now
-                myCalendar.set(Calendar.YEAR, year)
-                myCalendar.set(Calendar.MONTH, monthOfYear)
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                updateLabelOfDate()
-            }
-
-        val dateExp =
-            OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-
-
-                view.minDate = now
-                myCalendar.set(Calendar.YEAR, year)
-                myCalendar.set(Calendar.MONTH, monthOfYear)
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                updateLabelOfExpiry()
-            }
-
-        val dateSow =
-            OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-
-
-                view.minDate = now
-                myCalendar.set(Calendar.YEAR, year)
-                myCalendar.set(Calendar.MONTH, monthOfYear)
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                updateLabelOfSowing()
-            }
-
-        //##Requires N
         etEst.setOnClickListener {
-            context?.let { it1 ->
-                DatePickerDialog(
-                    it1, dateEst, myCalendar[Calendar.YEAR],
-                    myCalendar[Calendar.MONTH],
-                    myCalendar[Calendar.DAY_OF_MONTH]
-                ).show()
-            }
+            TimeConversionUtils.clickOnDateObject(myCalendar, etEst, requireContext())
         }
 
         //##Requires N
         etExp.setOnClickListener {
-            context?.let { it1 ->
-                DatePickerDialog(
-                    it1, dateExp, myCalendar[Calendar.YEAR],
-                    myCalendar[Calendar.MONTH],
-                    myCalendar[Calendar.DAY_OF_MONTH]
-                ).show()
-            }
+            TimeConversionUtils.clickOnDateObject(myCalendar, etExp, requireContext())
         }
 
         root.findViewById<EditText>(R.id.etSowDate).setOnClickListener {
-            context?.let { it1 ->
-                DatePickerDialog(
-                    it1, dateSow, myCalendar[Calendar.YEAR],
-                    myCalendar[Calendar.MONTH],
-                    myCalendar[Calendar.DAY_OF_MONTH]
-                ).show()
-            }
-        }
-
-//        ivLocation.setOnClickListener {
-//
-//            //Start an activity
-//            val i = Intent(this(), MapActivity::class.java)
-//            startActivityForResult(i, RC_MAP_STOCK_ADD)
-//
-//        }
-
-        //For the bidding items
-//        bidSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-//
-//            if (isChecked) {
-//                tilExp.visibility = View.VISIBLE
-//            } else {
-//                tilExp.visibility = View.GONE
-//            }
-//        }
-
-        tilName.setOnClickListener {
-            setUpCropNameSpinner()
-        }
-
-        cropName.setOnClickListener {
-            setUpCropNameSpinner()
+            TimeConversionUtils.clickOnDateObject(
+                myCalendar,
+                root.findViewById<EditText>(R.id.etSowDate),
+                requireContext()
+            )
         }
 
 
@@ -240,7 +162,6 @@ class AddStock : Fragment() {
 
     }
 
-
     private fun makeSearchForItems(code: Int) {
         val Voiceintent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
         Voiceintent.putExtra(
@@ -262,49 +183,94 @@ class AddStock : Fragment() {
     }
 
     private fun setUpVaietyNameSpinner() {
+        UIUtils.getSpinnerAdapter(R.array.arr_crop_types, cropType, requireContext())
+    }
 
-        val array: Array<String> = resources.getStringArray(R.array.arr_crop_types)
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun createStock() {
 
-        val adapter: ArrayAdapter<String>? = context?.let {
-            ArrayAdapter<String>(
-                it, android.R.layout.simple_spinner_item,
-                array
-            )
+
+        //Start Progress bar
+        root.findViewById<ProgressBar>(R.id.pb_add_stock).visibility = View.VISIBLE
+
+        //Get the translation
+        getTranslations()
+
+        if (getValidTranslations()) {
+
+            makeCalls()
+
+        } else {
+
+            //When the things have not been translated
+            //The errors will be logged
+            //1. Wait for translation to be made (LiveData)
+            //Run a handler
+            //Make call after 5 seconds with whatever data is there
+            mHandler.postDelayed({ makeCalls() }, 5000)
         }
-        cropType.setAdapter(adapter)
+
 
     }
 
-    private fun createStock() {
+    private fun makeCalls() {
 
-        val des = root.findViewById<EditText>(R.id.etDescription_add_stock)
-        var str = "NA"
-        if (!des.text.isEmpty()) {
-            str = des.text.toString()
+
+        //Translate three words
+        val transCropName =
+            root.findViewById<TextView>(R.id.tvTempCropName).text.toString()
+                .capitalize(Locale("en"))
+        val transCropType =
+            root.findViewById<TextView>(R.id.tvTempCropType).text.toString()
+                .capitalize((Locale("en")))
+        var transDesc = cropDes.text.toString()
+
+        if (cropDes.text.toString() != resources.getString(R.string.noDesc)) {
+            //If it has something, use uts translated values
+            transDesc = root.findViewById<TextView>(R.id.tvTempCropDesc).text.toString()
+                .capitalize((Locale("en")))
+
         }
 
+        Log.e(TAG, "Translated values are " + transCropName + transCropType + transDesc)
         val body = AddSupplyBody(
             offerPrice.text.toString(),
-            cropName.text.toString(),
-            ExternalUtils.convertDateToReqForm(etEst.text.toString()),
-            str,
-            ExternalUtils.convertDateToReqForm(etExp.text.toString()),
+            transCropName ?: cropName.text.toString().capitalize(Locale.ROOT),
+            TimeConversionUtils.convertDateToReqForm(etEst.text.toString()),
+            transDesc,
+            TimeConversionUtils.convertDateToReqForm(etExp.text.toString()),
             "0",
-            cropType.text.toString()
+            transCropType ?: cropType.text.toString().capitalize(Locale.ROOT)
         )
 
         //Create growth
         val growthBody = AddGrowthBody(
-            cropName.text.toString(),
-            ExternalUtils.convertDateToReqForm(etEst.text.toString()),
-            ExternalUtils.convertDateToReqForm(root.findViewById<EditText>(R.id.etSowDate).text.toString()),
+            transCropName ?: cropName.text.toString().capitalize(Locale.ROOT),
+            TimeConversionUtils.convertDateToReqForm(etEst.text.toString()),
+            TimeConversionUtils.convertDateToReqForm(root.findViewById<EditText>(R.id.etSowDate).text.toString()),
             cropQuantity.text.toString(),
-            cropType.text.toString()
+            transCropType ?: cropType.text.toString().capitalize(Locale.ROOT)
         )
+
+        Log.e(
+            TAG,
+            "AddSupply Body \n" + body.toString() + "\n Add growth body" + growthBody.toString()
+        )
+
+
         viewModel.growthFunction(growthBody).observe(viewLifecycleOwner, Observer { mResponse ->
             val success = viewModel.successfulGrowth.value
             if (success != null) {
-                Log.e(TAG, "In growth function and success is " + success + viewModel.messageGrowth)
+                Log.e(
+                    TAG,
+                    "In growth function and success is " + success + viewModel.messageGrowth
+                )
+
+                if (success == true) {
+                    Log.e(TAG, "In successfully added growth")
+                } else {
+                    Log.e(TAG, "In failed added growth")
+                }
 
             }
         })
@@ -313,12 +279,55 @@ class AddStock : Fragment() {
 
             //Check with the sucessful of it
             if (viewModel.successful.value == false) {
-                createSnackbar(viewModel.message.value)
-            } else {
+                Log.e(TAG, viewModel.message.toString())
+                UIUtils.createSnackbar(
+                    viewModel.message.value,
+                    requireContext(),
+                    container_add_stock
+                )
+            } else if (viewModel.message.value == "Supply added successfully") {
                 manageStockCreateResponses(viewModel.addStock.value)
             }
         })
 
+        //Stop Progress bar
+        root.findViewById<ProgressBar>(R.id.pb_add_stock).visibility = View.GONE
+
+    }
+
+    private fun getValidTranslations(): Boolean {
+
+        return ValidationObject.validateTranslations(
+            root.findViewById<TextView>(R.id.tvTempCropName),
+            requireContext()
+        ) && ValidationObject.validateTranslations(
+            root.findViewById<TextView>(R.id.tvTempCropType),
+            requireContext()
+        ) && ValidationObject.validateTranslations(
+            root.findViewById<TextView>(R.id.tvTempCropDesc),
+            requireContext()
+        )
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun getTranslations() {
+        //Run an async task to get the values for the three categories
+        OfflineTranslate.translateToEnglish(
+            requireContext(),
+            cropName.text.toString(),
+            root.findViewById<TextView>(R.id.tvTempCropName)
+        )
+        OfflineTranslate.translateToEnglish(
+            requireContext(),
+            cropType.text.toString(),
+            root.findViewById<TextView>(R.id.tvTempCropType)
+        )
+        OfflineTranslate.translateToEnglish(
+            requireContext(),
+            cropDes.text.toString(),
+            root.findViewById<TextView>(R.id.tvTempCropDesc)
+        )
 
     }
 
@@ -333,129 +342,83 @@ class AddStock : Fragment() {
         onDestroy()
     }
 
-    private fun createSnackbar(value: String?) {
-        Snackbar.make(container_add_stock, value.toString(), Snackbar.LENGTH_SHORT).show()
-    }
-
     private fun setUpCropNameSpinner() {
 
-        //Crop names
-
-
-        val array: Array<String> = resources.getStringArray(R.array.arr_crop_names)
-        val adapter: ArrayAdapter<String>? = context?.let {
-            ArrayAdapter<String>(
-                it, android.R.layout.simple_spinner_item,
-                array
-            )
-        }
-        cropName.setAdapter(adapter)
-
+        UIUtils.getSpinnerAdapter(R.array.arr_crop_names, cropName, requireContext())
     }
 
     private fun isValidate(): Boolean {
 
-        var isValid = true
+        val etSow = root.findViewById<EditText>(R.id.etSowDate)
+        val tilSow = root.findViewById<TextInputLayout>(R.id.tilSowDate)
 
-        if (cropName.text.isEmpty()) {
-            isValid = false
-            tilName.error = resources.getString(R.string.cropNameError)
-        } else {
-            tilName.error = null
-        }
+        return ValidationObject.validateEmptyView(
+            cropName,
+            tilName,
+            R.string.cropNameError,
+            requireContext()
+        )
+                && ValidationObject.validateEmptyView(
+            cropType,
+            tilType,
+            R.string.cropTypeError,
+            requireContext()
+        )
+                && ValidationObject.validateEmptyEditText(
+            cropQuantity,
+            tilQuantity,
+            R.string.cropQuanityError,
+            requireContext()
+        )
+                && ValidationObject.validateEmptyEditText(
+            offerPrice,
+            tilPrice,
+            R.string.offerPriceError,
+            requireContext()
+        )
+                && ValidationObject.validateEmptyEditText(
+            etSow,
+            tilSow,
+            R.string.etSowError,
+            requireContext()
+        )
+                && ValidationObject.validateEmptyEditText(
+            etEst,
+            tilEst,
+            R.string.etEstError,
+            requireContext()
+        )
+                && ValidationObject.validateEmptyEditText(
+            etExp,
+            tilExp,
+            R.string.expError,
+            requireContext()
+        )
+                && TimeConversionUtils.validateDates(
+            etSow,
+            etEst,
+            R.string.etEstLessThanSow,
+            R.string.etEstLessIncomplete,
+            etEst,
+            tilEst,
+            requireContext()
+        )
+                && TimeConversionUtils.validateDates(
+            etSow,
+            etExp,
+            R.string.expLess,
+            R.string.expm20,
+            etExp,
+            tilExp,
+            requireContext()
+        )
 
-
-
-        if (cropType.text.isEmpty()) {
-            isValid = false
-            tilType.error = resources.getString(R.string.cropTypeError)
-        } else {
-            tilType.error = null
-        }
-
-
-        //## Case of zero
-        if (cropQuantity.text.isEmpty()) {
-            isValid = false
-            tilQuantity.error = resources.getString(R.string.cropQuanityError)
-        } else {
-            tilQuantity.error = null
-        }
-
-
-
-        if (offerPrice.text.isEmpty()) {
-            isValid = false
-            tilPrice.error = resources.getString(R.string.offerPriceError)
-        } else {
-            tilPrice.error = null
-        }
-
-
-        if (etEst.text.isEmpty()) {
-            isValid = false
-            tilEst.error = resources.getString(R.string.etEstError)
-        } else {
-            tilEst.error = null
-        }
-
-
-        if (root.findViewById<EditText>(R.id.etSowDate).text.isEmpty()) {
-            isValid = false
-            root.findViewById<TextInputLayout>(R.id.tilSowDate).error =
-                resources.getString(R.string.etSowError)
-        } else {
-            root.findViewById<TextInputLayout>(R.id.tilSowDate).error = null
-        }
-
-
-//        if (etAddress.text.isEmpty() || etAddress.text.toString() == "null") {
-//            isValid = false
-//            tilAddress.error = resources.getString(R.string.addressError)
-//        } else {
-//            tilAddress.error = null
-//        }
-
-        //    if (bidSwitch.isChecked) {
-
-        if (etExp.text.isEmpty()) {
-            isValid = false
-            tilExp.error = resources.getString(R.string.expError)
-        } else {
-            tilExp.error = null
-        }
-        //  }
-
-
-        return isValid
-    }
-
-    private fun updateLabelOfDate() {
-
-        val myFormat = "dd/MM/yyyy" //In which you need put here
-        val sdf = SimpleDateFormat(myFormat, Locale.US)
-        etEst.setText(sdf.format(myCalendar.time))
 
     }
 
-    private fun updateLabelOfSowing() {
-
-        val myFormat = "dd/MM/yyyy" //In which you need put here
-        val sdf = SimpleDateFormat(myFormat, Locale.US)
-        root.findViewById<EditText>(R.id.etSowDate).setText(sdf.format(myCalendar.time))
-
-    }
-
-    private fun updateLabelOfExpiry() {
-
-        val myFormat = "dd/MM/yyyy" //In which you need put here
-        val sdf = SimpleDateFormat(myFormat, Locale.US)
-        etExp.setText(sdf.format(myCalendar.time))
-
-    }
-
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        //  super.onActivityResult(requestCode, resultCode, data)
+        //   super.onActivityResult(requestCode, resultCode, data)
 
         //Get the map data result
         Log.e(
@@ -474,13 +437,8 @@ class AddStock : Fragment() {
                 val res: java.util.ArrayList<String>? =
                     data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
                 val resultInEnglish = res?.get(0)
-                val conversionTable = ConversionTable()
-                val transformedString: String? = resultInEnglish?.let { conversionTable.transform(it) }
+                cropName.setText(OfflineTranslate.transliterateToDefault(resultInEnglish))
 
-                //Val translietrated
-                val tx = resultInEnglish?.let { ExternalUtils.transliterateFromEnglishToDefault(it) }
-                cropName.setText(tx)
-                Log.e(TAG, "Res in eng " + resultInEnglish + " transf" + transformedString + tx)
 
             }
         } else if (requestCode == RC_TYPE) {
@@ -488,7 +446,10 @@ class AddStock : Fragment() {
                 //Put result
                 val res: java.util.ArrayList<String>? =
                     data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
-                cropType.setText(res?.get((0)), false)
+                val resultInEnglish = res?.get(0)
+              //  val conversionTable = onversionTable()
+                cropType.setText(OfflineTranslate.transliterateToDefault(resultInEnglish))
+
             }
         }
 
@@ -500,6 +461,8 @@ class AddStock : Fragment() {
         Log.e(TAG, "In on destroy")
         viewModel.successful.removeObservers(this)
         viewModel.successful.value = null
+
+
         val navController = findNavController()
         navController.navigateUp()
 

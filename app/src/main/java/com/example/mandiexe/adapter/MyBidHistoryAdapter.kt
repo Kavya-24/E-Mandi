@@ -1,5 +1,6 @@
 package com.example.mandiexe.adapter
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
@@ -7,6 +8,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,12 +16,15 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
 import com.example.mandiexe.models.body.BidHistoryBody
 import com.example.mandiexe.utils.ApplicationUtils
+import com.example.mandiexe.utils.usables.OfflineTranslate
+import com.example.mandiexe.utils.usables.OfflineTranslate.transliterateToDefault
 
 
 class MyBidHistoryAdapter(val itemClick: OnBidHistoryClickListener) :
@@ -46,6 +51,8 @@ class MyBidHistoryAdapter(val itemClick: OnBidHistoryClickListener) :
 
 
         //Bind a single item
+        @SuppressLint("SetTextI18n")
+        @RequiresApi(Build.VERSION_CODES.Q)
         fun bindPost(
             _listItem: BidHistoryBody,
             itemClick: OnBidHistoryClickListener,
@@ -55,11 +62,15 @@ class MyBidHistoryAdapter(val itemClick: OnBidHistoryClickListener) :
 
 
                 RANK.text = (position + 1).toString() + "."
-                NAME.text = _listItem.name
+                //NAme is Transliterated
+                NAME.text = OfflineTranslate.transliterateToDefault(_listItem.name)
+
+
                 AMOUNT.text =
                     itemView.context.resources.getString(R.string.rs) + _listItem.amount.toString()
                 mNumber = _listItem.phone
-//                TIME.text = ExternalUtils.convertTimeToEpoch(
+
+//                TIME.text = convertTimeToEpoch(
 //                    _listItem.timestamp
 //                ).toString()
                 INFO.setOnClickListener {
@@ -74,6 +85,7 @@ class MyBidHistoryAdapter(val itemClick: OnBidHistoryClickListener) :
             }
         }
 
+        @RequiresApi(Build.VERSION_CODES.Q)
         private fun createDialog(_listItem: BidHistoryBody, context: Context?) {
 
             val d = context?.let { androidx.appcompat.app.AlertDialog.Builder(it) }
@@ -88,8 +100,9 @@ class MyBidHistoryAdapter(val itemClick: OnBidHistoryClickListener) :
 
 
             //Set the data
-            name.text = _listItem.name
-            address.text = _listItem.address
+            //#Transliterator
+            name.text = transliterateToDefault(_listItem.name)
+            address.text = transliterateToDefault(_listItem.address)
             number.text = _listItem.phone
             call.setOnClickListener {
 
@@ -215,6 +228,7 @@ class MyBidHistoryAdapter(val itemClick: OnBidHistoryClickListener) :
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
         holder.bindPost(lst[position], itemClick, position)

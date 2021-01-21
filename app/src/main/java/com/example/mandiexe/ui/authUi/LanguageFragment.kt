@@ -4,7 +4,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,8 +12,8 @@ import com.example.mandiexe.adapter.LanguagesAdapter
 import com.example.mandiexe.adapter.OnMyLanguageListener
 import com.example.mandiexe.models.body.LanguageBody
 import com.example.mandiexe.utils.ApplicationUtils
-import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.utils.auth.PreferenceUtil
+import com.example.mandiexe.utils.usables.ExternalUtils
 import com.example.mandiexe.viewmodels.LanguageViewModel
 import java.util.*
 
@@ -36,26 +35,7 @@ class LanguageFragment : AppCompatActivity(), OnMyLanguageListener {
 
     private fun createLanguageList() {
 
-        val mLanguages: MutableList<LanguageBody> = mutableListOf()
-
-        //0
-        mLanguages.add(LanguageBody("English", "en"))
-
-        //1
-        mLanguages.add(LanguageBody("हिंदी", "hi"))
-
-        //2
-        mLanguages.add(LanguageBody("বাংলা", "bn"))
-
-        //3
-        mLanguages.add(LanguageBody("मराठी", "mr"))
-
-        //4 Tamil
-        mLanguages.add(LanguageBody("தமிழ்", "ta"))
-
-        //5 Telugu
-        mLanguages.add(LanguageBody("తెలుగు", "te"))
-
+        val mLanguages = ExternalUtils.getSupportedLanguageList()
 
         val rv = findViewById<RecyclerView>(R.id.rv_language_main)!!
 
@@ -81,45 +61,9 @@ class LanguageFragment : AppCompatActivity(), OnMyLanguageListener {
 
     override fun selectLanguage(_listItem: LanguageBody, position: Int) {
         //Use keys
-
-
-        when (position) {
-
-            0 -> {
-                setLocale("en")
-                //Recreate
-                recreateModel("en")
-            }
-            1 -> {
-                setLocale("hi")
-                recreateModel("hi")
-            }
-            2 -> {
-                setLocale("bn")
-                recreateModel("bn")
-            }
-
-            3 -> {
-                setLocale("mr")
-                recreateModel("mr")
-            }
-            4 -> {
-                setLocale("ta")
-                recreateModel("ta")
-            }
-            5 -> {
-                setLocale("te")
-                recreateModel("te")
-            }
-
-
-            else -> {
-                setLocale("en")
-                recreateModel("en")
-            }
-
-        }
-
+        val newLocale = ExternalUtils.getLocaleFromAdapterIndex(position)
+        setLocale(newLocale)
+        recreateModel(newLocale)
         //Naviagte to the new ACTRIVTY
         val i = Intent(this, LoginActivity::class.java)
         startActivity(i)

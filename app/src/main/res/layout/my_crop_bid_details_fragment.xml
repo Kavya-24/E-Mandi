@@ -22,9 +22,9 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/mLayoutSup"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 android:layout_margin="@dimen/space"
                 android:paddingBottom="@dimen/space_4x">
 

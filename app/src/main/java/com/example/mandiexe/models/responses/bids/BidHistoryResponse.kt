@@ -1,13 +1,15 @@
 package com.example.mandiexe.models.responses.bids
 
 
+import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
-data class BidHistoryResponse(
+ @Keep data class BidHistoryResponse(
     @Json(name = "bids")
     val bids: List<Bid>
 ) {
-    data class Bid(
+     @Keep
+     data class Bid(
         @Json(name = "active")
         val active: Boolean, // false
         @Json(name = "bidDate")
@@ -33,7 +35,7 @@ data class BidHistoryResponse(
         @Json(name = "__v")
         val v: Int // 0
     ) {
-        data class BidDetail(
+         @Keep data class BidDetail(
             @Json(name = "amount")
             val amount: Int, // 10000
             @Json(name = "_id")
@@ -42,7 +44,7 @@ data class BidHistoryResponse(
             val timestamp: String // 2020-12-21T15:53:47.017Z
         )
 
-        data class Supplier(
+         @Keep data class Supplier(
             @Json(name = "accountCreated")
             val accountCreated: String, // 2020-12-22T00:03:38.927Z
             @Json(name = "address")
@@ -72,14 +74,14 @@ data class BidHistoryResponse(
             @Json(name = "village")
             val village: String // greno
         ) {
-            data class Area(
+            @Keep data class Area(
                 @Json(name = "numerical")
                 val numerical: Int, // 100
                 @Json(name = "unit")
                 val unit: String // acre
             )
 
-            data class Location(
+            @Keep data class Location(
                 @Json(name = "coordinates")
                 val coordinates: List<Double>,
                 @Json(name = "type")
@@ -88,7 +90,7 @@ data class BidHistoryResponse(
         }
 
 
-        data class Demand(
+        @Keep data class Demand(
             @Json(name = "active")
             val active: Boolean, // true
             @Json(name = "bids")

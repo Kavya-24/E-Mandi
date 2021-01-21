@@ -23,8 +23,8 @@ import com.example.mandiexe.models.body.bid.ViewBidBody
 import com.example.mandiexe.models.responses.bids.DeleteBidResponse
 import com.example.mandiexe.models.responses.bids.UpdateBidResponse
 import com.example.mandiexe.models.responses.bids.ViewBidResponse
-import com.example.mandiexe.utils.ExternalUtils
-import com.example.mandiexe.utils.ExternalUtils.createSnackbar
+import com.example.mandiexe.utils.usables.TimeConversionUtils
+import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import com.example.mandiexe.viewmodels.MyRequirementDetailsViewModel
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.LineChart
@@ -328,7 +328,7 @@ class MyRequirementDetails : Fragment(), OnBidHistoryClickListener {
         for (element in item) {
             entries.add(
                 Entry(
-                    ExternalUtils.convertTimeToEpoch(element.timestamp.toString()).toFloat(),
+                    TimeConversionUtils.convertTimeToEpoch(element.timestamp.toString()).toFloat(),
                     element.amount.toFloat()
                 )
             )

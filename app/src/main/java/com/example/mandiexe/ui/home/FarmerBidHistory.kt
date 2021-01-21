@@ -17,7 +17,7 @@ import com.example.mandiexe.adapter.BidHistoryAdapter
 import com.example.mandiexe.adapter.OnMyBidHistoryGlobalClickListener
 import com.example.mandiexe.models.responses.bids.BidHistoryResponse
 import com.example.mandiexe.utils.ApplicationUtils
-import com.example.mandiexe.utils.ExternalUtils
+import com.example.mandiexe.utils.usables.UIUtils
 import kotlinx.android.synthetic.main.farmer_bid_history_fragment.*
 
 class FarmerBidHistory : Fragment(), OnMyBidHistoryGlobalClickListener {
@@ -55,7 +55,7 @@ class FarmerBidHistory : Fragment(), OnMyBidHistoryGlobalClickListener {
                 if (success) {
                     loadItemsInRV(mResponse)
                 } else {
-                    ExternalUtils.createSnackbar(
+                    UIUtils.createSnackbar(
                         viewModel.message.value,
                         ApplicationUtils.getContext(),
                         container_bid_history

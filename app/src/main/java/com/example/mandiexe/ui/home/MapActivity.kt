@@ -26,12 +26,12 @@ import com.example.mandiexe.models.body.authBody.SignUpBody
 import com.example.mandiexe.models.responses.auth.LoginResponse
 import com.example.mandiexe.models.responses.auth.SignUpResponse
 import com.example.mandiexe.utils.ApplicationUtils
-import com.example.mandiexe.utils.ExternalUtils
-import com.example.mandiexe.utils.ExternalUtils.createSnackbar
-import com.example.mandiexe.utils.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.auth.PreferenceManager
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.auth.SessionManager
+import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
+import com.example.mandiexe.utils.usables.UIUtils
+import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import com.example.mandiexe.viewmodels.MapViewmodel
 import com.example.mandiexe.viewmodels.OTViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -66,6 +66,8 @@ class MapActivity : AppCompatActivity() {
 
     private val pref = PreferenceUtil
     private var fetchedAddress: Address = Address(Locale(pref.getLanguageFromPreference()!!))
+    private var fetchedEnglishAddress = Address(Locale("en"))
+
     private var body = SignUpBody("", 0, "", "", "", "", "", "", "", "", "", "")
     private var args: Bundle? = null
 
@@ -160,13 +162,14 @@ class MapActivity : AppCompatActivity() {
         pb = ProgressDialog(this)
         pb.setMessage(resources.getString(R.string.creatinguser))
 
-        val mCountry = fetchedAddress.countryName
-        val mDistrict = fetchedAddress.subAdminArea
-        val mState = fetchedAddress.adminArea
+        //All body in English
+        val mCountry = fetchedEnglishAddress.countryName
+        val mDistrict = fetchedEnglishAddress.subAdminArea
+        val mState = fetchedEnglishAddress.adminArea
         val village = args?.getString("ADDRESS_USER")!!
         val mAddress = "$village,$mDistrict"
-        val lat = fetchedAddress.latitude.toString()
-        val long = fetchedAddress.longitude.toString()
+        val lat = fetchedEnglishAddress.latitude.toString()
+        val long = fetchedEnglishAddress.longitude.toString()
         val token = args?.getString("TOKEN")
         val name = args?.getString("NAME").toString()
         val area = args?.getString("AREA").toString().toInt()
@@ -193,11 +196,18 @@ class MapActivity : AppCompatActivity() {
         Log.e(TAG, "Map SignUp body number is ph " + phone)
 
         Log.e(
-            TAG, "Map variates fA line 1 " + fetchedAddress.getAddressLine(0)
+            TAG, "Map variates fA line 1 in Default lamnguage " + fetchedAddress.getAddressLine(0)
                     + "\nfA l2 " + fetchedAddress.getAddressLine(1)
                     + "\ncuty locale " + fetchedAddress.locality
                     + " \n country and sub " + fetchedAddress.countryName + fetchedAddress.subLocality
                     + "Admin area, sub" + fetchedAddress.adminArea + fetchedAddress.subAdminArea
+                    + "Map variates fA line 1 in Englise " + fetchedEnglishAddress.getAddressLine(0)
+                    + "\nfA l2 " + fetchedEnglishAddress.getAddressLine(1)
+                    + "\ncuty locale " + fetchedEnglishAddress.locality
+                    + " \n country and sub " + fetchedEnglishAddress.countryName + fetchedEnglishAddress.subLocality
+                    + "Admin area, sub" + fetchedEnglishAddress.adminArea + fetchedEnglishAddress.subAdminArea
+
+
         )
 
         viewModel.signFunction(body).observe(this, Observer { mResponse ->
@@ -206,7 +216,7 @@ class MapActivity : AppCompatActivity() {
                 if (success) {
                     manageSignUpResponse(viewModel.mSignUp.value)
                 } else {
-                    ExternalUtils.createSnackbar(
+                    UIUtils.createSnackbar(
                         viewModel.message.value,
                         this,
                         container_map
@@ -339,7 +349,7 @@ class MapActivity : AppCompatActivity() {
             .show()
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP and Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        ExternalUtils.hideKeyboard(this, this)
+        UIUtils.hideKeyboard(this, this)
         startActivity(intent)
         finish()
 
@@ -449,6 +459,7 @@ class MapActivity : AppCompatActivity() {
 
                             //Mark this as the current location
                             fetchedLocation = getAddress(latitudeLongitude)
+                            getEnglishAddress(latitudeLongitude)
                             createSnackbar(fetchedLocation, this@MapActivity, container_map)
 
                         } else {
@@ -474,6 +485,7 @@ class MapActivity : AppCompatActivity() {
 
                             //Update the location
                             fetchedLocation = getAddress(newLatLong)
+                            getEnglishAddress(newLatLong)
                             createSnackbar(fetchedLocation, this@MapActivity, container_map)
 
 
@@ -509,7 +521,31 @@ class MapActivity : AppCompatActivity() {
             return e.message.toString()
         }
 
+
         return theAddress
+    }
+
+    private fun getEnglishAddress(latLang: LatLng) {
+
+        var theAddress = ""
+
+        //##Get location
+        val locale = Locale("en")
+
+        val geocoder = Geocoder(this, locale)
+        try {
+            val addresses: List<Address> =
+                geocoder.getFromLocation(latLang.latitude, latLang.longitude, 1)
+            val mAddress = addresses.get(0).getAddressLine(0)
+            Log.e(TAG, mAddress.toString())
+            theAddress = mAddress
+            fetchedEnglishAddress = addresses.get(0)
+
+        } catch (e: Exception) {
+            Log.e("Exception", e.message.toString())
+        }
+
+
     }
 
     override fun onBackPressed() {

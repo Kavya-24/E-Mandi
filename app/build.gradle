@@ -26,6 +26,7 @@ android {
 
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/INDEX.LIST'
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/license.txt'
@@ -35,6 +36,7 @@ android {
         exclude 'META-INF/ASL2.0'
         exclude("META-INF/*.kotlin_module")
     }
+
     buildTypes {
         release {
             //Proguard Techniques
@@ -229,16 +231,13 @@ dependencies {
     //GraphView
     implementation 'com.jjoe64:graphview:4.2.2'
 
-    implementation 'com.github.iammannan:TranslateAPI:1.1'
-
-    //Flatten/Unflatten API
-    implementation 'com.github.wnameless.json:json-flattener:0.12.0'
-
-    //Jackson
-    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.8.8'
 
     //Transliterate
     implementation 'com.google.cloud:google-cloud-translate:1.85.0'
+
+    //ML-KIt Translate
+    implementation 'com.google.mlkit:translate:16.1.1'
+
 }
 
 

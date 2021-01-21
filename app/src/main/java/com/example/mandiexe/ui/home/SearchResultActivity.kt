@@ -2,6 +2,7 @@ package com.example.mandiexe.ui.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
@@ -16,10 +17,11 @@ import com.example.mandiexe.interfaces.RetrofitClient
 import com.example.mandiexe.models.body.supply.SearchGlobalCropBody
 import com.example.mandiexe.models.responses.supply.SearchGlobalCropResponse
 import com.example.mandiexe.utils.ApplicationUtils
-import com.example.mandiexe.utils.ExternalUtils
-import com.example.mandiexe.utils.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.auth.SessionManager
+import com.example.mandiexe.utils.usables.ExternalUtils
+import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
+import com.example.mandiexe.utils.usables.OfflineTranslate
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import retrofit2.Call
@@ -33,17 +35,19 @@ class SearchResultActivity : AppCompatActivity() {
     private val sessionManager = SessionManager(ApplicationUtils.getContext())
 
     private var crop = ""
-
+    private val mHandler = Handler()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setAppLocale(pref.getLanguageFromPreference(), this)
-        setContentView(R.layout.activity_search_result)
+        this.setContentView(R.layout.activity_search_result)
 
         //Get arugmenent
 
         args = intent?.getBundleExtra("bundle")!!
-        crop = args.getString("crop").toString()
 
+        //Porcess the crop here
+
+        crop = args.getString("crop").toString()
         val tb = findViewById<Toolbar>(R.id.toolbarExternal)
         tb.title = crop
         tb.setNavigationOnClickListener {
@@ -51,11 +55,17 @@ class SearchResultActivity : AppCompatActivity() {
         }
 
         val aBar = findViewById<AppBarLayout>(R.id.appbarlayoutExternal)
+        findViewById<ProgressBar>(R.id.pb_searchCrop).visibility = View.VISIBLE
 
+        val t = findViewById<TextView>(R.id.tempTv)
+        OfflineTranslate.translateToEnglish(this, crop, t)
 
+        if (t.text != resources.getString(R.string.noDesc)) {
+            searchCrops()
+        } else {
+            mHandler.postDelayed({ searchCrops() }, 2000)
+        }
 
-
-        searchCrops()
 
         findViewById<ExtendedFloatingActionButton>(R.id.eFab_grow).setOnClickListener {
             addStock()
@@ -73,13 +83,12 @@ class SearchResultActivity : AppCompatActivity() {
 
         Log.e("SEARCH RES", "Crop" + crop)
 
-        findViewById<ProgressBar>(R.id.pb_searchCrop).visibility = View.VISIBLE
         val service = RetrofitClient.makeCallsForSupplies(this)
         val body = SearchGlobalCropBody(crop)
 
         service.getSearchCropGlobally(
             body,
-     )
+        )
             .enqueue(object : retrofit2.Callback<SearchGlobalCropResponse> {
                 override fun onResponse(
                     call: Call<SearchGlobalCropResponse>,
@@ -87,8 +96,9 @@ class SearchResultActivity : AppCompatActivity() {
                 ) {
                     if (response.isSuccessful) {
 
-                        response.body()?.let { loadItemsFunction(it) }
-
+                        if (response.body() != null) {
+                            loadItemsFunction(response.body()!!)
+                        }
                     }
                 }
 
@@ -109,14 +119,16 @@ class SearchResultActivity : AppCompatActivity() {
 
         findViewById<ConstraintLayout>(R.id.clVis).visibility = View.VISIBLE
         Log.e("SEARCH RES", "response " + response.toString())
+        try {
+            findViewById<TextView>(R.id.tvInCountry).text = response.country.total.toString()
+            findViewById<TextView>(R.id.tvInState).text = response.state.total.toString()
+            findViewById<TextView>(R.id.tvInVillage).text = response.village.qty.toString()
+            findViewById<TextView>(R.id.tvInDistrict).text = response.district.total.toString()
 
-        findViewById<TextView>(R.id.tvInCountry).text = response.country.total.toString()
-        findViewById<TextView>(R.id.tvInState).text = response.state.total.toString()
-        findViewById<TextView>(R.id.tvInVillage).text = response.village.qty.toString()
-        findViewById<TextView>(R.id.tvInDistrict).text = response.district.total.toString()
-
-        loadYoutubeLinks(response.links)
-
+            loadYoutubeLinks(response.links)
+        } catch (e: Exception) {
+            Log.e("SEARCh", e.message + e.cause + " Error")
+        }
     }
 
     private fun loadYoutubeLinks(links: List<SearchGlobalCropResponse.Link>) {

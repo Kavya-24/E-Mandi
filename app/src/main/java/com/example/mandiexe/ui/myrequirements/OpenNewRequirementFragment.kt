@@ -2,19 +2,18 @@ package com.example.mandiexe.ui.myrequirements
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
+import com.example.mandiexe.adapter.MyBidHistoryAdapter
 import com.example.mandiexe.adapter.OnBidHistoryClickListener
 import com.example.mandiexe.interfaces.RetrofitClient
 import com.example.mandiexe.models.body.BidHistoryBody
@@ -22,10 +21,14 @@ import com.example.mandiexe.models.body.bid.AddBidBody
 import com.example.mandiexe.models.body.bid.ViewBidBody
 import com.example.mandiexe.models.responses.bids.AddBidResponse
 import com.example.mandiexe.models.responses.bids.ViewBidResponse
-import com.example.mandiexe.utils.ExternalUtils
-import com.example.mandiexe.utils.ExternalUtils.createSnackbar
-import com.example.mandiexe.utils.ExternalUtils.createToast
+import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.auth.SessionManager
+import com.example.mandiexe.utils.usables.ExternalUtils
+import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
+import com.example.mandiexe.utils.usables.OfflineTranslate
+import com.example.mandiexe.utils.usables.TimeConversionUtils
+import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
+import com.example.mandiexe.utils.usables.UIUtils.createToast
 import com.example.mandiexe.viewmodels.OpenNewRequirementViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
@@ -33,14 +36,15 @@ import kotlinx.android.synthetic.main.open_new_requirement_fragment.*
 import retrofit2.Call
 import retrofit2.Response
 
-class OpenNewRequirementFragment : Fragment(), OnBidHistoryClickListener {
+class OpenNewRequirementFragment : AppCompatActivity(), OnBidHistoryClickListener {
 
     companion object {
         fun newInstance() = OpenNewRequirementFragment()
     }
 
     private lateinit var viewModel: OpenNewRequirementViewModel
-    private lateinit var root: View
+
+    //private lateinit var root: View
     private lateinit var args: Bundle
 
     private lateinit var d: androidx.appcompat.app.AlertDialog.Builder
@@ -49,49 +53,56 @@ class OpenNewRequirementFragment : Fragment(), OnBidHistoryClickListener {
     private var currentBid = ""
     private var ownerPhone = ""
     private var BID_ID = ""
-    private val sessionManager = context?.let { SessionManager(it) }
+    private val sessionManager = SessionManager(this)
+    private val TAG = OpenNewRequirementFragment::class.java.simpleName
 
     //Moduify object
     private var bidObject = AddBidBody("", "", "")
 
-    //UI element
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        root = inflater.inflate(R.layout.open_new_requirement_fragment, container, false)
-        args = requireArguments()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        setAppLocale(PreferenceUtil.getLanguageFromPreference(), this)
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.open_new_requirement_fragment)
 
+
+        args = intent?.getBundleExtra("bundle")!!
         //Get the bid ID
         BID_ID = args.getString("BID_ID").toString()
 
+        val tb = findViewById<Toolbar>(R.id.toolbarExternal)
+        tb.title = resources.getString(R.string.details)
+        tb.setNavigationOnClickListener {
+            onBackPressed()
+        }
+        Log.e(TAG, "Argument str is" + BID_ID)
+
         makeCall()
 
-        root.findViewById<ImageView>(R.id.iv_new_requirement_call_buyer).setOnClickListener {
+        findViewById<ImageView>(R.id.iv_new_requirement_call_buyer).setOnClickListener {
             //Call person
-            val i = Intent(Intent.ACTION_CALL, Uri.parse("number"))
+            val i = Intent(Intent.ACTION_CALL, Uri.parse(ownerPhone))
             startActivity(i)
 
         }
 
-        root.findViewById<MaterialButton>(R.id.mtb_bid_new).setOnClickListener {
+        findViewById<MaterialButton>(R.id.mtb_bid_new).setOnClickListener {
             createBidDialog()
         }
 
-        root.findViewById<TextView>(R.id.tv_view_bid_history_requirement_new).setOnClickListener {
+        findViewById<TextView>(R.id.tv_view_bid_history_requirement_new).setOnClickListener {
             viewBidHistory()
         }
 
-        return root
     }
 
     private fun makeCall() {
 
-        val service = RetrofitClient.makeCallsForBids(requireContext())
+        val service = RetrofitClient.makeCallsForBids(this)
         val body = ViewBidBody(BID_ID)
         service.getFarmerViewParticularBid(
             body
         ).enqueue(object : retrofit2.Callback<ViewBidResponse> {
+            @RequiresApi(Build.VERSION_CODES.Q)
             override fun onResponse(
                 call: Call<ViewBidResponse>,
                 response: Response<ViewBidResponse>
@@ -104,7 +115,7 @@ class OpenNewRequirementFragment : Fragment(), OnBidHistoryClickListener {
                 } else {
                     createSnackbar(
                         response.message(),
-                        requireContext(),
+                        this@OpenNewRequirementFragment,
                         container_open_new_req
                     )
                 }
@@ -113,7 +124,7 @@ class OpenNewRequirementFragment : Fragment(), OnBidHistoryClickListener {
             override fun onFailure(call: Call<ViewBidResponse>, t: Throwable) {
                 createSnackbar(
                     ExternalUtils.returnStateMessageForThrowable(t),
-                    requireContext(),
+                    this@OpenNewRequirementFragment,
                     container_open_new_req
                 )
             }
@@ -121,6 +132,7 @@ class OpenNewRequirementFragment : Fragment(), OnBidHistoryClickListener {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun initViews(value: ViewBidResponse) {
 
         //Init current bid
@@ -128,42 +140,62 @@ class OpenNewRequirementFragment : Fragment(), OnBidHistoryClickListener {
         ownerPhone = value.bid.bidder.phone
         bidObject = AddBidBody("", value.bid.demand._id, value.bid.qty.toString())
 
-        root.findViewById<ConstraintLayout>(R.id.mLayoutReqOpen).visibility = View.VISIBLE
-        root.findViewById<ProgressBar>(R.id.pb_new_req_open).visibility = View.GONE
+        findViewById<ConstraintLayout>(R.id.mLayoutReqOpen).visibility = View.VISIBLE
+        findViewById<ProgressBar>(R.id.pb_new_req_open).visibility = View.GONE
 
 
+        //TRANSLATE
+        OfflineTranslate.translateToDefault(
+            this,
+            value.bid.demand.crop,
+            findViewById<TextView>(R.id.tv_new_requirement_detail_crop_name)
+        )
+        OfflineTranslate.translateToDefault(
+            this,
+            value.bid.demand.variety,
+            findViewById<TextView>(R.id.tv_new_requirement_detail_crop_type)
+        )
+        OfflineTranslate.translateToDefault(
+            this,
+            value.bid.demand.description,
+            findViewById<TextView>(R.id.tv_new_description)
+        )
 
-        root.findViewById<TextView>(R.id.tv_new_requirement_detail_crop_name).text =
-            value.bid.demand.crop
-        root.findViewById<TextView>(R.id.tv_new_requirement_detail_crop_type).text =
-            value.bid.demand.variety
-        root.findViewById<TextView>(R.id.tv_new_requirement_detail_crop_location).text =
-            value.bid.bidder.address.toString()
+        //Transliteration
+        findViewById<TextView>(R.id.tv_new_requirement_detail_crop_location).text =
+            OfflineTranslate.transliterateToDefault(value.bid.bidder.address.toString())
 
-        root.findViewById<TextView>(R.id.ans_detail_crop_quanity_open_req).text =
+        findViewById<TextView>(R.id.ans_detail_crop_quanity_open_req).text =
             value.bid.demand.qty.toString()
-        root.findViewById<TextView>(R.id.ans_detail_crop_exp_open_req).text =
-            value.bid.demand.expiry
-        root.findViewById<TextView>(R.id.ans_detail_init_date_open_req).text =
-            value.bid.demand.demandCreated
+        findViewById<TextView>(R.id.ans_detail_crop_exp_open_req).text =
+            TimeConversionUtils.convertTimeToEpoch(value.bid.demand.expiry)
+        findViewById<TextView>(R.id.ans_detail_init_date_open_req).text =
+            TimeConversionUtils.convertTimeToEpoch(value.bid.demand.demandCreated)
 
-        root.findViewById<TextView>(R.id.tv_new_requirement_detail_current_bid).text =
+        findViewById<TextView>(R.id.tv_new_requirement_detail_current_bid).text =
             value.bid.demand.currentBid.toString()
 
         if (value.bid.demand.currentBid < value.bid.demand.offerPrice) {
-            root.findViewById<TextView>(R.id.tv_new_requirement_detail_current_bid)
+            findViewById<TextView>(R.id.tv_new_requirement_detail_current_bid)
                 .setTextColor(resources.getColor(R.color.red_A700))
 
         } else if (value.bid.demand.currentBid == value.bid.demand.offerPrice) {
-            root.findViewById<TextView>(R.id.tv_new_requirement_detail_current_bid)
+            findViewById<TextView>(R.id.tv_new_requirement_detail_current_bid)
                 .setTextColor(resources.getColor(R.color.blue_A700))
 
         }
 
+
+        //Set the buyer
+        //Transliterate
+        findViewById<TextView>(R.id.tv_new_requirement_details_buyer_name).text =
+            OfflineTranslate.transliterateToDefault(value.bid.bidder.name)
+        ownerPhone = value.bid.bidder.phone.toString()
         //Else the color is green
 
-        root.findViewById<TextView>(R.id.tv_new_requirement_detail_initial_offer_price).text =
+        findViewById<TextView>(R.id.tv_new_requirement_detail_initial_offer_price).text =
             value.bid.demand.offerPrice.toString()
+
 
         fillRecyclerView(value.bid.bids)
 
@@ -172,31 +204,38 @@ class OpenNewRequirementFragment : Fragment(), OnBidHistoryClickListener {
 
     private fun fillRecyclerView(bids: List<ViewBidResponse.Bid.BidDetails>) {
 
-//        val rv = root.findViewById<RecyclerView>(R.id.rv_bidHistoryOPneReq)
-//        rv.layoutManager = LinearLayoutManager(context)
-//        val adapter = MyBidHistoryAdapter(this)
+        val rv = findViewById<RecyclerView>(R.id.rv_bidHistoryOPneReq)
+        rv.layoutManager = LinearLayoutManager(this)
+        val adapter = MyBidHistoryAdapter(this)
+
+        //Create list
+        val mBids: MutableList<BidHistoryBody> = mutableListOf()
+
 //
-//        //Create list
-//        //Fill the rv wit
-//        val mBids: MutableList<ViewSupplyResponse.Supply.Bid.BidDetails> = mutableListOf()
 //        for (element in bids) {
+//            val x = element.bids.get(element.bids.size - 1)
 //            mBids.add(
-//                ViewSupplyResponse.Supply.Bid.BidDetails(
-//                    element.amount,
-//                    element.id,
-//                    element.timestamp
+//                BidHistoryBody(
+//                    x.amount,
+//                    x._id,
+//                    x.timestamp,
+//                    element.bidder.name,
+//                    element.bidder.phone,
+//                    element.bidder.address
 //                )
 //            )
 //        }
-//
-//        adapter.lst = mBids
-//        rv.adapter = adapter
 
+        mBids.sortByDescending { it.amount }
+        Log.e(TAG, mBids.toString())
+
+        adapter.lst = mBids
+        rv.adapter = adapter
     }
 
     private fun createBidDialog() {
 
-        d = androidx.appcompat.app.AlertDialog.Builder(requireContext())
+        d = androidx.appcompat.app.AlertDialog.Builder(this@OpenNewRequirementFragment)
         val v = layoutInflater.inflate(R.layout.layout_add_bid, null)
         d.setView(v)
 
@@ -230,9 +269,9 @@ class OpenNewRequirementFragment : Fragment(), OnBidHistoryClickListener {
     private fun confirmModify(bidValue: String) {
 
         tempRef.dismiss()
-        root.findViewById<ProgressBar>(R.id.pb_new_req_open).visibility = View.VISIBLE
+        findViewById<ProgressBar>(R.id.pb_new_req_open).visibility = View.VISIBLE
         //Place bid and male call
-        val service = RetrofitClient.makeCallsForBids(requireContext())
+        val service = RetrofitClient.makeCallsForBids(this@OpenNewRequirementFragment)
         bidObject.bid = bidValue
 
         Log.e("OPEN REQ", " Bid object " + bidObject)
@@ -251,13 +290,17 @@ class OpenNewRequirementFragment : Fragment(), OnBidHistoryClickListener {
                     } else {
                         createSnackbar(
                             response.body()?.msg,
-                            requireContext(),
+                            this@OpenNewRequirementFragment,
                             container_open_new_req
                         )
 
                     }
                 } else {
-                    createSnackbar(response.body()?.msg, requireContext(), container_open_new_req)
+                    createSnackbar(
+                        response.body()?.msg,
+                        this@OpenNewRequirementFragment,
+                        container_open_new_req
+                    )
                 }
 
             }
@@ -265,7 +308,7 @@ class OpenNewRequirementFragment : Fragment(), OnBidHistoryClickListener {
             override fun onFailure(call: Call<AddBidResponse>, t: Throwable) {
                 createSnackbar(
                     ExternalUtils.returnStateMessageForThrowable(t),
-                    requireContext(),
+                    this@OpenNewRequirementFragment,
                     container_open_new_req
                 )
             }
@@ -275,10 +318,10 @@ class OpenNewRequirementFragment : Fragment(), OnBidHistoryClickListener {
     }
 
     private fun manageConfirmAddBid() {
-        root.findViewById<ProgressBar>(R.id.pb_new_req_open).visibility = View.GONE
+        findViewById<ProgressBar>(R.id.pb_new_req_open).visibility = View.GONE
         createToast(
             resources.getString(R.string.successfullBidAdd),
-            requireContext(),
+            this,
             container_open_new_req
         )
         onDestroy()
@@ -288,11 +331,6 @@ class OpenNewRequirementFragment : Fragment(), OnBidHistoryClickListener {
     private fun viewBidHistory() {
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(OpenNewRequirementViewModel::class.java)
-
-    }
 
     override fun viewBidDetails(_listItem: BidHistoryBody) {
 

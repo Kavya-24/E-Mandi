@@ -230,6 +230,14 @@
     <string name="rajma"></string>
     <string name="desc">Update the crop details</string>
     <string name="no_bids_founds">No bids founds</string>
+    <string name="noDesc">-</string>
+    <string name="etEstLessThanSow">Completion date can not be before the date of sowing</string>
+    <string name="etEstLessIncomplete">Crop harvest date can not be before 20 days after sowing.</string>
+    <string name="expLess">Expiration date of the bid can not be before the date of sowing</string>
+    <string name="NoNewReqFound">No requirements found.</string>
+    <string name="asia">asia</string>
+    <string name="temp">temp</string>
+    <string name="expm20">Expiry of bid should be after at least 20 days from sowing date</string>
 
     <string-array name="arr_crop_names">
         <item>@string/rice</item>

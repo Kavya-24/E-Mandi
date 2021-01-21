@@ -1,4 +1,5 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name_main" translatable="false">E-Mandi</string>
     <string name="app_name">E-Mandi</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -85,103 +86,6 @@
     <string name="bigha">Bigha</string>
     <string name="searchHint">Search crop</string>
     <string name="details">Details</string>
-
-
-    <!--    //Crop name-->
-
-    <string name="rice">Rice</string>
-    <string name="wheat">Wheat</string>
-    <string name="maize">Maize</string>
-    <string name="barley">Barley</string>
-    <string name="potato">Potato</string>
-    <string name="tomato">Tomato</string>
-    <string name="onion">Onion</string>
-    <string name="sugarcane">Sugarcane</string>
-    <string name="capsicum">Capsicum</string>
-    <string name="brinjal">Brinjal</string>
-    <string name="sugar">Sugar</string>
-    <string name="bamboo">Bamboo</string>
-    <string name="raddish">Radish</string>
-    <string name="carrot">carrot</string>
-    <string name="cabbage">Cabbage</string>
-    <string name="cauliflower">Cauliflower</string>
-    <string name="pumpkin">Pumpkin</string>
-    <string name="peas">Peas</string>
-    <string name="ladyfinger">Ladyfinger</string>
-    <string name="bottleguard">Bottle Guard</string>
-    <string name="bitterguard">Bitter Guard</string>
-    <string name="spongeguard">SpongeGuard</string>
-    <string name="coriander">Coriander</string>
-    <string name="mushroom">Mushroom</string>
-    <string name="ginger">Ginger</string>
-    <string name="lemon">Lemon</string>
-    <string name="garlic">Garlic</string>
-    <string name="turdal">Tur Dal</string>
-    <string name="arhardal">Arhar Dal</string>
-    <string name="uraddal">Urad Dal</string>
-    <string name="massor">Masoor Dal</string>
-    <string name="gram">Gram</string>
-    <string name="chole">Kabuli Chane</string>
-    <string name="rajma">Kidney Beans</string>
-
-
-    <string-array name="arr_crop_names">
-        <item>@string/rice</item>
-        <item>@string/wheat</item>
-        <item>@string/maize</item>
-        <item>@string/barley</item>
-        <item>@string/potato</item>
-        <item>@string/tomato</item>
-        <item>@string/onion</item>
-        <item>@string/sugarcane</item>
-        <item>@string/capsicum</item>
-        <item>@string/brinjal</item>
-        <item>@string/sugar</item>
-        <item>@string/bamboo</item>
-        <item>@string/raddish</item>
-        <item>@string/carrot</item>
-        <item>@string/cabbage</item>
-        <item>@string/cauliflower</item>
-        <item>@string/pumpkin</item>
-        <item>@string/peas</item>
-        <item>@string/ladyfinger</item>
-        <item>@string/bottleguard</item>
-        <item>@string/bitterguard</item>
-        <item>@string/spongeguard</item>
-        <item>@string/coriander</item>
-        <item>@string/mushroom</item>
-        <item>@string/ginger</item>
-        <item>@string/lemon</item>
-        <item>@string/garlic</item>
-        <item>@string/turdal</item>
-        <item>@string/arhardal</item>
-        <item>@string/uraddal</item>
-        <item>@string/massor</item>
-        <item>@string/gram</item>
-        <item>@string/chole</item>
-        <item>@string/rajma</item>
-
-    </string-array>
-
-    <string-array name="arr_crop_types">
-        <item>Grey Wheat</item>
-        <item>Basmati Rice</item>
-        <item>Kala Chana</item>
-
-    </string-array>
-
-    <string name="Hectare">>Hectare</string>
-    <string name="acres">>Acres</string>
-    <string name="sqrmetres">>Sq Metres</string>
-
-    <string-array name="arr_area_units">
-        <item>@string/Hectare</item>
-        <item>@string/bigha</item>
-        <item>@string/acres</item>
-        <item>@string/sqrmetres</item>
-    </string-array>
-
-
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="searchBuyers">Search buyers</string>
     <string name="delta">delta</string>
@@ -263,7 +167,7 @@
     <string name="time">Time</string>
     <string name="i" translatable="false">i</string>
     <string name="call">Call</string>
-    <string name="canNotCall">Can not ake call</string>
+    <string name="canNotCall">Can not make call</string>
     <string name="permissionPhone">Permission to dial call from this app.</string>
     <string name="permissionHead">Permission Needed</string>
     <string name="ok">OKAY</string>
@@ -277,9 +181,117 @@
     <string name="unableToOpenMaps">Unable to open maps</string>
     <string name="register">Register</string>
     <string name="creatinguser">Creating User</string>
-    <string name="eMandi">E-Mandi</string>
+    <string name="eMandi" translatable="false">E-Mandi</string>
     <string name="desc">Update the crop details</string>
     <string name="no_bids_founds">No bids founds</string>
+    <string name="noDesc">-</string>
+    <string name="etEstLessThanSow">Completion date can not be before the date of sowing</string>
+    <string name="etEstLessIncomplete">Crop harvest date can not be before 20 days after sowing.</string>
+    <string name="expLess">Expiration date of the bid can not be before the date of sowing</string>
+
+
+
+    <!--    //Crop name-->
+
+    <string name="rice">Rice</string>
+    <string name="wheat">Wheat</string>
+    <string name="maize">Maize</string>
+    <string name="barley">Barley</string>
+    <string name="potato">Potato</string>
+    <string name="tomato">Tomato</string>
+    <string name="onion">Onion</string>
+    <string name="sugarcane">Sugarcane</string>
+    <string name="capsicum">Capsicum</string>
+    <string name="brinjal">Brinjal</string>
+    <string name="sugar">Sugar</string>
+    <string name="bamboo">Bamboo</string>
+    <string name="raddish">Radish</string>
+    <string name="carrot">carrot</string>
+    <string name="cabbage">Cabbage</string>
+    <string name="cauliflower">Cauliflower</string>
+    <string name="pumpkin">Pumpkin</string>
+    <string name="peas">Peas</string>
+    <string name="ladyfinger">Ladyfinger</string>
+    <string name="bottleguard">Bottle Guard</string>
+    <string name="bitterguard">Bitter Guard</string>
+    <string name="spongeguard">SpongeGuard</string>
+    <string name="coriander">Coriander</string>
+    <string name="mushroom">Mushroom</string>
+    <string name="ginger">Ginger</string>
+    <string name="lemon">Lemon</string>
+    <string name="garlic">Garlic</string>
+    <string name="turdal">Tur Dal</string>
+    <string name="arhardal">Arhar Dal</string>
+    <string name="uraddal">Urad Dal</string>
+    <string name="massor">Masoor Dal</string>
+    <string name="gram">Gram</string>
+    <string name="chole">Kabuli Chane</string>
+    <string name="rajma">Kidney Beans</string>
+
+
+    <string-array name="arr_crop_names">
+        <item>@string/rice</item>
+        <item>@string/wheat</item>
+        <item>@string/maize</item>
+        <item>@string/barley</item>
+        <item>@string/potato</item>
+        <item>@string/tomato</item>
+        <item>@string/onion</item>
+        <item>@string/sugarcane</item>
+        <item>@string/capsicum</item>
+        <item>@string/brinjal</item>
+        <item>@string/sugar</item>
+        <item>@string/bamboo</item>
+        <item>@string/raddish</item>
+        <item>@string/carrot</item>
+        <item>@string/cabbage</item>
+        <item>@string/cauliflower</item>
+        <item>@string/pumpkin</item>
+        <item>@string/peas</item>
+        <item>@string/ladyfinger</item>
+        <item>@string/bottleguard</item>
+        <item>@string/bitterguard</item>
+        <item>@string/spongeguard</item>
+        <item>@string/coriander</item>
+        <item>@string/mushroom</item>
+        <item>@string/ginger</item>
+        <item>@string/lemon</item>
+        <item>@string/garlic</item>
+        <item>@string/turdal</item>
+        <item>@string/arhardal</item>
+        <item>@string/uraddal</item>
+        <item>@string/massor</item>
+        <item>@string/gram</item>
+        <item>@string/chole</item>
+        <item>@string/rajma</item>
+
+    </string-array>
+
+    <string name="cropvarietyNull" tools:ignore="MissingTranslation">No variety found</string>
+
+    <string-array name="arr_crop_types" tools:ignore="InconsistentArrays">
+        <item>Grey Wheat</item>
+        <item>Basmati Rice</item>
+        <item>@string/cropvarietyNull</item>
+        <item>Kala Chana</item>
+    </string-array>
+
+
+    <string name="Hectare">>Hectare</string>
+    <string name="acres">>Acres</string>
+    <string name="sqrmetres">>Sq Metres</string>
+    <string name="NoNewReqFound">No requirements found.</string>
+    <string name="asia">asia</string>
+    <string name="temp">temp</string>
+    <string name="expm20">Expiry of bid should be after at least 20 days from sowing date</string>
+
+    <string-array name="arr_area_units">
+        <item>@string/Hectare</item>
+        <item>@string/bigha</item>
+        <item>@string/acres</item>
+        <item>@string/sqrmetres</item>
+    </string-array>
+
 
 
 </resources>

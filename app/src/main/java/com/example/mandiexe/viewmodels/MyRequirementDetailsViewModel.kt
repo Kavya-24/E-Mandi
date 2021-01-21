@@ -12,8 +12,8 @@ import com.example.mandiexe.models.responses.bids.DeleteBidResponse
 import com.example.mandiexe.models.responses.bids.UpdateBidResponse
 import com.example.mandiexe.models.responses.bids.ViewBidResponse
 import com.example.mandiexe.utils.ApplicationUtils
-import com.example.mandiexe.utils.ExternalUtils
 import com.example.mandiexe.utils.auth.SessionManager
+import com.example.mandiexe.utils.usables.ExternalUtils
 import retrofit2.Call
 import retrofit2.Response
 
