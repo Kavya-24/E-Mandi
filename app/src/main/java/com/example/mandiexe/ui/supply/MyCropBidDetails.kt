@@ -77,6 +77,8 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
     private lateinit var tilPrice: TextInputLayout
     private lateinit var tilEst: TextInputLayout
     private lateinit var tilExp: TextInputLayout
+    private lateinit var tilDesc: TextInputLayout
+
     private lateinit var etEst: EditText
     private lateinit var offerPrice: EditText
     private lateinit var cropType: EditText
@@ -260,10 +262,11 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
         tilPrice = v.findViewById(R.id.tilEditOfferPrice) as TextInputLayout
         tilEst = v.findViewById(R.id.tilEditEstDate) as TextInputLayout
         tilExp = v.findViewById(R.id.tilEditExpDate) as TextInputLayout
-
+        tilDesc = v.findViewById(R.id.tilEditDescription) as TextInputLayout
 
         //Positive and negative buttons
 
+        //Create observer on Textof dates
         //Create observer on Textof dates
         //Date Instance
 
@@ -417,64 +420,74 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun initViews(value: ViewSupplyResponse) {
 
-        findViewById<ConstraintLayout>(R.id.mLayoutSup).visibility = View.VISIBLE
-        findViewById<ProgressBar>(R.id.pb_my_crops_details).visibility = View.GONE
+        try {
+            findViewById<ConstraintLayout>(R.id.mLayoutSup).visibility = View.VISIBLE
+            findViewById<ProgressBar>(R.id.pb_my_crops_details).visibility = View.GONE
 
-        //#TRANSLATION
-        OfflineTranslate.translateToDefault(
-            this,
-            value.supply.crop,
-            findViewById<TextView>(R.id.tv_stock_detail_crop_name)
-        )
-        OfflineTranslate.translateToDefault(
-            this,
-            value.supply.variety,
-            findViewById<TextView>(R.id.tv_stock_detail_crop_type)
-        )
-        OfflineTranslate.translateToDefault(
-            this,
-            value.supply.description,
-            findViewById<TextView>(R.id.tv_stock_detail_crop_description)
-        )
+            //#TRANSLATION
+            OfflineTranslate.translateToDefault(
+                this,
+                value.supply.crop,
+                findViewById<TextView>(R.id.tv_stock_detail_crop_name)
+            )
+            OfflineTranslate.translateToDefault(
+                this,
+                value.supply.variety,
+                findViewById<TextView>(R.id.tv_stock_detail_crop_type)
+            )
+            OfflineTranslate.translateToDefault(
+                this,
+                value.supply.description,
+                findViewById<TextView>(R.id.tv_stock_detail_crop_description)
+            )
 
 
 
 
-        findViewById<TextView>(R.id.ans_detail_crop_quanity).text = value.supply.qty.toString()
-        findViewById<TextView>(R.id.ans_detail_crop_exp).text =
-            TimeConversionUtils.convertTimeToEpoch(value.supply.expiry)
-        findViewById<TextView>(R.id.ans_detail_init_date).text =
-            TimeConversionUtils.convertTimeToEpoch(value.supply.supplyCreated)
+            findViewById<TextView>(R.id.ans_detail_crop_quanity).text = value.supply.qty.toString()
+            findViewById<TextView>(R.id.ans_detail_crop_exp).text =
+                TimeConversionUtils.convertTimeToEpoch(value.supply.expiry)
+            findViewById<TextView>(R.id.ans_detail_init_date).text =
+                TimeConversionUtils.convertTimeToEpoch(value.supply.supplyCreated)
 
-        findViewById<TextView>(R.id.tv_stock_detail_current_bid).text =
-            value.supply.currentBid.toString()
-        if (value.supply.currentBid < value.supply.askPrice) {
-            findViewById<TextView>(R.id.tv_stock_detail_current_bid)
-                .setTextColor(resources.getColor(R.color.red_A700))
+            findViewById<TextView>(R.id.tv_stock_detail_current_bid).text =
+                value.supply.currentBid.toString()
+            if (value.supply.currentBid < value.supply.askPrice) {
+                findViewById<TextView>(R.id.tv_stock_detail_current_bid)
+                    .setTextColor(resources.getColor(R.color.red_A700))
 
-        } else if (value.supply.currentBid == value.supply.askPrice) {
-            findViewById<TextView>(R.id.tv_stock_detail_current_bid)
-                .setTextColor(resources.getColor(R.color.blue_A700))
+            } else if (value.supply.currentBid == value.supply.askPrice) {
+                findViewById<TextView>(R.id.tv_stock_detail_current_bid)
+                    .setTextColor(resources.getColor(R.color.blue_A700))
+
+            }
+
+            //Else the color is green
+
+            findViewById<TextView>(R.id.tv_stock_detail_initial_offer_price).text =
+                value.supply.askPrice.toString()
+            mPrice = value.supply.askPrice.toString()
+            mCrop = value.supply.crop
+            numberOfBid = 0
+            modifyBody = ModifySupplyBody.Update(
+                askPrice = value.supply.askPrice,
+                value.supply.variety,
+                value.supply.description,
+                value.supply.expiry,
+                value.supply.dateOfHarvest
+            )
+
+            fillRecyclerView(value.supply.bids)
+            createGraphView(
+                value.supply.lastBid,
+                value.supply.currentBid,
+                value.supply.lastModified
+            )
 
         }
-
-        //Else the color is green
-
-        findViewById<TextView>(R.id.tv_stock_detail_initial_offer_price).text =
-            value.supply.askPrice.toString()
-        mPrice = value.supply.askPrice.toString()
-        mCrop = value.supply.crop
-        numberOfBid = 0
-        modifyBody = ModifySupplyBody.Update(
-            askPrice = value.supply.askPrice,
-            value.supply.variety,
-            value.supply.description,
-            value.supply.expiry,
-            value.supply.dateOfHarvest
-        )
-
-        fillRecyclerView(value.supply.bids)
-        createGraphView(value.supply.lastBid, value.supply.currentBid, value.supply.lastModified)
+        catch (e : Exception){
+            Log.e(TAG, "Error" + e.cause + e.message)
+        }
     }
 
     private fun createGraphView(
