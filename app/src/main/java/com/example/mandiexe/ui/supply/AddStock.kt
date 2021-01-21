@@ -23,6 +23,7 @@ import com.example.mandiexe.models.body.supply.AddSupplyBody
 import com.example.mandiexe.models.responses.supply.AddSupplyResponse
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.usables.OfflineTranslate
+import com.example.mandiexe.utils.usables.OfflineTranslate.transliterateToEnglish
 import com.example.mandiexe.utils.usables.TimeConversionUtils
 import com.example.mandiexe.utils.usables.UIUtils
 import com.example.mandiexe.utils.usables.ValidationObject
@@ -82,6 +83,7 @@ class AddStock : Fragment() {
     private val RC_TYPE = 2
     private val pref = PreferenceUtil
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -185,6 +187,7 @@ class AddStock : Fragment() {
         UIUtils.getSpinnerAdapter(R.array.arr_crop_types, cropType, requireContext())
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun createStock() {
 
 
@@ -308,21 +311,22 @@ class AddStock : Fragment() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun getTranslations() {
         //Run an async task to get the values for the three categories
         OfflineTranslate.translateToEnglish(
             requireContext(),
-            cropName.text.toString(),
+            transliterateToEnglish(cropName.text.toString()) ?: cropName.text.toString(),
             root.findViewById<TextView>(R.id.tvTempCropName)
         )
         OfflineTranslate.translateToEnglish(
             requireContext(),
-            cropType.text.toString(),
+            transliterateToEnglish(cropType.text.toString()) ?: cropType.text.toString(),
             root.findViewById<TextView>(R.id.tvTempCropType)
         )
         OfflineTranslate.translateToEnglish(
             requireContext(),
-            cropDes.text.toString(),
+            transliterateToEnglish(cropDes.text.toString()) ?: cropDes.text.toString(),
             root.findViewById<TextView>(R.id.tvTempCropDesc)
         )
 
