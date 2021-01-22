@@ -35,6 +35,11 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
+            android:name=".ui.myrequirements.MyRequirementDetails"
+            android:label="@string/details"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
             android:name=".ui.myrequirements.OpenNewRequirementFragment"
             android:label="@string/details"
             android:theme="@style/AppTheme.NoActionBar" />

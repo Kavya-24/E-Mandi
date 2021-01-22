@@ -127,7 +127,7 @@ import com.squareup.moshi.Json
             val amount: Int, // 10000
 
             @field:Json(name = "_id")
-            val id: String, // 5fe0c61e3dde370fe0e57f8a
+            val _id: String, // 5fe0c61e3dde370fe0e57f8a
 
             @field:Json(name = "timestamp")
             val timestamp: String // 2020-12-21T15:58:20.851Z

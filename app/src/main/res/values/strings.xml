@@ -110,7 +110,7 @@
     <string name="noSupply">You do not have any supplies as of now.</string>
     <string name="demanndLoaded">My demands loaded</string>
     <string name="noDemand">You do not have any demands</string>
-    <string name="cancelBid">Cancel bid?</string>
+    <string name="cancelBid">Delete bid?</string>
     <string name="bidUpdated">Bid updated successfully</string>
     <string name="BidDeleted">Bid deleted successfully.</string>
     <string name="newBidPrice">New bid price</string>
@@ -286,6 +286,8 @@
     <string name="temp">temp</string>
     <string name="expm20">Expiry of bid should be after at least 20 days from sowing date</string>
     <string name="unableMaps">Unable to get location.</string>
+    <string name="placeBid">Place bid</string>
+    <string name="doDeleteBid">Do you want to delete your bid on this demand?</string>
 
     <string-array name="arr_area_units">
         <item>@string/Hectare</item>

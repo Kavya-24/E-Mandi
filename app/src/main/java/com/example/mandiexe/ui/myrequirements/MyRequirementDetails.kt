@@ -3,18 +3,21 @@ package com.example.mandiexe.ui.myrequirements
 import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
+import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.mandiexe.R
+import com.example.mandiexe.adapter.MyBidHistoryAdapter
 import com.example.mandiexe.adapter.OnBidHistoryClickListener
 import com.example.mandiexe.models.body.BidHistoryBody
 import com.example.mandiexe.models.body.bid.DeletBidBody
@@ -23,70 +26,120 @@ import com.example.mandiexe.models.body.bid.ViewBidBody
 import com.example.mandiexe.models.responses.bids.DeleteBidResponse
 import com.example.mandiexe.models.responses.bids.UpdateBidResponse
 import com.example.mandiexe.models.responses.bids.ViewBidResponse
-import com.example.mandiexe.utils.usables.TimeConversionUtils
+import com.example.mandiexe.utils.auth.PreferenceUtil
+import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
+import com.example.mandiexe.utils.usables.OfflineTranslate
+import com.example.mandiexe.utils.usables.OfflineTranslate.transliterateToDefault
+import com.example.mandiexe.utils.usables.TimeConversionUtils.convertTimeToEpoch
+import com.example.mandiexe.utils.usables.UIUtils
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import com.example.mandiexe.viewmodels.MyRequirementDetailsViewModel
-import com.github.mikephil.charting.animation.Easing
-import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.android.synthetic.main.my_crop_bid_details_fragment.*
 import kotlinx.android.synthetic.main.my_requirement_details_fragment.*
 
-class MyRequirementDetails : Fragment(), OnBidHistoryClickListener {
+class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
     companion object {
         fun newInstance() = MyRequirementDetails()
     }
 
     private val viewModel: MyRequirementDetailsViewModel by viewModels()
-    private lateinit var root: View
+
+    //private lateinit var root: View
     private lateinit var args: Bundle
 
     private var BID_ID = ""
     private val TAG = MyRequirementDetails::class.java.simpleName
 
+    //Modify dialog
     private lateinit var d: androidx.appcompat.app.AlertDialog.Builder
     private lateinit var tempRef: androidx.appcompat.app.AlertDialog
 
-    private lateinit var lineChart: LineChart
+    private var from = ""
+    private var isOpen = false
+
+
     private var ownerPhone = ""
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    private var ownerName = ""
 
-        root = inflater.inflate(R.layout.my_requirement_details_fragment, container, false)
-        lineChart = root.findViewById(R.id.lineChartMyBids)
+    private lateinit var adapter: MyBidHistoryAdapter
 
-        args = requireArguments()
+    private val pref = PreferenceUtil
 
-        //This will be a call using BID ID
-        if (arguments != null) {
-            //Set the address in the box trimmed
-            BID_ID = requireArguments().getString("BID_ID").toString()
 
-            Log.e(TAG, "BID ID  " + BID_ID)
+    @RequiresApi(Build.VERSION_CODES.Q)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        setAppLocale(pref.getLanguageFromPreference(), this)
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.my_requirement_details_fragment)
+
+        args = intent?.getBundleExtra("bundle")!!
+        //Set the address in the box trimmed
+        BID_ID = args.getString("BID_ID").toString()
+
+        from = args.getString("FROM").toString()
+
+        Log.e(TAG, "BID ID  " + BID_ID + "from is $from")
+
+        val tb = findViewById<Toolbar>(R.id.toolbarExternal)
+        tb.title = resources.getString(R.string.details)
+        tb.setNavigationOnClickListener {
+            onBackPressed()
         }
 
-        //This will be a call and then instantiate views
+
+        //Set views from 'FROM'
+        if (from == RequirementFragment::class.java.simpleName) {
+            //Do nothing
+            findViewById<MaterialButton>(R.id.mtb_add_bid).visibility = View.GONE
+            findViewById<MaterialButton>(R.id.mtb_cancel_bid).visibility = View.VISIBLE
+            findViewById<MaterialButton>(R.id.mtb_Modify_bid).visibility = View.VISIBLE
+            findViewById<TextView>(R.id.tv_requirement_detail_my_bid_text_view).visibility =
+                View.VISIBLE
+            findViewById<TextView>(R.id.tv_requirement_detail_my_bid).visibility = View.VISIBLE
+
+        } else if (from == AddRequirement::class.java.simpleName) {
+            findViewById<MaterialButton>(R.id.mtb_add_bid).visibility = View.VISIBLE
+            findViewById<MaterialButton>(R.id.mtb_cancel_bid).visibility = View.GONE
+            findViewById<MaterialButton>(R.id.mtb_Modify_bid).visibility = View.GONE
+            findViewById<TextView>(R.id.tv_requirement_detail_my_bid_text_view).visibility =
+                View.GONE
+            findViewById<TextView>(R.id.tv_requirement_detail_my_bid).visibility = View.GONE
+
+        }
+
+
         makeCall()
 
 
         //initViews
-        root.findViewById<TextView>(R.id.tv_view_bid_history_requirement).setOnClickListener {
-            //##Send the crop object
+        findViewById<TextView>(R.id.tv_view_bid_history_requirement).setOnClickListener {
+            //Open the history
+            if (!isOpen) {
+                openBidHistory()
+            }
 
         }
 
-        root.findViewById<MaterialButton>(R.id.mtb_cancel_bid).setOnClickListener {
+        findViewById<ImageView>(R.id.iv_dropdown_bid_history).setOnClickListener {
+
+            //Open the history
+            if (isOpen) {
+                closeBidHistory()
+            } else {
+                openBidHistory()
+            }
+
+        }
+
+        findViewById<MaterialButton>(R.id.mtb_cancel_bid).setOnClickListener {
             cancelBid()
         }
 
 
-        root.findViewById<MaterialButton>(R.id.mtb_Modify_bid).setOnClickListener {
+        findViewById<MaterialButton>(R.id.mtb_Modify_bid).setOnClickListener {
 
             //Send the Bid Uodate body : Modify Bid Body in the bundle
             //Check for bundle in the BIdFragment
@@ -94,47 +147,55 @@ class MyRequirementDetails : Fragment(), OnBidHistoryClickListener {
 
         }
 
+        findViewById<MaterialButton>(R.id.mtb_add_bid).setOnClickListener {
+            addBid()
+        }
 
 
-        root.findViewById<ImageView>(R.id.iv_req_call_buyer).setOnClickListener {
-            val i = Intent(Intent.ACTION_CALL, Uri.parse("number"))
+        findViewById<ImageView>(R.id.iv_req_call_buyer).setOnClickListener {
+            val i = Intent(Intent.ACTION_CALL, Uri.parse(ownerPhone))
             startActivity(i)
         }
 
-        root.findViewById<TextView>(R.id.tv_view_bid_history_requirement).setOnClickListener {
-            viewBidHistory()
+        findViewById<SwipeRefreshLayout>(R.id.swl_detailsReq).setOnRefreshListener {
+            makeCall()
+            findViewById<SwipeRefreshLayout>(R.id.swl_detailsReq).isRefreshing = false
         }
 
 
-        return root
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun makeCall() {
 
-        root.findViewById<ProgressBar>(R.id.pb_my_req_details).visibility = View.VISIBLE
+        findViewById<ProgressBar>(R.id.pb_my_req_details).visibility = View.VISIBLE
 
         val body = ViewBidBody(BID_ID)
-        val mResponse = viewModel.getFunction(body)
-        val success = viewModel.successfulBid.value
-        if (success != null) {
-            if (!success) {
-                createSnackbar(
-                    viewModel.messageCancel.value,
-                    requireContext(),
-                    container_req_details
-                )
-            } else {
-                mResponse.value?.let { initViews(it) }
-            }
-        }
 
-        root.findViewById<ProgressBar>(R.id.pb_my_req_details).visibility = View.GONE
+        viewModel.getFunction(body).observe(this, Observer { mResponse ->
+            val success = viewModel.successfulBid.value
+            if (success != null) {
+                if (!success) {
+                    createSnackbar(
+                        viewModel.messageCancel.value,
+                        this,
+                        container_req_details
+                    )
+                } else if (mResponse.msg == "Bid retrieved successfully.") {
+                    mResponse.let { initViews(it) }
+                }
+            }
+        })
+
+
+        findViewById<ProgressBar>(R.id.pb_my_req_details).visibility = View.GONE
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun createModifyBidDialog() {
 
-        d = androidx.appcompat.app.AlertDialog.Builder(requireContext())
+        d = androidx.appcompat.app.AlertDialog.Builder(this)
         val v = layoutInflater.inflate(R.layout.layout_modify_bid, null)
         d.setView(v)
 
@@ -166,44 +227,45 @@ class MyRequirementDetails : Fragment(), OnBidHistoryClickListener {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun confirmModify(newBid: String) {
+
         tempRef.dismiss()
 
         val body = UpdateBidBody(BID_ID, newBid)
 
-        if (body != null) {
-            viewModel.updateFunction(body).observe(viewLifecycleOwner, Observer { mResponse ->
-                //Check with the sucessful of it
-                if (viewModel.successfulUpdate.value == false) {
-                    context?.let {
-                        createSnackbar(
-                            viewModel.messageUpdate.value,
-                            it, container_req_details
-                        )
-                    }
-                } else {
-                    manageModifyResponses(mResponse)
+        viewModel.updateFunction(body).observe(this, Observer { mResponse ->
+            //Check with the sucessful of it
+            if (viewModel.successfulUpdate.value == false) {
+                let {
+                    createSnackbar(
+                        viewModel.messageUpdate.value,
+                        it, container_req_details
+                    )
                 }
-            })
-        }
+            } else if (mResponse.msg == "Bid updated successfully.") {
+                manageModifyResponses(mResponse)
+            }
+        })
 
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun manageModifyResponses(mResponse: UpdateBidResponse?) {
         Toast.makeText(
-            requireContext(),
+            this,
             resources.getString(R.string.bidUpdated),
             Toast.LENGTH_SHORT
         ).show()
-
+        makeCall()
     }
 
     private fun cancelBid() {
 
-        val dialog = AlertDialog.Builder(context)
-        dialog.setTitle(resources.getString(R.string.cancelBid))
-        dialog.setPositiveButton(resources.getString(R.string.cancelStock), { _, _ ->
+        val dialog = AlertDialog.Builder(this)
+        dialog.setTitle(resources.getString(R.string.cancelBid)).setMessage(R.string.doDeleteBid)
+        dialog.setPositiveButton(resources.getString(R.string.cancelBid), { _, _ ->
             confirmCancel()
         })
         dialog.setNegativeButton(resources.getString(R.string.no), { _, _ ->
@@ -220,164 +282,208 @@ class MyRequirementDetails : Fragment(), OnBidHistoryClickListener {
 
         val body = DeletBidBody(BID_ID)
 
-        if (body != null) {
-            viewModel.cancelFunction(body).observe(viewLifecycleOwner, Observer { mResponse ->
+        viewModel.cancelFunction(body).observe(this, Observer { mResponse ->
 
-                //Check with the sucessful of it
-                if (viewModel.successfulCancel.value == false) {
-                    context?.let {
-                        createSnackbar(
-                            viewModel.messageCancel.value,
-                            it, container_req_details
-                        )
-                    }
-                } else {
-                    manageCancelResponses(mResponse)
+            //Check with the sucessful of it
+            if (viewModel.successfulCancel.value == false) {
+                let {
+                    createSnackbar(
+                        viewModel.messageCancel.value,
+                        it, container_req_details
+                    )
                 }
-            })
-        }
+            } else if (mResponse.msg == "Bid deleted successfully.") {
+                manageCancelResponses(mResponse)
+            }
+        })
 
     }
 
     private fun manageCancelResponses(mResponse: DeleteBidResponse) {
 
         Toast.makeText(
-            requireContext(),
+            this,
             resources.getString(R.string.BidDeleted),
             Toast.LENGTH_SHORT
-        )
-        onDestroy()
+        ).show()
+
+        onBackPressed()
     }
 
-    private fun viewBidHistory() {
+    private fun addBid() {
 
-        root.findViewById<RecyclerView>(R.id.rv_bidHistoryMyReq).visibility = View.VISIBLE
     }
 
+    private fun closeBidHistory() {
+        isOpen = false
+
+        findViewById<RecyclerView>(R.id.rv_bidHistoryMyReq).visibility = View.GONE
+        findViewById<TextView>(R.id.tv_view_bid_history_requirement).text =
+            resources.getString(R.string.view_bid_history)
+
+        findViewById<ImageView>(R.id.iv_dropdown_bid_history)
+            .setImageDrawable(resources.getDrawable(R.drawable.ic_down))
+
+    }
+
+    private fun openBidHistory() {
+
+        isOpen = true
+        findViewById<RecyclerView>(R.id.rv_bidHistoryMyReq).visibility = View.VISIBLE
+        findViewById<TextView>(R.id.tv_view_bid_history_requirement).text =
+            resources.getString(R.string.myBidHistory)
+
+        findViewById<ImageView>(R.id.iv_dropdown_bid_history)
+            .setImageDrawable(resources.getDrawable(R.drawable.ic_top))
+
+        if (adapter.lst.size == 0) {
+            UIUtils.createSnackbar(
+                resources.getString(R.string.emptyRV),
+                this,
+                container_crop_bids_details
+            )
+        }
+
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun initViews(value: ViewBidResponse) {
 
         //Set the above 8 entities wrt root
         //remove pb
         //View the root
-        root.findViewById<ConstraintLayout>(R.id.mLayoutReq).visibility = View.VISIBLE
-        root.findViewById<ProgressBar>(R.id.pb_my_req_details).visibility = View.GONE
+        findViewById<ConstraintLayout>(R.id.mLayoutReq).visibility = View.VISIBLE
+        findViewById<ProgressBar>(R.id.pb_my_req_details).visibility = View.GONE
 
 
-        root.findViewById<TextView>(R.id.tv_requirement_detail_crop_name).text =
-            value.bid.demand.crop
-        root.findViewById<TextView>(R.id.tv_requirement_detail_crop_type).text =
-            value.bid.demand.variety
-        root.findViewById<TextView>(R.id.tv_requirement_detail_crop_location).text =
-            value.bid.bidder.address.toString()
+        try {
 
-        root.findViewById<TextView>(R.id.ans_detail_bid_quanity).text =
-            value.bid.demand.qty.toString()
-        root.findViewById<TextView>(R.id.ans_detail_bid_exp).text = value.bid.demand.expiry
-        root.findViewById<TextView>(R.id.ans_detail_init_date).text = value.bid.demand.demandCreated
 
-        root.findViewById<TextView>(R.id.tv_requirement_detail_current_bid).text =
-            value.bid.demand.currentBid.toString()
+            //Translate
+            OfflineTranslate.translateToDefault(
+                this,
+                value.bid.demand.crop,
+                findViewById<TextView>(R.id.tv_requirement_detail_crop_name)
+            )
 
-        if (value.bid.demand.currentBid < value.bid.demand.offerPrice) {
-            root.findViewById<TextView>(R.id.tv_requirement_detail_current_bid)
-                .setTextColor(resources.getColor(R.color.deltaRed))
+            OfflineTranslate.translateToDefault(
+                this,
+                value.bid.demand.variety,
+                findViewById<TextView>(R.id.tv_requirement_detail_crop_type)
+            )
 
-        } else if (value.bid.demand.currentBid == value.bid.demand.offerPrice) {
-            root.findViewById<TextView>(R.id.tv_requirement_detail_current_bid)
-                .setTextColor(resources.getColor(R.color.wildColor))
+            OfflineTranslate.translateToDefault(
+                this,
+                value.bid.demand.description,
+                findViewById<TextView>(R.id.tv_requirement_detail_crop_description)
+            )
 
+
+            //Transliterate
+            findViewById<TextView>(R.id.tv_requirement_detail_crop_location).text =
+                OfflineTranslate.transliterateToDefault(value.bid.bidder.address)
+
+            //Owner Details
+            ownerPhone = value.bid.bidder.phone
+            ownerName = transliterateToDefault(value.bid.bidder.name)
+            //Normal Stuff
+
+            findViewById<TextView>(R.id.ans_detail_bid_quanity).text =
+                value.bid.qty.toString()
+            findViewById<TextView>(R.id.ans_detail_bid_exp).text =
+                convertTimeToEpoch(value.bid.demand.expiry)
+            findViewById<TextView>(R.id.ans_detail_init_date).text =
+                convertTimeToEpoch(value.bid.demand.demandCreated)
+
+            findViewById<TextView>(R.id.tv_requirement_detail_current_bid).text =
+                value.bid.demand.lastBid.toString()
+            findViewById<TextView>(R.id.tv_requirement_detail_initial_offer_price).text =
+                value.bid.demand.offerPrice.toString()
+
+            if (from == RequirementFragment::class.java.simpleName) {
+                //Add in the bidding fragment
+                findViewById<TextView>(R.id.tv_requirement_detail_my_bid).text =
+                    value.bid.demand.currentBid.toString()
+            }
+
+
+            if (value.bid.demand.currentBid < value.bid.demand.offerPrice) {
+                findViewById<TextView>(R.id.tv_requirement_detail_current_bid)
+                    .setTextColor(resources.getColor(R.color.deltaRed))
+
+            } else if (value.bid.demand.currentBid == value.bid.demand.offerPrice) {
+                findViewById<TextView>(R.id.tv_requirement_detail_current_bid)
+                    .setTextColor(resources.getColor(R.color.wildColor))
+            }
+
+
+            fillRecyclerView(value.bid)
+            createGraph(value)
+
+        } catch (e: Exception) {
+            Log.e(TAG, "Error" + e.cause + e.message)
         }
+    }
 
-        //Else the color is green
-
-        //Store owner number
-        ownerPhone = value.bid.bidder.phone
-        root.findViewById<TextView>(R.id.tv_requirement_detail_initial_offer_price).text =
-            value.bid.demand.offerPrice.toString()
-
-        fillRecyclerView(value.bid.bids)
-        createGraph(value.bid.bids)
+    private fun createGraph(value: ViewBidResponse) {
 
     }
 
-    private fun fillRecyclerView(bids: List<ViewBidResponse.Bid.BidDetails>) {
+    private fun fillRecyclerView(valueBids: ViewBidResponse.Bid) {
 
-//        val rv = root.findViewById<RecyclerView>(R.id.rv_bidHistoryMyReq)
-//        rv.layoutManager = LinearLayoutManager(context)
-//        val adapter = MyBidHistoryAdapter(this)
+//        val rv = findViewById<RecyclerView>(R.id.rv_bidHistoryMyReq)
+//        rv.layoutManager = LinearLayoutManager(this)
+//        adapter = MyBidHistoryAdapter(this)
 //
 //        //Create list
-//        //Fill the rv wit
 //        val mBids: MutableList<BidHistoryBody> = mutableListOf()
-//        for (element in bids) {
 //
+//        for (element in valueBids.bids) {
+//
+//            val x = element
+//            mBids.add(
+//                BidHistoryBody(
+//                    x.amount,
+//                    x._id,
+//                    x.timestamp,
+//                    element.bidder.name,
+//                    element.bidder.phone,
+//                    element.bidder.address
+//                )
+//            )
 //        }
+//
+//        mBids.sortByDescending { it.amount }
+//        Log.e(TAG, mBids.toString())
 //
 //        adapter.lst = mBids
 //        rv.adapter = adapter
-//
-    }
-
-    private fun createGraph(item: List<ViewBidResponse.Bid.BidDetails>) {
-
-        //Sample
-        //First bid is wrt to the first person
-        //Second bid is wrt to the bids of the parent bid person
-        val entries = ArrayList<Entry>()
-
-        for (element in item) {
-            entries.add(
-                Entry(
-                    TimeConversionUtils.convertTimeToEpoch(element.timestamp.toString()).toFloat(),
-                    element.amount.toFloat()
-                )
-            )
-
-        }
-
-
-        val vl = LineDataSet(entries, requireContext().resources.getString(R.string.graphTitle))
-
-
-        vl.setDrawValues(false)
-        vl.setDrawFilled(true)
-        vl.lineWidth = 3f
-        vl.fillColor = requireContext().resources.getColor(R.color.darkBlue)
-        vl.fillAlpha = R.color.red
-
-
-        lineChart.xAxis.labelRotationAngle = 0f
-
-        lineChart.data = LineData(vl)
-
-
-        lineChart.setTouchEnabled(true)
-        lineChart.setPinchZoom(true)
-
-        lineChart.description.text = resources.getString(R.string.graphTitle)
-        lineChart.setNoDataText(resources.getString(R.string.graphError))
-
-        lineChart.animateX(1800, Easing.EaseInExpo)
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
 
+    override fun onBackPressed() {
+
+        //Load the bid
         viewModel.successfulBid.removeObservers(this)
         viewModel.successfulBid.value = null
 
+        //Successfully cancel the bid
         viewModel.successfulCancel.removeObservers(this)
         viewModel.successfulCancel.value = null
 
+        //Upate the bid
         viewModel.successfulUpdate.removeObservers(this)
         viewModel.successfulUpdate.value = null
 
+        finish()
+        super.onBackPressed()
 
     }
 
     override fun viewBidDetails(_listItem: BidHistoryBody) {
-
+        TODO("Not yet implemented")
     }
 
 }

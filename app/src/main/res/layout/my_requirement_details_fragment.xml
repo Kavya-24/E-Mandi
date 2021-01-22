@@ -7,7 +7,7 @@
     <include layout="@layout/layout_toolbar" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swl_details"
+        android:id="@+id/swl_detailsReq"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize">
@@ -22,11 +22,11 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/mLayoutReq"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space"
-                android:padding="@dimen/space"
-                android:visibility="gone">
+                android:padding="@dimen/space">
 
                 <TextView
                     android:id="@+id/tv_requirement_detail_crop_name"
@@ -366,6 +366,18 @@
                     app:backgroundTint="@color/colorAccent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/mtb_cancel_bid"
+                    app:layout_constraintTop_toBottomOf="@id/tvNoGraph" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/mtb_add_bid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_4x"
+                    android:text="@string/placeBid"
+                    android:visibility="gone"
+                    app:backgroundTint="@color/colorAccent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvNoGraph" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

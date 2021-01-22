@@ -143,12 +143,16 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
 
     override fun viewMyBidDetails(_listItem: FamerBidsResponse.Bid) {
 
+        val mFrom = RequirementFragment::class.java.simpleName
         val bundle = bundleOf(
-            "BID_ID" to _listItem._id
+            "BID_ID" to _listItem._id,
+            "FROM" to mFrom
         )
 
-//        root.findNavController()
-//            .navigate(R.id.action_nav_home_to_myRequirementDetails, bundle)
+        val i = Intent(requireContext(), OpenNewRequirementFragment::class.java)
+        i.putExtra("bundle", bundle)
+        startActivity(i)
+
 
     }
 

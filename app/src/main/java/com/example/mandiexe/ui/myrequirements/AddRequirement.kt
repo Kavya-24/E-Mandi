@@ -266,8 +266,10 @@ class AddRequirement : AppCompatActivity(), OnNewReqClockListener {
 
     override fun viewAddReqDetails(_listItem: SearchCropReqResponse.Supply) {
 
+        val mFrom = AddRequirement::class.java.simpleName
         val bundle = bundleOf(
-            "BID_ID" to _listItem._id
+            "BID_ID" to _listItem._id,
+            "FROM" to mFrom
 
         )
 
