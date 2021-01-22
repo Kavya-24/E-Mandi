@@ -94,6 +94,7 @@ class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {
 
         } else {
             adapter.lst = mResponse.supplies
+            mTv.visibility = View.GONE
         }
 
         rv.adapter = adapter
