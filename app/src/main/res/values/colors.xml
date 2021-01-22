@@ -9,7 +9,7 @@
 
 
     <color name="deltaGreen">@color/useDarkGreenOriginal</color>
-    <color name="deltaRed">@color/crimson</color>
+    <color name="deltaRed">@color/tomato</color>
 
     <color name="stockMarketGreen">#32CD32</color>
     <color name="stockMarketRed"></color>
@@ -33,7 +33,7 @@
     <color name="lightGreenHoneyDew">#f0fff0</color>
 
     <color name="lightGreenTest">#eefdec</color>
-
+    <color name="tomato">#FF6347</color>
     <!--    Whatsapp Teal green-->
     <color name="useGreen">#128C7E</color>
     <!--    Whatsapp Teal Dark Green-->
