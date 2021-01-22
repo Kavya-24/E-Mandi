@@ -6,6 +6,6 @@ import com.squareup.moshi.Json
 
 
 @Keep data class SearchGlobalCropBody(
-    @Json(name = "crop")
+    @field:Json(name = "crop")
     val crop: String // Wheat
 )

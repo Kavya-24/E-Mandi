@@ -6,14 +6,14 @@ import com.squareup.moshi.Json
 
  @Keep
  data class AddGrowthBody(
-    @Json(name = "crop")
+    @field:Json(name = "crop")
     val crop: String, // Rice
-    @Json(name = "dateOfHarvest")
+    @field:Json(name = "dateOfHarvest")
     val dateOfHarvest: String, // 01-15-2020 23:59:59
-    @Json(name = "dateOfSowing")
+    @field:Json(name = "dateOfSowing")
     val dateOfSowing: String, // 01-15-2020 23:59:59
-    @Json(name = "qty")
+    @field:Json(name = "qty")
     val qty: String, // 100
-    @Json(name = "variety")
+    @field:Json(name = "variety")
     val variety: String // NA
 )

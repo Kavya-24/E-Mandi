@@ -76,14 +76,15 @@ class AddStockViewModel : ViewModel() {
                             successful.value = false
                             message.value = response.body()?.msg.toString()
                         }
-
-                        addStock.value = response.body()!!
+                        if (response.body() != null) {
+                            addStock.value = response.body()!!
+                        }
 
                     } else {
                         successful.value = false
                         message.value = response.body()?.msg.toString()
                     }
-                    addStock.value = response.body()!!
+
 
                 }
             })
@@ -138,15 +139,15 @@ class AddStockViewModel : ViewModel() {
                             successfulGrowth.value = false
                             messageGrowth.value = response.body()?.msg.toString()
                         }
-
-                        growthStock.value = response.body()!!
+                        if (response.body() != null) {
+                            growthStock.value = response.body()!!
+                        }
 
                     } else {
                         successfulGrowth.value = false
                         messageGrowth.value = response.body()?.msg.toString()
                     }
 
-                    growthStock.value = response.body()!!
 
                 }
             })

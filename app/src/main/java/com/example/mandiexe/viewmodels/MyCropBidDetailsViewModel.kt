@@ -57,7 +57,7 @@ class MyCropBidDetailsViewModel : ViewModel() {
         mySupplyService.getViewCurrentSupply(
 
             body = body,
-     )
+        )
             .enqueue(object : retrofit2.Callback<ViewSupplyResponse> {
                 override fun onFailure(call: Call<ViewSupplyResponse>, t: Throwable) {
                     successfulSupply.value = false
@@ -112,7 +112,7 @@ class MyCropBidDetailsViewModel : ViewModel() {
 
         mySupplyService.getDeleteSupply(
             mDeleteSupply = body,
-     )
+        )
             .enqueue(object : retrofit2.Callback<DeleteSupplyResponse> {
                 override fun onFailure(call: Call<DeleteSupplyResponse>, t: Throwable) {
                     successfulCancel.value = false
@@ -166,7 +166,7 @@ class MyCropBidDetailsViewModel : ViewModel() {
 
         mySupplyService.getModifySupply(
             mModifySupply = body,
-     )
+        )
             .enqueue(object : retrofit2.Callback<ModifySupplyResponse> {
                 override fun onFailure(call: Call<ModifySupplyResponse>, t: Throwable) {
                     successfulUpdate.value = false

@@ -6,6 +6,6 @@ import com.squareup.moshi.Json
 
 
 @Keep data class CropSearchAutoCompleteBody(
-    @Json(name = "search")
+    @field:Json(name = "search")
     val search: String // e
 )
