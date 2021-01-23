@@ -217,11 +217,20 @@ dependencies {
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-auth-ktx'
 
+    //Graph 2
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
     //Add the safenyet api
     implementation 'com.google.android.gms:play-services-safetynet:17.0.0'
 
+
+    //SearchView material
+    implementation 'com.miguelcatalan:materialsearchview:1.4.0'
+
+
     //GraphView
     implementation 'com.jjoe64:graphview:4.2.2'
+
 
     //Transliterate
     implementation 'com.google.cloud:google-cloud-translate:1.85.0'
@@ -229,10 +238,8 @@ dependencies {
     //ML-KIt Translate
     implementation 'com.google.mlkit:translate:16.1.1'
 
-    implementation 'com.github.arimorty:floatingsearchview:2.1.1'
-
-    implementation 'com.github.mancj:MaterialSearchBar:0.8.5'
 }
+
 
 
 apply plugin: 'com.google.gms.google-services'

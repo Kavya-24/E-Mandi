@@ -89,18 +89,10 @@
         <action
             android:id="@+id/action_nav_my_supplies_to_addStock"
             app:destination="@id/nav_add_stock" />
-        <action
-            android:id="@+id/action_nav_my_supplies_to_scrollingSearchExampleFragment"
-            app:destination="@id/scrollingSearchExampleFragment" />
     </fragment>
     <fragment
         android:id="@+id/nav_add_stock"
         tools:layout="@layout/add_stock_fragment"
         android:name="com.example.mandiexe.ui.supply.AddStock"
         android:label="@string/add_stock" />
-    <fragment
-        android:id="@+id/scrollingSearchExampleFragment"
-        tools:layout="@layout/fragment_scrolling_search_example"
-        android:name="com.example.mandiexe.ui.search.ScrollingSearchExampleFragment"
-        android:label="ScrollingSearchExampleFragment" />
 </navigation>
