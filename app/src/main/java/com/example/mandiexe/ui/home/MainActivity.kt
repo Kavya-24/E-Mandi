@@ -1,11 +1,9 @@
 package com.example.mandiexe.ui.home
 
 import android.app.Activity
-import android.app.SearchManager
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
-import android.database.Cursor
 import android.database.MatrixCursor
 import android.os.Bundle
 import android.os.Handler
@@ -15,10 +13,12 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.*
+import android.widget.SimpleCursorAdapter
+import android.widget.TextView
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -29,6 +29,8 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.arlib.floatingsearchview.FloatingSearchView
+import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion
 import com.example.mandiexe.R
 import com.example.mandiexe.adapter.LanguagesAdapter
 import com.example.mandiexe.adapter.OnMyLanguageListener
@@ -36,6 +38,8 @@ import com.example.mandiexe.interfaces.RetrofitClient
 import com.example.mandiexe.models.body.LanguageBody
 import com.example.mandiexe.models.body.supply.CropSearchAutoCompleteBody
 import com.example.mandiexe.models.responses.supply.CropSearchAutocompleteResponse
+import com.example.mandiexe.ui.search.AutocompleteSuggestion
+import com.example.mandiexe.ui.search.MyDataHelper
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.Communicator
 import com.example.mandiexe.utils.auth.PreferenceUtil
@@ -43,7 +47,7 @@ import com.example.mandiexe.utils.auth.SessionManager
 import com.example.mandiexe.utils.usables.ExternalUtils
 import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.usables.OfflineTranslate
-import com.example.mandiexe.utils.usables.UIUtils.hideKeyboard
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManager
@@ -66,7 +70,7 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener {
 
     private val pref = PreferenceUtil
     private val sessionManager = SessionManager(ApplicationUtils.getContext())
-
+    private lateinit var drawerLayout: DrawerLayout
 
     private var searchQuery = ""
     private lateinit var searchView: android.widget.SearchView
@@ -80,6 +84,9 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener {
     private lateinit var tempRef: androidx.appcompat.app.AlertDialog
 
     private lateinit var mMenu: Menu
+    private lateinit var mSearchView: FloatingSearchView
+    private lateinit var newSuggestions: MutableList<SearchSuggestion>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,7 +97,8 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+
+        drawerLayout = findViewById(R.id.drawer_layout)
         navView = findViewById(R.id.nav_view)
 
         val navController = findNavController(R.id.nav_host_fragment)
@@ -109,7 +117,146 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener {
         updateDrawerDetails()
 
 
+        //Set the app bar
+        val mAppBar = findViewById<AppBarLayout>(R.id.mainAppBar)
+
+        mSearchView = findViewById(R.id.floating_search_view)
+        newSuggestions = mutableListOf()
+
+        //Set app bar
+        mAppBar.addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener {
+            override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
+                Log.e("MAIN", "In offset changed from main")
+                mSearchView.translationY = verticalOffset.toFloat()
+            }
+        })
+
+        //Add drawer
+        mSearchView.attachNavigationDrawerToMenuButton(drawerLayout);
+
+        setupSearchBar()
+
+
     }
+
+    private fun setupSearchBar() {
+
+        mSearchView.setOnQueryChangeListener { oldQuery, newQuery -> //get suggestions based on newQuery
+
+            //pass them on to the search view
+            if (oldQuery != "" && newQuery == "") {
+                mSearchView.clearSuggestions()
+            } else {
+
+                //this shows the top left circular progress
+                //you can call it where ever you want, but
+                //it makes sense to do it when loading something in
+                //the background.
+                mSearchView.showProgress()
+                mSearchView.clearSuggestions()
+                fetchSuggestions(newQuery)
+                mSearchView.swapSuggestions(newSuggestions)
+                Log.e("MAIN", "After setting sugestions")
+                mSearchView.hideProgress()
+
+            }
+        }
+
+        mSearchView.setOnSearchListener(object : FloatingSearchView.OnSearchListener {
+            override fun onSuggestionClicked(searchSuggestion: SearchSuggestion) {
+                val queryClicked = searchSuggestion.body
+                val eTV = findViewById<TextView>(R.id.tempTvMainToFinalSug)
+
+                com.example.mandiexe.utils.usables.OfflineTranslate.translateToEnglish(
+                    this@MainActivity,
+                    queryClicked,
+                    eTV
+                )
+
+                Log.e(
+                    "MAIN",
+                    "In suggestions clicked, query is $queryClicked and translated is ${eTV.text}"
+                )
+                val mHandler = Handler()
+
+                if (eTV.text == resources.getString(R.string.noDesc)) {
+                    //Not translated yet
+                    //Wait for 3 secomds
+                    mHandler.postDelayed({}, 2000)
+                }
+
+                val bundle = bundleOf(
+                    "crop" to queryClicked,
+                )
+
+                val i = Intent(this@MainActivity, SearchResultActivity::class.java)
+                i.putExtra("bundle", bundle)
+                i.action = Intent.ACTION_SEARCH
+                startActivity(i)
+
+            }
+
+            override fun onSearchAction(query: String) {
+
+                Log.e("MAIN", "In search from key board")
+                //Do nothing here
+                return
+            }
+        })
+
+        mSearchView.setOnFocusChangeListener(object : FloatingSearchView.OnFocusChangeListener {
+            override fun onFocus() {
+
+                //show suggestions when search bar gains focus (typically history suggestions)
+
+                mSearchView.swapSuggestions(MyDataHelper.getHistory(this@MainActivity, 3))
+                Log.d("MAIN", "onFocus()")
+            }
+
+            override fun onFocusCleared() {
+
+                //set the title of the bar so that when focus is returned a new query begins
+                mSearchView.setSearchBarTitle("")
+                mSearchView.clearQuery()
+                mSearchView.clearSearchFocus()
+                //you can also set setSearchText(...) to make keep the query there when not focused and when focus returns
+                //mSearchView.setSearchText(searchSuggestion.getBody());
+
+                Log.d("MAIN", "onFocusCleared()")
+            }
+        })
+
+        //handle menu clicks the same way as you would
+        //in a regular activity
+        mSearchView.setOnMenuItemClickListener { item ->
+
+            Log.e("MAIN", "In menu ite click")
+            if (item.itemId == R.id.action_change_language) {
+                changeLanguage()
+            }
+
+        }
+
+        //use this listener to listen to menu clicks when app:floatingSearch_leftAction="showHome"
+        mSearchView.setOnHomeActionClickListener { Log.e("MAIN", "onHomeClicked()") }
+
+        mSearchView.setOnBindSuggestionCallback { suggestionView, leftIcon, textView, item, itemPosition ->
+
+            //Like on bind for the adapter
+            leftIcon.setImageDrawable(
+                ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.ic_call_made_black_24dp,
+                    null
+                )
+            )
+
+
+        }
+
+
+    }
+
 
     private fun updateDrawerDetails() {
 
@@ -146,7 +293,7 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener {
         val mHandler = Handler()
 
         if (eTV.text == resources.getString(R.string.noDesc)) {
-            mHandler.postDelayed({}, 2000)
+            mHandler.postDelayed({}, 3000)
         }
 
         val body = CropSearchAutoCompleteBody(eTV.text.toString())
@@ -169,13 +316,21 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener {
                 if (response.isSuccessful) {
 
                     val strAr = mutableListOf<String>()
+
+
                     for (y: CropSearchAutocompleteResponse.Suggestion in response.body()!!.suggestions) {
                         OfflineTranslate.translateToDefault(this@MainActivity, y.name, mTV)
                         strAr.add(mTV.text.toString())
+                        val acs = AutocompleteSuggestion(mTV.text.toString(), false)
+                        newSuggestions.add(acs)
+
                     }
 
+                    //Now strAr is a list of such options
                     Log.e("STr", strAr.toString())
                     Log.e("Str", strAr.size.toString())
+                    Log.e("STR", "\nNEw Suggs " + newSuggestions.toString())
+                    //We need to use the search suggestion
 
 
                     val c =
@@ -197,153 +352,156 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener {
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
-        mMenu = menu
-        searchView =
-            mMenu.findItem(R.id.action_main_search).actionView as android.widget.SearchView
+//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        menuInflater.inflate(R.menu.main, menu)
+//        mMenu = menu
 
 
-        Log.e("MAIN", "In onCreateOptions")
-        val searchManager = getSystemService(SEARCH_SERVICE) as SearchManager
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+//        searchView =
+//            mMenu.findItem(R.id.action_main_search).actionView as android.widget.SearchView
+//
+//
+//        Log.e("MAIN", "In onCreateOptions")
+//        val searchManager = getSystemService(SEARCH_SERVICE) as SearchManager
+//        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+//
+//        val from = arrayOf("suggestionList")
+//        val to = intArrayOf(R.id.tvSearchDefault)
+//        // val toDefault = intArrayOf(R.id.tvSearchDefault)
+//
+//        mAdapter = SimpleCursorAdapter(
+//            this,
+//            R.layout.item_search,
+//            null,
+//            from,
+//            to,
+//            CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER
+//        )
+//
+//
+//        searchView.suggestionsAdapter = mAdapter
+//        searchView.isIconifiedByDefault = true
+//
+//
+//        searchView.setOnSuggestionListener(object : SearchView.OnSuggestionListener {
+//
+//            override fun onSuggestionSelect(position: Int): Boolean {
+//                return true
+//            }
+//
+//            override fun onSuggestionClick(position: Int): Boolean {
+//
+//                val cursor: Cursor = mAdapter!!.getItem(position) as Cursor
+//                val txt = cursor.getString(cursor.getColumnIndex("suggestionList"))
+//                val eTV = findViewById<TextView>(R.id.tempTvMainToFinalSug)
+//
+//                com.example.mandiexe.utils.usables.OfflineTranslate.translateToEnglish(
+//                    this@MainActivity,
+//                    txt,
+//                    eTV
+//                )
+//
+//                val mHandler = Handler()
+//
+//                if (eTV.text == resources.getString(R.string.noDesc)) {
+//                    //Not translated yet
+//                    //Wait for 3 secomds
+//                    mHandler.postDelayed({}, 2000)
+//                }
+//
+//                val bundle = bundleOf(
+//                    "crop" to txt,
+//                )
+//
+//                val i = Intent(this@MainActivity, SearchResultActivity::class.java)
+//                i.putExtra("bundle", bundle)
+//                i.action = Intent.ACTION_SEARCH
+//                startActivity(i)
+//
+//                return true
+//
+//
+//            }
+//        })
+//
+//
+//        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+//            override fun onQueryTextSubmit(query: String?): Boolean {
+//                return false
+//            }
+//
+//            override fun onQueryTextChange(newText: String?): Boolean {
+//                Log.e("Main", "In query change")
+//                fetchSuggestions(newText.toString())
+//                return false
+//            }
+//        })
+//
+//
+//        //Close searchView
+//        searchView.setOnCloseListener {
+//            hideKeyboard(this@MainActivity, this@MainActivity)
+//            searchView.clearFocus()
+//            searchView.isIconified = false
+//            Log.e("MAIN", "In close")
+//
+//            false
+//        }
+//
+//
+//        searchView.setOnSearchClickListener {
+//            Log.e("MAIN", "In search click")
+//
+//        }
+//
 
-        val from = arrayOf("suggestionList")
-        val to = intArrayOf(R.id.tvSearchDefault)
-        // val toDefault = intArrayOf(R.id.tvSearchDefault)
-
-        mAdapter = SimpleCursorAdapter(
-            this,
-            R.layout.item_search,
-            null,
-            from,
-            to,
-            CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER
-        )
-
-
-        searchView.suggestionsAdapter = mAdapter
-        searchView.isIconifiedByDefault = true
-
-
-        searchView.setOnSuggestionListener(object : SearchView.OnSuggestionListener {
-
-            override fun onSuggestionSelect(position: Int): Boolean {
-                return true
-            }
-
-            override fun onSuggestionClick(position: Int): Boolean {
-
-                val cursor: Cursor = mAdapter!!.getItem(position) as Cursor
-                val txt = cursor.getString(cursor.getColumnIndex("suggestionList"))
-                val eTV = findViewById<TextView>(R.id.tempTvMainToFinalSug)
-
-                com.example.mandiexe.utils.usables.OfflineTranslate.translateToEnglish(
-                    this@MainActivity,
-                    txt,
-                    eTV
-                )
-
-                val mHandler = Handler()
-
-                if (eTV.text == resources.getString(R.string.noDesc)) {
-                    //Not translated yet
-                    //Wait for 3 secomds
-                    mHandler.postDelayed({}, 2000)
-                }
-
-                val bundle = bundleOf(
-                    "crop" to txt,
-                )
-
-                val i = Intent(this@MainActivity, SearchResultActivity::class.java)
-                i.putExtra("bundle", bundle)
-                i.action = Intent.ACTION_SEARCH
-                startActivity(i)
-
-                return true
-
-
-            }
-        })
-
-
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                Log.e("Main", "In query change")
-                fetchSuggestions(newText.toString())
-                return false
-            }
-        })
-
-
-        //Close searchView
-        searchView.setOnCloseListener {
-            hideKeyboard(this@MainActivity, this@MainActivity)
-            searchView.clearFocus()
-            searchView.isIconified = false
-            Log.e("MAIN", "In close")
-
-            false
-        }
-
-
-        searchView.setOnSearchClickListener {
-            Log.e("MAIN", "In search click")
-
-        }
-
-
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        Log.e("MAIN", "In onSelected")
-        when (item.itemId) {
-
-            R.id.action_change_language -> changeLanguage()
-            //  R.id.action_notification -> showNotification()
-            // R.id.action_show_walkthrough -> showWalkthrough()
-            R.id.action_main_search -> searchCrop()
-
-
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
+//        return true
+//    }
+//
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        Log.e("MAIN", "In onSelected")
+//        when (item.itemId) {
+//
+//            R.id.action_change_language -> changeLanguage()
+//            //  R.id.action_notification -> showNotification()
+//            // R.id.action_show_walkthrough -> showWalkthrough()
+////            R.id.action_main_search -> launchSearch()
+//
+//
+//        }
+//
+//        return super.onOptionsItemSelected(item)
+//    }
+//
 
     private fun searchCrop() {
 
-        Log.e("MAIN", "In search crop")
-        val mic = resources.getIdentifier("android:id/search_voice_btn", null, null)
-        val micImage = searchView.findViewById<View>(mic) as ImageView
-        micImage.setOnClickListener {
-
-            Log.e("MAIN", "In voice intent")
-            val Voiceintent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-            Voiceintent.putExtra(
-                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-            )
-
-            //Put language
-            Voiceintent.putExtra(
-                RecognizerIntent.EXTRA_LANGUAGE,
-                Locale(pref.getLanguageFromPreference() + "-IN")
-            )
-            Voiceintent.putExtra(
-                RecognizerIntent.EXTRA_PROMPT,
-                resources.getString(R.string.searchHead)
-            )
-            startActivityForResult(Voiceintent, VOICE_REC_CODE)
-
-
-        }
+//        Log.e("MAIN", "In search crop")
+//        val mic = resources.getIdentifier("android:id/search_voice_btn", null, null)
+//        val micImage = searchView.findViewById<View>(mic) as ImageView
+//        micImage.setOnClickListener {
+//
+//            Log.e("MAIN", "In voice intent")
+//            val Voiceintent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+//            Voiceintent.putExtra(
+//                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+//                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+//            )
+//
+//            //Put language
+//            Voiceintent.putExtra(
+//                RecognizerIntent.EXTRA_LANGUAGE,
+//                Locale(pref.getLanguageFromPreference() + "-IN")
+//            )
+//            Voiceintent.putExtra(
+//                RecognizerIntent.EXTRA_PROMPT,
+//                resources.getString(R.string.searchHead)
+//            )
+//            startActivityForResult(Voiceintent, VOICE_REC_CODE)
+//
+//
+//        }
 
 
     }
@@ -472,6 +630,7 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener {
     //Comunicator function
     override fun goToAddStocks(fragment: Fragment) {
 
+
     }
 
     override fun onBackPressed() {
@@ -512,6 +671,14 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener {
         editor.apply()
 
 
+    }
+
+    fun onActivityBackPress(): Boolean {
+        //if mSearchView.setSearchFocused(false) causes the focused search
+        //to close, then we don't want to close the activity. if mSearchView.setSearchFocused(false)
+        //returns false, we know that the search was already closed so the call didn't change the focus
+        //state and it makes sense to call supper onBackPressed() and close the activity
+        return mSearchView.setSearchFocused(false)
     }
 
 

@@ -15,13 +15,12 @@
     <!--        app:showAsAction="never" />-->
 
 
-    <item
-        android:id="@+id/action_main_search"
-        android:icon="@drawable/ic_search_black_24dp"
-        android:orderInCategory="100"
-        android:title="@string/search"
-        app:actionViewClass="android.widget.SearchView"
-        app:showAsAction="ifRoom" />
+<!--    <item-->
+<!--        android:id="@+id/action_main_search"-->
+<!--        android:icon="@drawable/ic_search_black_24dp"-->
+<!--        android:orderInCategory="100"-->
+<!--        android:title="@string/search"-->
+<!--        app:showAsAction="ifRoom" />-->
 
     <!--    <item-->
     <!--        android:id="@+id/action_notification"-->
