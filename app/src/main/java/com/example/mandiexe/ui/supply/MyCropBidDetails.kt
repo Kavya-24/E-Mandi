@@ -26,7 +26,6 @@ import com.example.mandiexe.models.body.supply.ViewSupplyBody
 import com.example.mandiexe.models.responses.supply.DeleteSupplyResponse
 import com.example.mandiexe.models.responses.supply.ModifySupplyResponse
 import com.example.mandiexe.models.responses.supply.ViewSupplyResponse
-import com.example.mandiexe.ui.home.FarmerSupplyHistory
 import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.usables.OfflineTranslate
 import com.example.mandiexe.utils.usables.TimeConversionUtils
@@ -426,11 +425,6 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
     private fun initViews(value: ViewSupplyResponse) {
 
         //Remove the views if it is from Supply History
-        if (from == FarmerSupplyHistory::class.java.simpleName) {
-            findViewById<MaterialButton>(R.id.mtb_modify_stock).visibility = View.GONE
-            findViewById<MaterialButton>(R.id.mtb_cancel_stock).visibility = View.GONE
-
-        }
 
         try {
             findViewById<ConstraintLayout>(R.id.mLayoutSup).visibility = View.VISIBLE
@@ -495,6 +489,14 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
                 value.supply.currentBid,
                 value.supply.lastModified
             )
+
+
+            //Hide views if not active
+            if (!value.supply.active) {
+                findViewById<MaterialButton>(R.id.mtb_modify_stock).visibility = View.GONE
+                findViewById<MaterialButton>(R.id.mtb_cancel_stock).visibility = View.GONE
+
+            }
 
         } catch (e: Exception) {
             Log.e(TAG, "Error" + e.cause + e.message)
