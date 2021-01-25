@@ -44,7 +44,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
 
     override fun onResume() {
         super.onResume()
-        Log.e("In supplies", "In on resume")
+
     }
 
     override fun onCreateView(
@@ -137,6 +137,10 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
 
             } else {
                 root.findViewById<AppCompatTextView>(R.id.tvEmptyListCrop).visibility = View.GONE
+
+                //Sort by timestamp
+                mResponse.supplies.sortedByDescending { it.lastModified }
+
                 adapter.lst = mResponse.supplies
                 rv.layoutManager = LinearLayoutManager(context)
                 rv.adapter = adapter

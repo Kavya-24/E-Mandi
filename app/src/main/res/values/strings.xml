@@ -190,7 +190,6 @@
     <string name="expLess">Expiration date of the bid can not be before the date of sowing</string>
 
 
-
     <!--    //Crop name-->
 
     <string name="rice">Rice</string>
@@ -290,6 +289,8 @@
     <string name="doDeleteBid">Do you want to delete your bid on this demand?</string>
     <string name="logout">Logout</string>
     <string name="unableToGetSearch">Unable to search for the crop.</string>
+    <string name="addThisInBidding">Add this crop for bidding</string>
+    <string name="addCropGrowthOnly">Add the growth of this crop only</string>
 
     <string-array name="arr_area_units">
         <item>@string/Hectare</item>
@@ -297,7 +298,6 @@
         <item>@string/acres</item>
         <item>@string/sqrmetres</item>
     </string-array>
-
 
 
 </resources>

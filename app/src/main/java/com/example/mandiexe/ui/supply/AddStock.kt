@@ -11,24 +11,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.mandiexe.R
-
 import com.example.mandiexe.libModel.TranslateViewmodel
 import com.example.mandiexe.models.body.supply.AddGrowthBody
-import com.example.mandiexe.models.body.supply.AddSupplyBody
 import com.example.mandiexe.models.responses.supply.AddSupplyResponse
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.usables.OfflineTranslate
 import com.example.mandiexe.utils.usables.TimeConversionUtils
 import com.example.mandiexe.utils.usables.UIUtils
+import com.example.mandiexe.utils.usables.UIUtils.createToast
 import com.example.mandiexe.utils.usables.ValidationObject
 import com.example.mandiexe.viewmodels.AddStockViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.android.synthetic.main.activity_add_stock_page2.*
 import kotlinx.android.synthetic.main.add_stock_fragment.*
 import java.util.*
 
@@ -52,27 +53,20 @@ class AddStock : Fragment() {
 
     //UI variables
     private lateinit var etEst: EditText
-    private lateinit var etExp: EditText
-    private lateinit var ivLocation: ImageView
 
     //private lateinit var etAddress: EditText
     private lateinit var cropName: AutoCompleteTextView
     private lateinit var cropType: AutoCompleteTextView
-    private lateinit var cropDes: EditText
-
     private lateinit var cropQuantity: EditText
-    private lateinit var offerPrice: EditText
-    private lateinit var bidSwitch: Switch
+
 
     //TILs
     private lateinit var tilName: TextInputLayout
     private lateinit var tilType: TextInputLayout
     private lateinit var tilQuantity: TextInputLayout
-    private lateinit var tilPrice: TextInputLayout
 
     // private lateinit var tilAddress: TextInputLayout
     private lateinit var tilEst: TextInputLayout
-    private lateinit var tilExp: TextInputLayout
 
 
     private val RC_MAP_STOCK_ADD = 111
@@ -81,6 +75,7 @@ class AddStock : Fragment() {
     private val RC_NAME = 1
     private val RC_TYPE = 2
     private val pref = PreferenceUtil
+
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreateView(
@@ -93,23 +88,19 @@ class AddStock : Fragment() {
         mHandler = Handler()
         //UI Init
         etEst = root.findViewById(R.id.etEstDate)
-        etExp = root.findViewById(R.id.etExpDate)
         //ivLocation = root.findViewById(R.id.iv_location)
         //  etAddress = root.findViewById(R.id.actv_address)
         cropName = root.findViewById(R.id.actv_which_crop)
         cropType = root.findViewById(R.id.actv_crop_type)
         cropQuantity = root.findViewById(R.id.actv_quantity)
-        cropDes = root.findViewById(R.id.etDescription_add_stock)
-        offerPrice = root.findViewById(R.id.actv_price)
         //bidSwitch = root.findViewById(R.id.switch_for_bid)
 
         tilName = root.findViewById(R.id.tilWhichCrop)
         tilType = root.findViewById(R.id.tilCropType)
-        tilPrice = root.findViewById(R.id.tilOfferPrice)
         tilQuantity = root.findViewById(R.id.tilQuantity)
         //tilAddress = root.findViewById(R.id.tv_address)
         tilEst = root.findViewById(R.id.tilEstDate)
-        tilExp = root.findViewById(R.id.tilExpDate)
+        val etSow = root.findViewById<EditText>(R.id.etSowDate)
 
 
         //Populate views
@@ -125,10 +116,6 @@ class AddStock : Fragment() {
             TimeConversionUtils.clickOnDateObject(myCalendar, etEst, requireContext())
         }
 
-        //##Requires N
-        etExp.setOnClickListener {
-            TimeConversionUtils.clickOnDateObject(myCalendar, etExp, requireContext())
-        }
 
         root.findViewById<EditText>(R.id.etSowDate).setOnClickListener {
             TimeConversionUtils.clickOnDateObject(
@@ -138,14 +125,6 @@ class AddStock : Fragment() {
             )
         }
 
-
-        root.findViewById<MaterialButton>(R.id.mtb_add_stock).setOnClickListener {
-            if (isValidate()) {
-
-                createStock()
-
-            }
-        }
 
         //Mic units
         root.findViewById<ImageView>(R.id.mic_crop_name).setOnClickListener {
@@ -158,7 +137,108 @@ class AddStock : Fragment() {
         }
 
 
+        root.findViewById<MaterialButton>(R.id.mtb_go_to_bidding).setOnClickListener {
+
+            if(isValidate()) {
+                val bundle = bundleOf(
+                    "NAME" to cropName.text.toString(),
+                    "TYPE" to cropType.text.toString(),
+                    "QUANTITY" to cropQuantity.text.toString(),
+                    "SOW" to etSow.text.toString(),
+                    "EST" to etEst.text.toString()
+                )
+
+                val i = Intent(requireContext(), AddStockPage2::class.java)
+                i.putExtra("bundle", bundle)
+                startActivity(i)
+            }
+        }
+
+
+        root.findViewById<MaterialButton>(R.id.mtb_add_without_bidding).setOnClickListener {
+            if (isValidate()) {
+                createGrowth()
+            }
+        }
         return root
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun createGrowth() {
+
+        root.findViewById<ProgressBar>(R.id.pb_add_stock).visibility = View.VISIBLE
+        getTranslations()
+
+
+        if (getValidTranslations()) {
+
+            makeCallForGrowth()
+
+        } else {
+
+            //When the things have not been translated
+            //The errors will be logged
+            //1. Wait for translation to be made (LiveData)
+            //Run a handler
+            //Make call after 5 seconds with whatever data is there
+            mHandler.postDelayed({ makeCallForGrowth() }, 5000)
+        }
+
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun makeCallForGrowth() {
+
+        //Translate three words
+        val transCropName =
+            root.findViewById<TextView>(R.id.tvTempCropName).text.toString()
+                .capitalize(Locale("en"))
+        val transCropType =
+            root.findViewById<TextView>(R.id.tvTempCropType).text.toString()
+                .capitalize((Locale("en")))
+
+        val growthBody = AddGrowthBody(
+            transCropName ?: cropName.text.toString().capitalize(Locale.ROOT),
+            TimeConversionUtils.convertDateToReqForm(etEst.text.toString()),
+            TimeConversionUtils.convertDateToReqForm(root.findViewById<EditText>(R.id.etSowDate).text.toString()),
+            cropQuantity.text.toString(),
+            transCropType ?: cropType.text.toString().capitalize(Locale.ROOT)
+        )
+
+        Log.e(
+            TAG,
+            "In add growth" + growthBody.toString()
+        )
+        viewModel.growthFunction(growthBody).observe(viewLifecycleOwner, Observer { mResponse ->
+            val success = viewModel.successfulGrowth.value
+            if (success != null) {
+                Log.e(
+                    TAG,
+                    "In growth function and success is " + success + viewModel.messageGrowth
+                )
+
+                if (success == true) {
+                    Log.e(TAG, "In successfully added growth")
+                } else if (viewModel.messageGrowth.value == "Crop growth added successfully.") {
+                    Log.e(TAG, "In success ")
+                    createToast(
+                        requireContext().resources.getString(R.string.supplyAdded),
+                        requireContext(),
+                        container_add_stock
+                    )
+                    onDestroy()
+                } else{
+                    UIUtils.createSnackbar(
+                        viewModel.messageGrowth.value,
+                        requireContext(),
+                        container_add_stock
+                    )
+                }
+            }
+        })
+
 
     }
 
@@ -186,115 +266,6 @@ class AddStock : Fragment() {
         UIUtils.getSpinnerAdapter(R.array.arr_crop_types, cropType, requireContext())
     }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
-    private fun createStock() {
-
-
-        //Start Progress bar
-        root.findViewById<ProgressBar>(R.id.pb_add_stock).visibility = View.VISIBLE
-
-        //Get the translation
-        getTranslations()
-
-        if (getValidTranslations()) {
-
-            makeCalls()
-
-        } else {
-
-            //When the things have not been translated
-            //The errors will be logged
-            //1. Wait for translation to be made (LiveData)
-            //Run a handler
-            //Make call after 5 seconds with whatever data is there
-            mHandler.postDelayed({ makeCalls() }, 5000)
-        }
-
-
-    }
-
-    private fun makeCalls() {
-
-
-        //Translate three words
-        val transCropName =
-            root.findViewById<TextView>(R.id.tvTempCropName).text.toString()
-                .capitalize(Locale("en"))
-        val transCropType =
-            root.findViewById<TextView>(R.id.tvTempCropType).text.toString()
-                .capitalize((Locale("en")))
-        var transDesc = cropDes.text.toString()
-
-        if (cropDes.text.toString() != resources.getString(R.string.noDesc)) {
-            //If it has something, use uts translated values
-            transDesc = root.findViewById<TextView>(R.id.tvTempCropDesc).text.toString()
-                .capitalize((Locale("en")))
-
-        }
-
-        Log.e(TAG, "Translated values are " + transCropName + transCropType + transDesc)
-        val body = AddSupplyBody(
-            offerPrice.text.toString(),
-            transCropName ?: cropName.text.toString().capitalize(Locale.ROOT),
-            TimeConversionUtils.convertDateToReqForm(etEst.text.toString()),
-            transDesc,
-            TimeConversionUtils.convertDateToReqForm(etExp.text.toString()),
-            "0",
-            transCropType ?: cropType.text.toString().capitalize(Locale.ROOT)
-        )
-
-        //Create growth
-        val growthBody = AddGrowthBody(
-            transCropName ?: cropName.text.toString().capitalize(Locale.ROOT),
-            TimeConversionUtils.convertDateToReqForm(etEst.text.toString()),
-            TimeConversionUtils.convertDateToReqForm(root.findViewById<EditText>(R.id.etSowDate).text.toString()),
-            cropQuantity.text.toString(),
-            transCropType ?: cropType.text.toString().capitalize(Locale.ROOT)
-        )
-
-        Log.e(
-            TAG,
-            "AddSupply Body \n" + body.toString() + "\n Add growth body" + growthBody.toString()
-        )
-
-
-        viewModel.growthFunction(growthBody).observe(viewLifecycleOwner, Observer { mResponse ->
-            val success = viewModel.successfulGrowth.value
-            if (success != null) {
-                Log.e(
-                    TAG,
-                    "In growth function and success is " + success + viewModel.messageGrowth
-                )
-
-                if (success == true) {
-                    Log.e(TAG, "In successfully added growth")
-                } else {
-                    Log.e(TAG, "In failed added growth")
-                }
-
-            }
-        })
-
-        viewModel.addFunction(body).observe(viewLifecycleOwner, Observer { mResponse ->
-
-            //Check with the sucessful of it
-            if (viewModel.successful.value == false) {
-                Log.e(TAG, viewModel.message.toString())
-                UIUtils.createSnackbar(
-                    viewModel.message.value,
-                    requireContext(),
-                    container_add_stock
-                )
-            } else if (viewModel.message.value == "Supply added successfully") {
-                manageStockCreateResponses(viewModel.addStock.value)
-            }
-        })
-
-        //Stop Progress bar
-        root.findViewById<ProgressBar>(R.id.pb_add_stock).visibility = View.GONE
-
-    }
-
     private fun getValidTranslations(): Boolean {
 
         return ValidationObject.validateTranslations(
@@ -302,9 +273,6 @@ class AddStock : Fragment() {
             requireContext()
         ) && ValidationObject.validateTranslations(
             root.findViewById<TextView>(R.id.tvTempCropType),
-            requireContext()
-        ) && ValidationObject.validateTranslations(
-            root.findViewById<TextView>(R.id.tvTempCropDesc),
             requireContext()
         )
 
@@ -323,12 +291,6 @@ class AddStock : Fragment() {
             cropType.text.toString(),
             root.findViewById<TextView>(R.id.tvTempCropType)
         )
-        OfflineTranslate.translateToEnglish(
-            requireContext(),
-            cropDes.text.toString(),
-            root.findViewById<TextView>(R.id.tvTempCropDesc)
-        )
-
     }
 
     private fun manageStockCreateResponses(mResponse: AddSupplyResponse?) {
@@ -370,12 +332,7 @@ class AddStock : Fragment() {
             R.string.cropQuanityError,
             requireContext()
         )
-                && ValidationObject.validateEmptyEditText(
-            offerPrice,
-            tilPrice,
-            R.string.offerPriceError,
-            requireContext()
-        )
+
                 && ValidationObject.validateEmptyEditText(
             etSow,
             tilSow,
@@ -388,12 +345,7 @@ class AddStock : Fragment() {
             R.string.etEstError,
             requireContext()
         )
-                && ValidationObject.validateEmptyEditText(
-            etExp,
-            tilExp,
-            R.string.expError,
-            requireContext()
-        )
+
                 && TimeConversionUtils.validateDates(
             etSow,
             etEst,
@@ -401,15 +353,6 @@ class AddStock : Fragment() {
             R.string.etEstLessIncomplete,
             etEst,
             tilEst,
-            requireContext()
-        )
-                && TimeConversionUtils.validateDates(
-            etSow,
-            etExp,
-            R.string.expLess,
-            R.string.expm20,
-            etExp,
-            tilExp,
             requireContext()
         )
 
@@ -447,7 +390,7 @@ class AddStock : Fragment() {
                 val res: java.util.ArrayList<String>? =
                     data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
                 val resultInEnglish = res?.get(0)
-              //  val conversionTable = onversionTable()
+                //  val conversionTable = onversionTable()
                 cropType.setText(OfflineTranslate.transliterateToDefault(resultInEnglish))
 
             }

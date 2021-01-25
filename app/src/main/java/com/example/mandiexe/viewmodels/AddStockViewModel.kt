@@ -67,7 +67,7 @@ class AddStockViewModel : ViewModel() {
                     )
 
                     if (response.isSuccessful) {
-                        if (response.body()?.msg == "Crop growth added successfully.") {
+                        if (response.body()?.msg == "Supply added successfully.") {
                             successful.value = true
                             message.value =
                                 context.resources.getString(R.string.supplyAdded)
