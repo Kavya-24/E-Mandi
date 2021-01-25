@@ -22,8 +22,10 @@ import com.example.mandiexe.utils.auth.SessionManager
 import com.example.mandiexe.utils.usables.ExternalUtils
 import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.usables.OfflineTranslate
+import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import kotlinx.android.synthetic.main.activity_search_result.*
 import retrofit2.Call
 import retrofit2.Response
 
@@ -117,9 +119,9 @@ class SearchResultActivity : AppCompatActivity() {
 
     private fun loadItemsFunction(response: SearchGlobalCropResponse) {
 
-        findViewById<ConstraintLayout>(R.id.clVis).visibility = View.VISIBLE
-        Log.e("SEARCH RES", "response " + response.toString())
         try {
+            findViewById<ConstraintLayout>(R.id.clVis).visibility = View.VISIBLE
+            Log.e("SEARCH RES", "response " + response.toString())
             findViewById<TextView>(R.id.tvInCountry).text = response.country.total.toString()
             findViewById<TextView>(R.id.tvInState).text = response.state.total.toString()
             findViewById<TextView>(R.id.tvInVillage).text = response.village.qty.toString()
@@ -128,8 +130,12 @@ class SearchResultActivity : AppCompatActivity() {
             loadYoutubeLinks(response.links)
         } catch (e: Exception) {
             Log.e("SEARCh", e.message + e.cause + " Error")
+            createSnackbar(resources.getString(R.string.unableToGetSearch), this, container_search)
         }
+        findViewById<ProgressBar>(R.id.pb_searchCrop).visibility = View.GONE
+
     }
+
 
     private fun loadYoutubeLinks(links: List<SearchGlobalCropResponse.Link>) {
 

@@ -73,13 +73,13 @@ class BidFragment : Fragment() {
         val ans = getDifference()
         if (ans > 0) {
             tvDiffernece.text = "+" + ans.toString()
-            tvDiffernece.setTextColor(resources.getColor(R.color.green_A700))
+            tvDiffernece.setTextColor(resources.getColor(R.color.deltaGreen))
         } else if (ans < 0) {
             tvDiffernece.text = ans.toString()
-            tvDiffernece.setTextColor(resources.getColor(R.color.red_A700))
+            tvDiffernece.setTextColor(resources.getColor(R.color.deltaRed))
         } else if (ans == 0) {
             tvDiffernece.text = resources.getString(R.string.noChangeInBid)
-            tvDiffernece.setTextColor(resources.getColor(R.color.blue_A700))
+            tvDiffernece.setTextColor(resources.getColor(R.color.wildColor))
         }
 
 

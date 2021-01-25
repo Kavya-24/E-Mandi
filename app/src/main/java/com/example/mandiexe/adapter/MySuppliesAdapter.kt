@@ -91,8 +91,8 @@ class MySuppliesAdapter(val itemClick: OnMyStockClickListener) :
                     } else if (ans == 0) {
 
                         CROP_DELTA.text = ans.toString()
-                        CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.blue_A700))
-                        CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.blue_A700))
+                        CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.wildColor))
+                        CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.wildColor))
                         CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightGreenTest))
 
                     }
@@ -100,8 +100,8 @@ class MySuppliesAdapter(val itemClick: OnMyStockClickListener) :
                 } else {
 
                     CROP_DELTA.text = "-"
-                    CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.blue_A700))
-                    CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.blue_A700))
+                    CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.wildColor))
+                    CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.wildColor))
                     CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightGreenTest))
                 }
 

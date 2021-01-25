@@ -237,6 +237,13 @@
     <string name="asia">asia</string>
     <string name="temp">temp</string>
     <string name="expm20">Expiry of bid should be after at least 20 days from sowing date</string>
+    <string name="unableMaps">Unable to get location.</string>
+    <string name="placeBid">Place bid</string>
+    <string name="doDeleteBid">Do you want to delete your bid on this demand?</string>
+    <string name="logout">Logout</string>
+    <string name="unableToGetSearch">Unable to search for the crop.</string>
+    <string name="addThisInBidding">Add this crop for bidding</string>
+    <string name="addCropGrowthOnly">Add the growth of this crop only</string>
 
     <string-array name="arr_crop_names">
         <item>@string/rice</item>

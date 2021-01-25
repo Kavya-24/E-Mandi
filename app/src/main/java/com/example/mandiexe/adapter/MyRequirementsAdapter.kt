@@ -58,17 +58,17 @@ class MyRequirementAdapter(val itemClick: OnMyBidClickListener) :
 
                 if (ans > 0) {
                     CROP_DELTA.text = "+" + ans.toString()
-                    CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.green_A700))
-                    CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.green_A700))
+                    CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaGreen))
+                    CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaGreen))
                 } else if (ans < 0) {
                     CROP_DELTA.text = ans.toString()
-                    CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.red_A700))
-                    CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.red_A700))
+                    CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
+                    CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaRed))
 
                 } else if (ans == 0) {
                     CROP_DELTA.text = ans.toString()
-                    CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.blue_A700))
-                    CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.blue_A700))
+                    CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.wildColor))
+                    CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.wildColor))
 
                 }
 

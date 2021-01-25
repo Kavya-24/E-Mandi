@@ -211,12 +211,12 @@ object OfflineTranslate {
 
     //Transliterate
     @RequiresApi(Build.VERSION_CODES.Q)
-    fun transliterateToDefault(latinString: String?): String? {
+    fun transliterateToDefault(latinString: String?): String {
 
 
         //Dont translate if the default lamguage is en
         if (PreferenceUtil.getLanguageFromPreference() == "en") {
-            return latinString
+            return latinString!!
         }
 
         Log.e(

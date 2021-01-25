@@ -7,68 +7,68 @@ import com.squareup.moshi.Json
 
 @Keep data class SearchGlobalCropResponse(
 
-    @Json(name = "country")
+    @field:Json(name = "country")
     val country: Country,
 
-    @Json(name = "district")
+    @field:Json(name = "district")
     val district: District,
 
-    @Json(name = "_id")
+    @field:Json(name = "_id")
     val _id: String, // 5fe1f2984b80e08ad56c0081
 
-    @Json(name = "links")
+    @field:Json(name = "links")
     val links: List<Link>,
 
-    @Json(name = "name")
+    @field:Json(name = "name")
     val name: String, // Wheat
 
-    @Json(name = "state")
+    @field:Json(name = "state")
     val state: State,
 
-    @Json(name = "type")
+    @field:Json(name = "type")
     val type: String, // Grain
 
-    @Json(name = "village")
+    @field:Json(name = "village")
     val village: Village
 
 ) {
 
     @Keep data class Country(
-        @Json(name = "_id")
+        @field:Json(name = "_id")
         val _id: String, // ind
-        @Json(name = "total")
+        @field:Json(name = "total")
         val total: Int // 570
     )
 
 
     @Keep data class District(
-        @Json(name = "_id")
+        @field:Json(name = "_id")
         val _id: String, // del
-        @Json(name = "total")
+        @field:Json(name = "total")
         val total: Int // 670
     )
 
 
     @Keep data class Link(
-        @Json(name = "heading")
+        @field:Json(name = "heading")
         val heading: String, // How to grow wheat?
-        @Json(name = "url")
+        @field:Json(name = "url")
         val url: String // youtube.com
     )
 
 
     @Keep data class State(
-        @Json(name = "_id")
+        @field:Json(name = "_id")
         val _id: String, // del
-        @Json(name = "total")
+        @field:Json(name = "total")
         val total: Int // 670
     )
 
 
     @Keep data class Village(
-        @Json(name = "_id")
+        @field:Json(name = "_id")
         val id: String, // greno
-        @Json(name = "qty")
+        @field:Json(name = "qty")
         val qty: Int // 670
     )
 }

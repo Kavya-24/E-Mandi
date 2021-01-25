@@ -1,5 +1,6 @@
 package com.example.mandiexe.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -17,6 +19,7 @@ import com.example.mandiexe.R
 import com.example.mandiexe.adapter.OnMySupplyHistoryClickListener
 import com.example.mandiexe.adapter.SupplyHistoryAdapter
 import com.example.mandiexe.models.responses.supply.SupplyHistoryResponse
+import com.example.mandiexe.ui.supply.MyCropBidDetails
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import kotlinx.android.synthetic.main.farmer_supply_history_fragment.*
 
@@ -91,6 +94,7 @@ class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {
 
         } else {
             adapter.lst = mResponse.supplies
+            mTv.visibility = View.GONE
         }
 
         rv.adapter = adapter
@@ -98,6 +102,18 @@ class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {
     }
 
     override fun viewMyStockDetails(_listItem: SupplyHistoryResponse.Supply) {
+
+        val from = FarmerSupplyHistory::class.java.simpleName
+        val bundle = bundleOf(
+            "SUPPLY_ID" to _listItem._id,
+            "FROM" to from
+        )
+
+        //   val supply = _listItem._id
+        val i = Intent(requireContext(), MyCropBidDetails::class.java)
+        i.putExtra("bundle", bundle)
+        startActivity(i)
+
 
     }
 

@@ -177,11 +177,11 @@ class OpenNewRequirementFragment : AppCompatActivity(), OnBidHistoryClickListene
 
         if (value.bid.demand.currentBid < value.bid.demand.offerPrice) {
             findViewById<TextView>(R.id.tv_new_requirement_detail_current_bid)
-                .setTextColor(resources.getColor(R.color.red_A700))
+                .setTextColor(resources.getColor(R.color.deltaRed))
 
         } else if (value.bid.demand.currentBid == value.bid.demand.offerPrice) {
             findViewById<TextView>(R.id.tv_new_requirement_detail_current_bid)
-                .setTextColor(resources.getColor(R.color.blue_A700))
+                .setTextColor(resources.getColor(R.color.wildColor))
 
         }
 

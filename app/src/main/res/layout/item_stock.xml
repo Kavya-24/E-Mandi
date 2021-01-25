@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space"
                 android:text="@string/delta"
-                android:textColor="@color/green_A700"
+                android:textColor="@color/deltaGreen"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_stock_image" />
 

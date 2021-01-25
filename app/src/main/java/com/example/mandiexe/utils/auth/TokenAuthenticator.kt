@@ -10,30 +10,6 @@ import org.apache.http.HttpHeaders.AUTHORIZATION
 import java.io.IOException
 import java.lang.reflect.Proxy
 
-//    private fun getNewAaccessToken(): String {
-//
-//        var res = ""
-//        service.getAccessToken(refreshToken = preferenceManager.authToken.toString())
-//            .enqueue(object : retrofit2.Callback<LoginResponse> {
-//                override fun onResponse(
-//                    call: Call<LoginResponse>,
-//                    response: retrofit2.Response<LoginResponse>
-//                ) {
-//                    if (response.isSuccessful) {
-//                        res = response.body()?.user?.accessToken.toString()
-//                    }
-//                }
-//
-//                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-//
-//                }
-//            })
-//
-//        return res
-//
-//    }
-//
-
 class TokenAuthenticator(context: Context) : Authenticator {
 
 

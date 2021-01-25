@@ -187,13 +187,15 @@ class MyRequirementDetailsViewModel : ViewModel() {
                             successfulUpdate.value = true
                             messageUpdate.value =
                                 context.resources.getString(R.string.bidUpdated)
-                            modifyBid.value = response.body()!!
 
                         } else {
                             successfulUpdate.value = false
                             messageUpdate.value = response.body()?.msg.toString()
                         }
+                        if(response.body() != null){
+                            modifyBid.value = response.body()!!
 
+                        }
                     } else {
                         successfulUpdate.value = false
                         messageUpdate.value = response.body()?.msg.toString()

@@ -44,7 +44,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
 
     override fun onResume() {
         super.onResume()
-        Log.e("In supplies", "In on resume")
+
     }
 
     override fun onCreateView(
@@ -136,6 +136,11 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
                     context?.resources?.getString(R.string.noSupply)
 
             } else {
+                root.findViewById<AppCompatTextView>(R.id.tvEmptyListCrop).visibility = View.GONE
+
+                //Sort by timestamp
+                mResponse.supplies.sortedByDescending { it.lastModified }
+
                 adapter.lst = mResponse.supplies
                 rv.layoutManager = LinearLayoutManager(context)
                 rv.adapter = adapter
@@ -149,9 +154,10 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
 
     override fun viewMyStockDetails(_listItem: FarmerSuppliesResponse.Supply) {
 
-
+        val from = MySuppliesFragment::class.java.simpleName
         val bundle = bundleOf(
-            "SUPPLY_ID" to _listItem._id
+            "SUPPLY_ID" to _listItem._id,
+            "FROM" to from
         )
 
         //   val supply = _listItem._id

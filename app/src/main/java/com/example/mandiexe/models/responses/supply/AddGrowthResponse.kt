@@ -6,6 +6,6 @@ import com.squareup.moshi.Json
 
 @Keep
 data class AddGrowthResponse(
-    @Json(name = "msg")
+    @field:Json(name = "msg")
     val msg: String // Crop growth added successfully.
 )

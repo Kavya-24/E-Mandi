@@ -63,6 +63,7 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
     private lateinit var adapter: MyBidHistoryAdapter
 
     private var SUPPLY_ID = ""
+    private var from = ""
     private val TAG = MyCropBidDetails::class.java.simpleName
     private var modifyBody = ModifySupplyBody.Update(0, "", "", "", "")
 
@@ -100,6 +101,7 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
         args = intent?.getBundleExtra("bundle")!!
         //Set the address in the box trimmed
         SUPPLY_ID = args.getString("SUPPLY_ID").toString()
+        from = args.getString("FROM").toString()
 
         val tb = findViewById<Toolbar>(R.id.toolbarExternal)
         tb.title = resources.getString(R.string.details)
@@ -107,7 +109,7 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
             onBackPressed()
         }
 
-        Log.e(TAG, "Argument str is" + SUPPLY_ID)
+        Log.e(TAG, "Supply id is" + SUPPLY_ID + "\nFrom " + from)
 
         //This gets an id as the argument and makes a call from it
         makeCall()
@@ -157,6 +159,7 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun makeCall() {
 
+        findViewById<ProgressBar>(R.id.pb_my_crops_details).visibility = View.VISIBLE
         Log.e(TAG, SUPPLY_ID + " is supply id")
         val body = ViewSupplyBody(SUPPLY_ID)
         //Clear graph series
@@ -169,7 +172,7 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
         viewModelCrop.getFunction(body).observe(this, Observer { mResponse ->
             if (viewModelCrop.successfulSupply.value != null) {
-                if (viewModelCrop.successfulSupply.value!!) {
+                if (viewModelCrop.successfulSupply.value!! || viewModelCrop.messageSupply.value == "Supply retrieved successfully.") {
                     initViews(mResponse)
                 } else {
                     createSnackbar(viewModelCrop.messageCancel.value)
@@ -178,6 +181,7 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
         })
 
+        findViewById<ProgressBar>(R.id.pb_my_crops_details).visibility = View.GONE
 
     }
 
@@ -420,6 +424,8 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun initViews(value: ViewSupplyResponse) {
 
+        //Remove the views if it is from Supply History
+
         try {
             findViewById<ConstraintLayout>(R.id.mLayoutSup).visibility = View.VISIBLE
             findViewById<ProgressBar>(R.id.pb_my_crops_details).visibility = View.GONE
@@ -454,11 +460,11 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
                 value.supply.currentBid.toString()
             if (value.supply.currentBid < value.supply.askPrice) {
                 findViewById<TextView>(R.id.tv_stock_detail_current_bid)
-                    .setTextColor(resources.getColor(R.color.red_A700))
+                    .setTextColor(resources.getColor(R.color.deltaRed))
 
             } else if (value.supply.currentBid == value.supply.askPrice) {
                 findViewById<TextView>(R.id.tv_stock_detail_current_bid)
-                    .setTextColor(resources.getColor(R.color.blue_A700))
+                    .setTextColor(resources.getColor(R.color.wildColor))
 
             }
 
@@ -484,8 +490,15 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
                 value.supply.lastModified
             )
 
-        }
-        catch (e : Exception){
+
+            //Hide views if not active
+            if (!value.supply.active) {
+                findViewById<MaterialButton>(R.id.mtb_modify_stock).visibility = View.GONE
+                findViewById<MaterialButton>(R.id.mtb_cancel_stock).visibility = View.GONE
+
+            }
+
+        } catch (e: Exception) {
             Log.e(TAG, "Error" + e.cause + e.message)
         }
     }

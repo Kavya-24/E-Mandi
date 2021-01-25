@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space"
                 android:src="@drawable/ic_mic_black_24dp"
-                android:tint="@color/red_A700"
+                android:tint="@color/deltaRed"
                 app:layout_constraintBottom_toBottomOf="@id/growth_tilWhichCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/growth_tilWhichCrop" />
@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space"
                 android:src="@drawable/ic_mic_black_24dp"
-                android:tint="@color/red_A700"
+                android:tint="@color/deltaRed"
                 app:layout_constraintBottom_toBottomOf="@id/growth_tilCropType"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/growth_tilCropType" />
