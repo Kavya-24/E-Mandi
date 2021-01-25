@@ -17,12 +17,10 @@ import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.usables.OfflineTranslate
 import com.example.mandiexe.utils.usables.TimeConversionUtils
-import com.example.mandiexe.utils.usables.UIUtils
 import com.example.mandiexe.utils.usables.ValidationObject
 import com.example.mandiexe.viewmodels.AddStockViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.android.synthetic.main.activity_add_stock_page2.*
 import java.util.*
 
 class AddStockPage2 : AppCompatActivity() {
@@ -220,53 +218,45 @@ class AddStockPage2 : AppCompatActivity() {
                 }
             })
 
+
         viewModel.addFunction(body).observe(this, androidx.lifecycle.Observer { mResponse ->
 
-            //Check with the sucessful of it
-            val success = viewModel.successful.value
-            if (success != null) {
 
-                if (viewModel.message.value == "Supply added successfully.") {
-                    manageStockCreateResponses(viewModel.addStock.value)
-                } else {
-                    Log.e(TAG, viewModel.message.toString())
-                    UIUtils.createSnackbar(
-                        viewModel.message.value,
-                        this,
-                        container_add_stock_page_2
-                    )
-                }
-            }
-        })
+            if (viewModel.message.value == "Supply added successfully.") {
+                manageStockCreateResponses(viewModel.addStock.value)}
 
-        //Stop Progress bar
-        findViewById<ProgressBar>(R.id.pb_add_stock_page_2).visibility = View.GONE
 
+
+            })
+
+            //Stop Progress bar
+            findViewById<ProgressBar>(R.id.pb_add_stock_page_2).visibility = View.GONE
+
+        }
+
+                private fun manageStockCreateResponses(value: AddSupplyResponse?) {
+            Toast.makeText(
+                this,
+                resources.getString(R.string.supplyAdded),
+                Toast.LENGTH_SHORT
+            )
+                .show()
+            onBackPressed()
+            finish()
+
+        }
+
+                private fun isValidate(): Boolean {
+            return ValidationObject.validateEmptyEditText(
+                offerPrice,
+                tilPrice,
+                R.string.offerPriceError,
+                this
+            ) && ValidationObject.validateEmptyEditText(
+                etExp,
+                tilExp,
+                R.string.expError,
+                this
+            )
+        }
     }
-
-    private fun manageStockCreateResponses(value: AddSupplyResponse?) {
-        Toast.makeText(
-            this,
-            resources.getString(R.string.supplyAdded),
-            Toast.LENGTH_SHORT
-        )
-            .show()
-        onBackPressed()
-        finish()
-
-    }
-
-    private fun isValidate(): Boolean {
-        return ValidationObject.validateEmptyEditText(
-            offerPrice,
-            tilPrice,
-            R.string.offerPriceError,
-            this
-        ) && ValidationObject.validateEmptyEditText(
-            etExp,
-            tilExp,
-            R.string.expError,
-            this
-        )
-    }
-}

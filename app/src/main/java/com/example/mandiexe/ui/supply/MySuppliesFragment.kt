@@ -28,7 +28,6 @@ import com.example.mandiexe.viewmodels.MySuppliesViewmodel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.my_crop_bids_fragment.*
-import kotlinx.android.synthetic.main.o_t_fragment.*
 
 
 class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
@@ -45,6 +44,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
 
     override fun onResume() {
         super.onResume()
+        loadItems()
 
     }
 
