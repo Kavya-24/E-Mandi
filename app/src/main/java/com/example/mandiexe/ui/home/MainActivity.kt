@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.SimpleCursorAdapter
 import android.widget.TextView
@@ -55,6 +56,7 @@ import com.google.android.play.core.install.InstallState
 import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.InstallStatus
 import com.miguelcatalan.materialsearchview.MaterialSearchView
+import com.miguelcatalan.materialsearchview.SearchAdapter
 import retrofit2.Call
 import retrofit2.Response
 import java.util.*
@@ -126,13 +128,17 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener,
         // search_view.setCursorDrawable(R.drawable.ic_call_made_black_24dp)
 
         val crops: Array<String> = resources.getStringArray(R.array.arr_crop_names)
+        search_view.setAdapter(SearchAdapter(this@MainActivity, crops))
 
         //My SearchView
         search_view.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 //Do some magic
-                Log.e("MAIN", "In on query submit")
-                searchCrop(query ?: resources.getString(R.string.rice))
+                if (!query.isNullOrEmpty()) {
+                    Log.e("MAIN", "In on query submit")
+                    searchCrop(query ?: resources.getString(R.string.rice))
+
+                }
                 return false
 
             }
@@ -142,8 +148,9 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener,
 
                 //Do some magic
                 // fetchSuggestions(newText ?: resources.getString(R.string.rice))
-                search_view.setSuggestions(crops)
                 //search_view.setSuggestions(mListOfSuggestions.toTypedArray())
+
+
                 return false
             }
         })
@@ -166,31 +173,30 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener,
         search_view.setVoiceSearch(true)
         search_view.showVoice(true)
 
+
         val v = search_view.findViewById<ImageView>(R.id.action_voice_btn)
         v.setOnClickListener {
             createVoiceIntent()
         }
 
-        search_view.setHint(resources.getString(R.string.searchHint))
+        val et = search_view.findViewById<EditText>(R.id.searchTextView)
+        et.setHint(resources.getString(R.string.searchHint))
+        val mView = layoutInflater.inflate(R.layout.suggest_item, null)
+        val sugIcon = mView.findViewById<ImageView>(R.id.suggestion_icon)
+        sugIcon.setImageDrawable(resources.getDrawable(R.drawable.ic_call_made_black_24dp, null))
+
 
         search_view.setOnItemClickListener { parent, view, position, id ->
 
-            //    search_view.setSubmitOnClick(true)
             Log.e("MAIN", "In item clicked" + parent.getItemAtPosition(position).toString())
             val q = parent.getItemAtPosition(position).toString()
             search_view.dismissSuggestions()
             search_view.clearFocus()
+            search_view.setQuery("", false)
+
             searchCrop(q)
-
+            search_view.visibility = View.GONE
         }
-
-
-        search_view.setSuggestionIcon(
-            resources.getDrawable(
-                R.drawable.ic_call_made_black_24dp,
-                null
-            )
-        )
 
 
     }

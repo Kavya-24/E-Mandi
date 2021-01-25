@@ -30,8 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space"
                 android:hint="@string/searchHint"
-                android:visibility="gone"
-                app:searchBackground="@color/ivory" />
+                android:visibility="gone"/>
         </FrameLayout>
 
     </com.google.android.material.appbar.AppBarLayout>

@@ -431,7 +431,7 @@ class OTPFragment : Fragment() {
         pref.name = response?.user?.name
 
 
-        Toast.makeText(context, resources.getString(R.string.loginSuceed), Toast.LENGTH_LONG)
+        Toast.makeText(context, resources.getString(R.string.loginSuceed), Toast.LENGTH_SHORT)
             .show()
 
         //Remove timer
