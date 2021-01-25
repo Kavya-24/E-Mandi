@@ -245,6 +245,7 @@
     <string name="unableToGetSearch">Unable to search for the crop.</string>
     <string name="addThisInBidding">Add this crop for bidding</string>
     <string name="addCropGrowthOnly">Add the growth of this crop only</string>
+    <string name="add_crop">Add Crop</string>
 
     <string-array name="arr_crop_names">
         <item>@string/rice</item>

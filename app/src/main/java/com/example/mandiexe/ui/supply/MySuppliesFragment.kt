@@ -28,6 +28,7 @@ import com.example.mandiexe.viewmodels.MySuppliesViewmodel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.my_crop_bids_fragment.*
+import kotlinx.android.synthetic.main.o_t_fragment.*
 
 
 class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
@@ -82,7 +83,8 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
 
         root.findViewById<FloatingActionButton>(R.id.fab_add_my_stock).setOnClickListener {
 
-            root.findNavController().navigate(R.id.action_nav_my_supplies_to_addStock)
+            val i = Intent(requireContext(), AddStock::class.java)
+            startActivity(i)
 
         }
 

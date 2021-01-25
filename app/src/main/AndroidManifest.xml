@@ -28,6 +28,12 @@
             android:name=".ui.supply.AddStockPage2"
             android:label="@string/add_stock"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".ui.supply.AddStock"
+            android:label="@string/add_crop"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".ui.home.GrowActivity"
             android:label="@string/add_growth"
