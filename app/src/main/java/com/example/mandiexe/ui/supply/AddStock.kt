@@ -41,7 +41,7 @@ class AddStock : AppCompatActivity() {
 
     private val viewModel: AddStockViewModel by viewModels()
     private val translateViewModel: TranslateViewmodel by viewModels()
-    
+
     //private lateinit var root: View
     private lateinit var myCalendar: Calendar
     private val TAG = AddStock::class.java.simpleName
@@ -79,6 +79,11 @@ class AddStock : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.add_stock_fragment)
 
+        val tb = findViewById<Toolbar>(R.id.toolbarExternal)
+        tb.title = resources.getString(R.string.add_crop)
+        tb.setNavigationOnClickListener {
+            onBackPressed()
+        }
 
         mHandler = Handler()
         //UI Init
@@ -134,7 +139,7 @@ class AddStock : AppCompatActivity() {
 
         findViewById<MaterialButton>(R.id.mtb_go_to_bidding).setOnClickListener {
 
-            if(isValidate()) {
+            if (isValidate()) {
                 val bundle = bundleOf(
                     "NAME" to cropName.text.toString(),
                     "TYPE" to cropType.text.toString(),
@@ -224,7 +229,7 @@ class AddStock : AppCompatActivity() {
                         container_add_stock
                     )
                     onBackPressed()
-                } else{
+                } else {
                     UIUtils.createSnackbar(
                         viewModel.messageGrowth.value,
                         this,
@@ -356,7 +361,7 @@ class AddStock : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-           super.onActivityResult(requestCode, resultCode, data)
+        super.onActivityResult(requestCode, resultCode, data)
 
         //Get the map data result
         Log.e(
@@ -400,7 +405,6 @@ class AddStock : AppCompatActivity() {
         viewModel.successful.removeObservers(this)
         viewModel.successful.value = null
         finish()
-
 
 
     }

@@ -225,10 +225,8 @@ class AddStockPage2 : AppCompatActivity() {
             //Check with the sucessful of it
             val success = viewModel.successful.value
             if (success != null) {
-                if(success == true){
-                    manageStockCreateResponses(viewModel.addStock.value)
-                }
-                else if (viewModel.message.value == "Supply added successfully.") {
+
+                if (viewModel.message.value == "Supply added successfully.") {
                     manageStockCreateResponses(viewModel.addStock.value)
                 } else {
                     Log.e(TAG, viewModel.message.toString())

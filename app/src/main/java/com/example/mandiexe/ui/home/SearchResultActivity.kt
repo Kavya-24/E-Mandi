@@ -16,6 +16,7 @@ import com.example.mandiexe.R
 import com.example.mandiexe.interfaces.RetrofitClient
 import com.example.mandiexe.models.body.supply.SearchGlobalCropBody
 import com.example.mandiexe.models.responses.supply.SearchGlobalCropResponse
+import com.example.mandiexe.ui.supply.AddStock
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.auth.SessionManager
@@ -75,9 +76,9 @@ class SearchResultActivity : AppCompatActivity() {
     }
 
     private fun addStock() {
-        val i = Intent(this, GrowActivity::class.java)
-        startActivity(i)
 
+        val i = Intent(this, AddStock::class.java)
+        startActivity(i)
 
     }
 
@@ -129,6 +130,7 @@ class SearchResultActivity : AppCompatActivity() {
 
             loadYoutubeLinks(response.links)
         } catch (e: Exception) {
+            findViewById<ConstraintLayout>(R.id.clVis).visibility = View.GONE
             Log.e("SEARCh", e.message + e.cause + " Error")
             createSnackbar(resources.getString(R.string.unableToGetSearch), this, container_search)
         }
