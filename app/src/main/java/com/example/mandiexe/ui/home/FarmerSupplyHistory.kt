@@ -102,8 +102,11 @@ class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {
     }
 
     override fun viewMyStockDetails(_listItem: SupplyHistoryResponse.Supply) {
+
+        val from = FarmerSupplyHistory::class.java.simpleName
         val bundle = bundleOf(
-            "SUPPLY_ID" to _listItem._id
+            "SUPPLY_ID" to _listItem._id,
+            "FROM" to from
         )
 
         //   val supply = _listItem._id

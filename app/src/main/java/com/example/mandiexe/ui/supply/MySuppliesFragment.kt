@@ -150,9 +150,10 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
 
     override fun viewMyStockDetails(_listItem: FarmerSuppliesResponse.Supply) {
 
-
+        val from = MySuppliesFragment::class.java.simpleName
         val bundle = bundleOf(
-            "SUPPLY_ID" to _listItem._id
+            "SUPPLY_ID" to _listItem._id,
+            "FROM" to from
         )
 
         //   val supply = _listItem._id

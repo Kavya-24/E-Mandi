@@ -231,6 +231,7 @@
     <string name="unableMaps">Unable to get location.</string>
     <string name="placeBid">Place bid</string>
     <string name="doDeleteBid">Do you want to delete your bid on this demand?</string>
+    <string name="logout">Logout</string>
 
     <string-array name="arr_crop_names">
         <item>@string/rice</item>

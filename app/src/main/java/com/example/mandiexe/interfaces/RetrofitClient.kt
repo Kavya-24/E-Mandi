@@ -31,7 +31,6 @@ object RetrofitClient {
             .authenticator(
                 tAuthenticator
             )
-            .addInterceptor(LanguageInterceptor())
             .followRedirects(false)
             .writeTimeout(20, TimeUnit.SECONDS)
             .build()
