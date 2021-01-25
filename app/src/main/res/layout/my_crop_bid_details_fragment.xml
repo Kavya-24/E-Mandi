@@ -31,7 +31,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/space"
                     android:padding="@dimen/space"
-                    android:visibility="gone"
+                    android:visibility="invisible"
                     app:layout_constraintTop_toTopOf="parent">
 
 

@@ -289,6 +289,7 @@
     <string name="placeBid">Place bid</string>
     <string name="doDeleteBid">Do you want to delete your bid on this demand?</string>
     <string name="logout">Logout</string>
+    <string name="unableToGetSearch">Unable to search for the crop.</string>
 
     <string-array name="arr_area_units">
         <item>@string/Hectare</item>
