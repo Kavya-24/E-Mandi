@@ -26,7 +26,7 @@ class PreferenceManager {
     @SuppressLint("ApplySharedPref")
     //Cannot use .apply(), it will take time to save the token. We need token ASAP
     fun putAuthToken(authToken: String) {
-        sharedPreferences.edit().putString(AUTH_TOKEN, "Bearer $authToken").commit()
+        sharedPreferences.edit().putString(AUTH_TOKEN, authToken).commit()
     }
 
     val authToken: String?
