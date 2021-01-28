@@ -80,7 +80,11 @@ class AddStock : AppCompatActivity() {
 
         if (intent?.getBundleExtra("bundle") != null) {
             //When there is an argumenet of cimpletetion
+            viewModel.successful.removeObservers(this)
+            viewModel.successful.value = null
             onBackPressed()
+            finish()
+
         }
 
 
@@ -409,12 +413,9 @@ class AddStock : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
         //Now we need to destroy this fragment and on resume of home, go to remove views
         Log.e(TAG, "In on destroy")
-        viewModel.successful.removeObservers(this)
-        viewModel.successful.value = null
-        finish()
+        super.onBackPressed()
 
 
     }
