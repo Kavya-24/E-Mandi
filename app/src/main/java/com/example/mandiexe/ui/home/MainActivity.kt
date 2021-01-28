@@ -195,7 +195,7 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener,
 
         search_view.setOnItemClickListener { parent, view, position, id ->
 
-            Log.e("MAIN", "In item clicked" + parent.getItemAtPosition(position).toString())
+            Log.e("MAIN", "In item clicked ans the poistion in the list is $position and id id $id" + parent.getItemAtPosition(position).toString())
             val q = parent.getItemAtPosition(position).toString()
             search_view.dismissSuggestions()
             search_view.clearFocus()
