@@ -235,14 +235,16 @@ class AddStockPage2 : AppCompatActivity() {
     private fun manageStockCreateResponses(value: AddSupplyResponse?) {
 
         if (value?.msg == "Supply added successfully.") {
+
             Toast.makeText(
                 this,
                 resources.getString(R.string.supplyAdded),
                 Toast.LENGTH_SHORT
             )
                 .show()
-            onBackPressed()
+
             finish()
+
         }
 
     }
@@ -259,5 +261,15 @@ class AddStockPage2 : AppCompatActivity() {
             R.string.expError,
             this
         )
+    }
+
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+
+        viewModel.successfulGrowth.removeObservers(this)
+        viewModel.successfulGrowth.value = null
+        viewModel.successful.removeObservers(this)
+        viewModel.successful.value = null
     }
 }

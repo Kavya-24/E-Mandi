@@ -1,7 +1,6 @@
 package com.example.mandiexe.ui.supply
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.speech.RecognizerIntent
@@ -9,7 +8,6 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
@@ -72,6 +70,12 @@ class AddStock : AppCompatActivity() {
     private val RC_NAME = 1
     private val RC_TYPE = 2
     private val pref = PreferenceUtil
+
+
+    override fun onResume() {
+        super.onResume()
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setAppLocale(pref.getLanguageFromPreference(), this)
@@ -163,7 +167,7 @@ class AddStock : AppCompatActivity() {
 
     }
 
-   
+
     private fun createGrowth() {
 
         findViewById<ProgressBar>(R.id.pb_add_stock).visibility = View.VISIBLE
@@ -187,7 +191,7 @@ class AddStock : AppCompatActivity() {
 
     }
 
-    
+
     private fun makeCallForGrowth() {
 
         //Translate three words
@@ -282,7 +286,7 @@ class AddStock : AppCompatActivity() {
 
     }
 
-    
+
     private fun getTranslations() {
         //Run an async task to get the values for the three categories
         OfflineTranslate.translateToEnglish(
@@ -363,7 +367,7 @@ class AddStock : AppCompatActivity() {
 
     }
 
-    
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
