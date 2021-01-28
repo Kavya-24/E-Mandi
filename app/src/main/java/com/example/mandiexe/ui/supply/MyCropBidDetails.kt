@@ -493,9 +493,15 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
             //Hide views if not active
             if (!value.supply.active) {
+
                 findViewById<MaterialButton>(R.id.mtb_modify_stock).visibility = View.GONE
                 findViewById<MaterialButton>(R.id.mtb_cancel_stock).visibility = View.GONE
-
+                //Show tge indefinte Snackbar
+                Snackbar.make(
+                    container_crop_bids_details,
+                    resources.getString(R.string.inactiveSupply),
+                    Snackbar.LENGTH_INDEFINITE
+                ).show()
             }
 
         } catch (e: Exception) {
