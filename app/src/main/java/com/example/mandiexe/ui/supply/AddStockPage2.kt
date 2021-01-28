@@ -31,7 +31,7 @@ class AddStockPage2 : AppCompatActivity() {
     private val TAG = AddStockPage2::class.java.simpleName
 
 
-    private var mHandler =  Handler()
+    private var mHandler = Handler()
 
     private lateinit var etExp: EditText
     private lateinit var cropDes: EditText
@@ -222,19 +222,19 @@ class AddStockPage2 : AppCompatActivity() {
         viewModel.addFunction(body).observe(this, androidx.lifecycle.Observer { mResponse ->
 
 
-            if (viewModel.message.value == "Supply added successfully.") {
-                manageStockCreateResponses(viewModel.addStock.value)}
+            manageStockCreateResponses(mResponse)
 
 
+        })
 
-            })
+        //Stop Progress bar
+        findViewById<ProgressBar>(R.id.pb_add_stock_page_2).visibility = View.GONE
 
-            //Stop Progress bar
-            findViewById<ProgressBar>(R.id.pb_add_stock_page_2).visibility = View.GONE
+    }
 
-        }
+    private fun manageStockCreateResponses(value: AddSupplyResponse?) {
 
-                private fun manageStockCreateResponses(value: AddSupplyResponse?) {
+        if (value?.msg == "Supply added successfully.") {
             Toast.makeText(
                 this,
                 resources.getString(R.string.supplyAdded),
@@ -243,20 +243,21 @@ class AddStockPage2 : AppCompatActivity() {
                 .show()
             onBackPressed()
             finish()
-
         }
 
-                private fun isValidate(): Boolean {
-            return ValidationObject.validateEmptyEditText(
-                offerPrice,
-                tilPrice,
-                R.string.offerPriceError,
-                this
-            ) && ValidationObject.validateEmptyEditText(
-                etExp,
-                tilExp,
-                R.string.expError,
-                this
-            )
-        }
     }
+
+    private fun isValidate(): Boolean {
+        return ValidationObject.validateEmptyEditText(
+            offerPrice,
+            tilPrice,
+            R.string.offerPriceError,
+            this
+        ) && ValidationObject.validateEmptyEditText(
+            etExp,
+            tilExp,
+            R.string.expError,
+            this
+        )
+    }
+}

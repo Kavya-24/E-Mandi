@@ -55,7 +55,7 @@ object OfflineTranslate {
 
             mTranslator.downloadModelIfNeeded(conditions)
                 .addOnSuccessListener {
-                    Log.e("TAG", "In success model download")
+
                     successModelFound(mTranslator, query, tvInstance)
                 }
                 .addOnFailureListener { exception ->
@@ -106,7 +106,6 @@ object OfflineTranslate {
 
             mTranslator.downloadModelIfNeeded(conditions)
                 .addOnSuccessListener {
-                    Log.e("TAG", "In success model download")
                     successModelFound(mTranslator, query, tvInstance)
                 }
                 .addOnFailureListener { exception ->
