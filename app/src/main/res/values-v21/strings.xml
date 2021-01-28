@@ -1,11 +1,14 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
     <string name="app_name_main" translatable="false">E-Mandi</string>
     <string name="app_name">E-Mandi</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
+
     <string name="action_settings">Settings</string>
     <string name="menu_home">Home</string>
     <string name="Mandi">Mandi Prices</string>
@@ -14,21 +17,21 @@
     <string name="quantity">Quantity</string>
     <string name="location">Location</string>
     <string name="price">Price</string>
-    <string name="expected_ready">Expected Ready Date</string>
+    <string name="expected_ready">Expected date of harvest</string>
     <string name="date_posted">Date Created</string>
     <string name="contact">Contact</string>
-    <string name="crop_value">crop_value</string>
+    <string name="crop_value">Value of crop</string>
     <string name="location_value">Location</string>
-    <string name="which_crop">Which Crop</string>
+    <string name="which_crop">Name of the crop</string>
     <string name="str_my_crops">My crops</string>
     <string name="str_my_req">Buyers</string>
     <string name="crop_type">Variety:</string>
     <string name="expiration_date">Expiration date:</string>
-    <string name="estimated_time_of_completion">Estimated time of completion</string>
+    <string name="estimated_time_of_completion">Expected date of harvest</string>
     <string name="offer_price">Offer Price</string>
     <string name="rs">Rs </string>
     <string name="available_for_bidding">Available for bidding</string>
-    <string name="expDate">Expiration date of bid</string>
+    <string name="expDate">Expiration date for bidding</string>
     <string name="add_stock">Add stock</string>
     <string name="_0_kg">0 kg</string>
     <string name="quantity2">Quantity:</string>
@@ -44,12 +47,12 @@
     <string name="cropTypeError">Please specify a type</string>
     <string name="cropQuanityError">This can not be zero</string>
     <string name="offerPriceError">This can not be zero</string>
-    <string name="etEstError">Add an estimated time of completion</string>
+    <string name="etEstError">Add an estimated date of harvest</string>
     <string name="addressError">Location can not be empty</string>
     <string name="expError">Add an expiration date of the bid</string>
-    <string name="date_of_start">Date of start: </string>
+    <string name="date_of_start">Date of sowing: </string>
     <string name="view_bid_history">View bid history</string>
-    <string name="cancel_stock">Delete Stock</string>
+    <string name="cancel_stock">Delete Crop</string>
     <string name="_918">918</string>
     <string name="hello_world_person">Hello World Person</string>
     <string name="rs_45602">Rs 45602</string>
@@ -67,34 +70,34 @@
     <string name="hindi">Hindi</string>
     <string name="next">Next</string>
     <string name="phone_number">Phone number</string>
-    <string name="get_otp">get otp</string>
+    <string name="get_otp">Get OTP</string>
     <string name="verify_otp">Verify OTP</string>
-    <string name="invalidOtp">Invalid OTP</string>
-    <string name="invalidPhoneError">Invalid phone number</string>
+    <string name="invalidOtp">The OTP is invalid</string>
+    <string name="invalidPhoneError">The phone number is invalid</string>
     <string name="address">Address</string>
     <string name="area">Area</string>
     <string name="emptyName">Name can not be empty</string>
-    <string name="invalidName">Invalid name</string>
+    <string name="invalidName">The name is invalid</string>
     <string name="emptyAreaError">Area can not be empty</string>
     <string name="cancel">Cancel</string>
     <string name="Login">Login</string>
-    <string name="changeLanguage">Change langauge</string>
+    <string name="changeLanguage">Change language</string>
     <string name="changeCurrentLanguage">Change the language</string>
-    <string name="helpForPage">Get a walkthrough</string>
+    <string name="helpForPage">Get a walk through</string>
     <string name="Notifications">Notifications</string>
     <string name="search">Search</string>
     <string name="bigha">Bigha</string>
-    <string name="searchHint">Search crop</string>
+    <string name="searchHint">Search the crops</string>
     <string name="details">Details</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="searchBuyers">Search buyers</string>
     <string name="delta">delta</string>
     <string name="modifyBid">Modify bid</string>
-    <string name="myBid">My bid: </string>
+    <string name="myBid">My bid Price: </string>
     <string name="bidAPrice">Enter price</string>
     <string name="confirmation">Confirmation</string>
-    <string name="tvDesc">Please note the following changes before adding the bid</string>
-    <string name="initPrice">Ask Price of Crop:</string>
+    <string name="tvDesc">Please note the following changes before adding the bid.</string>
+    <string name="initPrice">Price demanded for crop:</string>
     <string name="myBidPrice">Price you are adding</string>
     <string name="noChangeInBid">No change in bid</string>
     <string name="modifyStock">Modify stock</string>
@@ -104,18 +107,18 @@
     <string name="no">No</string>
     <string name="description">Description: </string>
     <string name="modifyCrop">Modify crop</string>
-    <string name="supplyAdded">New crop stock created successfully</string>
+    <string name="supplyAdded">New stock of crop created successfully</string>
     <string name="couldNotLoad">Could not load stocks</string>
     <string name="suppliesLoaded">Stocks loaded successfully</string>
     <string name="noSupply">You do not have any supplies as of now.</string>
     <string name="demanndLoaded">My demands loaded</string>
     <string name="noDemand">You do not have any demands</string>
-    <string name="cancelBid">Cancel bid?</string>
+    <string name="cancelBid">Delete bid?</string>
     <string name="bidUpdated">Bid updated successfully</string>
     <string name="BidDeleted">Bid deleted successfully.</string>
-    <string name="newBidPrice">New bid price</string>
-    <string name="invalidRequest">Request is invalid</string>
-    <string name="quotaRequest">Quota of requests exceeded</string>
+    <string name="newBidPrice">New bid price:</string>
+    <string name="invalidRequest">Request is invalid.</string>
+    <string name="quotaRequest">Quota of requests exceeded.</string>
     <string name="loginSuceed">Login successful</string>
     <string name="loginNew">Phone Number not registered.</string>
     <string name="_91">+91</string>
@@ -186,9 +189,8 @@
     <string name="no_bids_founds">No bids founds</string>
     <string name="noDesc">-</string>
     <string name="etEstLessThanSow">Completion date can not be before the date of sowing</string>
-    <string name="etEstLessIncomplete">Crop harvest date can not be before 20 days after sowing.</string>
+    <string name="etEstLessIncomplete">Crop harvest date can not be done before 20 days after sowing.</string>
     <string name="expLess">Expiration date of the bid can not be before the date of sowing</string>
-
 
 
     <!--    //Crop name-->
@@ -228,6 +230,7 @@
     <string name="chole">Kabuli Chane</string>
     <string name="rajma">Kidney Beans</string>
 
+    <!--    //Rememener to chnage the function-->
 
     <string-array name="arr_crop_names">
         <item>@string/rice</item>
@@ -277,10 +280,11 @@
     </string-array>
 
 
-    <string name="Hectare">>Hectare</string>
-    <string name="acres">>Acres</string>
-    <string name="sqrmetres">>Sq Metres</string>
+    <string name="Hectare">Hectare</string>
+    <string name="acres">Acres</string>
+    <string name="sqrmetres">Sq Metres</string>
     <string name="NoNewReqFound">No requirements found.</string>
+    <string name="NoLoadNewReq" tools:ignore="MissingTranslation">Could not load new requirements</string>
     <string name="asia">asia</string>
     <string name="temp">temp</string>
     <string name="expm20">Expiry of bid should be after at least 20 days from sowing date</string>
@@ -292,7 +296,7 @@
     <string name="addThisInBidding">Add this crop for bidding</string>
     <string name="addCropGrowthOnly">Add the growth of this crop only</string>
     <string name="add_crop">Add Crop</string>
-    <string name="this_crop_could_not_be_found_waould_you_like_to_add_this_crop">This crop could not be found. Waould you like to add this crop?</string>
+    <string name="addMissingCrop" tools:ignore="MissingTranslation">This crop is not found. \nWould you like to add this crop?</string>
 
     <string-array name="arr_area_units">
         <item>@string/Hectare</item>
@@ -300,7 +304,6 @@
         <item>@string/acres</item>
         <item>@string/sqrmetres</item>
     </string-array>
-
 
 
 </resources>
