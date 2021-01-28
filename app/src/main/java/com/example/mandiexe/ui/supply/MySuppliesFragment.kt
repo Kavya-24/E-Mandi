@@ -22,7 +22,6 @@ import com.example.mandiexe.R
 import com.example.mandiexe.adapter.MySuppliesAdapter
 import com.example.mandiexe.adapter.OnMyStockClickListener
 import com.example.mandiexe.models.responses.supply.FarmerSuppliesResponse
-import com.example.mandiexe.utils.Communicator
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import com.example.mandiexe.viewmodels.MySuppliesViewmodel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -38,7 +37,6 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
 
     private val viewModel: MySuppliesViewmodel by viewModels()
     private lateinit var root: View
-    private lateinit var comm: Communicator
     private lateinit var tabLayout: TabLayout
 
 
@@ -58,7 +56,6 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
 
         loadItems()
 
-        comm = activity as Communicator
 
         tabLayout = root.findViewById(R.id.tabsSupplies) as TabLayout
         tabLayout.selectTab(tabLayout.getTabAt(0), true)

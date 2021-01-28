@@ -291,6 +291,7 @@
     <string name="addThisInBidding">Add this crop for bidding</string>
     <string name="addCropGrowthOnly">Add the growth of this crop only</string>
     <string name="add_crop">Add Crop</string>
+    <string name="this_crop_could_not_be_found_waould_you_like_to_add_this_crop">This crop could not be found. Waould you like to add this crop?</string>
 
     <string-array name="arr_area_units">
         <item>@string/Hectare</item>

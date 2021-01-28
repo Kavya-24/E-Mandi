@@ -22,7 +22,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -40,7 +39,7 @@ import com.example.mandiexe.models.body.supply.CropSearchAutoCompleteBody
 import com.example.mandiexe.models.responses.supply.CropSearchAutocompleteResponse
 import com.example.mandiexe.ui.authUi.LoginActivity
 import com.example.mandiexe.utils.ApplicationUtils
-import com.example.mandiexe.utils.Communicator
+import com.example.mandiexe.utils.DefaultListOfCrops
 import com.example.mandiexe.utils.auth.PreferenceManager
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.auth.SessionManager
@@ -60,7 +59,7 @@ import retrofit2.Call
 import retrofit2.Response
 import java.util.*
 
-class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener,
+class MainActivity : AppCompatActivity(), OnMyLanguageListener,
     mSearchViewOnSuggestionClick {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -141,7 +140,8 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener,
                 //Do some magic
                 if (!query.isNullOrEmpty()) {
                     Log.e("MAIN", "In on query submit")
-                    searchCrop(query ?: resources.getString(R.string.rice))
+
+                    searchCrop(query ?: resources.getString(R.string.rice), "e-mandi-farmer-null-query")
 
                 }
                 return false
@@ -195,13 +195,26 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener,
 
         search_view.setOnItemClickListener { parent, view, position, id ->
 
-            Log.e("MAIN", "In item clicked ans the poistion in the list is $position and id id $id" + parent.getItemAtPosition(position).toString())
+
             val q = parent.getItemAtPosition(position).toString()
+
+            //Get the index, and then find its equiavlied englihs
+            val mIndex = crops.indexOf(q)
+
+
+            val englishQuery = DefaultListOfCrops.getTheDefaultCropsList().get(mIndex)
+            Log.e(
+                "MAIN",
+                "In item clicked nmIndex is $mIndex  and the real valur is $englishQuery\n" + parent.getItemAtPosition(
+                    position
+                ).toString()
+            )
+
             search_view.dismissSuggestions()
             search_view.clearFocus()
             search_view.setQuery("", false)
 
-            searchCrop(q)
+            searchCrop(q, englishQuery)
             search_view.visibility = View.GONE
         }
 
@@ -353,7 +366,7 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener,
         finish()
     }
 
-    private fun searchCrop(query: String) {
+    private fun searchCrop(query: String, englishQuery: String?) {
 
         val eTV = findViewById<TextView>(R.id.tempTvMainToFinalSug)
 
@@ -372,7 +385,8 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener,
         }
 
         val bundle = bundleOf(
-            "crop" to query,
+            "crop" to englishQuery,
+            "title" to query
         )
 
         val i = Intent(this@MainActivity, SearchResultActivity::class.java)
@@ -501,10 +515,6 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener,
         Handler().postDelayed({ updateApp() }, 1000)
     }
 
-    //Comunicator function
-    override fun goToAddStocks(fragment: Fragment) {
-
-    }
 
     override fun onBackPressed() {
         super.onBackPressed();

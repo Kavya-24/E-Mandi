@@ -39,6 +39,10 @@ class SearchResultActivity : AppCompatActivity() {
 
     private var crop = ""
     private val mHandler = Handler()
+
+
+    private lateinit var mTv: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setAppLocale(pref.getLanguageFromPreference(), this)
@@ -47,30 +51,45 @@ class SearchResultActivity : AppCompatActivity() {
         //Get arugmenent
 
         args = intent?.getBundleExtra("bundle")!!
+        mTv = findViewById(R.id.tvAddMissing)
 
+        //Add the side drawable
+        mTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_add_black_24dp, 0, 0, 0)
         //Porcess the crop here
 
-        crop = args.getString("crop").toString()
+        crop = args.getString("crop")!!
+        val title = args.getString("title").toString()
+
         val tb = findViewById<Toolbar>(R.id.toolbarExternal)
-        tb.title = crop
+        tb.title = title
         tb.setNavigationOnClickListener {
             onBackPressed()
         }
+
 
         val aBar = findViewById<AppBarLayout>(R.id.appbarlayoutExternal)
         findViewById<ProgressBar>(R.id.pb_searchCrop).visibility = View.VISIBLE
 
         val t = findViewById<TextView>(R.id.tempTv)
-        OfflineTranslate.translateToEnglish(this, crop, t)
 
-        if (t.text != resources.getString(R.string.noDesc)) {
+        if (crop != "e-mandi-farmer-null-query") {
             searchCrops()
         } else {
-            mHandler.postDelayed({ searchCrops() }, 2000)
+            OfflineTranslate.translateToEnglish(this, crop, t)
+            if (t.text != resources.getString(R.string.noDesc)) {
+                searchCrops()
+            } else {
+                mHandler.postDelayed({ searchCrops() }, 4000)
+            }
+
         }
 
 
         findViewById<ExtendedFloatingActionButton>(R.id.eFab_grow).setOnClickListener {
+            addStock()
+        }
+
+        mTv.setOnClickListener {
             addStock()
         }
     }
@@ -130,9 +149,13 @@ class SearchResultActivity : AppCompatActivity() {
 
             loadYoutubeLinks(response.links)
         } catch (e: Exception) {
-            findViewById<ConstraintLayout>(R.id.clVis).visibility = View.GONE
+            findViewById<ConstraintLayout>(R.id.clVis).visibility = View.INVISIBLE
             Log.e("SEARCh", e.message + e.cause + " Error")
             createSnackbar(resources.getString(R.string.unableToGetSearch), this, container_search)
+
+            mTv.visibility = View.VISIBLE
+
+
         }
         findViewById<ProgressBar>(R.id.pb_searchCrop).visibility = View.GONE
 
