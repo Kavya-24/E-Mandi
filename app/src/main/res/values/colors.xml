@@ -9,11 +9,11 @@
 
 
     <color name="deltaGreen">@color/useDarkGreenOriginal</color>
-    <color name="deltaRed">@color/tomato</color>
+    <color name="deltaRed">@color/red_A700</color>
 
     <color name="stockMarketGreen">#32CD32</color>
-    <color name="stockMarketRed"></color>
-
+    <color name="stockMarketRed">#8b0000</color>
+    <color name="mColorRed">#D50000</color>
     <color name="cardbgWhatsappTeaGreen">#DCF8C6</color>
     <color name="cardbgWhatsappYellow">#e7e7cf</color>
     <color name="cardGreenMessgaeWA">#e2ffc7</color>

@@ -515,7 +515,7 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
             //When there are no last bids or any bids
             graph.removeAllSeries()
             graph.visibility = View.GONE
-            findViewById<TextView>(R.id.tvNoGraph).visibility = View.VISIBLE
+//            findViewById<TextView>(R.id.tvNoGraph).visibility = View.VISIBLE
 
         } else {
 

@@ -240,8 +240,9 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/space"
                         android:gravity="center"
+                        android:padding="@dimen/space"
                         android:text="@string/no_bids_founds"
-                        android:visibility="gone"
+                        android:visibility="invisible"
                         app:layout_constraintTop_toBottomOf="@id/graphView" />
 
                     <TextView
@@ -287,7 +288,7 @@
                         app:backgroundTint="@color/deltaRed"
                         app:layout_constraintEnd_toStartOf="@id/mtb_modify_stock"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/graphView" />
+                        app:layout_constraintTop_toBottomOf="@id/tvNoGraph" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/mtb_modify_stock"
@@ -299,7 +300,7 @@
                         app:backgroundTint="@color/colorAccent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/mtb_cancel_stock"
-                        app:layout_constraintTop_toBottomOf="@id/graphView" />
+                        app:layout_constraintTop_toBottomOf="@id/tvNoGraph" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
