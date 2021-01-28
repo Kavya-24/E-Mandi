@@ -40,36 +40,43 @@ object OfflineTranslate {
         }
 
         // Create an Default-English translator:
-        val options = TranslatorOptions.Builder()
-            .setSourceLanguage(pref ?: "en")
-            .setTargetLanguage(TranslateLanguage.ENGLISH)
-            .build()
+        try {
 
-        val mTranslator = Translation.getClient(options)
-        (context as LifecycleOwner).lifecycle.addObserver(mTranslator)
+            val options = TranslatorOptions.Builder()
+                .setSourceLanguage(pref ?: "en")
+                .setTargetLanguage(TranslateLanguage.ENGLISH)
+                .build()
 
-        val conditions = DownloadConditions.Builder()
-            .build()
+            val mTranslator = Translation.getClient(options)
+            (context as LifecycleOwner).lifecycle.addObserver(mTranslator)
 
-        mTranslator.downloadModelIfNeeded(conditions)
-            .addOnSuccessListener {
-                Log.e("TAG", "In success model download")
-                successModelFound(mTranslator, query, tvInstance)
-            }
-            .addOnFailureListener { exception ->
-                // Model couldn’t be downloaded or other internal error.
-                //Set the Enlgilsg query
-                tvInstance.setText(query)
-                Log.e("TAG", "Model not downloaded" + exception.cause + exception.message)
-            }
+            val conditions = DownloadConditions.Builder()
+                .build()
 
-        Log.e(
-            "Returning from TAG ",
-            "Ans for text " + query + " -" + tvInstance.text.toString()
-        )
+            mTranslator.downloadModelIfNeeded(conditions)
+                .addOnSuccessListener {
+                    Log.e("TAG", "In success model download")
+                    successModelFound(mTranslator, query, tvInstance)
+                }
+                .addOnFailureListener { exception ->
+                    // Model couldn’t be downloaded or other internal error.
+                    //Set the Enlgilsg query
+                    tvInstance.setText(query)
+                    Log.e("TAG", "Model not downloaded" + exception.cause + exception.message)
+                }
 
-        //Close translator
-        //mTranslator.close()
+            Log.e(
+                "Returning from TAG ",
+                "Ans for text " + query + " -" + tvInstance.text.toString()
+            )
+
+            //Close translator
+            //mTranslator.close()
+        }
+        catch (e: Exception) {
+            //Might be a traslator closed exception
+            Log.e(TAG, "Translator closed maybe but exception is " + e.cause + e.message)
+        }
 
         return
     }
@@ -80,42 +87,47 @@ object OfflineTranslate {
         val pref = PreferenceUtil.getLanguageFromPreference()
         if (pref != null && pref == "en") {
             //Set the textView q
-            tvInstance.setText(query.capitalize())
+            tvInstance.setText(query.capitalize(Locale("en")))
             return
         }
 
 
         //Make translator
         // Create an English-Deafult translator:
-        val options = TranslatorOptions.Builder()
-            .setSourceLanguage(TranslateLanguage.ENGLISH)
-            .setTargetLanguage(pref ?: "en")
-            .build()
-        val mTranslator = Translation.getClient(options)
-        (context as LifecycleOwner).lifecycle.addObserver(mTranslator)
+        try {
+            val options = TranslatorOptions.Builder()
+                .setSourceLanguage(TranslateLanguage.ENGLISH)
+                .setTargetLanguage(pref ?: "en")
+                .build()
+            val mTranslator = Translation.getClient(options)
+            (context as LifecycleOwner).lifecycle.addObserver(mTranslator)
 
-        val conditions = DownloadConditions.Builder()
-            .build()
+            val conditions = DownloadConditions.Builder()
+                .build()
 
-        mTranslator.downloadModelIfNeeded(conditions)
-            .addOnSuccessListener {
-                Log.e("TAG", "In success model download")
-                successModelFound(mTranslator, query, tvInstance)
-            }
-            .addOnFailureListener { exception ->
-                // Model couldn’t be downloaded or other internal error.
-                //Set the Enlgilsg query
-                tvInstance.setText(query)
-                Log.e("TAG", "Model not downloaded" + exception.cause + exception.message)
-            }
+            mTranslator.downloadModelIfNeeded(conditions)
+                .addOnSuccessListener {
+                    Log.e("TAG", "In success model download")
+                    successModelFound(mTranslator, query, tvInstance)
+                }
+                .addOnFailureListener { exception ->
+                    // Model couldn’t be downloaded or other internal error.
+                    //Set the Enlgilsg query
+                    tvInstance.setText(query)
+                    Log.e("TAG", "Model not downloaded" + exception.cause + exception.message)
+                }
 
-        Log.e(
-            "Returning from TAG ",
-            "Ans for text " + query + " -" + tvInstance.text.toString()
-        )
+            Log.e(
+                "Returning from TAG ",
+                "Ans for text " + query + " -" + tvInstance.text.toString()
+            )
 
-        //Close translator
-        //mTranslator.close()
+            //Close translator
+            //mTranslator.close()
+        } catch (e: Exception) {
+            //Might be a traslator closed exception
+            Log.e(TAG, "Translator closed maybe but exception is " + e.cause + e.message)
+        }
 
         return
     }

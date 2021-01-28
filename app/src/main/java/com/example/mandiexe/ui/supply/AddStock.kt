@@ -73,7 +73,6 @@ class AddStock : AppCompatActivity() {
     private val RC_TYPE = 2
     private val pref = PreferenceUtil
 
-    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         setAppLocale(pref.getLanguageFromPreference(), this)
         super.onCreate(savedInstanceState)
@@ -164,7 +163,7 @@ class AddStock : AppCompatActivity() {
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
+   
     private fun createGrowth() {
 
         findViewById<ProgressBar>(R.id.pb_add_stock).visibility = View.VISIBLE
@@ -188,7 +187,7 @@ class AddStock : AppCompatActivity() {
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
+    
     private fun makeCallForGrowth() {
 
         //Translate three words
@@ -243,17 +242,22 @@ class AddStock : AppCompatActivity() {
     }
 
     private fun makeSearchForItems(code: Int) {
+
+        val mLanguage = pref.getLanguageFromPreference() ?: "en"
         val Voiceintent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-        Voiceintent.putExtra(
-            RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-        )
 
         //Put language
         Voiceintent.putExtra(
             RecognizerIntent.EXTRA_LANGUAGE,
-            Locale(pref.getLanguageFromPreference() + "-IN")
+            mLanguage
         )
+
+        Voiceintent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, mLanguage)
+        Voiceintent.putExtra(
+            RecognizerIntent.EXTRA_ONLY_RETURN_LANGUAGE_PREFERENCE,
+            mLanguage
+        )
+
         Voiceintent.putExtra(
             RecognizerIntent.EXTRA_PROMPT,
             resources.getString(R.string.searchHead)
@@ -278,7 +282,7 @@ class AddStock : AppCompatActivity() {
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
+    
     private fun getTranslations() {
         //Run an async task to get the values for the three categories
         OfflineTranslate.translateToEnglish(
@@ -359,7 +363,7 @@ class AddStock : AppCompatActivity() {
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
+    
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -379,8 +383,8 @@ class AddStock : AppCompatActivity() {
                 //Put result
                 val res: java.util.ArrayList<String>? =
                     data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
-                val resultInEnglish = res?.get(0)
-                cropName.setText(OfflineTranslate.transliterateToDefault(resultInEnglish))
+                val resultInDefault = res?.get(0)
+                cropName.setText(resultInDefault)
 
 
             }
@@ -391,7 +395,7 @@ class AddStock : AppCompatActivity() {
                     data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
                 val resultInEnglish = res?.get(0)
                 //  val conversionTable = onversionTable()
-                cropType.setText(OfflineTranslate.transliterateToDefault(resultInEnglish))
+                cropType.setText(resultInEnglish)
 
             }
         }

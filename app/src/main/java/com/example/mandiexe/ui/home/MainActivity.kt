@@ -47,7 +47,6 @@ import com.example.mandiexe.utils.auth.SessionManager
 import com.example.mandiexe.utils.usables.ExternalUtils
 import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.usables.OfflineTranslate
-import com.example.mandiexe.utils.usables.OfflineTranslate.transliterateToDefault
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManager
@@ -211,22 +210,27 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener,
 
     private fun createVoiceIntent() {
 
+        val mLanguage = pref.getLanguageFromPreference() ?: "en"
         val Voiceintent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-        Voiceintent.putExtra(
-            RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-        )
 
         //Put language
         Voiceintent.putExtra(
             RecognizerIntent.EXTRA_LANGUAGE,
-            Locale(pref.getLanguageFromPreference() + "-IN")
+            mLanguage
         )
+
+        Voiceintent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, mLanguage)
+        Voiceintent.putExtra(
+            RecognizerIntent.EXTRA_ONLY_RETURN_LANGUAGE_PREFERENCE,
+            mLanguage
+        )
+
         Voiceintent.putExtra(
             RecognizerIntent.EXTRA_PROMPT,
             resources.getString(R.string.searchHead)
         )
         startActivityForResult(Voiceintent, VOICE_REC_CODE)
+
 
     }
 
@@ -450,13 +454,12 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener,
             }
         }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onActivityResult(
         requestCode: Int,
         resultCode: Int,
         @Nullable data: Intent?
     ) {
-
+        super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == RC_APP_UPDATE) {
             if (resultCode != Activity.RESULT_OK) {
@@ -469,17 +472,12 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener,
                 //Put result
                 val res: java.util.ArrayList<String>? =
                     data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
-                val resultInEnglish = res?.get(0)
-
-                //1. Transliterate
-                val transliteratedValue = transliterateToDefault(resultInEnglish)
-                //2. Set this over
-                search_view.setQuery(transliteratedValue, false)
+                val resultInDefault = res?.get(0)
+                search_view.setQuery(resultInDefault, false)
             }
 
         }
 
-        super.onActivityResult(requestCode, resultCode, data)
 
     }
 
