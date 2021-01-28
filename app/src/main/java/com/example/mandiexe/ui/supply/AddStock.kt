@@ -71,16 +71,18 @@ class AddStock : AppCompatActivity() {
     private val RC_TYPE = 2
     private val pref = PreferenceUtil
 
-
-    override fun onResume() {
-        super.onResume()
-
-    }
+    private lateinit var args: Bundle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setAppLocale(pref.getLanguageFromPreference(), this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.add_stock_fragment)
+
+        if (intent?.getBundleExtra("bundle") != null) {
+            //When there is an argumenet of cimpletetion
+            onBackPressed()
+        }
+
 
         val tb = findViewById<Toolbar>(R.id.toolbarExternal)
         tb.title = resources.getString(R.string.add_crop)

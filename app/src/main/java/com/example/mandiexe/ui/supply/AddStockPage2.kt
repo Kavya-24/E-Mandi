@@ -1,5 +1,6 @@
 package com.example.mandiexe.ui.supply
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -9,6 +10,7 @@ import android.widget.*
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import com.example.mandiexe.R
 import com.example.mandiexe.models.body.supply.AddGrowthBody
 import com.example.mandiexe.models.body.supply.AddSupplyBody
@@ -243,6 +245,12 @@ class AddStockPage2 : AppCompatActivity() {
             )
                 .show()
 
+            val i = Intent(this, AddStock::class.java)
+            val bundle = bundleOf(
+                "STATUS" to "COMPLETE"
+            )
+            i.putExtra("bundle", bundle)
+            startActivity(i)
             finish()
 
         }
