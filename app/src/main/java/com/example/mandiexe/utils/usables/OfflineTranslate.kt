@@ -72,8 +72,7 @@ object OfflineTranslate {
 
             //Close translator
             //mTranslator.close()
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             //Might be a traslator closed exception
             Log.e(TAG, "Translator closed maybe but exception is " + e.cause + e.message)
         }
@@ -143,7 +142,7 @@ object OfflineTranslate {
             .addOnSuccessListener { translatedText ->
                 // Translation successful.
                 tvInstance.setText(translatedText.toString())
-                Log.e("TAG", "Translated text q = $query" + translatedText.toString())
+
             }
             .addOnFailureListener { exception ->
                 // Error.
