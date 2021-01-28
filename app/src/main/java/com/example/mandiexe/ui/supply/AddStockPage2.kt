@@ -31,7 +31,7 @@ class AddStockPage2 : AppCompatActivity() {
     private val TAG = AddStockPage2::class.java.simpleName
 
 
-    private lateinit var mHandler: Handler
+    private var mHandler =  Handler()
 
     private lateinit var etExp: EditText
     private lateinit var cropDes: EditText
