@@ -29,8 +29,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space"
-                android:hint="@string/searchHint"
-                android:visibility="gone"/>
+                android:theme="@style/MaterialSearchViewStyle"
+                android:visibility="gone" />
         </FrameLayout>
 
     </com.google.android.material.appbar.AppBarLayout>

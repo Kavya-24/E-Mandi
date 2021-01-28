@@ -12,8 +12,8 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ListView
 import android.widget.SimpleCursorAdapter
 import android.widget.TextView
 import androidx.annotation.Nullable
@@ -130,6 +130,12 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener,
         val crops: Array<String> = resources.getStringArray(R.array.arr_crop_names)
         search_view.setAdapter(SearchAdapter(this@MainActivity, crops))
 
+
+        //Get tge liust view
+        val mListView =
+            search_view.findViewById<ListView>(com.miguelcatalan.materialsearchview.R.id.suggestion_list)
+
+
         //My SearchView
         search_view.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -156,8 +162,13 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener,
         })
 
         search_view.setOnSearchViewListener(object : MaterialSearchView.SearchViewListener {
+            @RequiresApi(Build.VERSION_CODES.M)
             override fun onSearchViewShown() {
                 Log.e("MAIN", "In onSearchViewShown()")
+                //Set suggestions
+                search_view.showSuggestions()
+
+
                 //Do some magic
             }
 
@@ -174,16 +185,13 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener,
         search_view.showVoice(true)
 
 
-        val v = search_view.findViewById<ImageView>(R.id.action_voice_btn)
+        val v =
+            search_view.findViewById<ImageView>(com.miguelcatalan.materialsearchview.R.id.action_voice_btn)!!
         v.setOnClickListener {
             createVoiceIntent()
         }
 
-        val et = search_view.findViewById<EditText>(R.id.searchTextView)
-        et.setHint(resources.getString(R.string.searchHint))
-        val mView = layoutInflater.inflate(R.layout.suggest_item, null)
-        val sugIcon = mView.findViewById<ImageView>(R.id.suggestion_icon)
-        sugIcon.setImageDrawable(resources.getDrawable(R.drawable.ic_call_made_black_24dp, null))
+
 
 
         search_view.setOnItemClickListener { parent, view, position, id ->
@@ -501,13 +509,8 @@ class MainActivity : AppCompatActivity(), Communicator, OnMyLanguageListener,
     }
 
     override fun onBackPressed() {
+        super.onBackPressed();
 
-        if (search_view.isSearchOpen()) {
-            search_view.dismissSuggestions();
-            search_view.clearFocus()
-        } else {
-            super.onBackPressed();
-        }
     }
 
     override fun selectLanguage(_listItem: LanguageBody, position: Int) {

@@ -9,6 +9,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/space"
         android:elevation="@dimen/space"
+        android:clickable="true"
+        android:focusable="true"
         app:cardBackgroundColor="@color/bgCard"
         app:cardCornerRadius="@dimen/space_half">
 
