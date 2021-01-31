@@ -84,8 +84,8 @@
                 android:id="@+id/tilCropType"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/space"
-                android:hint="@string/addVariety"
+                android:layout_marginStart="@dimen/space"
+                android:layout_marginEnd="@dimen/space"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toStartOf="@id/mic_crop_type"
                 app:layout_constraintStart_toStartOf="parent"
@@ -96,8 +96,8 @@
                     android:id="@+id/actv_crop_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/space_half"
                     android:background="@color/bgGreen"
+                    android:hint="@string/addVariety"
                     android:inputType="none" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -119,8 +119,8 @@
                 android:id="@+id/tilQuantity"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/space"
-                android:hint="@string/quantity"
+                android:layout_marginStart="@dimen/space"
+                android:layout_marginEnd="@dimen/space"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toStartOf="@id/tv_kg"
                 app:layout_constraintStart_toStartOf="parent"
@@ -131,7 +131,9 @@
                     android:id="@+id/actv_quantity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/space_half"
+                    android:textColor="@color/grey_700"
+                    android:background="@color/bgGreen"
+                    android:hint="@string/quantity"
                     android:inputType="numberDecimal" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -150,8 +152,9 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilEstDate"
                 style="@style/OutlinedTextBox"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@id/ivEst"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tilSowDate">
 
@@ -166,8 +169,9 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilSowDate"
                 style="@style/OutlinedTextBox"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@id/ivSow"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tilQuantity">
 
@@ -179,16 +183,35 @@
                     android:hint="@string/dateOfSowing" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <ImageView
+                android:id="@+id/ivEst"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space"
+                android:src="@drawable/ic_date_range_black_24dp"
+                app:layout_constraintBottom_toBottomOf="@id/tilEstDate"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tilEstDate" />
+
+            <ImageView
+                android:id="@+id/ivSow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space"
+                android:src="@drawable/ic_date_range_black_24dp"
+                app:layout_constraintBottom_toBottomOf="@id/tilSowDate"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tilSowDate" />
 
             <CheckBox
                 android:id="@+id/checkbox"
                 android:layout_width="match_parent"
-                android:text="@string/available_for_bidding"
-                android:contentDescription="@string/available_for_bidding"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space"
                 android:checked="true"
+                android:contentDescription="@string/available_for_bidding"
                 android:padding="@dimen/space"
+                android:text="@string/available_for_bidding"
                 app:layout_constraintTop_toBottomOf="@id/tilEstDate" />
 
             <com.google.android.material.button.MaterialButton
@@ -197,14 +220,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/space"
                 android:layout_marginTop="20dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="@dimen/space"
                 android:backgroundTint="@color/colorAccent"
                 android:text="@string/next"
                 app:backgroundTint="@color/colorAccent"
                 app:icon="@drawable/ic_arrow_forward"
                 app:iconGravity="end"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/checkbox" />
 
 

@@ -157,7 +157,7 @@ class AddStock : AppCompatActivity() {
             makeSearchForItems(RC_TYPE)
         }
 
-        val bidCheck = findViewById<CheckBox>(R.id.checkIcon)
+        val bidCheck = findViewById<CheckBox>(R.id.checkbox)
         mtb.setOnClickListener {
             if (isValidate()) {
                 if (bidCheck.isChecked) {
