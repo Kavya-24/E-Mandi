@@ -45,10 +45,10 @@
             <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/clVis"
                 android:layout_width="match_parent"
+                android:visibility="invisible"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space"
                 android:padding="@dimen/space"
-                android:visibility="invisible"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:context=".ui.home.SearchResultActivity">
 
@@ -174,9 +174,8 @@
                     android:id="@+id/rv_youtubeLinks"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/space"
                     android:layout_marginTop="@dimen/space_2x"
-                    android:layout_marginEnd="@dimen/space"
+                    tools:listitem="@layout/item_youtube_resource_file"
                     android:layout_marginBottom="@dimen/space_4x"
                     app:layout_constraintTop_toBottomOf="@id/tvInCountry" />
 

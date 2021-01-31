@@ -13,6 +13,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
+import com.example.mandiexe.adapter.OnYoutubeClickListener
+import com.example.mandiexe.adapter.YoutubeAdapter
 import com.example.mandiexe.interfaces.RetrofitClient
 import com.example.mandiexe.models.body.supply.SearchGlobalCropBody
 import com.example.mandiexe.models.responses.supply.SearchGlobalCropResponse
@@ -32,7 +34,7 @@ import kotlinx.android.synthetic.main.activity_search_result.*
 import retrofit2.Call
 import retrofit2.Response
 
-class SearchResultActivity : AppCompatActivity() {
+class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
 
     private val pref = PreferenceUtil
     private lateinit var args: Bundle
@@ -171,6 +173,11 @@ class SearchResultActivity : AppCompatActivity() {
 
         val rv = findViewById<RecyclerView>(R.id.rv_youtubeLinks)
         rv.layoutManager = LinearLayoutManager(this)
+
+        val adapter = YoutubeAdapter(this)
+        adapter.lst = links
+        rv.adapter = adapter
+
 
     }
 }
