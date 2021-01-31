@@ -30,6 +30,8 @@ import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.usables.OfflineTranslate
 import com.example.mandiexe.utils.usables.TimeConversionUtils
 import com.example.mandiexe.utils.usables.UIUtils
+import com.example.mandiexe.utils.usables.UIUtils.hideProgress
+import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.example.mandiexe.utils.usables.ValidationObject
 import com.example.mandiexe.viewmodels.MyCropBidDetailsViewModel
 import com.google.android.material.button.MaterialButton
@@ -88,7 +90,8 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
     private lateinit var v: View
 
     private val pref = com.example.mandiexe.utils.auth.PreferenceUtil
-
+    private lateinit var pb : ProgressBar
+    
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -110,7 +113,8 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
         }
 
         Log.e(TAG, "Supply id is" + SUPPLY_ID + "\nFrom " + from)
-
+        
+        pb = findViewById(R.id.pb_my_crops_details)
         //This gets an id as the argument and makes a call from it
         makeCall()
 
@@ -159,7 +163,7 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun makeCall() {
 
-        findViewById<ProgressBar>(R.id.pb_my_crops_details).visibility = View.VISIBLE
+        showProgress(pb, this)
         Log.e(TAG, SUPPLY_ID + " is supply id")
         val body = ViewSupplyBody(SUPPLY_ID)
         //Clear graph series
@@ -181,7 +185,7 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
         })
 
-        findViewById<ProgressBar>(R.id.pb_my_crops_details).visibility = View.GONE
+        hideProgress(pb, this)
 
     }
 
@@ -306,7 +310,7 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun confirmModify() {
 
-        findViewById<ProgressBar>(R.id.pb_my_crops_details).visibility = View.VISIBLE
+        showProgress(pb, this)
         getTranslations()
 
         if (getValidTranslations()) {
@@ -315,7 +319,7 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
             mHandler.postDelayed({ makeModifyCalls() }, 5000)
 
         }
-        findViewById<ProgressBar>(R.id.pb_my_crops_details).visibility = View.GONE
+        hideProgress(pb, this)
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -428,7 +432,7 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
         try {
             findViewById<ConstraintLayout>(R.id.mLayoutSup).visibility = View.VISIBLE
-            findViewById<ProgressBar>(R.id.pb_my_crops_details).visibility = View.GONE
+            hideProgress(pb, this)
 
             //#TRANSLATION
             OfflineTranslate.translateToDefault(

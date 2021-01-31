@@ -21,6 +21,8 @@ import com.example.mandiexe.adapter.MyRequirementAdapter
 import com.example.mandiexe.adapter.OnMyBidClickListener
 import com.example.mandiexe.models.responses.bids.FamerBidsResponse
 import com.example.mandiexe.utils.usables.UIUtils
+import com.example.mandiexe.utils.usables.UIUtils.hideProgress
+import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.example.mandiexe.viewmodels.RequirementsViewmodel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
@@ -37,6 +39,8 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
     private lateinit var root: View
     private lateinit var tabLayout: TabLayout
 
+    private lateinit var pb : ProgressBar
+
     override fun onResume() {
         super.onResume()
         Log.e("Req", "In resume")
@@ -47,7 +51,7 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
         savedInstanceState: Bundle?
     ): View? {
         root = inflater.inflate(R.layout.requirement_fragment, container, false)
-
+        pb = root.findViewById(R.id.pb_requirement)
         //Get the items from retrofit call and paged adapter
 
         tabLayout = root.findViewById(R.id.tabsReq) as TabLayout
@@ -89,7 +93,7 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
 
     private fun loadRequirements() {
 
-        root.findViewById<ProgressBar>(R.id.pb_requirement).visibility = View.VISIBLE
+        showProgress(pb, requireContext())
 
         viewModel.reqFunction().observe(viewLifecycleOwner, Observer { mResponse ->
 
@@ -107,7 +111,7 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
             }
         })
 
-        root.findViewById<ProgressBar>(R.id.pb_requirement).visibility = View.GONE
+       hideProgress(pb, requireContext())
 
     }
 

@@ -29,6 +29,8 @@ import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.auth.SessionManager
 import com.example.mandiexe.utils.usables.UIUtils
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
+import com.example.mandiexe.utils.usables.UIUtils.hideProgress
+import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.example.mandiexe.utils.usables.ValidationObject
 import com.example.mandiexe.viewmodels.OTViewModel
 import com.google.android.material.button.MaterialButton
@@ -85,7 +87,7 @@ class OTPFragment : Fragment() {
         otpTextView = root.findViewById(R.id.otpView)
         pb = root.findViewById(R.id.pb_otp_verify)
 
-        pb.visibility = View.VISIBLE
+        showProgress(pb, requireContext())
 
         //Get phone number from arguments
         phoneNumber = arguments?.getString("PHONE")!!
@@ -95,7 +97,7 @@ class OTPFragment : Fragment() {
         tvTimer = root.findViewById<TextView>(R.id.tv_timer_resend)
 
         getOTP()
-        pb.visibility = View.VISIBLE
+        showProgress(pb, requireContext())
 
         otpTextView.otpListener = object : OTPListener {
             override fun onInteractionListener() {
@@ -111,7 +113,7 @@ class OTPFragment : Fragment() {
 
 
         root.findViewById<MaterialButton>(R.id.mtb_verify_otp).setOnClickListener {
-            pb.visibility = View.VISIBLE
+            showProgress(pb, requireContext())
             if (ValidationObject.validateOTP(mOtp)) {
                 verifyPhoneNumberWithCode(storedVerificationId, mOtp)
             } else {
@@ -123,7 +125,7 @@ class OTPFragment : Fragment() {
                 )
             }
 
-            pb.visibility = View.GONE
+            hideProgress(pb, requireContext())
         }
 
 
@@ -174,7 +176,7 @@ class OTPFragment : Fragment() {
                 //     detect the incoming verification SMS and perform verification without
                 //     user action.
 
-                pb.visibility = View.GONE
+                hideProgress(pb, requireContext())
                 Log.e(TAG, "on ver comp " + credential.toString())
 
                 signInWithPhoneAuthCredential(credential)
@@ -183,7 +185,7 @@ class OTPFragment : Fragment() {
             override fun onVerificationFailed(e: FirebaseException) {
                 // This callback is invoked in an invalid request for verification is made,
                 // for instance if the the phone number format is not valid.
-                pb.visibility = View.GONE
+                hideProgress(pb, requireContext())
                 Log.e(TAG, "on ver failed " + e)
                 if (e is FirebaseAuthInvalidCredentialsException) {
                     UIUtils.createSnackbar(
@@ -228,7 +230,7 @@ class OTPFragment : Fragment() {
 
                 //After code has been sent
                 //Remove the progress bar
-                pb.visibility = View.GONE
+                hideProgress(pb, requireContext())
                 tvTimer.visibility = View.VISIBLE
                 root.findViewById<TextView>(R.id.tv_resend).visibility = View.VISIBLE
 

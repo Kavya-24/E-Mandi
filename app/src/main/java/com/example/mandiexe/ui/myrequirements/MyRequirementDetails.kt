@@ -33,6 +33,8 @@ import com.example.mandiexe.utils.usables.OfflineTranslate.transliterateToDefaul
 import com.example.mandiexe.utils.usables.TimeConversionUtils.convertTimeToEpoch
 import com.example.mandiexe.utils.usables.UIUtils
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
+import com.example.mandiexe.utils.usables.UIUtils.hideProgress
+import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.example.mandiexe.viewmodels.MyRequirementDetailsViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
@@ -67,7 +69,8 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
     private lateinit var adapter: MyBidHistoryAdapter
 
     private val pref = PreferenceUtil
-
+    
+    private lateinit var pb : ProgressBar
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,7 +91,8 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
         tb.setNavigationOnClickListener {
             onBackPressed()
         }
-
+        
+        pb = findViewById(R.id.pb_my_req_details)
 
         //Set views from 'FROM'
         if (from == RequirementFragment::class.java.simpleName) {
@@ -168,7 +172,7 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun makeCall() {
 
-        findViewById<ProgressBar>(R.id.pb_my_req_details).visibility = View.VISIBLE
+        showProgress(pb, this)
 
         val body = ViewBidBody(BID_ID)
 
@@ -188,7 +192,7 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
         })
 
 
-        findViewById<ProgressBar>(R.id.pb_my_req_details).visibility = View.GONE
+        hideProgress(pb, this)
 
     }
 
@@ -354,7 +358,7 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
         //remove pb
         //View the root
         findViewById<ConstraintLayout>(R.id.mLayoutReq).visibility = View.VISIBLE
-        findViewById<ProgressBar>(R.id.pb_my_req_details).visibility = View.GONE
+        hideProgress(pb, this)
 
 
         try {
@@ -483,7 +487,7 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
     }
 
     override fun viewBidDetails(_listItem: BidHistoryBody) {
-        TODO("Not yet implemented")
+
     }
 
 }

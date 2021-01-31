@@ -18,6 +18,8 @@ import com.example.mandiexe.adapter.OnMyBidHistoryGlobalClickListener
 import com.example.mandiexe.models.responses.bids.BidHistoryResponse
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.usables.UIUtils
+import com.example.mandiexe.utils.usables.UIUtils.hideProgress
+import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import kotlinx.android.synthetic.main.farmer_bid_history_fragment.*
 
 class FarmerBidHistory : Fragment(), OnMyBidHistoryGlobalClickListener {
@@ -28,18 +30,18 @@ class FarmerBidHistory : Fragment(), OnMyBidHistoryGlobalClickListener {
 
     private val viewModel: FarmerBidHistoryViewModel by viewModels()
     private lateinit var root: View
-
+    private lateinit var pb: ProgressBar
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         root = inflater.inflate(R.layout.farmer_bid_history_fragment, container, false)
-        root.findViewById<ProgressBar>(R.id.pb_history_bid).visibility = View.VISIBLE
+        pb = root.findViewById(R.id.pb_history_bid)
 
+        showProgress(pb, requireContext())
         loadHistory()
 
-        root.findViewById<ProgressBar>(R.id.pb_history_bid).visibility = View.GONE
-
+        hideProgress(pb, requireContext())
 
 
 
@@ -47,6 +49,8 @@ class FarmerBidHistory : Fragment(), OnMyBidHistoryGlobalClickListener {
     }
 
     private fun loadHistory() {
+
+        showProgress(pb, requireContext())
 
         viewModel.BidStockFunction().observe(viewLifecycleOwner, Observer { mResponse ->
             val success = viewModel.successful.value
@@ -66,8 +70,7 @@ class FarmerBidHistory : Fragment(), OnMyBidHistoryGlobalClickListener {
 
         })
 
-        root.findViewById<ProgressBar>(R.id.pb_history_bid).visibility = View.GONE
-
+        hideProgress(pb, requireContext())
 
     }
 

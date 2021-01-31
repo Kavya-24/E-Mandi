@@ -4,10 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -54,4 +51,14 @@ object UIUtils {
         actvInstance.setAdapter(adapter)
         return
     }
+
+    fun showProgress(pb : ProgressBar, mContext : Context){
+        pb.visibility = View.VISIBLE
+    }
+
+    fun hideProgress(pb : ProgressBar, mContext : Context){
+        pb.visibility = View.GONE
+    }
+
+
 }

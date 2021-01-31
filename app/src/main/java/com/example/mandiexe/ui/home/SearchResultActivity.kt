@@ -24,6 +24,8 @@ import com.example.mandiexe.utils.usables.ExternalUtils
 import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.usables.OfflineTranslate
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
+import com.example.mandiexe.utils.usables.UIUtils.hideProgress
+import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.android.synthetic.main.activity_search_result.*
@@ -42,6 +44,7 @@ class SearchResultActivity : AppCompatActivity() {
 
 
     private lateinit var mTv: TextView
+    private lateinit var pb: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,9 +69,11 @@ class SearchResultActivity : AppCompatActivity() {
             onBackPressed()
         }
 
+        pb = findViewById(R.id.pb_searchCrop)
 
         val aBar = findViewById<AppBarLayout>(R.id.appbarlayoutExternal)
-        findViewById<ProgressBar>(R.id.pb_searchCrop).visibility = View.VISIBLE
+
+        showProgress(pb, this)
 
         val t = findViewById<TextView>(R.id.tempTv)
 
@@ -129,7 +134,7 @@ class SearchResultActivity : AppCompatActivity() {
                 }
             })
 
-        findViewById<ProgressBar>(R.id.pb_searchCrop).visibility = View.GONE
+        hideProgress(pb, this)
     }
 
     override fun onBackPressed() {
@@ -157,7 +162,7 @@ class SearchResultActivity : AppCompatActivity() {
 
 
         }
-        findViewById<ProgressBar>(R.id.pb_searchCrop).visibility = View.GONE
+        hideProgress(pb, this)
 
     }
 

@@ -21,6 +21,8 @@ import com.example.mandiexe.adapter.SupplyHistoryAdapter
 import com.example.mandiexe.models.responses.supply.SupplyHistoryResponse
 import com.example.mandiexe.ui.supply.MyCropBidDetails
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
+import com.example.mandiexe.utils.usables.UIUtils.hideProgress
+import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import kotlinx.android.synthetic.main.farmer_supply_history_fragment.*
 
 class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {
@@ -31,6 +33,7 @@ class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {
 
     private val viewModel: FarmerSupplyHistoryViewModel by viewModels()
     private lateinit var root: View
+    private lateinit var pb: ProgressBar
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,14 +41,16 @@ class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {
     ): View? {
 
         root = inflater.inflate(R.layout.farmer_supply_history_fragment, container, false)
+        pb = root.findViewById(R.id.pb_history_supply)
 
-        root.findViewById<ProgressBar>(R.id.pb_history_supply).visibility = View.VISIBLE
+        showProgress(pb, requireContext())
 
         loadHistory()
         val swl = root.findViewById<SwipeRefreshLayout>(R.id.swl_supply_history)
-        root.findViewById<ProgressBar>(R.id.pb_history_supply).visibility = View.GONE
 
+        hideProgress(pb, requireContext())
         swl.setOnRefreshListener {
+
             loadHistory()
             swl.isRefreshing = false
 
@@ -57,6 +62,8 @@ class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {
     }
 
     private fun loadHistory() {
+
+        showProgress(pb, requireContext())
 
         viewModel.supplyFunction().observe(viewLifecycleOwner, Observer { mResponse ->
             val success = viewModel.successful.value
@@ -76,7 +83,7 @@ class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {
 
         })
 
-        root.findViewById<ProgressBar>(R.id.pb_history_supply).visibility = View.GONE
+        hideProgress(pb, requireContext())
 
 
     }

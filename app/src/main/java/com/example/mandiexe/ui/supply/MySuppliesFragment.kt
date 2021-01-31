@@ -23,6 +23,8 @@ import com.example.mandiexe.adapter.MySuppliesAdapter
 import com.example.mandiexe.adapter.OnMyStockClickListener
 import com.example.mandiexe.models.responses.supply.FarmerSuppliesResponse
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
+import com.example.mandiexe.utils.usables.UIUtils.hideProgress
+import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.example.mandiexe.viewmodels.MySuppliesViewmodel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
@@ -39,6 +41,8 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
     private lateinit var root: View
     private lateinit var tabLayout: TabLayout
 
+    private lateinit var pb: ProgressBar
+
 
     override fun onResume() {
         super.onResume()
@@ -53,6 +57,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
 
 
         root = inflater.inflate(R.layout.my_crop_bids_fragment, container, false)
+        pb = root.findViewById(R.id.pb_my_crops)
 
         loadItems()
 
@@ -96,8 +101,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
 
     private fun loadItems() {
 
-        root.findViewById<ProgressBar>(R.id.pb_my_crops).visibility = View.VISIBLE
-
+        showProgress(pb, requireContext())
 
         viewModel.supplyFunction().observe(viewLifecycleOwner, Observer { mResponse ->
             if (viewModel.successful.value != null) {
@@ -112,9 +116,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
 
         })
 
-
-        root.findViewById<ProgressBar>(R.id.pb_my_crops).visibility = View.GONE
-
+        hideProgress(pb, requireContext())
 
     }
 
@@ -124,7 +126,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
 
         Log.e("MY Supply", "In manage stock")
 
-        root.findViewById<ProgressBar>(R.id.pb_my_crops).visibility = View.GONE
+        showProgress(pb, requireContext())
         val rv = root.findViewById<RecyclerView>(R.id.rv_my_stocks)
         val adapter = MySuppliesAdapter(this)
 
@@ -146,8 +148,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
             }
         }
 
-        root.findViewById<ProgressBar>(R.id.pb_my_crops).visibility = View.GONE
-
+        hideProgress(pb, requireContext())
 
     }
 
