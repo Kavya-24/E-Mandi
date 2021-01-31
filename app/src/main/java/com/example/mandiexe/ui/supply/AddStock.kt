@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.speech.RecognizerIntent
 import android.util.Log
-import android.view.View
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +20,8 @@ import com.example.mandiexe.utils.usables.OfflineTranslate
 import com.example.mandiexe.utils.usables.TimeConversionUtils
 import com.example.mandiexe.utils.usables.UIUtils
 import com.example.mandiexe.utils.usables.UIUtils.createToast
+import com.example.mandiexe.utils.usables.UIUtils.hideProgress
+import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.example.mandiexe.utils.usables.ValidationObject
 import com.example.mandiexe.viewmodels.AddStockViewModel
 import com.google.android.material.button.MaterialButton
@@ -48,7 +49,7 @@ class AddStock : AppCompatActivity() {
 
     //UI variables
     private lateinit var etEst: EditText
-    private lateinit var etSow : EditText
+    private lateinit var etSow: EditText
 
     //private lateinit var etAddress: EditText
     private lateinit var cropName: AutoCompleteTextView
@@ -74,6 +75,8 @@ class AddStock : AppCompatActivity() {
 
     private lateinit var args: Bundle
     private lateinit var mtb: MaterialButton
+    private lateinit var pb: ProgressBar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         setAppLocale(pref.getLanguageFromPreference(), this)
         super.onCreate(savedInstanceState)
@@ -113,7 +116,7 @@ class AddStock : AppCompatActivity() {
         //tilAddress = findViewById(R.id.tv_address)
         tilEst = findViewById(R.id.tilEstDate)
         mtb = findViewById(R.id.mtb_go_to_bidding)
-
+        pb = findViewById(R.id.pb_add_stock)
 
 
         //Populate views
@@ -168,7 +171,8 @@ class AddStock : AppCompatActivity() {
 
     private fun createGrowth() {
 
-        findViewById<ProgressBar>(R.id.pb_add_stock).visibility = View.VISIBLE
+
+        showProgress(pb, this)
         getTranslations()
 
 
@@ -186,7 +190,7 @@ class AddStock : AppCompatActivity() {
             mHandler.postDelayed({ makeCallForGrowth() }, 5000)
         }
 
-
+        hideProgress(pb, this)
     }
 
     private fun goToNewSupply() {
