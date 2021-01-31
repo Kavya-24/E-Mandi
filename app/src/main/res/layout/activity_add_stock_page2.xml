@@ -51,8 +51,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space"
-                android:padding="@dimen/space"
                 android:textSize="20sp"
+                android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/rice" />
 
@@ -60,20 +60,29 @@
                 android:id="@+id/tvAddStockCropType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/space"
-                android:padding="@dimen/space"
+                android:layout_margin="@dimen/space"
+                android:layout_marginBottom="@dimen/space"
                 app:layout_constraintTop_toBottomOf="@id/tvAddStockCropName"
                 tools:text="@string/rice" />
 
-            <EditText
-                android:id="@+id/etDescription_add_stock"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/space"
+                android:orientation="horizontal"
                 android:layout_margin="@dimen/space"
-                android:hint="@string/addDescription"
-                android:maxLines="4"
-                app:layout_constraintTop_toBottomOf="@id/tvAddStockCropType" />
+                app:layout_constraintTop_toBottomOf="@id/tvAddStockCropType">
+
+                <EditText
+                    android:background="@color/bgGreen"
+                    android:id="@+id/etDescription_add_stock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/addDescription"
+                    android:maxLines="4"
+                    app:layout_constraintTop_toBottomOf="@id/tvAddStockCropType" />
+            </com.google.android.material.textfield.TextInputLayout>
+
 
             <com.google.android.material.textfield.TextInputLayout
 
@@ -81,21 +90,20 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space"
-                android:padding="@dimen/space"
                 android:hint="@string/offer_price"
                 android:orientation="horizontal"
                 app:endIconMode="none"
                 app:errorEnabled="false"
                 app:layout_constraintEnd_toStartOf="@id/tv_rs"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/etDescription_add_stock">
+                app:layout_constraintTop_toBottomOf="@id/tilDesc">
 
 
                 <EditText
                     android:id="@+id/actv_price"
                     android:layout_width="match_parent"
-                    android:background="@color/bgGreen"
                     android:layout_height="wrap_content"
+                    android:background="@color/bgGreen"
                     android:inputType="numberDecimal" />
 
             </com.google.android.material.textfield.TextInputLayout>
