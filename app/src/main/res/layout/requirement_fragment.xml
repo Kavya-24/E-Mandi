@@ -12,44 +12,42 @@
         android:layout_height="match_parent"
         android:background="@color/bgGreen">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/abl_req"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+        <!--        <com.google.android.material.appbar.AppBarLayout-->
+        <!--            android:id="@+id/abl_req"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:theme="@style/AppTheme.AppBarOverlay"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent">-->
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabsReq"
-                android:layout_width="match_parent"
-                android:layout_height="?android:actionBarSize"
-                android:background="@color/colorPrimary"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                app:tabGravity="fill"
-                app:tabIndicatorColor="@color/white"
-                app:tabMaxWidth="0dp"
-                app:tabTextColor="#d3d3d3">
+        <!--            <com.google.android.material.tabs.TabLayout-->
+        <!--                android:id="@+id/tabsReq"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="?android:actionBarSize"-->
+        <!--                android:background="@color/colorPrimary"-->
+        <!--                app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
+        <!--                app:tabGravity="fill"-->
+        <!--                app:tabIndicatorColor="@color/white"-->
+        <!--                app:tabMaxWidth="0dp"-->
+        <!--                app:tabTextColor="#d3d3d3">-->
 
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:text="@string/str_my_crops" />
+        <!--                <com.google.android.material.tabs.TabItem-->
+        <!--                    android:layout_width="0dp"-->
+        <!--                    android:layout_height="match_parent"-->
+        <!--                    android:text="@string/str_my_crops" />-->
 
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="0dp"
-                    android:id="@+id/tab2"
-                    android:layout_height="match_parent"
-                    android:text="@string/str_my_req" />
-            </com.google.android.material.tabs.TabLayout>
-        </com.google.android.material.appbar.AppBarLayout>
+        <!--                <com.google.android.material.tabs.TabItem-->
+        <!--                    android:layout_width="0dp"-->
+        <!--                    android:id="@+id/tab2"-->
+        <!--                    android:layout_height="match_parent"-->
+        <!--                    android:text="@string/str_my_req" />-->
+        <!--            </com.google.android.material.tabs.TabLayout>-->
+        <!--        </com.google.android.material.appbar.AppBarLayout>-->
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swl_stock_fragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="?attr/actionBarSize"
-            app:layout_constraintTop_toBottomOf="@id/abl_req">
+            android:layout_height="match_parent">
 
 
             <androidx.recyclerview.widget.RecyclerView

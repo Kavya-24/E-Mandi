@@ -54,26 +54,7 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
         pb = root.findViewById(R.id.pb_requirement)
         //Get the items from retrofit call and paged adapter
 
-        tabLayout = root.findViewById(R.id.tabsReq) as TabLayout
-        tabLayout.selectTab(tabLayout.getTabAt(1), true)
-//        tabLayout.tabMode = TabLayout.MODE_SCROLLABLE
 
-
-        tabLayout.setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                //     openFragment(getFragment(tab.position))
-                if (tab.position == 0) {
-                    //1 will be tab reselected
-                    //0 will be MySupplies
-                    //Simply destroy this
-                    root.findNavController().navigateUp()
-                    onDestroy()
-                }
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab) {}
-            override fun onTabReselected(tab: TabLayout.Tab) {}
-        })
 
         loadRequirements()
 

@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity(), OnMyLanguageListener,
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_my_supplies, R.id.nav_supply, R.id.nav_bid, R.id.nav_my_requirements
+                R.id.nav_home, R.id.nav_supply_history, R.id.nav_bid_history
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

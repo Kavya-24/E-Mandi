@@ -62,24 +62,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
         loadItems()
 
 
-        tabLayout = root.findViewById(R.id.tabsSupplies) as TabLayout
-        tabLayout.selectTab(tabLayout.getTabAt(0), true)
 
-//        tabLayout.tabMode = TabLayout.MODE_SCROLLABLE
-
-
-        tabLayout.setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                if (tab.position == 1) {
-                    //Navigae to my requirements fragment
-                    root.findNavController()
-                        .navigate(R.id.action_nav_my_supplies_to_nav_my_requirements)
-                }
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab) {}
-            override fun onTabReselected(tab: TabLayout.Tab) {}
-        })
 
         //Get the items from normal adapter
 
