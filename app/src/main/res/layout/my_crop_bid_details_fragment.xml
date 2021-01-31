@@ -29,9 +29,9 @@
                     android:id="@+id/mLayoutSup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="visible"
                     android:layout_margin="@dimen/space"
                     android:padding="@dimen/space"
-                    android:visibility="invisible"
                     app:layout_constraintTop_toTopOf="parent">
 
 
@@ -235,13 +235,14 @@
 
 
                     <TextView
-                        android:id="@+id/tvNoGraph"
+                        android:id="@+id/tvNoGraphCrop"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/space"
                         android:gravity="center"
+                        android:maxLines="3"
                         android:padding="@dimen/space"
-                        android:text="@string/no_bids_founds"
+                        android:text="@string/noon_has_bid"
                         android:visibility="invisible"
                         app:layout_constraintTop_toBottomOf="@id/graphView" />
 
@@ -288,7 +289,7 @@
                         app:backgroundTint="@color/deltaRed"
                         app:layout_constraintEnd_toStartOf="@id/mtb_modify_stock"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvNoGraph" />
+                        app:layout_constraintTop_toBottomOf="@id/tvNoGraphCrop" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/mtb_modify_stock"
@@ -300,7 +301,7 @@
                         app:backgroundTint="@color/colorAccent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/mtb_cancel_stock"
-                        app:layout_constraintTop_toBottomOf="@id/tvNoGraph" />
+                        app:layout_constraintTop_toBottomOf="@id/tvNoGraphCrop" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

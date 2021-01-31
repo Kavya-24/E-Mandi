@@ -36,11 +36,11 @@ class AddStock : AppCompatActivity() {
     //Primary constructor
     companion object {
         fun newInstance() = AddStock()
-        lateinit var mActivityInstance : Activity
+        lateinit var mActivityInstance: Activity
     }
 
     //Get an instance for further destruction
-   // public lateinit var
+    // public lateinit var
 
     private val viewModel: AddStockViewModel by viewModels()
     private val translateViewModel: TranslateViewmodel by viewModels()
@@ -87,7 +87,7 @@ class AddStock : AppCompatActivity() {
         setContentView(R.layout.add_stock_fragment)
 
 
-        mActivityInstance =this
+        mActivityInstance = this
         if (intent?.getBundleExtra("bundle") != null) {
             //When there is an argumenet of cimpletetion
             viewModel.successful.removeObservers(this)
@@ -170,8 +170,6 @@ class AddStock : AppCompatActivity() {
 
 
         }
-
-
 
 
         val bidCheck = findViewById<CheckBox>(R.id.checkbox)

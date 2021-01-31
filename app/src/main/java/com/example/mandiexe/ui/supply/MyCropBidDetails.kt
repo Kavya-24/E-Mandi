@@ -90,8 +90,8 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
     private lateinit var v: View
 
     private val pref = com.example.mandiexe.utils.auth.PreferenceUtil
-    private lateinit var pb : ProgressBar
-    
+    private lateinit var pb: ProgressBar
+
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,7 +113,7 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
         }
 
         Log.e(TAG, "Supply id is" + SUPPLY_ID + "\nFrom " + from)
-        
+
         pb = findViewById(R.id.pb_my_crops_details)
         //This gets an id as the argument and makes a call from it
         makeCall()
@@ -157,6 +157,7 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
             makeCall()
             findViewById<SwipeRefreshLayout>(R.id.swl_details).isRefreshing = false
         }
+
 
     }
 
@@ -525,7 +526,13 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
             //When there are no last bids or any bids
             graph.removeAllSeries()
             graph.visibility = View.GONE
-//            findViewById<TextView>(R.id.tvNoGraph).visibility = View.VISIBLE
+            findViewById<TextView>(R.id.tvNoGraphCrop).visibility = View.VISIBLE
+
+            //Also, make this open
+            openBidHistory()
+
+            //During inactive, it will show an indefinite snackbar
+
 
         } else {
 
@@ -672,14 +679,14 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
         findViewById<ImageView>(R.id.iv_dropdown_bid_history)
             .setImageDrawable(resources.getDrawable(R.drawable.ic_top))
-
-        if (adapter.lst.size == 0) {
-            UIUtils.createSnackbar(
-                resources.getString(R.string.emptyRV),
-                this,
-                container_crop_bids_details
-            )
-        }
+//
+//        if (adapter.lst.size == 0) {
+//            UIUtils.createSnackbar(
+//                resources.getString(R.string.emptyRV),
+//                this,
+//                container_crop_bids_details
+//            )
+//        }
 
     }
 
