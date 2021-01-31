@@ -131,8 +131,7 @@ class MainActivity : AppCompatActivity(), OnMyLanguageListener,
 
         //Get tge liust view
         val mListView =
-            search_view.findViewById<ListView>(com.miguelcatalan.materialsearchview.R.id.suggestion_list)
-
+            search_view.findViewById<ListView>(com.miguelcatalan.materialsearchview.R.id.suggestion_list)!!
 
         //My SearchView
         search_view.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
@@ -141,7 +140,10 @@ class MainActivity : AppCompatActivity(), OnMyLanguageListener,
                 if (!query.isNullOrEmpty()) {
                     Log.e("MAIN", "In on query submit")
 
-                    searchCrop(query ?: resources.getString(R.string.rice), "e-mandi-farmer-null-query")
+                    searchCrop(
+                        query ?: resources.getString(R.string.rice),
+                        "e-mandi-farmer-null-query"
+                    )
 
                 }
                 return false
@@ -167,7 +169,7 @@ class MainActivity : AppCompatActivity(), OnMyLanguageListener,
                 //Set suggestions
                 search_view.showSuggestions()
 
-
+                mListView.visibility = View.VISIBLE
                 //Do some magic
             }
 
