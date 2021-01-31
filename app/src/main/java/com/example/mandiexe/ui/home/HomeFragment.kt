@@ -85,6 +85,8 @@ class HomeFragment : Fragment() {
             super.onDestroy()
         } else {
             viewPager.currentItem = viewPager.currentItem - 1
+            super.onDestroy()
+
         }
 
 

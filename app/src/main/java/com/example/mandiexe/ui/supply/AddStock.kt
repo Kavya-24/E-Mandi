@@ -57,7 +57,7 @@ class AddStock : AppCompatActivity() {
 
     //private lateinit var etAddress: EditText
     private lateinit var cropName: AutoCompleteTextView
-    private lateinit var cropType: AutoCompleteTextView
+    private lateinit var cropType: EditText
     private lateinit var cropQuantity: EditText
 
 
@@ -334,7 +334,7 @@ class AddStock : AppCompatActivity() {
             R.string.cropNameError,
             this
         )
-                && ValidationObject.validateEmptyView(
+                && ValidationObject.validateEmptyEditText(
             cropType,
             tilType,
             R.string.cropTypeError,
