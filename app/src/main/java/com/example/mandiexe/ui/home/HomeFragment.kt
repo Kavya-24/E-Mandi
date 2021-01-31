@@ -28,6 +28,24 @@ class HomeFragment : Fragment() {
         Log.e(TAG, "In on view created")
         viewPager.adapter = pagerAdapter
 
+        //Set the tabbed layout
+        viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
+
+        //Set the tabbed layout
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                viewPager.currentItem = tab!!.position
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+
+            }
+        })
+
 
     }
 
@@ -54,13 +72,21 @@ class HomeFragment : Fragment() {
         pagerAdapter = MyViewPagerAdapter(childFragmentManager)
 
 
+
         return root
     }
 
 
     override fun onDestroy() {
-        super.onDestroy()
         Log.e(TAG, "In on destroy")
+
+        if (viewPager.currentItem == 0) {
+            //Default brhaviour
+            super.onDestroy()
+        } else {
+            viewPager.currentItem = viewPager.currentItem - 1
+        }
+
 
     }
 
