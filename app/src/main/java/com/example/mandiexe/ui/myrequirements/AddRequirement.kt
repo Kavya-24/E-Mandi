@@ -1,15 +1,18 @@
 package com.example.mandiexe.ui.myrequirements
 
-import android.app.SearchManager
 import android.content.Intent
-import android.database.Cursor
 import android.database.MatrixCursor
+import android.os.Build
 import android.os.Bundle
 import android.provider.BaseColumns
 import android.speech.RecognizerIntent
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import androidx.annotation.Nullable
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,16 +26,19 @@ import com.example.mandiexe.models.body.supply.CropSearchAutoCompleteBody
 import com.example.mandiexe.models.responses.SearchCropReqResponse
 import com.example.mandiexe.models.responses.supply.CropSearchAutocompleteResponse
 import com.example.mandiexe.utils.ApplicationUtils
+import com.example.mandiexe.utils.DefaultListOfCrops
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.auth.SessionManager
 import com.example.mandiexe.utils.usables.ExternalUtils
 import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
+import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.example.mandiexe.viewmodels.AddRequirementViewModel
+import com.miguelcatalan.materialsearchview.MaterialSearchView
+import com.miguelcatalan.materialsearchview.SearchAdapter
 import kotlinx.android.synthetic.main.add_requirement_fragment.*
 import retrofit2.Call
 import retrofit2.Response
-import java.util.*
 
 
 class AddRequirement : AppCompatActivity(), OnNewReqClockListener {
@@ -42,11 +48,6 @@ class AddRequirement : AppCompatActivity(), OnNewReqClockListener {
     }
 
     private lateinit var viewModel: AddRequirementViewModel
-    //private lateinit var root: View
-
-    private lateinit var searchView: SearchView
-    private var mAdapter: SimpleCursorAdapter? = null
-    private lateinit var searchManager: SearchManager
 
     private lateinit var pb: ProgressBar
     private lateinit var rv: RecyclerView
@@ -58,83 +59,8 @@ class AddRequirement : AppCompatActivity(), OnNewReqClockListener {
 
     private val TAG = AddRequirement::class.java.simpleName
 
-
-    private fun searchRequirements() {
-
-        val from = arrayOf("suggestionList")
-        val to = intArrayOf(android.R.id.text1)
-
-        //Add a searchManager
-
-
-        mAdapter = SimpleCursorAdapter(
-            this,
-            android.R.layout.simple_list_item_1,
-            null,
-            from,
-            to,
-            CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER
-        )
-
-        searchView.suggestionsAdapter = mAdapter
-        searchView.isIconifiedByDefault = false
-        searchView.onActionViewExpanded()
-        searchView.clearFocus()
-
-        searchView.setOnSuggestionListener(object : SearchView.OnSuggestionListener {
-            override fun onSuggestionSelect(position: Int): Boolean {
-                return false        //Was true
-            }
-
-            override fun onSuggestionClick(position: Int): Boolean {
-
-                val cursor: Cursor = mAdapter!!.getItem(position) as Cursor
-                val txt = cursor.getString(cursor.getColumnIndex("suggestionList"))
-
-                makeCall(txt)
-
-                return true
-
-
-            }
-        })
-
-
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                //Returns query
-                //Do nothing here
-
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                fetchSuggestions(newText.toString())
-                return false
-            }
-        })
-
-
-        val Voiceintent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-        Voiceintent.putExtra(
-            RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-        )
-
-        //Put language
-        Voiceintent.putExtra(
-            RecognizerIntent.EXTRA_LANGUAGE,
-            Locale(pref.getLanguageFromPreference() ?: "en")
-        )
-        Voiceintent.putExtra(
-            RecognizerIntent.EXTRA_PROMPT,
-            resources.getString(R.string.searchHead)
-        )
-        startActivityForResult(Voiceintent, VOICE_REC_CODE)
-
-
-    }
-
+    private lateinit var search_view_req: MaterialSearchView
+    private lateinit var mListOfSuggestions: MutableList<String>
 
     private fun makeCall(txt: String?) {
 
@@ -208,7 +134,7 @@ class AddRequirement : AppCompatActivity(), OnNewReqClockListener {
                     }
 
 
-                    mAdapter?.changeCursor(c)
+//                    mAdapter?.changeCursor(c)
                 }
 
             }
@@ -243,26 +169,200 @@ class AddRequirement : AppCompatActivity(), OnNewReqClockListener {
         pb = findViewById(R.id.pb_add_req)
         rv = findViewById(R.id.rv_search_requirements)
 
-        pb.visibility = View.VISIBLE
 
-        val tb = findViewById<Toolbar>(R.id.toolbarExternal)
+        val tb = findViewById<Toolbar>(R.id.toolbarAddReq)
         tb.title = resources.getString(R.string.searchBuyers)
         tb.setNavigationOnClickListener {
             onBackPressed()
         }
 
-        searchView = findViewById(R.id.sv_requirements)
+        //Inflate menu
+        tb.inflateMenu(R.menu.search_requirement_menu)
 
-        searchManager = getSystemService(SEARCH_SERVICE) as SearchManager
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
 
-        searchView.setOnClickListener {
-            searchRequirements()
+        search_view_req = findViewById(R.id.search_view_req)
+
+        mListOfSuggestions = mutableListOf()
+
+        // search_view_req.setCursorDrawable(R.drawable.ic_call_made_black_24dp)
+
+        val crops: Array<String> = resources.getStringArray(R.array.arr_crop_names)
+        search_view_req.setAdapter(SearchAdapter(this@AddRequirement, crops))
+
+
+        //Get tge liust view
+        val mListView =
+            search_view_req.findViewById<ListView>(com.miguelcatalan.materialsearchview.R.id.suggestion_list)!!
+
+        //My SearchView
+        search_view_req.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                //Do some magic
+                if (!query.isNullOrEmpty()) {
+                    Log.e("MAIN", "In on query submit")
+
+                    searchCrop(
+                        query ?: resources.getString(R.string.rice),
+                        "e-mandi-farmer-null-query"
+                    )
+
+                }
+                return false
+
+            }
+
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+
+                //Do some magic
+                // fetchSuggestions(newText ?: resources.getString(R.string.rice))
+                //search_view_req.setSuggestions(mListOfSuggestions.toTypedArray())
+                //The adapter is fixed
+                Log.e("MAIN", "On query change")
+
+                return false
+            }
+        })
+
+        search_view_req.setOnSearchViewListener(object : MaterialSearchView.SearchViewListener {
+            @RequiresApi(Build.VERSION_CODES.M)
+            override fun onSearchViewShown() {
+                Log.e("MAIN", "In onSearchViewShown()")
+                //Set suggestions
+                search_view_req.showSuggestions()
+
+                mListView.visibility = View.VISIBLE
+
+
+                //Do some magic
+            }
+
+            override fun onSearchViewClosed() {
+                Log.e("MAIN", "In onSearchViewClosed")
+                search_view_req.dismissSuggestions()
+                search_view_req.clearFocus()
+                return
+                //Do some magic
+            }
+        })
+
+        search_view_req.setVoiceSearch(true)
+        search_view_req.showVoice(true)
+
+
+        val v =
+            search_view_req.findViewById<ImageView>(com.miguelcatalan.materialsearchview.R.id.action_voice_btn)!!
+        v.setOnClickListener {
+            createVoiceIntent()
+        }
+
+
+        search_view_req.setOnItemClickListener { parent, view, position, id ->
+
+
+            val q = parent.getItemAtPosition(position).toString()
+
+            //Get the index, and then find its equiavlied englihs
+            val mIndex = crops.indexOf(q)
+
+
+            val englishQuery = DefaultListOfCrops.getTheDefaultCropsList().get(mIndex)
+            Log.e(
+                "MAIN",
+                "In item clicked nmIndex is $mIndex  and the real valur is $englishQuery\n" + parent.getItemAtPosition(
+                    position
+                ).toString()
+            )
+
+            //Set the english query in the local history
+            pref.setHistorySet(englishQuery)
+
+            search_view_req.dismissSuggestions()
+            search_view_req.clearFocus()
+            search_view_req.setQuery("", false)
+
+            searchCrop(q, englishQuery)
+            search_view_req.visibility = View.GONE
         }
 
 
     }
 
+    private fun createVoiceIntent() {
+        val mLanguage = pref.getLanguageFromPreference() ?: "en"
+        val Voiceintent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+
+        //Put language
+        Voiceintent.putExtra(
+            RecognizerIntent.EXTRA_LANGUAGE,
+            mLanguage
+        )
+
+        Voiceintent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, mLanguage)
+        Voiceintent.putExtra(
+            RecognizerIntent.EXTRA_ONLY_RETURN_LANGUAGE_PREFERENCE,
+            mLanguage
+        )
+
+        Voiceintent.putExtra(
+            RecognizerIntent.EXTRA_PROMPT,
+            resources.getString(R.string.searchHead)
+        )
+        startActivityForResult(Voiceintent, VOICE_REC_CODE)
+
+
+    }
+
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        @Nullable data: Intent?
+    ) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == VOICE_REC_CODE) {
+
+            Log.e("IN ARC", "")
+            if (data != null) {
+                //Put result
+                val res: java.util.ArrayList<String>? =
+                    data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+                val resultInDefault = res?.get(0)
+                search_view_req.setQuery(resultInDefault, false)
+            }
+
+        }
+
+
+    }
+
+    private fun searchCrop(defaultQuery: String, englishQuery: String) {
+        makeCall(englishQuery)
+
+    }
+
+    //Menu
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.search_requirement_menu, menu)
+        Log.e("ADD", "In on create menu")
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        Log.e("MAIN", "In onSelected")
+        when (item.itemId) {
+
+            R.id.action_search_requirements -> {
+                search_view_req.showSearch()
+                search_view_req.visibility = View.VISIBLE
+            }
+
+
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
 
     override fun viewAddReqDetails(_listItem: SearchCropReqResponse.Supply) {
 
@@ -280,3 +380,4 @@ class AddRequirement : AppCompatActivity(), OnNewReqClockListener {
     }
 
 }
+
