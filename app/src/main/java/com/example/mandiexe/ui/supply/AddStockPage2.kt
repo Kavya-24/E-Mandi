@@ -1,6 +1,5 @@
 package com.example.mandiexe.ui.supply
 
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -10,7 +9,6 @@ import android.widget.*
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import com.example.mandiexe.R
 import com.example.mandiexe.models.body.supply.AddGrowthBody
 import com.example.mandiexe.models.body.supply.AddSupplyBody
@@ -19,6 +17,8 @@ import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.usables.OfflineTranslate
 import com.example.mandiexe.utils.usables.TimeConversionUtils
+import com.example.mandiexe.utils.usables.UIUtils.hideProgress
+import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.example.mandiexe.utils.usables.ValidationObject
 import com.example.mandiexe.viewmodels.AddStockViewModel
 import com.google.android.material.button.MaterialButton
@@ -31,8 +31,6 @@ class AddStockPage2 : AppCompatActivity() {
 
     private lateinit var myCalendar: Calendar
     private val TAG = AddStockPage2::class.java.simpleName
-
-
     private var mHandler = Handler()
 
     private lateinit var etExp: EditText
@@ -44,6 +42,7 @@ class AddStockPage2 : AppCompatActivity() {
 
     private val pref = PreferenceUtil
     private lateinit var args: Bundle
+    private lateinit var pb: ProgressBar
 
 
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -53,7 +52,7 @@ class AddStockPage2 : AppCompatActivity() {
         setContentView(R.layout.activity_add_stock_page2)
 
         args = intent?.getBundleExtra("bundle")!!
-
+        pb = findViewById(R.id.pb_add_stock_page_2)
         val tb = findViewById<Toolbar>(R.id.toolbarExternal)
         tb.title = resources.getString(R.string.add_stock)
         tb.setNavigationOnClickListener {
@@ -116,19 +115,19 @@ class AddStockPage2 : AppCompatActivity() {
         OfflineTranslate.translateToEnglish(
             this,
             cropDes.text.toString(),
-            findViewById<TextView>(R.id.tvTempCropDesc)
+            findViewById(R.id.tvTempCropDesc)
         )
 
         //Comes from argumenets
         OfflineTranslate.translateToEnglish(
             this,
             args.getString("NAME").toString(),
-            findViewById<TextView>(R.id.tvTempCropNamePage2)
+            findViewById(R.id.tvTempCropNamePage2)
         )
         OfflineTranslate.translateToEnglish(
             this,
             args.getString("TYPE").toString(),
-            findViewById<TextView>(R.id.tvTempCropTypePage2)
+            findViewById(R.id.tvTempCropTypePage2)
         )
 
     }
@@ -136,7 +135,7 @@ class AddStockPage2 : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun createStock() {
 
-        findViewById<ProgressBar>(R.id.pb_add_stock_page_2).visibility = View.VISIBLE
+        showProgress(pb, this)
 
         //Get the translation
         getTranslations()
@@ -155,6 +154,7 @@ class AddStockPage2 : AppCompatActivity() {
             mHandler.postDelayed({ makeCalls() }, 5000)
         }
 
+        hideProgress(pb, this)
     }
 
     private fun makeCalls() {
@@ -175,7 +175,7 @@ class AddStockPage2 : AppCompatActivity() {
 
         }
 
-        Log.e(TAG, "Translated values are " + transCropName + transCropType + transDesc)
+        Log.e(TAG, "Translated values are $transCropName$transCropType$transDesc")
         val body = AddSupplyBody(
             offerPrice.text.toString(),
             transCropName,
@@ -198,12 +198,12 @@ class AddStockPage2 : AppCompatActivity() {
 
         Log.e(
             TAG,
-            "AddSupply Body \n" + body.toString() + "\n Add growth body" + growthBody.toString()
+            "AddSupply Body \n$body\n Add growth body$growthBody"
         )
 
 
         viewModel.growthFunction(growthBody)
-            .observe(this, androidx.lifecycle.Observer { mResponse ->
+            .observe(this, { mResponse ->
                 val success = viewModel.successfulGrowth.value
                 if (success != null) {
                     Log.e(
@@ -221,7 +221,7 @@ class AddStockPage2 : AppCompatActivity() {
             })
 
 
-        viewModel.addFunction(body).observe(this, androidx.lifecycle.Observer { mResponse ->
+        viewModel.addFunction(body).observe(this, { mResponse ->
 
 
             manageStockCreateResponses(mResponse)
@@ -245,14 +245,9 @@ class AddStockPage2 : AppCompatActivity() {
             )
                 .show()
 
-            val i = Intent(this, AddStock::class.java)
-            val bundle = bundleOf(
-                "STATUS" to "COMPLETE"
-            )
-            i.putExtra("bundle", bundle)
-            startActivity(i)
-            finish()
-
+            //Destroy AddStock
+            AddStock.mActivityInstance.finish()
+            onBackPressed()
         }
 
     }
@@ -271,13 +266,13 @@ class AddStockPage2 : AppCompatActivity() {
         )
     }
 
-
     override fun onBackPressed() {
-        super.onBackPressed()
 
         viewModel.successfulGrowth.removeObservers(this)
         viewModel.successfulGrowth.value = null
         viewModel.successful.removeObservers(this)
         viewModel.successful.value = null
+        super.onBackPressed()
+
     }
 }

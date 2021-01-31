@@ -1,5 +1,6 @@
 package com.example.mandiexe.ui.supply
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -13,7 +14,6 @@ import androidx.lifecycle.Observer
 import com.example.mandiexe.R
 import com.example.mandiexe.libModel.TranslateViewmodel
 import com.example.mandiexe.models.body.supply.AddGrowthBody
-import com.example.mandiexe.models.responses.supply.AddSupplyResponse
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.usables.OfflineTranslate
@@ -36,7 +36,11 @@ class AddStock : AppCompatActivity() {
     //Primary constructor
     companion object {
         fun newInstance() = AddStock()
+        lateinit var mActivityInstance : Activity
     }
+
+    //Get an instance for further destruction
+   // public lateinit var
 
     private val viewModel: AddStockViewModel by viewModels()
     private val translateViewModel: TranslateViewmodel by viewModels()
@@ -82,6 +86,8 @@ class AddStock : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.add_stock_fragment)
 
+
+        mActivityInstance =this
         if (intent?.getBundleExtra("bundle") != null) {
             //When there is an argumenet of cimpletetion
             viewModel.successful.removeObservers(this)
@@ -286,7 +292,6 @@ class AddStock : AppCompatActivity() {
 
     }
 
-
     private fun getValidTranslations(): Boolean {
 
         return ValidationObject.validateTranslations(
@@ -298,7 +303,6 @@ class AddStock : AppCompatActivity() {
         )
 
     }
-
 
     private fun getTranslations() {
         //Run an async task to get the values for the three categories
@@ -312,17 +316,6 @@ class AddStock : AppCompatActivity() {
             cropType.text.toString(),
             findViewById<TextView>(R.id.tvTempCropType)
         )
-    }
-
-    private fun manageStockCreateResponses(mResponse: AddSupplyResponse?) {
-        //On creating this stock
-        Toast.makeText(
-            this,
-            resources.getString(R.string.supplyAdded),
-            Toast.LENGTH_SHORT
-        )
-            .show()
-
     }
 
     private fun setUpCropNameSpinner() {
@@ -380,7 +373,6 @@ class AddStock : AppCompatActivity() {
 
     }
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -426,12 +418,18 @@ class AddStock : AppCompatActivity() {
 
 
     }
-//    override fun onDestroy() {
-//
-//
-//        val navController = findNavController()
-//        navController.navigateUp()
-//
-//        super.onDestroy()
-//    }
+
+    override fun onPause() {
+
+        //Remove observers
+        Log.e(TAG, "On Pause")
+        super.onPause()
+
+    }
+
+    override fun onResume() {
+
+        super.onResume()
+
+    }
 }
