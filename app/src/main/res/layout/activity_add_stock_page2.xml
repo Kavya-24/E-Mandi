@@ -94,6 +94,7 @@
                 <EditText
                     android:id="@+id/actv_price"
                     android:layout_width="match_parent"
+                    android:background="@color/bgGreen"
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal" />
 

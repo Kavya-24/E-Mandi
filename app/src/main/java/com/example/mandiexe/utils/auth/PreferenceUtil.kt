@@ -1,6 +1,7 @@
 package com.example.mandiexe.utils.auth
 
 import android.preference.PreferenceManager
+import android.util.Log
 import com.example.mandiexe.R
 import com.example.mandiexe.models.ProfileObject
 import com.example.mandiexe.models.body.AddressBlock
@@ -281,11 +282,18 @@ object PreferenceUtil {
      */
 
     fun setHistorySet(mNewQuery: String) {
+
         val pref = PreferenceUtil
 
+        //Make the queey a set so that it doesnt overlap
+        val mSet = mutableSetOf<String>(mNewQuery)
+
+        Log.e("pref", "For quey $mNewQuery previously history is ${pref.history}")
         if (pref.history.isNullOrEmpty() || pref.history!!.size < 4) {
-            //We will difrectly add the string query
-            pref.history?.add(mNewQuery)
+            //We will difrectly add the string
+
+            pref.history = pref.history!!.union(mSet) as MutableSet<String>
+
         } else if (pref.history!!.size >= 4) {
 
             //1. Get the first element
@@ -293,12 +301,15 @@ object PreferenceUtil {
             //2. Pop one element
             pref.history?.remove(firstElement!!)
             //3. Add the lemenet
-            pref.history?.add(mNewQuery)
+            pref.history = pref.history!!.union(mSet) as MutableSet<String>
         }
+
+        Log.e("pref", "For quey $mNewQuery now history is ${pref.history}")
+
     }
 
 
-    fun getHistorySet() : MutableSet<String>{
+    fun getHistorySet(): MutableSet<String> {
         val pref = PreferenceUtil
         return pref.history!!
     }

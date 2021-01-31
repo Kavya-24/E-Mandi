@@ -156,7 +156,8 @@ class MainActivity : AppCompatActivity(), OnMyLanguageListener,
                 //Do some magic
                 // fetchSuggestions(newText ?: resources.getString(R.string.rice))
                 //search_view.setSuggestions(mListOfSuggestions.toTypedArray())
-
+                //The adapter is fixed
+                Log.e("MAIN", "On query change")
 
                 return false
             }
@@ -170,6 +171,8 @@ class MainActivity : AppCompatActivity(), OnMyLanguageListener,
                 search_view.showSuggestions()
 
                 mListView.visibility = View.VISIBLE
+
+
                 //Do some magic
             }
 
@@ -211,6 +214,9 @@ class MainActivity : AppCompatActivity(), OnMyLanguageListener,
                     position
                 ).toString()
             )
+
+            //Set the english query in the local history
+            pref.setHistorySet(englishQuery)
 
             search_view.dismissSuggestions()
             search_view.clearFocus()
