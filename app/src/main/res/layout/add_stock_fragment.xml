@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/bgGreen"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/bgGreen">
 
     <include layout="@layout/layout_toolbar" />
 
-    <ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    <ScrollView
         android:id="@+id/container_add_stock"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize"
         tools:actionBarNavMode="standard">
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -82,18 +82,22 @@
             <com.google.android.material.textfield.TextInputLayout
 
                 android:id="@+id/tilCropType"
-                style="@style/styleTIL"
-                android:hint="@string/crop_type"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space"
+                android:hint="@string/addVariety"
+                android:orientation="horizontal"
                 app:layout_constraintEnd_toStartOf="@id/mic_crop_type"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tilWhichCrop">
 
 
-                <AutoCompleteTextView
+                <EditText
                     android:id="@+id/actv_crop_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/space_half"
+                    android:background="@color/bgGreen"
                     android:inputType="none" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -113,13 +117,11 @@
             <com.google.android.material.textfield.TextInputLayout
 
                 android:id="@+id/tilQuantity"
-                style="@style/OutlinedTextBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space"
                 android:hint="@string/quantity"
                 android:orientation="horizontal"
-                app:endIconMode="none"
                 app:layout_constraintEnd_toStartOf="@id/tv_kg"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tilCropType">
@@ -129,6 +131,7 @@
                     android:id="@+id/actv_quantity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/space_half"
                     android:inputType="numberDecimal" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -177,32 +180,33 @@
             </com.google.android.material.textfield.TextInputLayout>
 
 
+            <CheckBox
+                android:id="@+id/checkbox"
+                android:layout_width="match_parent"
+                android:text="@string/available_for_bidding"
+                android:contentDescription="@string/available_for_bidding"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space"
+                android:checked="true"
+                android:padding="@dimen/space"
+                app:layout_constraintTop_toBottomOf="@id/tilEstDate" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/mtb_go_to_bidding"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/space"
                 android:layout_marginTop="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="@dimen/space"
                 android:backgroundTint="@color/colorAccent"
-                android:text="@string/addThisInBidding"
+                android:text="@string/next"
                 app:backgroundTint="@color/colorAccent"
                 app:icon="@drawable/ic_arrow_forward"
                 app:iconGravity="end"
-                app:layout_constraintTop_toBottomOf="@id/tilEstDate" />
+                app:layout_constraintTop_toBottomOf="@id/checkbox" />
 
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/mtb_add_without_bidding"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/space"
-                android:backgroundTint="@color/colorAccent"
-                android:text="@string/addCropGrowthOnly"
-                app:backgroundTint="@color/colorAccent"
-                app:icon="@drawable/ic_arrow_forward"
-                app:iconGravity="end"
-                app:layout_constraintTop_toBottomOf="@id/mtb_go_to_bidding" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

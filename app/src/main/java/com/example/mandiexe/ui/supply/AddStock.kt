@@ -48,6 +48,7 @@ class AddStock : AppCompatActivity() {
 
     //UI variables
     private lateinit var etEst: EditText
+    private lateinit var etSow : EditText
 
     //private lateinit var etAddress: EditText
     private lateinit var cropName: AutoCompleteTextView
@@ -72,7 +73,7 @@ class AddStock : AppCompatActivity() {
     private val pref = PreferenceUtil
 
     private lateinit var args: Bundle
-
+    private lateinit var mtb: MaterialButton
     override fun onCreate(savedInstanceState: Bundle?) {
         setAppLocale(pref.getLanguageFromPreference(), this)
         super.onCreate(savedInstanceState)
@@ -97,6 +98,8 @@ class AddStock : AppCompatActivity() {
         mHandler = Handler()
         //UI Init
         etEst = findViewById(R.id.etEstDate)
+        etSow = findViewById<EditText>(R.id.etSowDate)
+
         //ivLocation = findViewById(R.id.iv_location)
         //  etAddress = findViewById(R.id.actv_address)
         cropName = findViewById(R.id.actv_which_crop)
@@ -109,12 +112,12 @@ class AddStock : AppCompatActivity() {
         tilQuantity = findViewById(R.id.tilQuantity)
         //tilAddress = findViewById(R.id.tv_address)
         tilEst = findViewById(R.id.tilEstDate)
-        val etSow = findViewById<EditText>(R.id.etSowDate)
+        mtb = findViewById(R.id.mtb_go_to_bidding)
+
 
 
         //Populate views
         setUpCropNameSpinner()
-        setUpVaietyNameSpinner()
 
 
         // disable dates before today
@@ -145,30 +148,19 @@ class AddStock : AppCompatActivity() {
             makeSearchForItems(RC_TYPE)
         }
 
-
-        findViewById<MaterialButton>(R.id.mtb_go_to_bidding).setOnClickListener {
-
+        val bidCheck = findViewById<CheckBox>(R.id.checkIcon)
+        mtb.setOnClickListener {
             if (isValidate()) {
-                val bundle = bundleOf(
-                    "NAME" to cropName.text.toString(),
-                    "TYPE" to cropType.text.toString(),
-                    "QUANTITY" to cropQuantity.text.toString(),
-                    "SOW" to etSow.text.toString(),
-                    "EST" to etEst.text.toString()
-                )
-
-                val i = Intent(this, AddStockPage2::class.java)
-                i.putExtra("bundle", bundle)
-                startActivity(i)
+                if (bidCheck.isChecked) {
+                    goToNewSupply()
+                } else {
+                    createGrowth()
+                }
             }
         }
 
 
-        findViewById<MaterialButton>(R.id.mtb_add_without_bidding).setOnClickListener {
-            if (isValidate()) {
-                createGrowth()
-            }
-        }
+        //Get the variables for the bidding
 
 
     }
@@ -197,6 +189,20 @@ class AddStock : AppCompatActivity() {
 
     }
 
+    private fun goToNewSupply() {
+        val bundle = bundleOf(
+            "NAME" to cropName.text.toString(),
+            "TYPE" to cropType.text.toString(),
+            "QUANTITY" to cropQuantity.text.toString(),
+            "SOW" to etSow.text.toString(),
+            "EST" to etEst.text.toString()
+        )
+
+        val i = Intent(this, AddStockPage2::class.java)
+        i.putExtra("bundle", bundle)
+        startActivity(i)
+
+    }
 
     private fun makeCallForGrowth() {
 
@@ -276,9 +282,6 @@ class AddStock : AppCompatActivity() {
 
     }
 
-    private fun setUpVaietyNameSpinner() {
-        UIUtils.getSpinnerAdapter(R.array.arr_crop_types, cropType, this)
-    }
 
     private fun getValidTranslations(): Boolean {
 

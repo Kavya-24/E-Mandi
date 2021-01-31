@@ -238,4 +238,5 @@
 	<string name="addCropGrowthOnly"></string>
 	<string name="add_crop"></string>
 	<string name="addMissingCrop"></string>
+    <string name="addVariety">Add variety</string>
 </resources>

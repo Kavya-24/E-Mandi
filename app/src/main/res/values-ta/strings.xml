@@ -238,4 +238,5 @@
 	<string name="addCropGrowthOnly">இந்த பயிர் வளர்ச்சியை மட்டும் சேர்க்கவும்</string>
 	<string name="add_crop">பயிர் சேர்க்கவும்</string>
 	<string name="addMissingCrop">இந்த பயிர் காணப்படவில்லை. </string>
+    <string name="addVariety">Add variety</string>
 </resources>
