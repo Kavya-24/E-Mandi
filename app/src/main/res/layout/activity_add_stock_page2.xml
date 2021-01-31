@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:background="@color/bgGreen"
     android:id="@+id/container_add_stock_page_2"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bgGreen">
 
     <include layout="@layout/layout_toolbar" />
 
@@ -65,36 +65,30 @@
                 app:layout_constraintTop_toBottomOf="@id/tvAddStockCropName"
                 tools:text="@string/rice" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilDescription"
-                style="@style/OutlinedTextBox"
+            <EditText
+                android:id="@+id/etDescription_add_stock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvAddStockCropType">
-
-                <EditText
-                    android:id="@+id/etDescription_add_stock"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/description"
-                    android:maxLines="4" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:padding="@dimen/space"
+                android:layout_margin="@dimen/space"
+                android:hint="@string/addDescription"
+                android:maxLines="4"
+                app:layout_constraintTop_toBottomOf="@id/tvAddStockCropType" />
 
             <com.google.android.material.textfield.TextInputLayout
 
                 android:id="@+id/tilOfferPrice"
-                style="@style/OutlinedTextBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space"
+                android:padding="@dimen/space"
                 android:hint="@string/offer_price"
                 android:orientation="horizontal"
                 app:endIconMode="none"
                 app:errorEnabled="false"
                 app:layout_constraintEnd_toStartOf="@id/tv_rs"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tilDescription">
+                app:layout_constraintTop_toBottomOf="@id/etDescription_add_stock">
 
 
                 <EditText

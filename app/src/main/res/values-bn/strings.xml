@@ -239,4 +239,5 @@
 	<string name="add_crop"></string>
 	<string name="addMissingCrop"></string>
     <string name="addVariety">Add variety</string>
+    <string name="addDescription">Add a description for your crop.</string>
 </resources>

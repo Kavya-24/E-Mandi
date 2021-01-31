@@ -239,4 +239,5 @@
 	<string name="add_crop">फसल जोड़ें</string>
 	<string name="addMissingCrop">यह फसल नहीं मिली है। </string>
     <string name="addVariety">Add variety</string>
+    <string name="addDescription">Add a description for your crop.</string>
 </resources>

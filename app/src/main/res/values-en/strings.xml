@@ -298,6 +298,7 @@
 	<string name="add_crop">Add Crop</string>
 	<string name="addMissingCrop" tools:ignore="MissingTranslation">This crop is not found. \nWould you like to add this crop?</string>
     <string name="addVariety">Add variety</string>
+    <string name="addDescription">Add a description for your crop.</string>
 
     <string-array name="arr_area_units">
 		<item>@string/Hectare</item>

@@ -239,4 +239,5 @@
 	<string name="add_crop">பயிர் சேர்க்கவும்</string>
 	<string name="addMissingCrop">இந்த பயிர் காணப்படவில்லை. </string>
     <string name="addVariety">Add variety</string>
+    <string name="addDescription">Add a description for your crop.</string>
 </resources>
