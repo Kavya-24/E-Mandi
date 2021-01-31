@@ -7,7 +7,7 @@ import com.squareup.moshi.Json
 
 @Keep data class LoginResponse(
     @field:Json(name = "msg")
-    val msg: String?,
+    val msg: String,
     @field:Json(name = "user")
     val user: User?,
     @field:Json(name = "error")

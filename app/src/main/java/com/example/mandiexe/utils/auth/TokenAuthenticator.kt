@@ -4,6 +4,7 @@ package com.example.mandiexe.utils.auth
 import android.content.Context
 import android.util.Log
 import com.example.mandiexe.interfaces.RetrofitClient
+import com.example.mandiexe.models.body.authBody.AccessTokenBody
 import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response
@@ -21,12 +22,12 @@ class TokenAuthenticator(context: Context) : Authenticator {
     @Throws(IOException::class)
     override fun authenticate(route: Route?, response: Response): Request? {
 
-        Log.e("AUTH ", "In Authenticate and code is " + response.code)
+        Log.e("AUTH ", "In  token authenticator with response code"  + response.code + " and refresh tomen i s" + prefManager.authToken)
 
         val newAccessToken =
-            service.getAccessToken(refreshToken = prefManager.authToken.toString())
+            service.getAccessToken(AccessTokenBody( refreshToken = prefManager.authToken.toString()))
 
-        Log.e("AUTH", "New at reqesut" + newAccessToken.toString())
+        Log.e("AUTH", "New at reqesut$newAccessToken")
 
         val resp = response.request.newBuilder()
             .header("Authorization", "Bearer $newAccessToken")

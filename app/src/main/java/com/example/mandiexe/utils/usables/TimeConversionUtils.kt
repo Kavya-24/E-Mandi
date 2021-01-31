@@ -56,6 +56,7 @@ object TimeConversionUtils {
 
     }
 
+    //Get the form from reverse of what is required to send in date objects
     @SuppressLint("SimpleDateFormat")
     fun reverseToReq(timestamp: String): String {
 

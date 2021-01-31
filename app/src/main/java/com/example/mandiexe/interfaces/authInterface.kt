@@ -1,5 +1,6 @@
 package com.example.mandiexe.interfaces
 
+import com.example.mandiexe.models.body.authBody.AccessTokenBody
 import com.example.mandiexe.models.body.authBody.LoginBody
 import com.example.mandiexe.models.body.authBody.SignUpBody
 import com.example.mandiexe.models.responses.auth.FarmerProfileResponse
@@ -17,7 +18,7 @@ interface authInterface {
     @POST("api/farmer/accesstoken")
     fun getAccessToken(
         //USe Refresh token here            //Passed as String
-        @Body refreshToken: String
+        @Body body: AccessTokenBody
     ): Call<LoginResponse>
 
 
