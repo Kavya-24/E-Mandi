@@ -38,6 +38,9 @@ object PreferenceUtil {
     private val QUANTITY_UNIT = "quantity_unit"
     private val HAS_SEEN_WALKTHROUGH = "hasSeenWalkthrough"
 
+
+    private val SEARCHHISTORY = "history"
+
     var _id: String?
         get() = pm.getString(ID, "")
         set(value) {
@@ -140,6 +143,13 @@ object PreferenceUtil {
         get() = pm.getString(LONGITUDE, " ")
         set(value) {
             pm.edit().putString(LONGITUDE, value).apply()
+        }
+
+    //Search History
+    var history: MutableSet<String>?
+        get() = pm.getStringSet(SEARCHHISTORY, mutableSetOf())
+        set(value) {
+            pm.edit().putStringSet(SEARCHHISTORY, value).apply()
         }
 
 
@@ -264,6 +274,35 @@ object PreferenceUtil {
             getAddressFromPreference()!!
         )
     }
+
+
+    /**
+     *  Set history. Limit it to 4
+     */
+
+    fun setHistorySet(mNewQuery: String) {
+        val pref = PreferenceUtil
+
+        if (pref.history.isNullOrEmpty() || pref.history!!.size < 4) {
+            //We will difrectly add the string query
+            pref.history?.add(mNewQuery)
+        } else if (pref.history!!.size >= 4) {
+
+            //1. Get the first element
+            val firstElement = pref.history?.elementAt(0)
+            //2. Pop one element
+            pref.history?.remove(firstElement!!)
+            //3. Add the lemenet
+            pref.history?.add(mNewQuery)
+        }
+    }
+
+
+    fun getHistorySet() : MutableSet<String>{
+        val pref = PreferenceUtil
+        return pref.history!!
+    }
+
 
     fun clearPrefData() {
         pm.edit().clear().apply()
