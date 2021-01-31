@@ -146,16 +146,33 @@ class AddStock : AppCompatActivity() {
             )
         }
 
+        this.apply {
 
-        //Mic units
-        findViewById<ImageView>(R.id.mic_crop_name).setOnClickListener {
-            makeSearchForItems(RC_NAME)
+            ivEst.setOnClickListener {
+                TimeConversionUtils.clickOnDateObject(myCalendar, etEst, this)
+            }
+
+            ivSow.setOnClickListener {
+                TimeConversionUtils.clickOnDateObject(
+                    myCalendar,
+                    findViewById<EditText>(R.id.etSowDate),
+                    this
+                )
+            }
+
+            mic_crop_name.setOnClickListener {
+                makeSearchForItems(RC_NAME)
+            }
+
+            mic_crop_type.setOnClickListener {
+                makeSearchForItems(RC_TYPE)
+            }
+
+
         }
 
 
-        findViewById<ImageView>(R.id.mic_crop_type).setOnClickListener {
-            makeSearchForItems(RC_TYPE)
-        }
+
 
         val bidCheck = findViewById<CheckBox>(R.id.checkbox)
         mtb.setOnClickListener {

@@ -32,7 +32,6 @@
         <activity
             android:name=".ui.supply.AddStock"
             android:label="@string/add_crop"
-            android:launchMode="singleInstance"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
