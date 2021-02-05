@@ -68,7 +68,7 @@ interface myBidsInterface {
 
     //Delete the bid
     @Headers("Content-Type:application/json")
-    @POST("api/supply/search")
+    @POST("api/demand/search")
     fun getSearchReq(
         @Body body: SearchCropReqBody
     ): Call<SearchCropReqResponse>

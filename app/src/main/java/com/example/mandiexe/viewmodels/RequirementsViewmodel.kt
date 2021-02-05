@@ -32,7 +32,7 @@ class RequirementsViewmodel : ViewModel() {
     }
 
 
-    fun mReqFunction(): MutableLiveData<FamerBidsResponse> {
+    private fun mReqFunction(): MutableLiveData<FamerBidsResponse> {
 
         mySupplyService.getFarmerDemands(
      )
@@ -41,6 +41,7 @@ class RequirementsViewmodel : ViewModel() {
                     successful.value = false
                     message.value = ExternalUtils.returnStateMessageForThrowable(t)
                     //Response is null
+                    Log.e(TAG,"Throwable ${t.message}")
                 }
 
                 override fun onResponse(

@@ -16,7 +16,7 @@ class MyRequirementAdapter(val itemClick: OnMyBidClickListener) :
 
 
     //Initialize an empty list of the dataclass T
-    var lst: List<FamerBidsResponse.Bid> = listOf()
+    var lst: List<FamerBidsResponse.Bid.Demand> = listOf()
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -34,26 +34,26 @@ class MyRequirementAdapter(val itemClick: OnMyBidClickListener) :
 
 
         //Bind a single item
-        fun bindPost(_listItem: FamerBidsResponse.Bid, itemClick: OnMyBidClickListener) {
+        fun bindPost(_listItem: FamerBidsResponse.Bid.Demand, itemClick: OnMyBidClickListener) {
             with(_listItem) {
 
-                CROP_NAME.text = _listItem.demand.crop
+                CROP_NAME.text = _listItem.crop
 
                 //CROP_LOCATION = _listItem.demand.demander.
 
                 CROP_QUANTITY.text = _listItem.qty.toString()
-                CROP_EXP.text = TimeConversionUtils.convertTimeToEpoch(_listItem.demand.expiry)
+                CROP_EXP.text = TimeConversionUtils.convertTimeToEpoch(_listItem.expiry)
 
-                CROP_CURRENT_BID.text = _listItem.demand.lastBid.toString()
-                CROP_IOP.text = _listItem.demand.offerPrice.toString()
+                CROP_CURRENT_BID.text = _listItem.lastBid.toString()
+                CROP_IOP.text = _listItem.offerPrice.toString()
 
 
                 CROP_LAST_UPDATED.text = convertTimeToEpoch(_listItem.lastModified)
 
                 CROP_MY_BID.text = _listItem.currentBid.toString()
 
-                val currentBid = _listItem.demand.lastBid
-                val askBid = _listItem.demand.offerPrice
+                val currentBid = _listItem.currentBid
+                val askBid = _listItem.offerPrice
                 val ans = currentBid - askBid
 
                 if (ans > 0) {
@@ -110,7 +110,7 @@ class MyRequirementAdapter(val itemClick: OnMyBidClickListener) :
 
 
 interface OnMyBidClickListener {
-    fun viewMyBidDetails(_listItem: FamerBidsResponse.Bid)
+    fun viewMyBidDetails(_listItem: FamerBidsResponse.Bid.Demand)
 }
 
 

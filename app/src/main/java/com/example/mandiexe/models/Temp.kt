@@ -1,11 +1,9 @@
-package com.example.mandiexe.models.responses.bids
+package com.example.mandiexe.models
 
 
-import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
-
-@Keep data class FamerBidsResponse(
+data class Temp(
     @Json(name = "bids")
     val bids: List<Bid>
 ) {
@@ -77,7 +75,6 @@ import com.squareup.moshi.Json
             val v: Int, // 1
             @Json(name = "variety")
             val variety: String // Basmati
-
         ) {
             data class LastBid(
                 @Json(name = "amount")

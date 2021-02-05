@@ -34,7 +34,7 @@ class AuthInterceptor(context: Context) : Interceptor {
         }
 
         val mCall = chain.proceed(requestBuilder.build())
-        Log.e("Auth", "In Auth Intercptor and quest code is ${mCall.code} ")
+        Log.e("Auth", "In Auth Intercptor and quest code is ${mCall.code}  with token ${sessionManager.fetchAcessToken()}")
 
         if (mCall.code == 401 || mCall.code == 403) {
 

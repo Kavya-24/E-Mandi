@@ -57,7 +57,7 @@ class OpenNewRequirementFragment : AppCompatActivity(), OnBidHistoryClickListene
     private val TAG = OpenNewRequirementFragment::class.java.simpleName
 
     //Moduify object
-    private var bidObject = AddBidBody("", "", "")
+    private var bidObject = AddBidBody("", "")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setAppLocale(PreferenceUtil.getLanguageFromPreference(), this)
@@ -138,7 +138,7 @@ class OpenNewRequirementFragment : AppCompatActivity(), OnBidHistoryClickListene
         //Init current bid
         currentBid = value.bid.currentBid.toString()
         ownerPhone = value.bid.bidder.phone
-        bidObject = AddBidBody("", value.bid.demand._id, value.bid.qty.toString())
+        bidObject = AddBidBody("", value.bid.demand._id)
 
         findViewById<ConstraintLayout>(R.id.mLayoutReqOpen).visibility = View.VISIBLE
         findViewById<ProgressBar>(R.id.pb_new_req_open).visibility = View.GONE

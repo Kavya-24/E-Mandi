@@ -98,10 +98,12 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
 
     private fun manageReqLoadedResponses(mResponse: FamerBidsResponse?) {
         //Create rv
+
         val rv = root.findViewById<RecyclerView>(R.id.rv_requirement)
         val adapter = MyRequirementAdapter(this)
 
         val mTV = root.findViewById<AppCompatTextView>(R.id.tvEmptyList)
+        Log.e("REQ", "Framer Bid Response $mResponse" )
         if (mResponse != null) {
             if (mResponse.bids.isEmpty()) {
                 mTV.visibility = View.VISIBLE
@@ -109,7 +111,15 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
                     context?.resources?.getString(R.string.noDemand)
 
             } else {
-                adapter.lst = mResponse.bids
+
+                val mutableDemands = mutableListOf<FamerBidsResponse.Bid.Demand>()
+                for(i in mResponse.bids){
+                    for(s in i.demand){
+                       // s.parentID = i._id
+                        mutableDemands.add(s)
+                    }
+                }
+                adapter.lst = mutableDemands
                 rv.layoutManager = LinearLayoutManager(context)
                 rv.adapter = adapter
             }
@@ -126,7 +136,7 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
 
     }
 
-    override fun viewMyBidDetails(_listItem: FamerBidsResponse.Bid) {
+    override fun viewMyBidDetails(_listItem: FamerBidsResponse.Bid.Demand) {
 
         val mFrom = RequirementFragment::class.java.simpleName
         val bundle = bundleOf(

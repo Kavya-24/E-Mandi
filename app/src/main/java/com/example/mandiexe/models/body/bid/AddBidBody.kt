@@ -11,6 +11,4 @@ import com.squareup.moshi.Json
     var bid: String, // 1000000
     @field:Json(name = "demand_id")
     val demand_id: String, // 5fe0a6e16118640eda871842
-    @field:Json(name = "qty")
-    val qty: String // 890
-)
+ )
