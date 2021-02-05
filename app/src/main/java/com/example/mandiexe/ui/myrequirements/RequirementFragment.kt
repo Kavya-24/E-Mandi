@@ -12,12 +12,11 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.mandiexe.R
-import com.example.mandiexe.adapter.MyRequirementAdapter
+import com.example.mandiexe.adapter.MyRequirementsAdapter
 import com.example.mandiexe.adapter.OnMyBidClickListener
 import com.example.mandiexe.models.responses.bids.FamerBidsResponse
 import com.example.mandiexe.utils.usables.UIUtils
@@ -100,7 +99,7 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
         //Create rv
 
         val rv = root.findViewById<RecyclerView>(R.id.rv_requirement)
-        val adapter = MyRequirementAdapter(this)
+        val adapter = MyRequirementsAdapter(this)
 
         val mTV = root.findViewById<AppCompatTextView>(R.id.tvEmptyList)
         Log.e("REQ", "Framer Bid Response $mResponse" )
@@ -112,12 +111,10 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
 
             } else {
 
-                val mutableDemands = mutableListOf<FamerBidsResponse.Bid.Demand>()
+                val mutableDemands = mutableListOf<FamerBidsResponse.Bid>()
                 for(i in mResponse.bids){
-                    for(s in i.demand){
-                       // s.parentID = i._id
-                        mutableDemands.add(s)
-                    }
+                        mutableDemands.add(i)
+
                 }
                 adapter.lst = mutableDemands
                 rv.layoutManager = LinearLayoutManager(context)
@@ -127,7 +124,6 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
 
     }
 
-
     override fun onDestroy() {
         viewModel.successful.removeObservers(this)
         viewModel.successful.value = null
@@ -136,19 +132,16 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
 
     }
 
-    override fun viewMyBidDetails(_listItem: FamerBidsResponse.Bid.Demand) {
-
+    override fun viewMyBidDetails(_listItem: FamerBidsResponse.Bid) {
         val mFrom = RequirementFragment::class.java.simpleName
         val bundle = bundleOf(
             "BID_ID" to _listItem._id,
             "FROM" to mFrom
         )
 
-        val i = Intent(requireContext(), OpenNewRequirementFragment::class.java)
+        val i = Intent(requireContext(), MyRequirementDetails::class.java)
         i.putExtra("bundle", bundle)
         startActivity(i)
-
-
     }
 
 

@@ -1,192 +1,140 @@
 package com.example.mandiexe.models.responses.bids
 
-
-import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
-
-@Keep data class ViewBidResponse(
-
-    @field:Json(name = "bid")
+data class ViewBidResponse(
+    @Json(name = "bid")
     val bid: Bid,
-
-    @field:Json(name = "msg")
+    @Json(name = "msg")
     val msg: String // Bid retrieved successfully.
 ) {
-
-    @Keep data class Bid(
-
-        @field:Json(name = "active")
+    data class Bid(
+        @Json(name = "active")
         val active: Boolean, // true
-
-        @field:Json(name = "bidDate")
-        val bidDate: String, // 2020-12-21T15:58:20.851Z
-
-        @field:Json(name = "bidder")
+        @Json(name = "bidDate")
+        val bidDate: String, // 2021-02-05T18:10:44.693Z
+        @Json(name = "bidder")
         val bidder: Bidder,
-
-        @field:Json(name = "bids")
+        @Json(name = "bids")
         val bids: List<BidDetails>,
-
-        @field:Json(name = "currentBid")
-        val currentBid: Int, // 8000
-
-        @field:Json(name = "demand")
+        @Json(name = "currentBid")
+        val currentBid: Int, // 10000
+        @Json(name = "demand")
         val demand: Demand,
-
-        @field:Json(name = "_id")
-        val _id: String, // 5fe0c61e3dde370fe0e57f89
-
-        @field:Json(name = "lastModified")
-        val lastModified: String, // 2020-12-21T16:04:07.471Z
-
-        @field:Json(name = "qty")
-        val qty: Int, // 890
-
-        @field:Json(name = "__v")
+        @Json(name = "_id")
+        val _id: String, // 601d8a24253abdfd21015217
+        @Json(name = "lastModified")
+        val lastModified: String, // 2021-02-05T18:10:44.693Z
+        @Json(name = "__v")
         val v: Int // 0
     ) {
-
-
-        @Keep data class Bidder(
-
-            @field:Json(name = "accountCreated")
-            val accountCreated: String, // 2020-12-20T19:57:10.845Z
-
-            @field:Json(name = "address")
+        data class Bidder(
+            @Json(name = "accountCreated")
+            val accountCreated: String, // 2020-12-24T14:12:31.396Z
+            @Json(name = "address")
             val address: String, // b381, asia
-
-            @field:Json(name = "area")
+            @Json(name = "area")
             val area: Area,
-
-            @field:Json(name = "bids")
-            val bids: List<ViewBidResponse.Bid.BidDetails>,
-
-            @field:Json(name = "country")
+            @Json(name = "country")
             val country: String, // ind
-
-            @field:Json(name = "district")
+            @Json(name = "district")
             val district: String, // del
-
-            @field:Json(name = "fuid")
-            val fuid: String, // S2ustzAO4FeFSgCANfZtNRl7iZ42
-
-            @field:Json(name = "_id")
-            val _id: String, // 5fdfac963f52f60c2356dcd5
-
-            @field:Json(name = "location")
+            @Json(name = "fuid")
+            val fuid: String, // dt38CMkohngtNrkysK1Sr73RxLg1
+            @Json(name = "_id")
+            val _id: String, // 5fe4a1cf999f93ab98ce0549
+            @Json(name = "location")
             val location: Location,
-
-            @field:Json(name = "name")
+            @Json(name = "name")
             val name: String, // kavya vatsal
-
-            @field:Json(name = "phone")
-            val phone: String, // +918585992062
-
-            @field:Json(name = "refreshToken")
-            val refreshToken: String, // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZGZhYzk2M2Y1MmY2MGMyMzU2ZGNkNSIsIm5hbWUiOiJrYXZ5YSB2YXRzYWwiLCJwaG9uZSI6Iis5MTg1ODU5OTIwNjIiLCJpc0Zhcm1lciI6dHJ1ZSwiaWF0IjoxNjA4NTY1NzY2fQ.bb6wiR5fuC3opTzGX7g6V0tBrFrvuR8tC5dE5-rIOec
-
-            @field:Json(name = "state")
+            @Json(name = "phone")
+            val phone: String, // +9196103069
+            @Json(name = "refreshToken")
+            val refreshToken: String, // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZTRhMWNmOTk5ZjkzYWI5OGNlMDU0OSIsIm5hbWUiOiJrYXZ5YSB2YXRzYWwiLCJwaG9uZSI6Iis5MTk2MTAzMDY5IiwibG9jYXRpb24iOnsidHlwZSI6IlBvaW50IiwiY29vcmRpbmF0ZXMiOls5LjQzODkzMywyLjk0MDQzNTNdfSwiaXNGYXJtZXIiOnRydWUsImlhdCI6MTYxMjM0Njc1NX0.zxiNfq4OoMmCobpK4j25CF-mhO9vkiNFmbi3S-X6w2s
+            @Json(name = "state")
             val state: String, // del
-
-            @field:Json(name = "supplies")
-            val supplies: List<Any>,
-
-            @field:Json(name = "__v")
+            @Json(name = "__v")
             val v: Int, // 0
-
-            @field:Json(name = "village")
+            @Json(name = "village")
             val village: String // greno
         ) {
-
-            @Keep data class Area(
-
-                @field:Json(name = "numerical")
+            data class Area(
+                @Json(name = "numerical")
                 val numerical: Int, // 100
-
-                @field:Json(name = "unit")
+                @Json(name = "unit")
                 val unit: String // acre
             )
 
-
-            @Keep data class Location(
-
-                @field:Json(name = "coordinates")
+            data class Location(
+                @Json(name = "coordinates")
                 val coordinates: List<Double>,
-
-                @field:Json(name = "type")
+                @Json(name = "type")
                 val type: String // Point
-
             )
         }
 
-
-        @Keep data class BidDetails(
-
-            @field:Json(name = "amount")
+        data class BidDetails(
+            @Json(name = "amount")
             val amount: Int, // 10000
-
-            @field:Json(name = "_id")
-            val _id: String, // 5fe0c61e3dde370fe0e57f8a
-
-            @field:Json(name = "timestamp")
-            val timestamp: String // 2020-12-21T15:58:20.851Z
+            @Json(name = "_id")
+            val _id: String, // 601d8a24253abdfd21015218
+            @Json(name = "timestamp")
+            val timestamp: String // 2021-02-05T18:10:44.693Z
         )
 
-
-        @Keep data class Demand(
-
-            @field:Json(name = "active")
+        data class Demand(
+            @Json(name = "active")
             val active: Boolean, // true
-
-            @field:Json(name = "bids")
+            @Json(name = "bids")
             val bids: List<String>,
-
-            @field:Json(name = "change")
+            @Json(name = "change")
             val change: Int, // 0
-
-            @field:Json(name = "crop")
-            val crop: String, // Wheat
-
-            @field:Json(name = "currentBid")
-            val currentBid: Int, // 8000
-
-            @field:Json(name = "dateOfRequirement")
-            val dateOfRequirement: String, // 2020-01-15T18:29:59.000Z
-
-            @field:Json(name = "demandCreated")
-            val demandCreated: String, // 2020-12-20T20:40:27.791Z
-
-            @field:Json(name = "demander")
-            val demander: String, // 5fdfadc5a28db10c34dba899
-
-            @field:Json(name = "description")
-            val description: String, // NA
-
-            @field:Json(name = "expiry")
-            val expiry: String, // 2020-01-15T18:29:59.000Z
-
-            @field:Json(name = "_id")
-            val _id: String, // 5fdfb6bbad3ef90c65e9c2c8
-
-            @field:Json(name = "lastBid")
-            val lastBid: Int, // 12000
-
-            @field:Json(name = "lastModified")
-            val lastModified: String, // 2020-12-21T16:04:07.471Z
-
-            @field:Json(name = "offerPrice")
-            val offerPrice: Int, // 2000
-
-            @field:Json(name = "qty")
+            @Json(name = "crop")
+            val crop: String, // Rice
+            @Json(name = "currentBid")
+            val currentBid: Int, // 10000
+            @Json(name = "dateOfRequirement")
+            val dateOfRequirement: String, // 2021-03-21T00:00:00.000Z
+            @Json(name = "demandCreated")
+            val demandCreated: String, // 2021-02-04T18:32:31.389Z
+            @Json(name = "demander")
+            val demander: String, // 5fea3e68b7f8bf2537b194ec
+            @Json(name = "description")
+            val description: String, // I want pure white Basmati rice
+            @Json(name = "expiry")
+            val expiry: String, // 2021-03-14T00:00:00.000Z
+            @Json(name = "_id")
+            val _id: String, // 601c3dbf253abdfd21015214
+            @Json(name = "lastBid")
+            val lastBid: List<LastBid>,
+            @Json(name = "lastModified")
+            val lastModified: String, // 2021-02-05T18:10:44.710Z
+            @Json(name = "location")
+            val location: Location,
+            @Json(name = "offerPrice")
+            val offerPrice: Int, // 20000
+            @Json(name = "qty")
             val qty: Int, // 100
-
-            @field:Json(name = "__v")
+            @Json(name = "__v")
             val v: Int, // 1
+            @Json(name = "variety")
+            val variety: String // Basmati
+        ) {
+            data class LastBid(
+                @Json(name = "amount")
+                val amount: Int, // 0
+                @Json(name = "_id")
+                val _id: String, // 601d8a24253abdfd21015219
+                @Json(name = "timestamp")
+                val timestamp: String // 2021-02-04T18:32:31.389Z
+            )
 
-            @field:Json(name = "variety")
-            val variety: String // NA
-        )
-
+            data class Location(
+                @Json(name = "coordinates")
+                val coordinates: List<Double>,
+                @Json(name = "type")
+                val type: String // Point
+            )
+        }
     }
 }

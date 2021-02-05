@@ -53,7 +53,6 @@ class OpenNewRequirementFragment : AppCompatActivity(), OnBidHistoryClickListene
     private var currentBid = ""
     private var ownerPhone = ""
     private var BID_ID = ""
-    private val sessionManager = SessionManager(this)
     private val TAG = OpenNewRequirementFragment::class.java.simpleName
 
     //Moduify object

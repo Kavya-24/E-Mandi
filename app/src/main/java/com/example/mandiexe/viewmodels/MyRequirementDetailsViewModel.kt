@@ -61,6 +61,7 @@ class MyRequirementDetailsViewModel : ViewModel() {
                     successfulBid.value = false
                     messageBid.value = ExternalUtils.returnStateMessageForThrowable(t)
                     //Response is null
+                    Log.e(TAG, "For the farmer, throawable is ${t.message} ${t.cause}")
                 }
 
                 override fun onResponse(

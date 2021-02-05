@@ -394,7 +394,7 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
             //Normal Stuff
 
             findViewById<TextView>(R.id.ans_detail_bid_quanity).text =
-                value.bid.qty.toString()
+                value.bid.demand.qty.toString()
             findViewById<TextView>(R.id.ans_detail_bid_exp).text =
                 convertTimeToEpoch(value.bid.demand.expiry)
             findViewById<TextView>(R.id.ans_detail_init_date).text =
