@@ -73,6 +73,7 @@ class AddStock : AppCompatActivity() {
     private val RC_MAP_STOCK_ADD = 111
 
     private val ACTION_VOICE_SEARCH = "com.google.android.gms.actions.SEARCH_ACTION"
+
     private val RC_NAME = 1
     private val RC_TYPE = 2
     private val pref = PreferenceUtil
@@ -320,6 +321,7 @@ class AddStock : AppCompatActivity() {
     }
 
     private fun getTranslations() {
+
         //Run an async task to get the values for the three categories
         OfflineTranslate.translateToEnglish(
             this,

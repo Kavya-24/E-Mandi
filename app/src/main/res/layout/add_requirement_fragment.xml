@@ -23,13 +23,6 @@
                 android:background="?attr/colorPrimary"
                 android:navigationIcon="@drawable/ic_arrow_back"/>
 
-            <com.miguelcatalan.materialsearchview.MaterialSearchView
-                android:id="@+id/search_view_req"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/space"
-                android:theme="@style/MaterialSearchViewStyle"
-                android:visibility="gone" />
         </FrameLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -41,11 +34,23 @@
         android:background="@color/bgGreen"
         android:orientation="vertical">
 
+        <SearchView
+            android:layout_width="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="@dimen/space"
+            android:searchHintIcon="@drawable/ic_search_black_24dp"
+            android:queryHint="@string/searchHint"
+            android:layout_height="wrap_content"
+            android:id="@+id/addSearch">
+
+            <requestFocus/>
+        </SearchView>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_search_requirements"
             style="@style/styleRv"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/addSearch"
             tools:listitem="@layout/item_add_requirement" />
 
 

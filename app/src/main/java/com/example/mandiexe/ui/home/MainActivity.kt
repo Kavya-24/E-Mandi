@@ -224,6 +224,7 @@ class MainActivity : AppCompatActivity(), OnMyLanguageListener,
 
             searchCrop(q, englishQuery)
             search_view.visibility = View.GONE
+
         }
 
 

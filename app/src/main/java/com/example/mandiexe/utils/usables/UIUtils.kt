@@ -52,11 +52,11 @@ object UIUtils {
         return
     }
 
-    fun showProgress(pb : ProgressBar, mContext : Context){
+    fun showProgress(pb: ProgressBar, mContext: Context) {
         pb.visibility = View.VISIBLE
     }
 
-    fun hideProgress(pb : ProgressBar, mContext : Context){
+    fun hideProgress(pb: ProgressBar, mContext: Context) {
         pb.visibility = View.GONE
     }
 
