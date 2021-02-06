@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
 import com.example.mandiexe.adapter.MyBidHistoryAdapter
 import com.example.mandiexe.adapter.OnBidHistoryClickListener
+import com.example.mandiexe.models.PersonObject
 import com.example.mandiexe.models.body.BidHistoryBody
 import com.example.mandiexe.models.body.bid.DeletBidBody
 import com.example.mandiexe.models.body.bid.UpdateBidBody
@@ -45,8 +46,13 @@ import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
+import kotlinx.android.synthetic.main.item_owner_detail.*
+import kotlinx.android.synthetic.main.item_owner_detail.ownerAddress1
+import kotlinx.android.synthetic.main.item_owner_detail.ownerAddress2
+import kotlinx.android.synthetic.main.item_owner_detail.view.*
 import kotlinx.android.synthetic.main.my_crop_bid_details_fragment.*
 import kotlinx.android.synthetic.main.my_requirement_details_fragment.*
+import kotlinx.android.synthetic.main.open_new_requirement_fragment.*
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -82,6 +88,8 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
     private val pref = PreferenceUtil
 
     private lateinit var pb: ProgressBar
+
+    private  var personObject: PersonObject? = null
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -185,9 +193,39 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
                 swl_detailsReq.isRefreshing = false
             }
 
+            tv_req_details_buyer_name.setOnClickListener {
+                viewBuyer()
+            }
 
         }
 
+    }
+
+    private fun viewBuyer() {
+        val dialog = AlertDialog.Builder(this)
+        val v = layoutInflater.inflate(R.layout.item_owner_detail, null)
+        dialog.setView(v)
+
+        if (personObject != null) {
+            v.apply {
+                this.ownerName.text = personObject!!.name
+                this.ownerPhone.text = personObject!!.phone
+                ownerAddress1.text = personObject!!.address
+                ownerAddress2.text =
+                    personObject!!.addressLine1 + "\n" + personObject!!.addressLine2
+
+            }
+        }
+
+        dialog.setPositiveButton(resources.getString(R.string.call)) { dialog, _ ->
+            checkCallPermissions()  //For calling
+            dialog.dismiss()
+        }
+        dialog.setNegativeButton(resources.getString(R.string.ok)) { _, _ -> }
+
+
+        dialog.create()
+        dialog.show()
     }
 
     private fun checkCallPermissions() {
@@ -198,7 +236,7 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
             .debounce(1, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = { callback ->
-                Log.e(TAG, "In on next and call back is $callback")
+                    Log.e(TAG, "In on next and call back is $callback")
                     if (callback) {
                         //Done
                         callBuyer()
@@ -384,7 +422,7 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
             resources.getString(R.string.view_bid_history)
 
         findViewById<ImageView>(R.id.iv_dropdown_bid_history_req)
-           .setImageDrawable(resources.getDrawable(R.drawable.ic_down))
+            .setImageDrawable(resources.getDrawable(R.drawable.ic_down))
 
     }
 
@@ -500,8 +538,11 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
             }
 
-
-
+            //Popultae Person object
+            val bidDemander = value.bid.bidder
+            val address1 = bidDemander.village + bidDemander.district
+            val address2 = bidDemander.state +bidDemander.country
+            personObject = PersonObject(bidDemander.name,bidDemander.phone,bidDemander.address,address1,address2)
 
             fillRecyclerView(value.bid)
             createGraph(value.bid.demand.lastBid)

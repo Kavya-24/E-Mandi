@@ -242,4 +242,5 @@
     <string name="addDescription">Add a description for your crop.</string>
     <string name="failAccessToken">Failed to log in.</string>
     <string name="noon_has_bid">No bids have been made on this stock yet.</string>
+    <string name="Uttar">Uttar</string>
 </resources>
