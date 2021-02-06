@@ -31,6 +31,7 @@ import com.example.mandiexe.utils.auth.SessionManager
 import com.example.mandiexe.utils.usables.ExternalUtils
 import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
+import com.example.mandiexe.utils.usables.UIUtils.hideProgress
 import com.example.mandiexe.viewmodels.AddRequirementViewModel
 import kotlinx.android.synthetic.main.add_requirement_fragment.*
 import retrofit2.Call
@@ -146,23 +147,26 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
 
     private fun loadResultInRV(response: SearchCropReqResponse) {
         //MAke call
+        val tv = findViewById<TextView>(R.id.tvNoNewReq)
 
-        if (response.supplies.isEmpty()) {
-            val tv = findViewById<TextView>(R.id.tvNoNewReq)
+        if (response.demands.isEmpty()) {
             tv.visibility = View.VISIBLE
 
         } else {
 
             try {
+                tv.visibility = View.GONE
                 pb.visibility = View.VISIBLE
                 rv.layoutManager = LinearLayoutManager(this)
                 val adapter = NewReqAdapter(this)
-                adapter.lst = response.supplies
+                adapter.lst = response.demands
                 rv.adapter = adapter
             } catch (e: Exception) {
                 Log.e(TAG, "Exce[tion ${e.cause} ${e.message}")
             }
         }
+
+        hideProgress(pb, this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -319,7 +323,7 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
     }
 
 
-    override fun viewMyBidDetails(_listItem: SearchCropReqResponse.Supply) {
+    override fun viewMyBidDetails(_listItem: SearchCropReqResponse.Demand) {
         val mFrom = AddRequirement::class.java.simpleName
         val bundle = bundleOf(
             "BID_ID" to _listItem._id,

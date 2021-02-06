@@ -21,7 +21,7 @@ RecyclerView.Adapter<NewReqAdapter.MyViewHolder>() {
 
 
     //Initialize an empty list of the dataclass T
-    var lst: List<SearchCropReqResponse.Supply> = listOf()
+    var lst: List<SearchCropReqResponse.Demand> = listOf()
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -46,7 +46,7 @@ RecyclerView.Adapter<NewReqAdapter.MyViewHolder>() {
 
         //Bind a single item
         @SuppressLint("SetTextI18n")
-        fun bindPost(_listItem: SearchCropReqResponse.Supply, itemClick: OnClickNewRequirement) {
+        fun bindPost(_listItem: SearchCropReqResponse.Demand, itemClick: OnClickNewRequirement) {
             with(_listItem) {
 
 
@@ -70,7 +70,7 @@ RecyclerView.Adapter<NewReqAdapter.MyViewHolder>() {
                     CROP_QUANTITY.text = _listItem.qty.toString()
                     CROP_EXP.text = TimeConversionUtils.convertTimeToEpoch(_listItem.expiry)
                     CROP_CURRENT_BID.text = _listItem.currentBid.toString()
-                    CROP_IOP.text = _listItem.askPrice.toString()
+                    CROP_IOP.text = _listItem.offerPrice.toString()
 
 
                     //Hide MY_BID
@@ -83,7 +83,7 @@ RecyclerView.Adapter<NewReqAdapter.MyViewHolder>() {
                     if (currentBid != 0) {
 
                         val currentBid = _listItem.currentBid
-                        val askBid = _listItem.askPrice
+                        val askBid = _listItem.offerPrice
                         val ans = currentBid - askBid
 
 
@@ -161,5 +161,5 @@ RecyclerView.Adapter<NewReqAdapter.MyViewHolder>() {
 
 
 interface OnClickNewRequirement {
-    fun viewMyBidDetails(_listItem: SearchCropReqResponse.Supply)
+    fun viewMyBidDetails(_listItem: SearchCropReqResponse.Demand)
 }
