@@ -21,13 +21,11 @@ import com.example.mandiexe.adapter.MyBidHistoryAdapter
 import com.example.mandiexe.adapter.OnBidHistoryClickListener
 import com.example.mandiexe.models.PersonObject
 import com.example.mandiexe.models.body.BidHistoryBody
-import com.example.mandiexe.models.body.bid.AddBidBody
-import com.example.mandiexe.models.body.bid.DeletBidBody
-import com.example.mandiexe.models.body.bid.UpdateBidBody
-import com.example.mandiexe.models.body.bid.ViewBidBody
+import com.example.mandiexe.models.body.bid.*
 import com.example.mandiexe.models.responses.bids.DeleteBidResponse
 import com.example.mandiexe.models.responses.bids.UpdateBidResponse
 import com.example.mandiexe.models.responses.bids.ViewBidResponse
+import com.example.mandiexe.models.responses.bids.ViewDemandResponse
 import com.example.mandiexe.ui.home.FarmerBidHistory
 import com.example.mandiexe.utils.PermissionsHelper
 import com.example.mandiexe.utils.auth.PreferenceUtil
@@ -276,7 +274,7 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
                 if (success != null) {
                     if (!success) {
                         createSnackbar(
-                            viewModel.messageCancel.value,
+                            viewModel.messageBid.value,
                             this,
                             container_req_details
                         )
@@ -289,11 +287,31 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
         if (from == AddRequirement::class.java.simpleName) {
 
+            val body2 = ViewDemandBody(BID_ID)
+            viewModel.getDemandFunction(body2).observe(this, Observer { mResponse ->
+                val success = viewModel.successfulDemand.value
+                if (success != null) {
+                    if (!success) {
+                        createSnackbar(
+                            viewModel.messageDemand.value,
+                            this,
+                            container_req_details
+                        )
+                    } else if (mResponse.msg == "Demand retrieved successfully.") {
+                        mResponse.let { initViewsForNewRequirement(it) }
+                    }
+                }
+            })
+
         }
 
 
 
         hideProgress(pb, this)
+
+    }
+
+    private fun initViewsForNewRequirement(it: ViewDemandResponse?) {
 
     }
 
