@@ -611,8 +611,8 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
             //Popultae Person object
             val bidDemander = value.bid.bidder
-            val address1 = bidDemander.village + bidDemander.district
-            val address2 = bidDemander.state + bidDemander.country
+            val address1 = bidDemander.village + "," + bidDemander.district
+            val address2 = bidDemander.state + "," + bidDemander.country
             personObject = PersonObject(
                 bidDemander.name,
                 bidDemander.phone,
