@@ -310,7 +310,7 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_req_details_buyer_name" />
 
                 <ImageView
-                    android:id="@+id/iv_dropdown_bid_history"
+                    android:id="@+id/iv_dropdown_bid_history_req"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_down"

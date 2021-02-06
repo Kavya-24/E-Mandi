@@ -16,7 +16,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.mandiexe.R
 import com.example.mandiexe.adapter.MyBidHistoryAdapter
 import com.example.mandiexe.adapter.OnBidHistoryClickListener
@@ -27,6 +26,7 @@ import com.example.mandiexe.models.body.bid.ViewBidBody
 import com.example.mandiexe.models.responses.bids.DeleteBidResponse
 import com.example.mandiexe.models.responses.bids.UpdateBidResponse
 import com.example.mandiexe.models.responses.bids.ViewBidResponse
+import com.example.mandiexe.utils.PermissionsHelper
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.usables.OfflineTranslate
@@ -38,16 +38,18 @@ import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import com.example.mandiexe.utils.usables.UIUtils.hideProgress
 import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.example.mandiexe.viewmodels.MyRequirementDetailsViewModel
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
 import com.jjoe64.graphview.DefaultLabelFormatter
 import com.jjoe64.graphview.GraphView
 import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.my_crop_bid_details_fragment.*
 import kotlinx.android.synthetic.main.my_requirement_details_fragment.*
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
@@ -135,7 +137,8 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
         //initViews
         this.apply {
-            findViewById<TextView>(R.id.tv_view_bid_history_requirement).setOnClickListener {
+
+            tv_view_bid_history_requirement.setOnClickListener {
                 //Open the history
                 if (!isOpen) {
                     openBidHistory()
@@ -143,7 +146,7 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
             }
 
-            findViewById<ImageView>(R.id.iv_dropdown_bid_history).setOnClickListener {
+            iv_dropdown_bid_history_req.setOnClickListener {
 
                 //Open the history
                 if (isOpen) {
@@ -154,12 +157,12 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
             }
 
-            findViewById<MaterialButton>(R.id.mtb_cancel_bid).setOnClickListener {
+            mtb_cancel_bid.setOnClickListener {
                 cancelBid()
             }
 
 
-            findViewById<MaterialButton>(R.id.mtb_Modify_bid).setOnClickListener {
+            mtb_Modify_bid.setOnClickListener {
 
                 //Send the Bid Uodate body : Modify Bid Body in the bundle
                 //Check for bundle in the BIdFragment
@@ -167,24 +170,56 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
             }
 
-            findViewById<MaterialButton>(R.id.mtb_add_bid).setOnClickListener {
+            mtb_add_bid.setOnClickListener {
                 addBid()
             }
 
 
             findViewById<ImageView>(R.id.iv_req_call_buyer).setOnClickListener {
-                val i = Intent(Intent.ACTION_CALL, Uri.parse(ownerPhone))
-                startActivity(i)
+                checkCallPermissions()
+
             }
 
-            findViewById<SwipeRefreshLayout>(R.id.swl_detailsReq).setOnRefreshListener {
+            swl_detailsReq.setOnRefreshListener {
                 makeCall()
-                findViewById<SwipeRefreshLayout>(R.id.swl_detailsReq).isRefreshing = false
+                swl_detailsReq.isRefreshing = false
             }
 
 
         }
 
+    }
+
+    private fun checkCallPermissions() {
+
+        PermissionsHelper.requestCallsAndMessagePermissions(this)
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .debounce(1, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = { callback ->
+                    if (callback) {
+                        //Done
+                        callBuyer()
+                    }
+                },
+                onError = {
+                    Log.e(TAG, "Error for permissions and ${it.message} ${it.cause}")
+                },
+                onComplete = {
+                    Log.e(TAG, "In complete")
+                }
+            )
+
+    }
+
+    private fun callBuyer() {
+        try {
+            val i = Intent(Intent.ACTION_CALL, Uri.parse(ownerPhone))
+            startActivity(i)
+        } catch (e: Exception) {
+
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -374,11 +409,11 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
     private fun initViews(value: ViewBidResponse) {
 
         findViewById<ConstraintLayout>(R.id.mLayoutReq).visibility = View.VISIBLE
-     
+        hideProgress(pb, this)
 
         try {
 
-
+            Log.e(TAG, "\nREsposne \nis $value")
             //Translate
             OfflineTranslate.translateToDefault(
                 this,
@@ -399,48 +434,63 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
             )
 
 
-            //Transliterate
-            findViewById<TextView>(R.id.tv_requirement_detail_crop_location).text =
-                OfflineTranslate.transliterateToDefault(value.bid.bidder.address)
-
             //Owner Details
             ownerPhone = value.bid.bidder.phone
             ownerName = transliterateToDefault(value.bid.bidder.name)
-            //Normal Stuff
-            //Set in the Panel
-            this.apply{
+
+
+            val currrentBid = value.bid.demand.currentBid
+            val initialOfferPrice = value.bid.demand.offerPrice
+            val myCurrentBid = value.bid.currentBid
+
+            this.apply {
+
                 tv_req_details_buyer_name.setText((ownerName))
+                tv_requirement_detail_crop_location.text =
+                    OfflineTranslate.transliterateToDefault(value.bid.bidder.address)
+
+                ans_detail_bid_quanity.text =
+                    value.bid.demand.qty.toString()
+
+                ans_detail_bid_exp.text =
+                    convertTimeToEpoch(value.bid.demand.expiry)
+                ans_detail_init_date.text =
+                    convertTimeToEpoch(value.bid.demand.demandCreated)
+
+                tv_requirement_detail_current_bid.text =
+                    value.bid.demand.lastBid.toString()
+
+                tv_requirement_detail_initial_offer_price.text =
+                    initialOfferPrice.toString()
+
+                if (currrentBid > initialOfferPrice) {
+                    tv_requirement_detail_current_bid.setTextColor(
+                        resources.getColor(
+                            R.color.deltaRed,
+                            null
+                        )
+                    )
+
+                }
+                if (from == RequirementFragment::class.java.simpleName) {
+                    //Add in the bidding fragment
+                    tv_requirement_detail_my_bid.text =
+                        myCurrentBid.toString()
+
+                    if (myCurrentBid > initialOfferPrice) {
+                        tv_requirement_detail_my_bid.setTextColor(
+                            resources.getColor(
+                                R.color.deltaRed,
+                                null
+                            )
+                        )
+                    }
+
+                }
+
             }
 
 
-
-            findViewById<TextView>(R.id.ans_detail_bid_quanity).text =
-                value.bid.demand.qty.toString()
-            findViewById<TextView>(R.id.ans_detail_bid_exp).text =
-                convertTimeToEpoch(value.bid.demand.expiry)
-            findViewById<TextView>(R.id.ans_detail_init_date).text =
-                convertTimeToEpoch(value.bid.demand.demandCreated)
-
-            findViewById<TextView>(R.id.tv_requirement_detail_current_bid).text =
-                value.bid.demand.lastBid.toString()
-            findViewById<TextView>(R.id.tv_requirement_detail_initial_offer_price).text =
-                value.bid.demand.offerPrice.toString()
-
-            if (from == RequirementFragment::class.java.simpleName) {
-                //Add in the bidding fragment
-                findViewById<TextView>(R.id.tv_requirement_detail_my_bid).text =
-                    value.bid.demand.currentBid.toString()
-            }
-
-
-            if (value.bid.demand.currentBid < value.bid.demand.offerPrice) {
-                findViewById<TextView>(R.id.tv_requirement_detail_current_bid)
-                    .setTextColor(resources.getColor(R.color.deltaRed))
-
-            } else if (value.bid.demand.currentBid == value.bid.demand.offerPrice) {
-                findViewById<TextView>(R.id.tv_requirement_detail_current_bid)
-                    .setTextColor(resources.getColor(R.color.wildColor))
-            }
 
 
             fillRecyclerView(value.bid)
@@ -448,9 +498,9 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
         } catch (e: Exception) {
             Log.e(TAG, "Error" + e.cause + e.message)
-        } 
-        
-        hideProgress(pb,this)
+        }
+
+        hideProgress(pb, this)
     }
 
     private fun createGraph(value: List<ViewBidResponse.Bid.Demand.LastBid>) {
@@ -559,7 +609,7 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
         return arrayDataPoints.toTypedArray()
 
     }
-    
+
     private fun fillRecyclerView(valueBids: ViewBidResponse.Bid) {
 
         val rv = findViewById<RecyclerView>(R.id.rv_bidHistoryMyReq)

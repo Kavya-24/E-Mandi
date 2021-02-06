@@ -29,7 +29,7 @@
                     android:id="@+id/mLayoutSup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="visible"
+                    android:visibility="invisible"
                     android:layout_margin="@dimen/space"
                     android:padding="@dimen/space"
                     app:layout_constraintTop_toTopOf="parent">
