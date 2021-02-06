@@ -1,18 +1,22 @@
 package com.example.mandiexe.adapter
 
+import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
 import com.example.mandiexe.models.responses.bids.BidHistoryResponse
+import com.example.mandiexe.utils.auth.PreferenceUtil
+import com.example.mandiexe.utils.usables.OfflineTranslate
 import com.example.mandiexe.utils.usables.TimeConversionUtils
-import com.example.mandiexe.utils.usables.TimeConversionUtils.convertTimeToEpoch
 
 
-class BidHistoryAdapter(val itemClick: OnMyBidHistoryGlobalClickListener) :
+class BidHistoryAdapter(val itemClick: OnMyBidClickListenerGlobal) :
     RecyclerView.Adapter<BidHistoryAdapter.MyViewHolder>() {
 
 
@@ -21,80 +25,124 @@ class BidHistoryAdapter(val itemClick: OnMyBidHistoryGlobalClickListener) :
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-
         //Use other items you want the layout to inflate
-        val CROP_NAME = itemView.findViewById<TextView>(R.id.tv_Bid_crop_name)
-        val CROP_LOCATION = itemView.findViewById<TextView>(R.id.tv_Bid_crop_location_history)
-        val CROP_QUANTITY = itemView.findViewById<TextView>(R.id.ans_crop_quanity_bid_history)
-        val CROP_EXP = itemView.findViewById<TextView>(R.id.ans_crop_exp_bid_history)
-        val CROP_CURRENT_BID = itemView.findViewById<TextView>(R.id.tv_Bid_current_bid)
-        val CROP_IOP = itemView.findViewById<TextView>(R.id.tv_Bid_initial_offer_price)
-        val CROP_LAST_UPDATED = itemView.findViewById<TextView>(R.id.tv_Bid_last_upadted)
-        val CROP_DELTA = itemView.findViewById<TextView>(R.id.tv_my_crop_active)
-        val CROP_CHANGE = itemView.findViewById<ImageView>(R.id.iv_bid_history_image)
+        val CROP_NAME = itemView.findViewById<TextView>(R.id.tv_trader_bid_crop_name)
+        val CROP_TYPE = itemView.findViewById<TextView>(R.id.tv_trader_bid_crop_type)
+        val CROP_QUANTITY = itemView.findViewById<TextView>(R.id.ans_crop_quanity)
+        val CROP_EXP = itemView.findViewById<TextView>(R.id.ans_crop_exp)
+        val CROP_CURRENT_BID = itemView.findViewById<TextView>(R.id.tv_trader_bid_current_bid)
+        val CROP_IOP = itemView.findViewById<TextView>(R.id.tv_trader_bid_initial_offer_price)
+        val MY_BID = itemView.findViewById<TextView>(R.id.tv_trader_bid_my_bid)
+        val CROP_LAST_UPDATED = itemView.findViewById<TextView>(R.id.tv_trader_bid_last_upadted)
+        val CROP_DELTA = itemView.findViewById<TextView>(R.id.tv_my_crop_delta)
+        val CROP_CHANGE = itemView.findViewById<ImageView>(R.id.iv_trader_bid_image)
+        val CROP_CARD = itemView.findViewById<CardView>(R.id.cv_item_stock)
 
+        val context = itemView.context
+        val pref = PreferenceUtil
 
         //Bind a single item
-        fun bindPost(
-            _listItem: BidHistoryResponse.Bid,
-            itemClick: OnMyBidHistoryGlobalClickListener
-        ) {
-            with(_listItem) {
+        @SuppressLint("SetTextI18n")
+        fun bindPost(mItem: BidHistoryResponse.Bid, itemClick: OnMyBidClickListenerGlobal) {
+            with(mItem) {
 
-                CROP_NAME.text = _listItem.demand.crop
-                CROP_LOCATION.text = _listItem.supplier.address
-
-
-                CROP_QUANTITY.text = _listItem.qty.toString()
-                CROP_EXP.text = TimeConversionUtils.convertTimeToEpoch(_listItem.demand.expiry)
-                CROP_CURRENT_BID.text = _listItem.currentBid.toString()
-                CROP_IOP.text = _listItem.demand.offerPrice.toString()
-                CROP_LAST_UPDATED.text = convertTimeToEpoch(_listItem.lastModified)
-
-
-                if (_listItem.active == true) {
-
-                    CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaGreen))
-                    CROP_DELTA.text = itemView.context.resources.getString(R.string.activeBid)
-                } else {
-
-                    CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
-                    CROP_DELTA.text = itemView.context.resources.getString(R.string.inactiveBid)
-
-                }
+                val _listItem = mItem.demand.get(0)
+                //#Translation
+                //create tranlation object
+                try {
+                    Log.e("Adap", "In item")
+                    OfflineTranslate.translateToDefault(
+                        itemView.context,
+                        _listItem.crop,
+                        CROP_NAME
+                    )
+                    OfflineTranslate.translateToDefault(
+                        itemView.context,
+                        _listItem.variety,
+                        CROP_TYPE
+                    )
 
 
-                if (currentBid != 0) {
+                    //No Translations/Transliterations
+                    CROP_QUANTITY.text = _listItem.qty.toString()
+                    CROP_EXP.text = TimeConversionUtils.convertTimeToEpoch(_listItem.expiry)
+                    CROP_CURRENT_BID.text = _listItem.currentBid.toString()
+                    CROP_IOP.text = _listItem.offerPrice.toString()
 
-                    val currentBid = _listItem.currentBid
-                    val askBid = _listItem.demand.offerPrice
-                    val ans = currentBid - askBid
+                    MY_BID.text = _listItem.currentBid.toString()
+                    CROP_LAST_UPDATED.text =
+                        TimeConversionUtils.convertLastModified(_listItem.lastModified)
+
+                    //If the bid is not active,
+                    if (mItem.active) {
+                        CROP_DELTA.text = itemView.context.getString(R.string.activeBid)
+                        CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaGreen))
+
+                        if (currentBid != 0) {
+
+                            val currentBid = _listItem.currentBid
+                            val askBid = _listItem.offerPrice
+                            val ans = askBid - currentBid
 
 
-                    if (ans > 0) {
+                            if (ans > 0) {
 
-                        CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaGreen))
+                                CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaGreen))
+                                CROP_CARD.setCardBackgroundColor(
+                                    itemView.context.resources.getColor(
+                                        R.color.lightGreenTest
+                                    )
+                                )
 
-                    } else if (ans < 0) {
+                            } else if (ans < 0) {
+
+                                CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaRed))
+                                CROP_CARD.setCardBackgroundColor(
+                                    itemView.context.resources.getColor(
+                                        R.color.lightRedMono
+                                    )
+                                )
+                                CROP_CURRENT_BID.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
+                                CROP_IOP.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
+
+
+                            } else if (ans == 0) {
+
+                                CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.wildColor))
+                                CROP_CARD.setCardBackgroundColor(
+                                    itemView.context.resources.getColor(
+                                        R.color.lightGreenTest
+                                    )
+                                )
+
+                            }
+
+                        } else {
+
+                            CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.wildColor))
+                            CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightGreenTest))
+                        }
+
+
+                    } else {
+                        CROP_DELTA.text = itemView.context.getString(R.string.inactiveBid)
+                        CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
                         CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaRed))
-
-                    } else if (ans == 0) {
-                        CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.wildColor))
-                        CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.wildColor))
+                        CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.cardOffWhite))
 
                     }
 
+
+                } catch (e: Exception) {
+
                 }
-
-
                 itemView.setOnClickListener {
-                    itemClick.viewMyStockDetails(_listItem)
+                    itemClick.viewMyBidDetails(mItem)
                 }
 
 
             }
         }
-
 
     }
 
@@ -102,7 +150,7 @@ class BidHistoryAdapter(val itemClick: OnMyBidHistoryGlobalClickListener) :
 
         val view =
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_bid_history_global, parent, false)
+                .inflate(R.layout.item_bid, parent, false)
         return MyViewHolder(view)
 
     }
@@ -121,8 +169,8 @@ class BidHistoryAdapter(val itemClick: OnMyBidHistoryGlobalClickListener) :
 }
 
 
-interface OnMyBidHistoryGlobalClickListener {
-    fun viewMyStockDetails(_listItem: BidHistoryResponse.Bid)
+interface OnMyBidClickListenerGlobal {
+    fun viewMyBidDetails(_listItem: BidHistoryResponse.Bid)
 }
 
 

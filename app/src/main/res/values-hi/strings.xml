@@ -243,4 +243,6 @@
     <string name="failAccessToken">Failed to log in.</string>
     <string name="noon_has_bid">No bids have been made on this stock yet.</string>
     <string name="Uttar">Uttar</string>
+    <string name="addBidPrice">Add bid price</string>
+    <string name="bidAdded">Bid added successfully.</string>
 </resources>

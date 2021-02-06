@@ -303,6 +303,9 @@
     <string name="noon_has_bid">No bids have been made on this stock yet.</string>
     <string name="my_bid" tools:ignore="MissingTranslation">My Bid</string>
     <string name="Uttar">Uttar</string>
+    <string name="bidInactive" tools:ignore="MissingTranslation">This bid is not active anymore.</string>
+    <string name="addBidPrice">Add bid price</string>
+    <string name="bidAdded">Bid added successfully.</string>
 
     <string-array name="arr_area_units">
         <item>@string/Hectare</item>

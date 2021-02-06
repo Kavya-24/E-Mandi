@@ -43,10 +43,6 @@
             android:label="@string/details"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.myrequirements.OpenNewRequirementFragment"
-            android:label="@string/details"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".ui.myrequirements.AddRequirement"
             android:label="@string/searchBuyers"
             android:theme="@style/AppTheme.NoActionBar">

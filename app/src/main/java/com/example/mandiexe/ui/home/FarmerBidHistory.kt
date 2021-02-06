@@ -1,5 +1,6 @@
 package com.example.mandiexe.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -14,15 +16,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
 import com.example.mandiexe.adapter.BidHistoryAdapter
-import com.example.mandiexe.adapter.OnMyBidHistoryGlobalClickListener
+import com.example.mandiexe.adapter.OnMyBidClickListenerGlobal
 import com.example.mandiexe.models.responses.bids.BidHistoryResponse
+import com.example.mandiexe.ui.myrequirements.MyRequirementDetails
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.usables.UIUtils
 import com.example.mandiexe.utils.usables.UIUtils.hideProgress
 import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import kotlinx.android.synthetic.main.farmer_bid_history_fragment.*
 
-class FarmerBidHistory : Fragment(), OnMyBidHistoryGlobalClickListener {
+class FarmerBidHistory : Fragment(), OnMyBidClickListenerGlobal {
 
     companion object {
         fun newInstance() = FarmerBidHistory()
@@ -52,7 +55,7 @@ class FarmerBidHistory : Fragment(), OnMyBidHistoryGlobalClickListener {
 
         showProgress(pb, requireContext())
 
-        viewModel.BidStockFunction().observe(viewLifecycleOwner, Observer { mResponse ->
+        viewModel.BidFunction().observe(viewLifecycleOwner, Observer { mResponse ->
             val success = viewModel.successful.value
 
             if (success != null) {
@@ -82,19 +85,15 @@ class FarmerBidHistory : Fragment(), OnMyBidHistoryGlobalClickListener {
 
         if (mResponse.bids.size == 0) {
             root.findViewById<AppCompatTextView>(R.id.tvEmptyListBid).visibility = View.VISIBLE
-            root.findViewById<AppCompatTextView>(R.id.tvEmptyListBid).text =
-                context?.resources?.getString(R.string.noDemand)
 
 
         } else {
+            root.findViewById<AppCompatTextView>(R.id.tvEmptyListBid).visibility = View.GONE
+
             adapter.lst = mResponse.bids
         }
 
         rv.adapter = adapter
-
-    }
-
-    override fun viewMyStockDetails(_listItem: BidHistoryResponse.Bid) {
 
     }
 
@@ -110,6 +109,18 @@ class FarmerBidHistory : Fragment(), OnMyBidHistoryGlobalClickListener {
         super.onDestroy()
 
 
+    }
+
+    override fun viewMyBidDetails(_listItem: BidHistoryResponse.Bid) {
+
+        val bundle = bundleOf(
+            "BID_ID" to _listItem._id,
+            "FROM" to FarmerBidHistory::class.java.simpleName
+        )
+
+        val i = Intent(requireContext(), MyRequirementDetails::class.java)
+        i.putExtra("bundle", bundle)
+        startActivity(i)
     }
 
 

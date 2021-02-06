@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
 import com.example.mandiexe.adapter.NewReqAdapter
-import com.example.mandiexe.adapter.OnNewReqClockListener
+import com.example.mandiexe.adapter.OnClickNewRequirement
 import com.example.mandiexe.interfaces.RetrofitClient
 import com.example.mandiexe.models.body.SearchCropReqBody
 import com.example.mandiexe.models.body.supply.CropSearchAutoCompleteBody
@@ -37,7 +37,7 @@ import retrofit2.Call
 import retrofit2.Response
 
 
-class AddRequirement : AppCompatActivity(), OnNewReqClockListener {
+class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
 
     companion object {
         fun newInstance() = AddRequirement()
@@ -63,8 +63,8 @@ class AddRequirement : AppCompatActivity(), OnNewReqClockListener {
         val service = RetrofitClient.makeCallsForBids(this)
         val body = SearchCropReqBody(txt.toString())
 
-        //TODO: Add the translations here
-
+        Log.e(TAG, "In searcgh of make call for txt $txt")
+        //TODO: Translations
         service.getSearchReq(
             body,
         )
@@ -90,11 +90,14 @@ class AddRequirement : AppCompatActivity(), OnNewReqClockListener {
                 override fun onFailure(call: Call<SearchCropReqResponse>, t: Throwable) {
                     val message = ExternalUtils.returnStateMessageForThrowable(t)
                     Log.e("Fail", "Failed to load req" + t.cause + t.message)
+
+
                 }
+
+
             })
-
-
     }
+
 
     private fun fetchSuggestions(query: String) {
 
@@ -121,7 +124,7 @@ class AddRequirement : AppCompatActivity(), OnNewReqClockListener {
                         strAr.add(y.name)
                     }
 
-                    Log.e("STr", strAr.toString())
+                    Log.e("Str", strAr.toString())
                     Log.e("Str", strAr.size.toString())
 
 
@@ -150,11 +153,15 @@ class AddRequirement : AppCompatActivity(), OnNewReqClockListener {
 
         } else {
 
-            pb.visibility = View.VISIBLE
-            rv.layoutManager = LinearLayoutManager(this)
-            val adapter = NewReqAdapter(this)
-            adapter.lst = response.supplies
-            rv.adapter = adapter
+            try {
+                pb.visibility = View.VISIBLE
+                rv.layoutManager = LinearLayoutManager(this)
+                val adapter = NewReqAdapter(this)
+                adapter.lst = response.supplies
+                rv.adapter = adapter
+            } catch (e: Exception) {
+                Log.e(TAG, "Exce[tion ${e.cause} ${e.message}")
+            }
         }
     }
 
@@ -255,16 +262,14 @@ class AddRequirement : AppCompatActivity(), OnNewReqClockListener {
         //For the voice,
         val voiceId = resources.getIdentifier("android:id/search_voice_btn", null, null)
         val voiceImage = searchView.findViewById<View>(voiceId) as ImageView
-
+        voiceImage.visibility = View.VISIBLE
         voiceImage.setOnClickListener {
             createVoiceIntent()
         }
 
 
-
-
-
     }
+
     private fun createVoiceIntent() {
         val mLanguage = pref.getLanguageFromPreference() ?: "en"
         val Voiceintent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
@@ -313,13 +318,8 @@ class AddRequirement : AppCompatActivity(), OnNewReqClockListener {
 
     }
 
-    private fun searchCrop(englishQuery: String, defaultQuery: String) {
-        makeCall(englishQuery, defaultQuery)
 
-    }
-
-    override fun viewAddReqDetails(_listItem: SearchCropReqResponse.Supply) {
-
+    override fun viewMyBidDetails(_listItem: SearchCropReqResponse.Supply) {
         val mFrom = AddRequirement::class.java.simpleName
         val bundle = bundleOf(
             "BID_ID" to _listItem._id,
@@ -327,10 +327,9 @@ class AddRequirement : AppCompatActivity(), OnNewReqClockListener {
 
         )
 
-        val i = Intent(this, OpenNewRequirementFragment::class.java)
+        val i = Intent(this, MyRequirementDetails::class.java)
         i.putExtra("bundle", bundle)
         startActivity(i)
-
     }
 
 }

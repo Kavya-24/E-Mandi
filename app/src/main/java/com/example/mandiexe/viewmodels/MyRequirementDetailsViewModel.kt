@@ -5,9 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mandiexe.R
 import com.example.mandiexe.interfaces.RetrofitClient
+import com.example.mandiexe.models.body.bid.AddBidBody
 import com.example.mandiexe.models.body.bid.DeletBidBody
 import com.example.mandiexe.models.body.bid.UpdateBidBody
 import com.example.mandiexe.models.body.bid.ViewBidBody
+import com.example.mandiexe.models.responses.bids.AddBidResponse
 import com.example.mandiexe.models.responses.bids.DeleteBidResponse
 import com.example.mandiexe.models.responses.bids.UpdateBidResponse
 import com.example.mandiexe.models.responses.bids.ViewBidResponse
@@ -40,9 +42,15 @@ class MyRequirementDetailsViewModel : ViewModel() {
     var messageUpdate: MutableLiveData<String> = MutableLiveData()
 
 
+    //For updating stock details
+    val successfulAdd: MutableLiveData<Boolean> = MutableLiveData()
+    var messageAdd: MutableLiveData<String> = MutableLiveData()
+
     private var deleteBid: MutableLiveData<DeleteBidResponse> = MutableLiveData()
     private var modifyBid: MutableLiveData<UpdateBidResponse> = MutableLiveData()
     private var mBid: MutableLiveData<ViewBidResponse> = MutableLiveData()
+    private var addBid: MutableLiveData<AddBidResponse> = MutableLiveData()
+
 
     fun getFunction(body: ViewBidBody): MutableLiveData<ViewBidResponse> {
 
@@ -50,12 +58,12 @@ class MyRequirementDetailsViewModel : ViewModel() {
         return mBid
     }
 
-    fun BidStockFunction(body: ViewBidBody): MutableLiveData<ViewBidResponse> {
+    private fun BidStockFunction(body: ViewBidBody): MutableLiveData<ViewBidResponse> {
 
         myBidService.getFarmerViewParticularBid(
 
             mViewBidBody = body,
-     )
+        )
             .enqueue(object : retrofit2.Callback<ViewBidResponse> {
                 override fun onFailure(call: Call<ViewBidResponse>, t: Throwable) {
                     successfulBid.value = false
@@ -108,11 +116,11 @@ class MyRequirementDetailsViewModel : ViewModel() {
     }
 
 
-    fun deleteBidFunction(body: DeletBidBody): MutableLiveData<DeleteBidResponse> {
+    private fun deleteBidFunction(body: DeletBidBody): MutableLiveData<DeleteBidResponse> {
 
         myBidService.getFarmerDeleteBid(
             mDeleteBidBody = body,
-     )
+        )
             .enqueue(object : retrofit2.Callback<DeleteBidResponse> {
                 override fun onFailure(call: Call<DeleteBidResponse>, t: Throwable) {
                     successfulCancel.value = false
@@ -161,12 +169,11 @@ class MyRequirementDetailsViewModel : ViewModel() {
         return modifyBid
     }
 
-
-    fun updateStockFunction(body: UpdateBidBody): MutableLiveData<UpdateBidResponse> {
+    private fun updateStockFunction(body: UpdateBidBody): MutableLiveData<UpdateBidResponse> {
 
         myBidService.getFarmerUpdateBid(
             mUpdateBidBody = body,
-     )
+        )
             .enqueue(object : retrofit2.Callback<UpdateBidResponse> {
                 override fun onFailure(call: Call<UpdateBidResponse>, t: Throwable) {
                     successfulUpdate.value = false
@@ -193,7 +200,7 @@ class MyRequirementDetailsViewModel : ViewModel() {
                             successfulUpdate.value = false
                             messageUpdate.value = response.body()?.msg.toString()
                         }
-                        if(response.body() != null){
+                        if (response.body() != null) {
                             modifyBid.value = response.body()!!
 
                         }
@@ -212,6 +219,62 @@ class MyRequirementDetailsViewModel : ViewModel() {
     }
 
 
+    fun addFunction(body: AddBidBody): MutableLiveData<AddBidResponse> {
+
+        addBid = addBidFunction(body)
+        return addBid
+    }
+
+    private fun addBidFunction(body: AddBidBody): MutableLiveData<AddBidResponse> {
+
+        myBidService.getFarmerAddBid(
+            mAddBidBody = body,
+        )
+            .enqueue(object : retrofit2.Callback<AddBidResponse> {
+                override fun onFailure(call: Call<AddBidResponse>, t: Throwable) {
+
+                    successfulAdd.value = false
+                    messageAdd.value = ExternalUtils.returnStateMessageForThrowable(t)
+                    //Response is null
+                    Log.e(TAG, "Throwanble ${t.cause} ${t.message}")
+                }
+
+                override fun onResponse(
+                    call: Call<AddBidResponse>,
+                    response: Response<AddBidResponse>
+                ) {
+
+                    Log.e(
+                        TAG,
+                        response.message() + response.body()?.msg + response.body().toString()
+                    )
+                    if (response.isSuccessful) {
+                        if (response.body()?.msg == "Bid added successfully.") {
+                            successfulAdd.value = true
+                            messageAdd.value =
+                                context.resources.getString(R.string.bidAdded)
+
+                        } else {
+                            successfulAdd.value = false
+                            messageAdd.value = response.body()?.msg.toString()
+                        }
+                        if (response.body() != null) {
+                            addBid.value = response.body()
+
+                        }
+                    } else {
+                        successfulAdd.value = false
+                        messageAdd.value = response.body()?.msg.toString()
+                    }
+
+                }
+            })
+
+
+        return addBid
+
+
+    }
 
 
 }

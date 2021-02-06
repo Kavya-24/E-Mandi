@@ -34,7 +34,7 @@ class FarmerBidHistoryViewModel : ViewModel() {
     }
 
 
-    fun BidStockFunction(): MutableLiveData<BidHistoryResponse> {
+    private fun BidStockFunction(): MutableLiveData<BidHistoryResponse> {
 
         myBidService.getFarmerBidHistoryGlobal(
      )
@@ -43,6 +43,7 @@ class FarmerBidHistoryViewModel : ViewModel() {
                     successful.value = false
                     message.value = ExternalUtils.returnStateMessageForThrowable(t)
                     //Response is null
+                    Log.e(TAG, "TRhrowable ${t.message} ${t.cause}")
                 }
 
                 override fun onResponse(

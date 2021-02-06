@@ -21,12 +21,14 @@ import com.example.mandiexe.adapter.MyBidHistoryAdapter
 import com.example.mandiexe.adapter.OnBidHistoryClickListener
 import com.example.mandiexe.models.PersonObject
 import com.example.mandiexe.models.body.BidHistoryBody
+import com.example.mandiexe.models.body.bid.AddBidBody
 import com.example.mandiexe.models.body.bid.DeletBidBody
 import com.example.mandiexe.models.body.bid.UpdateBidBody
 import com.example.mandiexe.models.body.bid.ViewBidBody
 import com.example.mandiexe.models.responses.bids.DeleteBidResponse
 import com.example.mandiexe.models.responses.bids.UpdateBidResponse
 import com.example.mandiexe.models.responses.bids.ViewBidResponse
+import com.example.mandiexe.ui.home.FarmerBidHistory
 import com.example.mandiexe.utils.PermissionsHelper
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
@@ -39,6 +41,7 @@ import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import com.example.mandiexe.utils.usables.UIUtils.hideProgress
 import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.example.mandiexe.viewmodels.MyRequirementDetailsViewModel
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.jjoe64.graphview.DefaultLabelFormatter
 import com.jjoe64.graphview.GraphView
@@ -46,13 +49,9 @@ import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
-import kotlinx.android.synthetic.main.item_owner_detail.*
-import kotlinx.android.synthetic.main.item_owner_detail.ownerAddress1
-import kotlinx.android.synthetic.main.item_owner_detail.ownerAddress2
 import kotlinx.android.synthetic.main.item_owner_detail.view.*
 import kotlinx.android.synthetic.main.my_crop_bid_details_fragment.*
 import kotlinx.android.synthetic.main.my_requirement_details_fragment.*
-import kotlinx.android.synthetic.main.open_new_requirement_fragment.*
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -82,14 +81,14 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
     private var ownerPhone = ""
     private var ownerName = ""
     private var numberOfBids = 0
-
+    private var dialogCurrentBid = ""
     private lateinit var adapter: MyBidHistoryAdapter
 
     private val pref = PreferenceUtil
 
     private lateinit var pb: ProgressBar
 
-    private  var personObject: PersonObject? = null
+    private var personObject: PersonObject? = null
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -365,12 +364,12 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
         val dialog = AlertDialog.Builder(this)
         dialog.setTitle(resources.getString(R.string.cancelBid)).setMessage(R.string.doDeleteBid)
-        dialog.setPositiveButton(resources.getString(R.string.cancelBid), { _, _ ->
+        dialog.setPositiveButton(resources.getString(R.string.cancelBid)) { _, _ ->
             confirmCancel()
-        })
-        dialog.setNegativeButton(resources.getString(R.string.no), { _, _ ->
+        }
+        dialog.setNegativeButton(resources.getString(R.string.no)) { _, _ ->
 
-        })
+        }
 
         dialog.create()
         dialog.show()
@@ -410,8 +409,56 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
         onBackPressed()
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun addBid() {
 
+        val d = androidx.appcompat.app.AlertDialog.Builder(this)
+        val v = layoutInflater.inflate(R.layout.layout_add_bid, null)
+        d.setView(v)
+
+        val et = v.findViewById<EditText>(R.id.actvEditBid_priceNew)
+        val til = v.findViewById<TextInputLayout>(R.id.tilEditBidOfferPriceNew)
+        val tv = v.findViewById<TextView>(R.id.tv_add_bid_current_bid)
+
+
+        tv.text = dialogCurrentBid
+
+        d.setPositiveButton(resources.getString(R.string.modifyBid)) { dialog, _ ->
+
+            if (et.text.isEmpty()) {
+                til.error = resources.getString(R.string.offerPriceError)
+            } else {
+                confirmAddBid(et.text.toString())
+            }
+            dialog.dismiss()
+
+        }
+        d.setNegativeButton(resources.getString(R.string.cancel)) { _, _ ->
+
+        }
+
+        d.create()
+        d.show()
+
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun confirmAddBid(valueOfBidPrice: String) {
+
+        val body = AddBidBody(valueOfBidPrice, BID_ID)
+        showProgress(pb, this)
+        viewModel.addFunction(body).observe(this, Observer { mResponse ->
+            if (mResponse.msg == "Bid added successfully.") {
+                createSnackbar(resources.getString(R.string.bidAdded), this, container_req_details)
+                makeCall()
+                hideProgress(pb, this)
+
+            }
+
+        })
+
+        hideProgress(pb, this)
     }
 
     private fun closeBidHistory() {
@@ -445,7 +492,6 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
         }
 
     }
-
 
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun initViews(value: ViewBidResponse) {
@@ -541,9 +587,36 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
             //Popultae Person object
             val bidDemander = value.bid.bidder
             val address1 = bidDemander.village + bidDemander.district
-            val address2 = bidDemander.state +bidDemander.country
-            personObject = PersonObject(bidDemander.name,bidDemander.phone,bidDemander.address,address1,address2)
+            val address2 = bidDemander.state + bidDemander.country
+            personObject = PersonObject(
+                bidDemander.name,
+                bidDemander.phone,
+                bidDemander.address,
+                address1,
+                address2
+            )
 
+
+            //Populate the views for when coming from the Bid Hiostiory
+            if (from == FarmerBidHistory::class.java.simpleName) {
+
+                //If the bid is not active, hide some views and create indefinite snackbar
+                if (!value.bid.active) {
+                    this.apply {
+                        mtb_Modify_bid.visibility = View.GONE
+                        mtb_cancel_bid.visibility = View.GONE
+                        Snackbar.make(
+                            container_req_details,
+                            resources.getString(R.string.bidInactive),
+                            Snackbar.LENGTH_INDEFINITE
+                        ).show()
+                    }
+                }
+
+            }
+
+
+            dialogCurrentBid = currrentBid.toString()
             fillRecyclerView(value.bid)
             createGraph(value.bid.demand.lastBid)
 
@@ -707,6 +780,11 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
         //Upate the bid
         viewModel.successfulUpdate.removeObservers(this)
         viewModel.successfulUpdate.value = null
+
+        //Add observors
+        viewModel.successfulAdd.removeObservers(this)
+        viewModel.successfulAdd.value = null
+
 
         finish()
         super.onBackPressed()
