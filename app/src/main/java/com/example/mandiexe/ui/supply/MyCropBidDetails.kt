@@ -536,7 +536,7 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
         } else {
 
-            mList.add(ViewSupplyResponse.Supply.LastBid(currentBid, "", lastModified))
+//            mList.add(ViewSupplyResponse.Supply.LastBid(currentBid, "", lastModified))
 
             numberOfBid = 0
             val series: LineGraphSeries<DataPoint> =

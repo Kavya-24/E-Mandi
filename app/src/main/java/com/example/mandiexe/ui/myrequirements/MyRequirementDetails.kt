@@ -2,6 +2,7 @@ package com.example.mandiexe.ui.myrequirements
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -30,6 +31,7 @@ import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.usables.OfflineTranslate
 import com.example.mandiexe.utils.usables.OfflineTranslate.transliterateToDefault
+import com.example.mandiexe.utils.usables.TimeConversionUtils
 import com.example.mandiexe.utils.usables.TimeConversionUtils.convertTimeToEpoch
 import com.example.mandiexe.utils.usables.UIUtils
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
@@ -38,8 +40,14 @@ import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.example.mandiexe.viewmodels.MyRequirementDetailsViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
+import com.jjoe64.graphview.DefaultLabelFormatter
+import com.jjoe64.graphview.GraphView
+import com.jjoe64.graphview.series.DataPoint
+import com.jjoe64.graphview.series.LineGraphSeries
 import kotlinx.android.synthetic.main.my_crop_bid_details_fragment.*
 import kotlinx.android.synthetic.main.my_requirement_details_fragment.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
@@ -49,7 +57,6 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
     private val viewModel: MyRequirementDetailsViewModel by viewModels()
 
-    //private lateinit var root: View
     private lateinit var args: Bundle
 
     private var BID_ID = ""
@@ -58,19 +65,21 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
     //Modify dialog
     private lateinit var d: androidx.appcompat.app.AlertDialog.Builder
     private lateinit var tempRef: androidx.appcompat.app.AlertDialog
-
+    private lateinit var graph: GraphView
     private var from = ""
     private var isOpen = false
 
+    private var sdf = SimpleDateFormat("dd-MM-yy HH:mm")
 
     private var ownerPhone = ""
     private var ownerName = ""
+    private var numberOfBids = 0
 
     private lateinit var adapter: MyBidHistoryAdapter
 
     private val pref = PreferenceUtil
-    
-    private lateinit var pb : ProgressBar
+
+    private lateinit var pb: ProgressBar
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,26 +100,32 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
         tb.setNavigationOnClickListener {
             onBackPressed()
         }
-        
+        graph = findViewById(R.id.graphViewReq)
         pb = findViewById(R.id.pb_my_req_details)
 
         //Set views from 'FROM'
         if (from == RequirementFragment::class.java.simpleName) {
             //Do nothing
-            findViewById<MaterialButton>(R.id.mtb_add_bid).visibility = View.GONE
-            findViewById<MaterialButton>(R.id.mtb_cancel_bid).visibility = View.VISIBLE
-            findViewById<MaterialButton>(R.id.mtb_Modify_bid).visibility = View.VISIBLE
-            findViewById<TextView>(R.id.tv_requirement_detail_my_bid_text_view).visibility =
-                View.VISIBLE
-            findViewById<TextView>(R.id.tv_requirement_detail_my_bid).visibility = View.VISIBLE
+            this.apply {
+
+                mtb_add_bid.visibility = View.GONE
+                mtb_cancel_bid.visibility = View.VISIBLE
+                mtb_Modify_bid.visibility = View.VISIBLE
+                mMyBid.visibility =
+                    View.VISIBLE
+                tv_requirement_detail_my_bid.visibility = View.VISIBLE
+
+
+            }
 
         } else if (from == AddRequirement::class.java.simpleName) {
-            findViewById<MaterialButton>(R.id.mtb_add_bid).visibility = View.VISIBLE
-            findViewById<MaterialButton>(R.id.mtb_cancel_bid).visibility = View.GONE
-            findViewById<MaterialButton>(R.id.mtb_Modify_bid).visibility = View.GONE
-            findViewById<TextView>(R.id.tv_requirement_detail_my_bid_text_view).visibility =
+            mtb_add_bid.visibility = View.VISIBLE
+            mtb_cancel_bid.visibility = View.GONE
+            mtb_Modify_bid.visibility = View.GONE
+            mMyBid.visibility =
                 View.GONE
-            findViewById<TextView>(R.id.tv_requirement_detail_my_bid).visibility = View.GONE
+            tv_requirement_detail_my_bid.visibility = View.GONE
+
 
         }
 
@@ -119,53 +134,56 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
 
         //initViews
-        findViewById<TextView>(R.id.tv_view_bid_history_requirement).setOnClickListener {
-            //Open the history
-            if (!isOpen) {
-                openBidHistory()
+        this.apply {
+            findViewById<TextView>(R.id.tv_view_bid_history_requirement).setOnClickListener {
+                //Open the history
+                if (!isOpen) {
+                    openBidHistory()
+                }
+
             }
 
-        }
+            findViewById<ImageView>(R.id.iv_dropdown_bid_history).setOnClickListener {
 
-        findViewById<ImageView>(R.id.iv_dropdown_bid_history).setOnClickListener {
+                //Open the history
+                if (isOpen) {
+                    closeBidHistory()
+                } else {
+                    openBidHistory()
+                }
 
-            //Open the history
-            if (isOpen) {
-                closeBidHistory()
-            } else {
-                openBidHistory()
             }
 
+            findViewById<MaterialButton>(R.id.mtb_cancel_bid).setOnClickListener {
+                cancelBid()
+            }
+
+
+            findViewById<MaterialButton>(R.id.mtb_Modify_bid).setOnClickListener {
+
+                //Send the Bid Uodate body : Modify Bid Body in the bundle
+                //Check for bundle in the BIdFragment
+                createModifyBidDialog()
+
+            }
+
+            findViewById<MaterialButton>(R.id.mtb_add_bid).setOnClickListener {
+                addBid()
+            }
+
+
+            findViewById<ImageView>(R.id.iv_req_call_buyer).setOnClickListener {
+                val i = Intent(Intent.ACTION_CALL, Uri.parse(ownerPhone))
+                startActivity(i)
+            }
+
+            findViewById<SwipeRefreshLayout>(R.id.swl_detailsReq).setOnRefreshListener {
+                makeCall()
+                findViewById<SwipeRefreshLayout>(R.id.swl_detailsReq).isRefreshing = false
+            }
+
+
         }
-
-        findViewById<MaterialButton>(R.id.mtb_cancel_bid).setOnClickListener {
-            cancelBid()
-        }
-
-
-        findViewById<MaterialButton>(R.id.mtb_Modify_bid).setOnClickListener {
-
-            //Send the Bid Uodate body : Modify Bid Body in the bundle
-            //Check for bundle in the BIdFragment
-            createModifyBidDialog()
-
-        }
-
-        findViewById<MaterialButton>(R.id.mtb_add_bid).setOnClickListener {
-            addBid()
-        }
-
-
-        findViewById<ImageView>(R.id.iv_req_call_buyer).setOnClickListener {
-            val i = Intent(Intent.ACTION_CALL, Uri.parse(ownerPhone))
-            startActivity(i)
-        }
-
-        findViewById<SwipeRefreshLayout>(R.id.swl_detailsReq).setOnRefreshListener {
-            makeCall()
-            findViewById<SwipeRefreshLayout>(R.id.swl_detailsReq).isRefreshing = false
-        }
-
 
     }
 
@@ -210,13 +228,14 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
 
 
-        d.setPositiveButton(resources.getString(R.string.modifyBid)) { _, _ ->
+        d.setPositiveButton(resources.getString(R.string.modifyBid)) { x, _ ->
 
             if (et.text.isEmpty()) {
                 til.error = resources.getString(R.string.offerPriceError)
             } else {
                 confirmModify(et.text.toString())
             }
+            x.dismiss()
 
 
         }
@@ -354,12 +373,8 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun initViews(value: ViewBidResponse) {
 
-        //Set the above 8 entities wrt root
-        //remove pb
-        //View the root
         findViewById<ConstraintLayout>(R.id.mLayoutReq).visibility = View.VISIBLE
-        hideProgress(pb, this)
-
+     
 
         try {
 
@@ -392,6 +407,12 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
             ownerPhone = value.bid.bidder.phone
             ownerName = transliterateToDefault(value.bid.bidder.name)
             //Normal Stuff
+            //Set in the Panel
+            this.apply{
+                tv_req_details_buyer_name.setText((ownerName))
+            }
+
+
 
             findViewById<TextView>(R.id.ans_detail_bid_quanity).text =
                 value.bid.demand.qty.toString()
@@ -423,49 +444,154 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
 
             fillRecyclerView(value.bid)
-            createGraph(value)
+            createGraph(value.bid.demand.lastBid)
 
         } catch (e: Exception) {
             Log.e(TAG, "Error" + e.cause + e.message)
+        } 
+        
+        hideProgress(pb,this)
+    }
+
+    private fun createGraph(value: List<ViewBidResponse.Bid.Demand.LastBid>) {
+
+        val mList = value.toMutableList()
+        numberOfBids = 0
+        if (value.isEmpty()) {
+            //When there are no last bids or any bids
+            graph.removeAllSeries()
+            graph.visibility = View.GONE
+            findViewById<TextView>(R.id.tvNoGraphCrop).visibility = View.VISIBLE
+
+            //Also, make this open
+            openBidHistory()
+
+            //During inactive, it will show an indefinite snackbar
+
+
+        } else {
+
+
+            numberOfBids = 0
+            val series: LineGraphSeries<DataPoint> =
+                LineGraphSeries<DataPoint>(getSeriesPoints(mList))
+
+
+            graph.addSeries(series)
+
+
+            // graph.gridLabelRenderer.horizontalAxisTitle = resources.getString(R.string.time)
+            // graph.gridLabelRenderer.verticalAxisTitle = resources.getString(R.string.price_rs)
+
+            graph.gridLabelRenderer.labelFormatter = object : DefaultLabelFormatter() {
+                override fun formatLabel(value: Double, isValueX: Boolean): String {
+
+                    if (isValueX) {
+                        return sdf.format(Date(value.toLong()))
+                    }
+                    return super.formatLabel(value, isValueX)
+
+                }
+
+            }
+
+            //Enable scrolling and zooming
+            graph.viewport.isScalable = true
+            graph.viewport.setScalableY(true)
+            graph.gridLabelRenderer.numHorizontalLabels = numberOfBids
+            graph.gridLabelRenderer.labelsSpace = 20
+
+
+            Log.e(TAG, numberOfBids.toString() + "Number ")
+            graph.gridLabelRenderer.setHorizontalLabelsAngle(90)
+
+            // set manual x bounds to have nice steps
+
+            if (!value.isEmpty()) {
+                Log.e(
+                    TAG,
+                    "Start X is " + TimeConversionUtils.convertDateTimestampUtil(value.get(0).timestamp)
+                        .toString()
+                )
+
+                TimeConversionUtils.convertDateTimestampUtil(value.get(0).timestamp)?.time?.toDouble()
+                    ?.let {
+                        graph.getViewport().setMinX(
+                            it
+                        )
+                    };
+                graph.viewport.isXAxisBoundsManual = true
+            }
+
+            graph.title = resources.getString(R.string.myBidHistory)
+            graph.titleColor = Color.BLACK
+
+            graph.gridLabelRenderer.labelHorizontalHeight = 300
         }
+        numberOfBids = 0
     }
 
-    private fun createGraph(value: ViewBidResponse) {
+    private fun getSeriesPoints(item: MutableList<ViewBidResponse.Bid.Demand.LastBid>): Array<DataPoint>? {
+
+        val arrayDataPoints: MutableList<DataPoint> = mutableListOf()
+
+
+        for (element in item) {
+
+            numberOfBids++
+
+            arrayDataPoints.add(
+                DataPoint(
+                    TimeConversionUtils.convertDateTimestampUtil(element.timestamp),
+                    element.amount.toDouble()
+                )
+            )
+
+            Log.e(
+                TAG,
+                "In get series data point " + TimeConversionUtils.convertDateTimestampUtil(element.timestamp)
+                    .toString() + " Amount : " + element.amount.toDouble() + " Num" + numberOfBids.toString()
+            )
+        }
+
+
+
+        return arrayDataPoints.toTypedArray()
 
     }
-
+    
     private fun fillRecyclerView(valueBids: ViewBidResponse.Bid) {
 
-//        val rv = findViewById<RecyclerView>(R.id.rv_bidHistoryMyReq)
-//        rv.layoutManager = LinearLayoutManager(this)
-//        adapter = MyBidHistoryAdapter(this)
-//
-//        //Create list
-//        val mBids: MutableList<BidHistoryBody> = mutableListOf()
-//
-//        for (element in valueBids.bids) {
-//
-//            val x = element
-//            mBids.add(
-//                BidHistoryBody(
-//                    x.amount,
-//                    x._id,
-//                    x.timestamp,
-//                    element.bidder.name,
-//                    element.bidder.phone,
-//                    element.bidder.address
-//                )
-//            )
-//        }
-//
-//        mBids.sortByDescending { it.amount }
-//        Log.e(TAG, mBids.toString())
-//
-//        adapter.lst = mBids
-//        rv.adapter = adapter
+        val rv = findViewById<RecyclerView>(R.id.rv_bidHistoryMyReq)
+        rv.layoutManager = LinearLayoutManager(this)
+        adapter = MyBidHistoryAdapter(this)
+
+        //Create list
+        val mBids: MutableList<BidHistoryBody> = mutableListOf()
+
+        for (element in valueBids.bids) {
+
+            val x = element
+            val mBidder = valueBids.bidder
+            mBids.add(
+                BidHistoryBody(
+                    x.amount,
+                    x._id,
+                    x.timestamp,
+                    mBidder.name,
+                    mBidder.phone,
+                    mBidder.address
+                )
+            )
+        }
+
+        mBids.sortByDescending { it.amount }
+        Log.e(TAG, mBids.toString())
+
+        adapter.lst = mBids
+        rv.adapter = adapter
 
     }
-
 
     override fun onBackPressed() {
 

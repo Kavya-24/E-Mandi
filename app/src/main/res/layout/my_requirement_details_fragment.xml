@@ -194,6 +194,33 @@
                     app:layout_constraintTop_toBottomOf="@id/mCurrentBid" />
 
                 <TextView
+                    android:id="@+id/mMyBid"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/space_half"
+                    android:gravity="center"
+                    android:text="@string/my_bid"
+                    app:layout_constraintEnd_toStartOf="@id/tv_requirement_detail_initial_offer_price"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_requirement_detail_current_bid" />
+
+
+                <TextView
+                    android:id="@+id/tv_requirement_detail_my_bid"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/space_half"
+                    android:gravity="center"
+                    android:text="@string/_1234"
+                    android:textColor="@android:color/holo_green_dark"
+                    android:textSize="24sp"
+                    app:layout_constraintEnd_toStartOf="@id/tv_requirement_detail_initial_offer_price"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/mMyBid" />
+
+                <TextView
                     android:id="@+id/mOfferPrice"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -231,33 +258,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/tv_requirement_detail_my_bid_text_view"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/space_half"
-                    android:gravity="center"
-                    android:text="@string/myBid"
-                    android:textSize="20sp"
-                    app:layout_constraintEnd_toEndOf="@id/tv_requirement_detail_current_bid"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintStart_toStartOf="@id/tv_requirement_detail_current_bid"
-                    app:layout_constraintTop_toBottomOf="@id/tv_requirement_detail_current_bid" />
 
-                <TextView
-                    android:id="@+id/tv_requirement_detail_my_bid"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/space_half"
-                    android:gravity="center"
-                    android:text="@string/_1234"
-                    android:textColor="@android:color/holo_red_light"
-                    android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_requirement_detail_my_bid_text_view"
-                    app:layout_constraintEnd_toEndOf="@id/tv_requirement_detail_initial_offer_price"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintStart_toStartOf="@id/tv_requirement_detail_initial_offer_price"
-                    app:layout_constraintTop_toTopOf="@id/tv_requirement_detail_my_bid_text_view" />
 
 
                 <!--        //##Add contact-->

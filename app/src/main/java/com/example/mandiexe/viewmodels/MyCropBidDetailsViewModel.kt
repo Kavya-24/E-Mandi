@@ -161,7 +161,6 @@ class MyCropBidDetailsViewModel : ViewModel() {
         return modifyStock
     }
 
-
     fun updateStockFunction(body: ModifySupplyBody): MutableLiveData<ModifySupplyResponse> {
 
         mySupplyService.getModifySupply(
