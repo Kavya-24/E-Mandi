@@ -2,6 +2,7 @@ package com.example.mandiexe.models.responses.bids
 
 import com.squareup.moshi.Json
 
+
 data class ViewBidResponse(
     @Json(name = "bid")
     val bid: Bid,

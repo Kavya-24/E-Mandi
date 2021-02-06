@@ -156,7 +156,6 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
 
             try {
                 tv.visibility = View.GONE
-                pb.visibility = View.VISIBLE
                 rv.layoutManager = LinearLayoutManager(this)
                 val adapter = NewReqAdapter(this)
                 adapter.lst = response.demands
