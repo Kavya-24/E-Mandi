@@ -270,20 +270,27 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
         val body = ViewBidBody(BID_ID)
 
-        viewModel.getFunction(body).observe(this, Observer { mResponse ->
-            val success = viewModel.successfulBid.value
-            if (success != null) {
-                if (!success) {
-                    createSnackbar(
-                        viewModel.messageCancel.value,
-                        this,
-                        container_req_details
-                    )
-                } else if (mResponse.msg == "Bid retrieved successfully.") {
-                    mResponse.let { initViews(it) }
+        if (from != AddRequirement::class.java.simpleName) {
+            viewModel.getFunction(body).observe(this, Observer { mResponse ->
+                val success = viewModel.successfulBid.value
+                if (success != null) {
+                    if (!success) {
+                        createSnackbar(
+                            viewModel.messageCancel.value,
+                            this,
+                            container_req_details
+                        )
+                    } else if (mResponse.msg == "Bid retrieved successfully.") {
+                        mResponse.let { initViews(it) }
+                    }
                 }
-            }
-        })
+            })
+        }
+
+        if (from == AddRequirement::class.java.simpleName) {
+
+        }
+
 
 
         hideProgress(pb, this)

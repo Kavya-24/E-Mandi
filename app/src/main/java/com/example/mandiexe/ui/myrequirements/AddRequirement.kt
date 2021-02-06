@@ -99,7 +99,6 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
             })
     }
 
-
     private fun fetchSuggestions(query: String) {
 
         val service = RetrofitClient.makeCallsForSupplies(this)

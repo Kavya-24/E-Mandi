@@ -1,10 +1,7 @@
 package com.example.mandiexe.interfaces
 
 import com.example.mandiexe.models.body.SearchCropReqBody
-import com.example.mandiexe.models.body.bid.AddBidBody
-import com.example.mandiexe.models.body.bid.DeletBidBody
-import com.example.mandiexe.models.body.bid.UpdateBidBody
-import com.example.mandiexe.models.body.bid.ViewBidBody
+import com.example.mandiexe.models.body.bid.*
 import com.example.mandiexe.models.responses.SearchCropReqResponse
 import com.example.mandiexe.models.responses.bids.*
 import retrofit2.Call
@@ -72,6 +69,15 @@ interface myBidsInterface {
     fun getSearchReq(
         @Body body: SearchCropReqBody
     ): Call<SearchCropReqResponse>
+
+
+    //Open a demand
+    //Delete the bid
+    @Headers("Content-Type:application/json")
+    @POST("api/demand/view")
+    fun getOpenDemand(
+        @Body body: ViewDemandBody
+    ): Call<ViewDemandResponse>
 
 
 

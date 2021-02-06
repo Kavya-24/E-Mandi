@@ -5,14 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mandiexe.R
 import com.example.mandiexe.interfaces.RetrofitClient
-import com.example.mandiexe.models.body.bid.AddBidBody
-import com.example.mandiexe.models.body.bid.DeletBidBody
-import com.example.mandiexe.models.body.bid.UpdateBidBody
-import com.example.mandiexe.models.body.bid.ViewBidBody
-import com.example.mandiexe.models.responses.bids.AddBidResponse
-import com.example.mandiexe.models.responses.bids.DeleteBidResponse
-import com.example.mandiexe.models.responses.bids.UpdateBidResponse
-import com.example.mandiexe.models.responses.bids.ViewBidResponse
+import com.example.mandiexe.models.body.bid.*
+import com.example.mandiexe.models.responses.bids.*
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.auth.SessionManager
 import com.example.mandiexe.utils.usables.ExternalUtils
@@ -30,6 +24,10 @@ class MyRequirementDetailsViewModel : ViewModel() {
     //For getting the details of the Bid stock
     val successfulBid: MutableLiveData<Boolean> = MutableLiveData()
     var messageBid: MutableLiveData<String> = MutableLiveData()
+
+    //For viewing the demand
+    val successfulDemand: MutableLiveData<Boolean> = MutableLiveData()
+    var messageDemand: MutableLiveData<String> = MutableLiveData()
 
 
     //For cancelling the stock
@@ -50,6 +48,7 @@ class MyRequirementDetailsViewModel : ViewModel() {
     private var modifyBid: MutableLiveData<UpdateBidResponse> = MutableLiveData()
     private var mBid: MutableLiveData<ViewBidResponse> = MutableLiveData()
     private var addBid: MutableLiveData<AddBidResponse> = MutableLiveData()
+    private var demandStock: MutableLiveData<ViewDemandResponse> = MutableLiveData()
 
 
     fun getFunction(body: ViewBidBody): MutableLiveData<ViewBidResponse> {
@@ -276,5 +275,62 @@ class MyRequirementDetailsViewModel : ViewModel() {
 
     }
 
+
+
+    fun getDemandFunction(body: ViewDemandBody): MutableLiveData<ViewDemandResponse> {
+
+        demandStock = DemandStockFunction(body)
+        return demandStock
+    }
+
+    private fun DemandStockFunction(body: ViewDemandBody): MutableLiveData<ViewDemandResponse> {
+
+        myBidService.getOpenDemand(
+
+            body = body
+        )
+            .enqueue(object : retrofit2.Callback<ViewDemandResponse> {
+                override fun onFailure(call: Call<ViewDemandResponse>, t: Throwable) {
+                    successfulDemand.value = false
+                    messageDemand.value = ExternalUtils.returnStateMessageForThrowable(t)
+                    //Response is null
+                    Log.e(TAG, "For the farmer, throawable is ${t.message} ${t.cause}")
+                }
+
+                override fun onResponse(
+                    call: Call<ViewDemandResponse>,
+                    response: Response<ViewDemandResponse>
+                ) {
+
+                    Log.e(
+                        TAG,
+                        response.message() + response.body()?.msg + response.body().toString()
+                    )
+                    if (response.isSuccessful) {
+                        if (response.body()?.msg == "Demand retrieved successfully.") {
+                            successfulDemand.value = true
+                            messageDemand.value =
+                                context.resources.getString(R.string.demanndLoaded)
+                            demandStock.value = response.body()!!
+
+                        } else {
+                            successfulBid.value = false
+                            messageBid.value = response.body()?.msg.toString()
+                        }
+
+                    } else {
+                        successfulBid.value = false
+                        messageBid.value = response.body()?.msg.toString()
+                    }
+
+                    demandStock.value = response.body()
+                }
+            })
+
+
+        return demandStock
+
+
+    }
 
 }
