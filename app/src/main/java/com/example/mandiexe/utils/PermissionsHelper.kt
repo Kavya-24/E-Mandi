@@ -36,17 +36,11 @@ object PermissionsHelper {
 
         return Observable.create { emitter ->
             rxPermissions.request(
-                Manifest.permission.CALL_PHONE,
-                Manifest.permission.RECEIVE_SMS,
-                Manifest.permission.READ_SMS
-            )
+                Manifest.permission.CALL_PHONE)
                 .compose(
                     rxPermissions.ensureEachCombined(
 
-                        Manifest.permission.CALL_PHONE,
-                        Manifest.permission.RECEIVE_SMS,
-                        Manifest.permission.READ_SMS
-                    )
+                        Manifest.permission.CALL_PHONE)
                 )
                 .subscribeBy { permission ->
                     emitter.onNext(permission.granted)

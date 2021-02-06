@@ -175,7 +175,7 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
             }
 
 
-            findViewById<ImageView>(R.id.iv_req_call_buyer).setOnClickListener {
+            iv_req_call_buyer.setOnClickListener {
                 checkCallPermissions()
 
             }
@@ -198,6 +198,7 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
             .debounce(1, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = { callback ->
+                Log.e(TAG, "In on next and call back is $callback")
                     if (callback) {
                         //Done
                         callBuyer()
@@ -208,6 +209,8 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
                 },
                 onComplete = {
                     Log.e(TAG, "In complete")
+                    callBuyer()
+
                 }
             )
 
@@ -215,10 +218,11 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
     private fun callBuyer() {
         try {
-            val i = Intent(Intent.ACTION_CALL, Uri.parse(ownerPhone))
+            val i = Intent(Intent.ACTION_CALL, Uri.fromParts("tel", ownerPhone, null))
             startActivity(i)
-        } catch (e: Exception) {
 
+        } catch (e: Exception) {
+            Log.e(TAG, "In except" + e)
         }
     }
 
@@ -379,8 +383,8 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
         findViewById<TextView>(R.id.tv_view_bid_history_requirement).text =
             resources.getString(R.string.view_bid_history)
 
-        findViewById<ImageView>(R.id.iv_dropdown_bid_history)
-            .setImageDrawable(resources.getDrawable(R.drawable.ic_down))
+        findViewById<ImageView>(R.id.iv_dropdown_bid_history_req)
+           .setImageDrawable(resources.getDrawable(R.drawable.ic_down))
 
     }
 
@@ -391,10 +395,10 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
         findViewById<TextView>(R.id.tv_view_bid_history_requirement).text =
             resources.getString(R.string.myBidHistory)
 
-        findViewById<ImageView>(R.id.iv_dropdown_bid_history)
+        findViewById<ImageView>(R.id.iv_dropdown_bid_history_req)
             .setImageDrawable(resources.getDrawable(R.drawable.ic_top))
 
-        if (adapter.lst.size == 0) {
+        if (adapter.lst.isEmpty()) {
             UIUtils.createSnackbar(
                 resources.getString(R.string.emptyRV),
                 this,
@@ -443,6 +447,11 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
             val initialOfferPrice = value.bid.demand.offerPrice
             val myCurrentBid = value.bid.currentBid
 
+            Log.e(
+                TAG,
+                "Current is $currrentBid and init is $initialOfferPrice amd my $myCurrentBid"
+            )
+
             this.apply {
 
                 tv_req_details_buyer_name.setText((ownerName))
@@ -454,11 +463,12 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
                 ans_detail_bid_exp.text =
                     convertTimeToEpoch(value.bid.demand.expiry)
-                ans_detail_init_date.text =
+                this.ans_detail_bid_init_date.text =
                     convertTimeToEpoch(value.bid.demand.demandCreated)
 
-                tv_requirement_detail_current_bid.text =
-                    value.bid.demand.lastBid.toString()
+                tv_requirement_detail_current_bid.setText(
+                    currrentBid.toString()
+                )
 
                 tv_requirement_detail_initial_offer_price.text =
                     initialOfferPrice.toString()
