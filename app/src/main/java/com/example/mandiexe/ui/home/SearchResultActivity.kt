@@ -56,11 +56,11 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
         //Get arugmenent
 
         args = intent?.getBundleExtra("bundle")!!
-        mTv = findViewById(R.id.tvAddMissing)
 
+        mTv = findViewById(R.id.tvAddMissing)
         //Add the side drawable
         mTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_add_black_24dp, 0, 0, 0)
-        //Porcess the crop here
+        //Process the crop here
 
         crop = args.getString("crop")!!
         val title = args.getString("title").toString()

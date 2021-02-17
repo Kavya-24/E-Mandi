@@ -311,7 +311,116 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
     }
 
-    private fun initViewsForNewRequirement(it: ViewDemandResponse?) {
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun initViewsForNewRequirement(value: ViewDemandResponse?) {
+
+        findViewById<ConstraintLayout>(R.id.mLayoutReq).visibility = View.VISIBLE
+        hideProgress(pb, this)
+
+        try {
+            if(value != null) {
+                Log.e(TAG, "\nREsposne \nis $value")
+                //Translate
+                OfflineTranslate.translateToDefault(
+                    this,
+                    value.demand.crop,
+                    findViewById<TextView>(R.id.tv_requirement_detail_crop_name)
+                )
+
+                OfflineTranslate.translateToDefault(
+                    this,
+                    value.demand.variety,
+                    findViewById<TextView>(R.id.tv_requirement_detail_crop_type)
+                )
+
+                OfflineTranslate.translateToDefault(
+                    this,
+                    value.demand.description,
+                    findViewById<TextView>(R.id.tv_requirement_detail_crop_description)
+                )
+
+
+                //Owner Details
+                ownerPhone = value.demand.demander.phone
+                ownerName = transliterateToDefault(value.demand.demander.name)
+
+
+                val currrentBid = value.demand.currentBid
+                val initialOfferPrice = value.demand.offerPrice
+
+
+                Log.e(
+                    TAG,
+                    "Current is $currrentBid and init is $initialOfferPrice"
+                )
+
+                this.apply {
+
+                    tv_req_details_buyer_name.setText((ownerName))
+                    tv_requirement_detail_crop_location.text =
+                        OfflineTranslate.transliterateToDefault(value.demand.demander.address)
+
+                    ans_detail_bid_quanity.text =
+                        value.demand.qty.toString()
+
+                    ans_detail_bid_exp.text =
+                        convertTimeToEpoch(value.demand.expiry)
+                    this.ans_detail_bid_init_date.text =
+                        convertTimeToEpoch(value.demand.demandCreated)
+
+                    tv_requirement_detail_current_bid.setText(
+                        currrentBid.toString()
+                    )
+
+                    tv_requirement_detail_initial_offer_price.text =
+                        initialOfferPrice.toString()
+
+                    if (currrentBid > initialOfferPrice) {
+                        tv_requirement_detail_current_bid.setTextColor(
+                            resources.getColor(
+                                R.color.deltaRed,
+                                null
+                            )
+                        )
+
+                    }
+                        //Add in the bidding fragment
+                        tv_requirement_detail_my_bid.visibility = View.GONE
+                        this.mMyBid.visibility = View.GONE
+
+
+                }
+
+                //Popultae Person object
+                val bidDemander = value.demand.demander
+                val address1 = bidDemander.village + "," + bidDemander.district
+                val address2 = bidDemander.state + "," + bidDemander.country
+                personObject = PersonObject(
+                    bidDemander.name,
+                    bidDemander.phone,
+                    bidDemander.address,
+                    address1,
+                    address2
+                )
+
+
+
+                dialogCurrentBid = currrentBid.toString()
+
+                //Hide
+                //fillRecyclerView(value.demand.bids)
+                //createGraph(value.bid.demand.lastBid)
+                
+
+                this.apply {
+
+                }
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error" + e.cause + e.message)
+        }
+
+        hideProgress(pb, this)
 
     }
 

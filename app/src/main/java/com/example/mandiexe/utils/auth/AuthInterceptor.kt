@@ -2,8 +2,6 @@ package com.example.mandiexe.utils.auth
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
-import com.example.mandiexe.R
 import com.example.mandiexe.interfaces.RetrofitClient
 import com.example.mandiexe.models.body.authBody.AccessTokenBody
 import okhttp3.Interceptor
@@ -34,7 +32,10 @@ class AuthInterceptor(context: Context) : Interceptor {
         }
 
         val mCall = chain.proceed(requestBuilder.build())
-        Log.e("Auth", "In Auth Intercptor and quest code is ${mCall.code}  with token ${sessionManager.fetchAcessToken()}")
+        Log.e(
+            "Auth",
+            "In Auth Intercptor and quest code is ${mCall.code}  with token ${sessionManager.fetchAcessToken()}"
+        )
 
         if (mCall.code == 401 || mCall.code == 403) {
 
@@ -46,7 +47,7 @@ class AuthInterceptor(context: Context) : Interceptor {
                 service.getAccessToken(AccessTokenBody(prefManager.authToken!!)).execute()
             Log.e(
                 "AUTH",
-                "The new call is " + newAccessTokenResponse.toString() + " And body is " + newAccessTokenResponse.body()
+                "The new call is  And body is " + newAccessTokenResponse.body()
                     .toString() + " Amd error is " + newAccessTokenResponse.errorBody()
             )
 
@@ -55,7 +56,7 @@ class AuthInterceptor(context: Context) : Interceptor {
                 //That is, either the token
                 Log.e("AUTH", "In bad request")
                 //Go to main login activty
-                Toast.makeText(mContext,mContext.resources.getString(R.string.failAccessToken), Toast.LENGTH_SHORT).show()
+
             }
 
             //Save the values

@@ -1,6 +1,7 @@
 package com.example.mandiexe.interfaces
 
 import android.content.Context
+import android.util.Log
 import com.example.mandiexe.utils.auth.AuthInterceptor
 import com.example.mandiexe.utils.auth.TokenAuthenticator
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -45,8 +46,8 @@ object RetrofitClient {
 
     fun getAuthInstance(): authInterface {
 
+        Log.e(TAG, "In auth instance")
         return Retrofit.Builder()
-
             .baseUrl(url)
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
