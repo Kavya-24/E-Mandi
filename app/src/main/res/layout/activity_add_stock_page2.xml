@@ -51,6 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space"
+                android:padding="@dimen/space"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent"
@@ -61,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space"
-                android:layout_marginBottom="@dimen/space"
+                android:padding="@dimen/space"
                 app:layout_constraintTop_toBottomOf="@id/tvAddStockCropName"
                 tools:text="@string/rice" />
 
@@ -69,15 +70,15 @@
                 android:id="@+id/tilDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_margin="@dimen/space"
+                android:orientation="horizontal"
                 app:layout_constraintTop_toBottomOf="@id/tvAddStockCropType">
 
                 <EditText
-                    android:background="@color/bgGreen"
                     android:id="@+id/etDescription_add_stock"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/bgGreen"
                     android:hint="@string/addDescription"
                     android:maxLines="4"
                     app:layout_constraintTop_toBottomOf="@id/tvAddStockCropType" />
@@ -154,8 +155,10 @@
                 android:layout_marginTop="@dimen/space"
                 android:layout_marginBottom="@dimen/space_3x"
                 android:backgroundTint="@color/colorAccent"
-                android:text="@string/add_stock"
+                android:text="@string/add_crop"
                 app:backgroundTint="@color/colorAccent"
+                app:icon="@drawable/ic_check_black_24dp"
+                app:iconGravity="textEnd"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tilExpDate" />
