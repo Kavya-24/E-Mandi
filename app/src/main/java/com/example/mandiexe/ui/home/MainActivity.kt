@@ -1,6 +1,7 @@
 package com.example.mandiexe.ui.home
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
@@ -349,7 +350,7 @@ class MainActivity : AppCompatActivity(), OnMyLanguageListener,
         when (item.itemId) {
 
             R.id.action_change_language -> changeLanguage()
-            R.id.action_logout -> logout()
+            R.id.action_logout -> logoutDialog()
             R.id.action_main_search -> {
                 search_view.showSearch()
                 search_view.visibility = View.VISIBLE
@@ -361,6 +362,20 @@ class MainActivity : AppCompatActivity(), OnMyLanguageListener,
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+
+    private fun logoutDialog() {
+        val b = AlertDialog.Builder(this)
+
+        b.setTitle(resources.getString(R.string.logout))
+        b.setMessage(resources.getString(R.string.logoutCnf))
+        b.setPositiveButton(resources.getString(R.string.logout)) { _, _ ->
+            logout()
+        }
+        b.setNegativeButton(resources.getString(R.string.cancel)) { _, _ ->
+        }
+        b.create().show()
     }
 
     private fun logout() {

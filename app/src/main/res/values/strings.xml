@@ -306,6 +306,7 @@
     <string name="bidInactive" tools:ignore="MissingTranslation">This bid is not active anymore.</string>
     <string name="addBidPrice">Add bid price</string>
     <string name="bidAdded">Bid added successfully.</string>
+    <string name="logoutCnf">Are you sure you want to logout?</string>
 
     <string-array name="arr_area_units">
         <item>@string/Hectare</item>
