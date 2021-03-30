@@ -148,6 +148,15 @@ class OTPFragment : Fragment() {
         token: PhoneAuthProvider.ForceResendingToken?
     ) {
 
+        Log.e(TAG, "In resend OTP")
+        //Pause the timer
+
+        tvTimer.visibility = View.GONE
+        root.findViewById<TextView>(R.id.tv_resend).visibility = View.GONE
+        timer.onFinish()
+        timer.cancel()
+
+
         val optionsBuilder = PhoneAuthOptions.newBuilder(auth)
             .setPhoneNumber(phoneNumber)       // Phone number to verify
             .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
@@ -246,23 +255,36 @@ class OTPFragment : Fragment() {
                 root.findViewById<TextView>(R.id.tv_phoneNumber).setText(R.string.otpSend)
 
 
+
                 timer = object : CountDownTimer(300000, 1000) {
                     override fun onTick(millisUntilFinished: Long) {
-                        tvTimer.text =
-                            (millisUntilFinished / 1000).toString()
+                        tvTimer.apply {
+                            text = (millisUntilFinished / 1000).toString()
+                            visibility = View.VISIBLE
+                        }
 
+                        root.findViewById<TextView>(R.id.tv_resend).apply {
+                            text = resources.getString(R.string.resendIn)
+                            visibility = View.VISIBLE
+
+                        }
                     }
 
                     override fun onFinish() {
+
+                        root.findViewById<TextView>(R.id.tv_resend).apply {
+                            text = resources.getString(R.string.otpResend)
+                            visibility = View.VISIBLE
+                            setTextColor(resources.getColor(R.color.wildColor))
+                        }
+
                         tvTimer.visibility = View.GONE
-                        root.findViewById<TextView>(R.id.tv_resend).text =
-                            resources.getString(R.string.otpResend)
-                        root.findViewById<TextView>(R.id.tv_resend)
-                            .setTextColor(resources.getColor(R.color.wildColor))
 
 
                     }
                 }.start()
+
+
             }
         }
 
@@ -379,7 +401,7 @@ class OTPFragment : Fragment() {
             if (success != null) {
                 if (success) {
                     //Either login or new reg
-                    checkResponse(mResponse, str, viewModel.message.value!!)
+                    checkResponse(mResponse, str)
                 } else {
                     //Create a snackbar
                     createSnackbar(viewModel.message.value, requireContext(), container_frag_otp)
@@ -388,7 +410,7 @@ class OTPFragment : Fragment() {
         })
     }
 
-    private fun checkResponse(mResponse: LoginResponse, str: String, message: String) {
+    private fun checkResponse(mResponse: LoginResponse, str: String) {
 
         Log.e(TAG, "In check response and message is " + mResponse.msg + mResponse.user)
         Log.e(TAG, "Firebase Token " + str)

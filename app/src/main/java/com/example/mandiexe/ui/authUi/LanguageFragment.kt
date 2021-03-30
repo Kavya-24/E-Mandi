@@ -29,10 +29,6 @@ class LanguageFragment : AppCompatActivity(), OnMyLanguageListener {
 
     private val TAG = LanguageFragment::class.java.simpleName
 
-    //To be replaced by rv of languge
-    //Default will be english
-
-
     private fun createLanguageList() {
 
         val mLanguages = ExternalUtils.getSupportedLanguageList()
@@ -73,7 +69,6 @@ class LanguageFragment : AppCompatActivity(), OnMyLanguageListener {
 
     private fun recreateModel(s: String) {
         //Do nothing here
-
     }
 
 
@@ -101,6 +96,11 @@ class LanguageFragment : AppCompatActivity(), OnMyLanguageListener {
         editor.apply()
 
 
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
     }
 
 
