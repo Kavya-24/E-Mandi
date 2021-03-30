@@ -135,6 +135,8 @@ class AddStockPage2 : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun createStock() {
 
+        findViewById<ProgressBar>(R.id.pb_add_stock_page_2).visibility = View.VISIBLE
+
         showProgress(pb, this)
 
         //Get the translation
