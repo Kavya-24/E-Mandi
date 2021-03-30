@@ -305,8 +305,10 @@
     <string name="addBidPrice">Add bid price</string>
     <string name="bidAdded">Bid added successfully.</string>
     <string name="logoutCnf">Are you sure you want to logout?</string>
+    <string name="myCurrentBid">Current Bid</string>
+	<string name="updateBid">Update Bid</string>
 
-    <string-array name="arr_area_units">
+	<string-array name="arr_area_units">
 		<item>@string/Hectare</item>
 		<item>@string/bigha</item>
 		<item>@string/acres</item>

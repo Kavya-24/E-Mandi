@@ -6,6 +6,8 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -83,6 +85,7 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
     private lateinit var adapter: MyBidHistoryAdapter
 
     private val pref = PreferenceUtil
+    private var mPrice = ""
 
     private lateinit var pb: ProgressBar
 
@@ -318,7 +321,7 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
         hideProgress(pb, this)
 
         try {
-            if(value != null) {
+            if (value != null) {
                 Log.e(TAG, "\nREsposne \nis $value")
                 //Translate
                 OfflineTranslate.translateToDefault(
@@ -384,9 +387,9 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
                         )
 
                     }
-                        //Add in the bidding fragment
-                        tv_requirement_detail_my_bid.visibility = View.GONE
-                        this.mMyBid.visibility = View.GONE
+                    //Add in the bidding fragment
+                    tv_requirement_detail_my_bid.visibility = View.GONE
+                    this.mMyBid.visibility = View.GONE
 
 
                 }
@@ -410,7 +413,7 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
                 //Hide
                 //fillRecyclerView(value.demand.bids)
                 //createGraph(value.bid.demand.lastBid)
-                
+
 
                 this.apply {
 
@@ -427,35 +430,58 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun createModifyBidDialog() {
 
-        d = androidx.appcompat.app.AlertDialog.Builder(this)
+        val dialog = AlertDialog.Builder(this)
         val v = layoutInflater.inflate(R.layout.layout_modify_bid, null)
-        d.setView(v)
 
-        val et = v.findViewById<EditText>(R.id.actvEditBid_price)
-        val til = v.findViewById<TextInputLayout>(R.id.tilEditBidOfferPrice)
+        val proceView = v.findViewById<EditText>(R.id.numberPickerModifyPrice)
+        proceView.setHint(mPrice)
+        proceView.setText(mPrice, TextView.BufferType.EDITABLE)
 
+        val tv = v.findViewById<TextView>(R.id.tvIncDec)!!
 
+        proceView.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
-
-
-        d.setPositiveButton(resources.getString(R.string.modifyBid)) { x, _ ->
-
-            if (et.text.isEmpty()) {
-                til.error = resources.getString(R.string.offerPriceError)
-            } else {
-                confirmModify(et.text.toString())
             }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(progress: Editable?) {
+                Log.e(TAG, "In on orogress changed now $progress")
+                if (progress.isNullOrEmpty()) {
+                    //Do nothing
+                    tv.text = resources.getString(R.string.updateBid)
+                    tv.setTextColor(resources.getColor(R.color.bgGreen, null))
+                } else if (progress.toString().toInt() == mPrice.toInt()) {
+                    tv.text = resources.getString(R.string.noChangeInBid)
+                    tv.setTextColor(resources.getColor(R.color.wildColor, null))
+                } else if (progress.toString().toInt() > mPrice.toInt()) {
+                    tv.text = resources.getString(R.string.incDec, mPrice, progress.toString())
+                    tv.setTextColor(resources.getColor(R.color.deltaGreen, null))
+                } else if (progress.toString().toInt() < mPrice.toInt()) {
+                    tv.text = resources.getString(R.string.decreasing, mPrice, progress.toString())
+                    tv.setTextColor(resources.getColor(R.color.deltaRed, null))
+                }
+
+
+            }
+        })
+
+
+
+
+
+        dialog.setView(v)
+        dialog.setPositiveButton(resources.getString(R.string.updateBid)) { x, y ->
+            confirmModify(proceView.text.toString())
             x.dismiss()
 
-
         }
-        d.setNegativeButton(resources.getString(R.string.cancel)) { _, _ ->
-
-        }
-        d.create()
-
-        tempRef = d.create()
-        d.show()
+        dialog.setNegativeButton(resources.getString(R.string.cancel)) { _, _ -> }
+        dialog.show()
+        dialog.create()
 
 
     }
@@ -659,7 +685,7 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
             //Owner Details
             ownerPhone = value.bid.bidder.phone
             ownerName = transliterateToDefault(value.bid.bidder.name)
-
+            mPrice = value.bid.currentBid.toString()
 
             val currrentBid = value.bid.demand.currentBid
             val initialOfferPrice = value.bid.demand.offerPrice
