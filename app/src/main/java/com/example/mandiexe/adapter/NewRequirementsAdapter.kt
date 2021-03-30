@@ -1,6 +1,5 @@
 package com.example.mandiexe.adapter
 
-
 import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,20 +10,17 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
-import com.example.mandiexe.models.responses.bids.FamerBidsResponse
+import com.example.mandiexe.models.responses.SearchCropReqResponse
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.usables.OfflineTranslate
 import com.example.mandiexe.utils.usables.TimeConversionUtils
-import com.example.mandiexe.utils.usables.TimeConversionUtils.convertLastModified
-import java.lang.Exception
 
-
-class MyRequirementsAdapter(val itemClick: OnMyBidClickListener) :
-    RecyclerView.Adapter<MyRequirementsAdapter.MyViewHolder>() {
+class NewReqAdapter (val itemClick: OnClickNewRequirement) :
+RecyclerView.Adapter<NewReqAdapter.MyViewHolder>() {
 
 
     //Initialize an empty list of the dataclass T
-    var lst: List<FamerBidsResponse.Bid> = listOf()
+    var lst: List<SearchCropReqResponse.Demand> = listOf()
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -35,7 +31,10 @@ class MyRequirementsAdapter(val itemClick: OnMyBidClickListener) :
         val CROP_EXP = itemView.findViewById<TextView>(R.id.ans_crop_exp)
         val CROP_CURRENT_BID = itemView.findViewById<TextView>(R.id.tv_trader_bid_current_bid)
         val CROP_IOP = itemView.findViewById<TextView>(R.id.tv_trader_bid_initial_offer_price)
+
         val MY_BID = itemView.findViewById<TextView>(R.id.tv_trader_bid_my_bid)
+        val MY_BID_TV = itemView.findViewById<TextView>(R.id.mMyBid)
+
         val CROP_LAST_UPDATED = itemView.findViewById<TextView>(R.id.tv_trader_bid_last_upadted)
         val CROP_DELTA = itemView.findViewById<TextView>(R.id.tv_my_crop_delta)
         val CROP_CHANGE = itemView.findViewById<ImageView>(R.id.iv_trader_bid_image)
@@ -46,10 +45,10 @@ class MyRequirementsAdapter(val itemClick: OnMyBidClickListener) :
 
         //Bind a single item
         @SuppressLint("SetTextI18n")
-        fun bindPost(mItem: FamerBidsResponse.Bid, itemClick: OnMyBidClickListener) {
-            with(mItem) {
+        fun bindPost(_listItem: SearchCropReqResponse.Demand, itemClick: OnClickNewRequirement) {
+            with(_listItem) {
 
-                val _listItem = mItem.demand.get(0)
+
                 //#Translation
                 //create tranlation object
                 try {
@@ -71,9 +70,14 @@ class MyRequirementsAdapter(val itemClick: OnMyBidClickListener) :
                     CROP_EXP.text = TimeConversionUtils.convertTimeToEpoch(_listItem.expiry)
                     CROP_CURRENT_BID.text = _listItem.currentBid.toString()
                     CROP_IOP.text = _listItem.offerPrice.toString()
-                    MY_BID.text = _listItem.currentBid.toString()
-                    CROP_LAST_UPDATED.text = convertLastModified(_listItem.lastModified)
 
+
+                    //Hide MY_BID
+                    MY_BID.visibility = View.GONE
+                    MY_BID_TV.visibility = View.GONE
+
+                    CROP_LAST_UPDATED.text =
+                        TimeConversionUtils.convertLastModified(_listItem.lastModified)
 
                     if (currentBid != 0) {
 
@@ -84,7 +88,7 @@ class MyRequirementsAdapter(val itemClick: OnMyBidClickListener) :
 
                         if (ans > 0) {
 
-                            CROP_DELTA.text = "+$ans"
+                            CROP_DELTA.text = "+" + ans.toString()
                             CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaGreen))
                             CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaGreen))
                             CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightGreenTest))
@@ -116,12 +120,14 @@ class MyRequirementsAdapter(val itemClick: OnMyBidClickListener) :
                         CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightGreenTest))
                     }
 
-                }
-                catch (e : Exception){
+
+
+
+                } catch (e: Exception) {
 
                 }
                 itemView.setOnClickListener {
-                    itemClick.viewMyBidDetails(mItem)
+                    itemClick.viewMyBidDetails(_listItem)
                 }
 
 
@@ -134,7 +140,7 @@ class MyRequirementsAdapter(val itemClick: OnMyBidClickListener) :
 
         val view =
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_bid, parent, false)
+                .inflate(R.layout.item_demand, parent, false)
         return MyViewHolder(view)
 
     }
@@ -153,8 +159,6 @@ class MyRequirementsAdapter(val itemClick: OnMyBidClickListener) :
 }
 
 
-interface OnMyBidClickListener {
-    fun viewMyBidDetails(_listItem: FamerBidsResponse.Bid)
+interface OnClickNewRequirement {
+    fun viewMyBidDetails(_listItem: SearchCropReqResponse.Demand)
 }
-
-

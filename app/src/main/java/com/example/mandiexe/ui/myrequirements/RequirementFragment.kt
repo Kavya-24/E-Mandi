@@ -25,7 +25,7 @@ import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.example.mandiexe.viewmodels.RequirementsViewmodel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.requirement_fragment.*
+import kotlinx.android.synthetic.main.my_demands_fragment.*
 
 class RequirementFragment : Fragment(), OnMyBidClickListener {
 
@@ -49,7 +49,7 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        root = inflater.inflate(R.layout.requirement_fragment, container, false)
+        root = inflater.inflate(R.layout.my_demands_fragment, container, false)
         pb = root.findViewById(R.id.pb_requirement)
         //Get the items from retrofit call and paged adapter
 

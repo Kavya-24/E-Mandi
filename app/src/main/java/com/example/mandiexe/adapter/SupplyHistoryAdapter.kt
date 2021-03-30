@@ -120,7 +120,7 @@ class SupplyHistoryAdapter(val itemClick: OnMySupplyHistoryClickListener) :
 
         val view =
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_stock, parent, false)
+                .inflate(R.layout.item_supply, parent, false)
         return MyViewHolder(view)
 
     }

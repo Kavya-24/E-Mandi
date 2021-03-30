@@ -14,7 +14,6 @@ import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -28,7 +27,7 @@ import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.example.mandiexe.viewmodels.MySuppliesViewmodel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.my_crop_bids_fragment.*
+import kotlinx.android.synthetic.main.my_supplies_fragment.*
 
 
 class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
@@ -56,7 +55,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
     ): View? {
 
 
-        root = inflater.inflate(R.layout.my_crop_bids_fragment, container, false)
+        root = inflater.inflate(R.layout.my_supplies_fragment, container, false)
         pb = root.findViewById(R.id.pb_my_crops)
 
         loadItems()

@@ -41,7 +41,7 @@ import com.jjoe64.graphview.DefaultLabelFormatter
 import com.jjoe64.graphview.GraphView
 import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
-import kotlinx.android.synthetic.main.my_crop_bid_details_fragment.*
+import kotlinx.android.synthetic.main.supply_detail_activity.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -96,7 +96,7 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setAppLocale(pref.getLanguageFromPreference(), this)
-        setContentView(R.layout.my_crop_bid_details_fragment)
+        setContentView(R.layout.supply_detail_activity)
 
         //  lineChart = findViewById(R.id.lineChart)
         graph = findViewById(R.id.graphView)

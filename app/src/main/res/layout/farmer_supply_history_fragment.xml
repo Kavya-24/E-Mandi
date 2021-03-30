@@ -20,7 +20,7 @@
             android:layout_marginBottom="@dimen/space_3x"
             android:scrollbars="vertical"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/item_stock" />
+            tools:listitem="@layout/item_supply" />
 
         <ProgressBar
             android:id="@+id/pb_history_supply"

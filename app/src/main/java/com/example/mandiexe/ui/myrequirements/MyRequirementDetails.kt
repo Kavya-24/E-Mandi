@@ -50,8 +50,8 @@ import com.jjoe64.graphview.series.LineGraphSeries
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.item_owner_detail.view.*
-import kotlinx.android.synthetic.main.my_crop_bid_details_fragment.*
-import kotlinx.android.synthetic.main.my_requirement_details_fragment.*
+import kotlinx.android.synthetic.main.supply_detail_activity.*
+import kotlinx.android.synthetic.main.demand_detail_activity.*
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -95,7 +95,7 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         setAppLocale(pref.getLanguageFromPreference(), this)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.my_requirement_details_fragment)
+        setContentView(R.layout.demand_detail_activity)
 
         args = intent?.getBundleExtra("bundle")!!
         //Set the address in the box trimmed

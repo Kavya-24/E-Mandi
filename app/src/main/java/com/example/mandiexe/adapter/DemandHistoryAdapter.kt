@@ -10,18 +10,18 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
-import com.example.mandiexe.models.responses.SearchCropReqResponse
 import com.example.mandiexe.models.responses.bids.BidHistoryResponse
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.usables.OfflineTranslate
 import com.example.mandiexe.utils.usables.TimeConversionUtils
 
-class NewReqAdapter (val itemClick: OnClickNewRequirement) :
-RecyclerView.Adapter<NewReqAdapter.MyViewHolder>() {
+
+class BidHistoryAdapter(val itemClick: OnMyBidClickListenerGlobal) :
+    RecyclerView.Adapter<BidHistoryAdapter.MyViewHolder>() {
 
 
     //Initialize an empty list of the dataclass T
-    var lst: List<SearchCropReqResponse.Demand> = listOf()
+    var lst: List<BidHistoryResponse.Bid> = listOf()
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -32,10 +32,7 @@ RecyclerView.Adapter<NewReqAdapter.MyViewHolder>() {
         val CROP_EXP = itemView.findViewById<TextView>(R.id.ans_crop_exp)
         val CROP_CURRENT_BID = itemView.findViewById<TextView>(R.id.tv_trader_bid_current_bid)
         val CROP_IOP = itemView.findViewById<TextView>(R.id.tv_trader_bid_initial_offer_price)
-
         val MY_BID = itemView.findViewById<TextView>(R.id.tv_trader_bid_my_bid)
-        val MY_BID_TV = itemView.findViewById<TextView>(R.id.mMyBid)
-
         val CROP_LAST_UPDATED = itemView.findViewById<TextView>(R.id.tv_trader_bid_last_upadted)
         val CROP_DELTA = itemView.findViewById<TextView>(R.id.tv_my_crop_delta)
         val CROP_CHANGE = itemView.findViewById<ImageView>(R.id.iv_trader_bid_image)
@@ -46,10 +43,10 @@ RecyclerView.Adapter<NewReqAdapter.MyViewHolder>() {
 
         //Bind a single item
         @SuppressLint("SetTextI18n")
-        fun bindPost(_listItem: SearchCropReqResponse.Demand, itemClick: OnClickNewRequirement) {
-            with(_listItem) {
+        fun bindPost(mItem: BidHistoryResponse.Bid, itemClick: OnMyBidClickListenerGlobal) {
+            with(mItem) {
 
-
+                val _listItem = mItem.demand.get(0)
                 //#Translation
                 //create tranlation object
                 try {
@@ -72,63 +69,75 @@ RecyclerView.Adapter<NewReqAdapter.MyViewHolder>() {
                     CROP_CURRENT_BID.text = _listItem.currentBid.toString()
                     CROP_IOP.text = _listItem.offerPrice.toString()
 
-
-                    //Hide MY_BID
-                    MY_BID.visibility = View.GONE
-                    MY_BID_TV.visibility = View.GONE
-
+                    MY_BID.text = _listItem.currentBid.toString()
                     CROP_LAST_UPDATED.text =
                         TimeConversionUtils.convertLastModified(_listItem.lastModified)
 
-                    if (currentBid != 0) {
+                    //If the bid is not active,
+                    if (mItem.active) {
+                        CROP_DELTA.text = itemView.context.getString(R.string.activeBid)
+                        CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaGreen))
 
-                        val currentBid = _listItem.currentBid
-                        val askBid = _listItem.offerPrice
-                        val ans = currentBid - askBid
+                        if (currentBid != 0) {
 
-
-                        if (ans > 0) {
-
-                            CROP_DELTA.text = "+" + ans.toString()
-                            CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaGreen))
-                            CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaGreen))
-                            CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightGreenTest))
-
-                        } else if (ans < 0) {
-
-                            CROP_DELTA.text = ans.toString()
-                            CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
-                            CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaRed))
-                            CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightRedMono))
-                            CROP_CURRENT_BID.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
-                            CROP_IOP.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
+                            val currentBid = _listItem.currentBid
+                            val askBid = _listItem.offerPrice
+                            val ans = askBid - currentBid
 
 
-                        } else if (ans == 0) {
+                            if (ans > 0) {
 
-                            CROP_DELTA.text = ans.toString()
-                            CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.wildColor))
+                                CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaGreen))
+                                CROP_CARD.setCardBackgroundColor(
+                                    itemView.context.resources.getColor(
+                                        R.color.lightGreenTest
+                                    )
+                                )
+
+                            } else if (ans < 0) {
+
+                                CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaRed))
+                                CROP_CARD.setCardBackgroundColor(
+                                    itemView.context.resources.getColor(
+                                        R.color.lightRedMono
+                                    )
+                                )
+                                CROP_CURRENT_BID.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
+                                CROP_IOP.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
+
+
+                            } else if (ans == 0) {
+
+                                CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.wildColor))
+                                CROP_CARD.setCardBackgroundColor(
+                                    itemView.context.resources.getColor(
+                                        R.color.lightGreenTest
+                                    )
+                                )
+
+                            }
+
+                        } else {
+
                             CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.wildColor))
                             CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightGreenTest))
-
                         }
 
+
                     } else {
+                        CROP_DELTA.text = itemView.context.getString(R.string.inactiveBid)
+                        CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
+                        CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaRed))
+                        CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.cardOffWhite))
 
-                        CROP_DELTA.text = "-"
-                        CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.wildColor))
-                        CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.wildColor))
-                        CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightGreenTest))
                     }
-
-
 
 
                 } catch (e: Exception) {
 
                 }
                 itemView.setOnClickListener {
-                    itemClick.viewMyBidDetails(_listItem)
+                    itemClick.viewMyBidDetails(mItem)
                 }
 
 
@@ -141,7 +150,7 @@ RecyclerView.Adapter<NewReqAdapter.MyViewHolder>() {
 
         val view =
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_bid, parent, false)
+                .inflate(R.layout.item_demand, parent, false)
         return MyViewHolder(view)
 
     }
@@ -160,6 +169,8 @@ RecyclerView.Adapter<NewReqAdapter.MyViewHolder>() {
 }
 
 
-interface OnClickNewRequirement {
-    fun viewMyBidDetails(_listItem: SearchCropReqResponse.Demand)
+interface OnMyBidClickListenerGlobal {
+    fun viewMyBidDetails(_listItem: BidHistoryResponse.Bid)
 }
+
+
