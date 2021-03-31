@@ -1,14 +1,18 @@
 package com.example.mandiexe.models.responses.bids
 
 
+import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
-data class ViewDemandResponse(
+//This is the requirement
+
+@Keep data class ViewDemandResponse(
     @Json(name = "demand")
     val demand: Demand,
     @Json(name = "msg")
     val msg: String // Demand retrieved successfully.
 ) {
+    @Keep
     data class Demand(
         @Json(name = "active")
         val active: Boolean, // true
@@ -47,7 +51,7 @@ data class ViewDemandResponse(
         @Json(name = "variety")
         val variety: String // Test
     ) {
-        data class Demander(
+        @Keep data class Demander(
             @Json(name = "accountCreated")
             val accountCreated: String, // 2020-12-28T20:22:00.537Z
             @Json(name = "address")
@@ -75,7 +79,7 @@ data class ViewDemandResponse(
             @Json(name = "village")
             val village: String // greno
         ) {
-            data class Location(
+            @Keep data class Location(
                 @Json(name = "coordinates")
                 val coordinates: List<Double>,
                 @Json(name = "type")
@@ -83,13 +87,13 @@ data class ViewDemandResponse(
             )
         }
 
-        data class Location(
+        @Keep data class Location(
             @Json(name = "coordinates")
             val coordinates: List<Double>,
             @Json(name = "type")
             val type: String // Point
         )
-        data class BidDetails(
+        @Keep data class BidDetails(
             @Json(name = "amount")
             val amount: Int, // 10000
             @Json(name = "_id")

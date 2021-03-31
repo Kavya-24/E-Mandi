@@ -4,12 +4,12 @@ package com.example.mandiexe.models.responses.supply
 import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
-@Keep data class SupplyHistoryResponse(
+ @Keep data class SupplyHistoryResponse(
     @field:Json(name = "supplies")
     val supplies: List<Supply>
 ) {
-    @Keep
-    data class Supply(
+
+    @Keep data class Supply(
         @field:Json(name = "active")
         val active: Boolean, // true
         @field:Json(name = "askPrice")

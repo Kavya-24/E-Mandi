@@ -1,5 +1,8 @@
 package com.example.mandiexe.models
 
+import androidx.annotation.Keep
+
+@Keep
 data class PersonObject(
     val name : String,
     val phone : String,

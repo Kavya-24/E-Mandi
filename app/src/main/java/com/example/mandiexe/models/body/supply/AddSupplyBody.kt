@@ -5,7 +5,7 @@ import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
 
-@Keep data class AddSupplyBody(
+ @Keep data class AddSupplyBody(
     @field:Json(name = "askPrice")
     val askPrice: String, // 2000
     @field:Json(name = "crop")

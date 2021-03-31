@@ -5,11 +5,11 @@ import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
 
-@Keep data class SearchCropReqResponse(
+ @Keep data class SearchCropReqResponse(
     @Json(name = "demands")
     val demands: List<Demand>
 ) {
-    data class Demand(
+    @Keep data class Demand(
         @Json(name = "active")
         val active: Boolean, // true
         @Json(name = "bids")
@@ -49,7 +49,7 @@ import com.squareup.moshi.Json
         @Json(name = "variety")
         val variety: String // White Wheat
     ) {
-        data class Demander(
+        @Keep data class Demander(
             @Json(name = "address")
             val address: String, // b381, asia
             @Json(name = "country")
@@ -71,7 +71,7 @@ import com.squareup.moshi.Json
             @Json(name = "village")
             val village: String // greno
         ) {
-            data class Location(
+            @Keep data class Location(
                 @Json(name = "coordinates")
                 val coordinates: List<Double>,
                 @Json(name = "type")
@@ -79,7 +79,7 @@ import com.squareup.moshi.Json
             )
         }
 
-        data class Location(
+        @Keep data class Location(
             @Json(name = "coordinates")
             val coordinates: List<Double>,
             @Json(name = "type")

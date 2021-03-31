@@ -5,7 +5,7 @@ import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
 
-@Keep data class UpdateBidBody(
+ @Keep data class UpdateBidBody(
     @field:Json(name = "bid_id")
     val bid_id: String, // 5fe0a6e16118640eda871842
     @field:Json(name = "new_price")

@@ -5,7 +5,7 @@ import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
 
-@Keep data class SearchGlobalCropResponse(
+ @Keep data class SearchGlobalCropResponse(
 
     @field:Json(name = "country")
     val country: Country,
@@ -33,7 +33,7 @@ import com.squareup.moshi.Json
 
 ) {
 
-    @Keep data class Country(
+     @Keep data class Country(
         @field:Json(name = "_id")
         val _id: String, // ind
         @field:Json(name = "total")
@@ -41,7 +41,7 @@ import com.squareup.moshi.Json
     )
 
 
-    @Keep data class District(
+     @Keep data class District(
         @field:Json(name = "_id")
         val _id: String, // del
         @field:Json(name = "total")
@@ -49,7 +49,7 @@ import com.squareup.moshi.Json
     )
 
 
-    @Keep data class Link(
+     @Keep data class Link(
         @field:Json(name = "heading")
         val heading: String, // How to grow wheat?
         @field:Json(name = "url")
@@ -57,7 +57,7 @@ import com.squareup.moshi.Json
     )
 
 
-    @Keep data class State(
+     @Keep data class State(
         @field:Json(name = "_id")
         val _id: String, // del
         @field:Json(name = "total")
@@ -65,7 +65,7 @@ import com.squareup.moshi.Json
     )
 
 
-    @Keep data class Village(
+     @Keep data class Village(
         @field:Json(name = "_id")
         val id: String, // greno
         @field:Json(name = "qty")

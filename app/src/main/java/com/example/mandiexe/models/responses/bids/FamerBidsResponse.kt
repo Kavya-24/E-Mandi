@@ -5,11 +5,11 @@ import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
 
-@Keep data class FamerBidsResponse(
+ @Keep data class FamerBidsResponse(
     @Json(name = "bids")
     val bids: List<Bid>
 ) {
-    data class Bid(
+    @Keep data class Bid(
         @Json(name = "active")
         val active: Boolean, // true
         @Json(name = "bidDate")
@@ -31,7 +31,7 @@ import com.squareup.moshi.Json
         @Json(name = "__v")
         val v: Int // 0
     ) {
-        data class BidDetails(
+        @Keep data class BidDetails(
             @Json(name = "amount")
             val amount: Int, // 10000
             @Json(name = "_id")
@@ -40,7 +40,7 @@ import com.squareup.moshi.Json
             val timestamp: String // 2021-02-05T18:10:44.693Z
         )
 
-        data class Demand(
+        @Keep data class Demand(
             @Json(name = "active")
             val active: Boolean, // true
             @Json(name = "bids")
@@ -79,7 +79,7 @@ import com.squareup.moshi.Json
             val variety: String // Basmati
 
         ) {
-            data class LastBid(
+            @Keep data class LastBid(
                 @Json(name = "amount")
                 val amount: Int, // 0
                 @Json(name = "_id")
@@ -88,7 +88,7 @@ import com.squareup.moshi.Json
                 val timestamp: String // 2021-02-04T18:32:31.389Z
             )
 
-            data class Location(
+            @Keep data class Location(
                 @Json(name = "coordinates")
                 val coordinates: List<Double>,
                 @Json(name = "type")
@@ -96,7 +96,7 @@ import com.squareup.moshi.Json
             )
         }
 
-        data class Demander(
+        @Keep data class Demander(
             @Json(name = "address")
             val address: String, // b381, asia
             @Json(name = "country")
@@ -118,7 +118,7 @@ import com.squareup.moshi.Json
             @Json(name = "village")
             val village: String // greno
         ) {
-            data class Location(
+            @Keep data class Location(
                 @Json(name = "coordinates")
                 val coordinates: List<Double>,
                 @Json(name = "type")

@@ -5,7 +5,7 @@ import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
 
-@Keep data class LoginResponse(
+ @Keep data class LoginResponse(
     @field:Json(name = "msg")
     val msg: String,
     @field:Json(name = "user")
@@ -15,7 +15,7 @@ import com.squareup.moshi.Json
 
 ) {
 
-    @Keep data class User(
+     @Keep data class User(
         @field:Json(name = "accessToken")
         val accessToken: String, // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZGY2Zjc3MGNkNmNmMGE2MDE3ZjY5YiIsIm5hbWUiOiJrYXZ5YSB2YXRzYWwiLCJwaG9uZSI6Iis5MTg1ODU5OTIwNjIiLCJpc0Zhcm1lciI6dHJ1ZSwiaWF0IjoxNjA4NDc4Njg1LCJleHAiOjE2MDg1NjUwODV9.kayKdnpJRBZq4q8UzCHGoAT88MFe5CF6ATVLv03MFq4
         @field:Json(name = "id")

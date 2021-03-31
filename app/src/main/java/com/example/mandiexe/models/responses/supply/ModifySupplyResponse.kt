@@ -5,7 +5,7 @@ import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
 
-@Keep data class ModifySupplyResponse(
+ @Keep data class ModifySupplyResponse(
     @field:Json(name = "msg")
     val msg: String, // Supply updated successfully.
     @field:Json(name = "error")

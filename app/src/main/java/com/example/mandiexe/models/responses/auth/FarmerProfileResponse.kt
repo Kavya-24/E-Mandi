@@ -5,12 +5,12 @@ import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
 
-@Keep data class FarmerProfileResponse(
+ @Keep data class FarmerProfileResponse(
     @field:Json(name = "profile")
     val profile: Profile
 ) {
 
-    @Keep data class Profile(
+     @Keep data class Profile(
         @field:Json(name = "accountCreated")
         val accountCreated: String, // 2020-12-20T19:57:10.845Z
         @field:Json(name = "address")
@@ -41,7 +41,7 @@ import com.squareup.moshi.Json
         val village: String // greno
     ) {
 
-        @Keep data class Area(
+         @Keep data class Area(
             @field:Json(name = "numerical")
             val numerical: Int, // 100
             @field:Json(name = "unit")
@@ -49,7 +49,7 @@ import com.squareup.moshi.Json
         )
 
 
-        @Keep data class Location(
+         @Keep data class Location(
             @field:Json(name = "coordinates")
             val coordinates: List<Double>,
             @field:Json(name = "type")
