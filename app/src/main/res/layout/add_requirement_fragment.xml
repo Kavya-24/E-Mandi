@@ -51,7 +51,7 @@
             style="@style/styleRv"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/addSearch"
-            tools:listitem="@layout/item_add_requirement" />
+            tools:listitem="@layout/item_demand" />
 
 
         <TextView
