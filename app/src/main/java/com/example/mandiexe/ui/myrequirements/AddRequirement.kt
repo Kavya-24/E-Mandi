@@ -73,10 +73,8 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
         val service = RetrofitClient.makeCallsForBids(this)
         val body = SearchCropReqBody(txt.toString())
 
-        Log.e(TAG, "In searcgh of make call for txt $txt")
+        Log.e(TAG, "In search of make call for txt $txt and the default query is $defaultQuery")
 
-
-        //TODO: Translations
         service.getSearchReq(
             body,
         )
@@ -101,7 +99,7 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
 
                 override fun onFailure(call: Call<SearchCropReqResponse>, t: Throwable) {
                     val message = ExternalUtils.returnStateMessageForThrowable(t)
-                    Log.e("Fail", "Failed to load req" + t.cause + t.message)
+                    Log.e(TAG, "Failed to load req" + t.cause + t.message)
 
 
                 }
@@ -202,8 +200,31 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
 
         }
 
+        t.text = resources.getString(R.string.temp)
 
     }
+
+    private fun getTranslatedSearch(query: String) {
+
+        OfflineTranslate.translateToEnglish(this, query, t)
+
+        val searchHandler = Handler()
+        if (getValidTranslations()) {
+            makeCall(t.text.toString(), query)
+        } else {
+            //Wait for some time
+            searchHandler.postDelayed({
+                makeCall(t.text.toString(), query)
+
+            }, 3000)
+
+
+        }
+
+        t.text = resources.getString(R.string.temp)
+
+    }
+
 
     private fun getValidTranslations(): Boolean {
 
@@ -308,26 +329,39 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
 
             override fun onSuggestionClick(position: Int): Boolean {
 
+                showProgress(pb, this@AddRequirement)
                 val cursor: Cursor = mAdapter!!.getItem(position) as Cursor
                 val txt = cursor.getString(cursor.getColumnIndex("suggestionList"))
 
                 //Get the index, and then find its equiavlied englihs
                 val mIndex = crops.indexOf(txt)
 
+                //Not necessary that the English Query exists
+                try {
 
-                val englishQuery = DefaultListOfCrops.getTheDefaultCropsList().get(mIndex)
-                Log.e(
-                    "MAIN",
-                    "In item clicked nmIndex is $mIndex  and the real valur is $englishQuery\n"
-                )
 
-                //Set the english query in the local history
-                pref.setHistorySet(englishQuery)
+                    val englishQuery = DefaultListOfCrops.getTheDefaultCropsList().get(mIndex)
+                    Log.e(
+                        "MAIN",
+                        "In item clicked nmIndex is $mIndex  and the real valur is $englishQuery\n"
+                    )
 
-                makeCall(englishQuery, txt)
+                    //Set the english query in the local history
+                    pref.setHistorySet(englishQuery)
 
+
+                    makeCall(englishQuery, txt)
+                    hideProgress(pb, this@AddRequirement)
+                    return true
+
+                } catch (e: java.lang.Exception) {
+                    Log.e(TAG, "Exception in searching ${e.cause} and ${e.message}")
+                }
+
+
+                getTranslatedSearch(txt)
+                hideProgress(pb, this@AddRequirement)
                 return true
-
 
             }
         })
@@ -337,8 +371,11 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 //Returns query
                 //Do nothing here
+                showProgress(pb, this@AddRequirement)
+                getTranslatedSearch(query.toString())
+                hideProgress(pb, this@AddRequirement)
 
-                return false
+                return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
