@@ -6,6 +6,7 @@ import android.content.Intent
 import android.database.Cursor
 import android.database.MatrixCursor
 import android.os.Bundle
+import android.os.Handler
 import android.provider.BaseColumns
 import android.speech.RecognizerIntent
 import android.util.Log
@@ -31,8 +32,11 @@ import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.auth.SessionManager
 import com.example.mandiexe.utils.usables.ExternalUtils
 import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
+import com.example.mandiexe.utils.usables.OfflineTranslate
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import com.example.mandiexe.utils.usables.UIUtils.hideProgress
+import com.example.mandiexe.utils.usables.UIUtils.showProgress
+import com.example.mandiexe.utils.usables.ValidationObject
 import com.example.mandiexe.viewmodels.AddRequirementViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.add_requirement_fragment.*
@@ -60,6 +64,9 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
     private lateinit var searchView: SearchView
     private var mAdapter: SimpleCursorAdapter? = null
     private lateinit var searchManager: SearchManager
+
+    //Translate TextViews
+    private lateinit var t: TextView           //For the autocomplete
 
     private fun makeCall(txt: String?, defaultQuery: String) {
 
@@ -106,8 +113,11 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
     private fun fetchSuggestions(query: String) {
 
         val service = RetrofitClient.makeCallsForSupplies(this)
-        Log.e(TAG, "In fetch sugeestion for query q $query")
+
+        Log.e(TAG, "In fetch suggestion for query q $query ")
+
         val body = CropSearchAutoCompleteBody(query)
+
         service.getCropAutoComplete(
             body = body,
         ).enqueue(object : retrofit2.Callback<CropSearchAutocompleteResponse> {
@@ -131,11 +141,11 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
                     Log.e("Str", strAr.toString())
                     Log.e("Str", strAr.size.toString())
 
-
+                    val tAr: MutableList<String> = getTranslatedSuggestionsList(strAr)
                     val c =
                         MatrixCursor(arrayOf(BaseColumns._ID, "suggestionList"))
                     for (i in 0 until strAr.size) {
-                        c.addRow(arrayOf(i, strAr[i]))
+                        c.addRow(arrayOf(i, tAr[i]))
                     }
 
 
@@ -145,6 +155,62 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
             }
         })
 
+        //Empty the translate TV
+        t.text = resources.getString(R.string.temp)
+
+
+    }
+
+    private fun getTranslatedSuggestionsList(strAr: MutableList<String>): MutableList<String> {
+
+        val tAr = mutableListOf<String>()
+        val suggestionHandler = Handler()
+
+        for (i in strAr) {
+            t.text = resources.getString(R.string.temp)
+            OfflineTranslate.translateToDefault(this, i, t)
+            if (getValidTranslations()) {
+                tAr.add(t.text.toString())
+                continue
+            } else {
+                //Wait for two seconds
+                suggestionHandler.postDelayed({
+                    tAr.add((t.text.toString()))
+                }, 2000)
+            }
+        }
+
+
+        t.text = resources.getString(R.string.temp)
+        return tAr
+
+    }
+
+    private fun getTranslatedQuery(query: String) {
+        OfflineTranslate.translateToEnglish(this, query, t)
+
+        val autocompleteHandler = Handler()
+        if (getValidTranslations()) {
+            fetchSuggestions(t.text.toString())
+        } else {
+            //Wait for some time
+            autocompleteHandler.postDelayed({
+                fetchSuggestions(t.text.toString())
+
+            }, 3000)
+
+
+        }
+
+
+    }
+
+    private fun getValidTranslations(): Boolean {
+
+        return ValidationObject.validateTranslations(
+            findViewById<TextView>(R.id.tempTvAddReqTrans),
+            this
+        )
 
     }
 
@@ -196,6 +262,7 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
         //UI init
         pb = findViewById(R.id.pb_add_req)
         rv = findViewById(R.id.rv_search_requirements)
+        t = findViewById<TextView>(R.id.tempTvAddReqTrans)
 
 
         val tb = findViewById<Toolbar>(R.id.toolbarExternalSearch)
@@ -276,8 +343,11 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
 
             override fun onQueryTextChange(newText: String?): Boolean {
 
-                fetchSuggestions(newText.toString())
+                showProgress(pb, this@AddRequirement)
+                getTranslatedQuery(newText.toString())
+                hideProgress(pb, this@AddRequirement)
                 return false
+
             }
         })
 
