@@ -22,7 +22,7 @@ import com.example.mandiexe.models.responses.bids.FamerBidsResponse
 import com.example.mandiexe.utils.usables.UIUtils
 import com.example.mandiexe.utils.usables.UIUtils.hideProgress
 import com.example.mandiexe.utils.usables.UIUtils.showProgress
-import com.example.mandiexe.viewmodels.RequirementsViewmodel
+import com.example.mandiexe.viewmodels.MyDemandsViewmodel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.my_demands_fragment.*
@@ -34,7 +34,7 @@ class MyDemandsFragment : Fragment(), OnMyBidClickListener {
     }
 
 
-    private val viewModel: RequirementsViewmodel by viewModels()
+    private val viewModel: MyDemandsViewmodel by viewModels()
     private lateinit var root: View
     private lateinit var tabLayout: TabLayout
 

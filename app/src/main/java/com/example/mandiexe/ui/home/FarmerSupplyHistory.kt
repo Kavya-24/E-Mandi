@@ -23,6 +23,7 @@ import com.example.mandiexe.ui.supply.SupplyDetailActivity
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import com.example.mandiexe.utils.usables.UIUtils.hideProgress
 import com.example.mandiexe.utils.usables.UIUtils.showProgress
+import com.example.mandiexe.viewmodels.FarmerSupplyHistoryViewModel
 import kotlinx.android.synthetic.main.farmer_supply_history_fragment.*
 
 class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {

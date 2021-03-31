@@ -33,7 +33,7 @@ import com.example.mandiexe.utils.usables.UIUtils
 import com.example.mandiexe.utils.usables.UIUtils.hideProgress
 import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.example.mandiexe.utils.usables.ValidationObject
-import com.example.mandiexe.viewmodels.MyCropBidDetailsViewModel
+import com.example.mandiexe.viewmodels.SupplyDetailViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
@@ -51,7 +51,7 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
         fun newInstance() = SupplyDetailActivity()
     }
 
-    private val viewModelCrop: MyCropBidDetailsViewModel by viewModels()
+    private val viewModelCrop: SupplyDetailViewModel by viewModels()
     private lateinit var graph: GraphView
     private lateinit var args: Bundle
     private val mHandler = Handler()

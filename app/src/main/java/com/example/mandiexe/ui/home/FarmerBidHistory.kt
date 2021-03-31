@@ -23,6 +23,7 @@ import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.usables.UIUtils
 import com.example.mandiexe.utils.usables.UIUtils.hideProgress
 import com.example.mandiexe.utils.usables.UIUtils.showProgress
+import com.example.mandiexe.viewmodels.FarmerBidHistoryViewModel
 import kotlinx.android.synthetic.main.farmer_bid_history_fragment.*
 
 class FarmerBidHistory : Fragment(), OnMyBidClickListenerGlobal {

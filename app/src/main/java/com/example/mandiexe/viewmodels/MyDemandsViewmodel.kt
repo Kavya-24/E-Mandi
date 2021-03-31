@@ -12,8 +12,8 @@ import com.example.mandiexe.utils.usables.ExternalUtils
 import retrofit2.Call
 import retrofit2.Response
 
-class RequirementsViewmodel : ViewModel() {
-    val TAG = RequirementsViewmodel::class.java.simpleName
+class MyDemandsViewmodel : ViewModel() {
+    val TAG = MyDemandsViewmodel::class.java.simpleName
 
     private val context = ApplicationUtils.getContext()
     private val sessionManager = SessionManager(context)

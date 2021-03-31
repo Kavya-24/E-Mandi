@@ -40,7 +40,7 @@ import com.example.mandiexe.utils.usables.UIUtils
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import com.example.mandiexe.utils.usables.UIUtils.hideProgress
 import com.example.mandiexe.utils.usables.UIUtils.showProgress
-import com.example.mandiexe.viewmodels.MyRequirementDetailsViewModel
+import com.example.mandiexe.viewmodels.DemandDetailsViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.jjoe64.graphview.DefaultLabelFormatter
@@ -62,7 +62,7 @@ class DemandDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
         fun newInstance() = DemandDetailActivity()
     }
 
-    private val viewModel: MyRequirementDetailsViewModel by viewModels()
+    private val viewModel: DemandDetailsViewModel by viewModels()
 
     private lateinit var args: Bundle
 

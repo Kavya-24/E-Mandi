@@ -1,56 +1,54 @@
-package com.example.mandiexe.ui.home
+package com.example.mandiexe.viewmodels
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mandiexe.R
 import com.example.mandiexe.interfaces.RetrofitClient
-import com.example.mandiexe.models.responses.supply.SupplyHistoryResponse
+import com.example.mandiexe.models.responses.bids.BidHistoryResponse
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.auth.SessionManager
 import com.example.mandiexe.utils.usables.ExternalUtils
 import retrofit2.Call
 import retrofit2.Response
 
-class FarmerSupplyHistoryViewModel : ViewModel() {
+class FarmerBidHistoryViewModel : ViewModel() {
 
-    val TAG = FarmerSupplyHistoryViewModel::class.java.simpleName
+
+    val TAG = FarmerBidHistoryViewModel::class.java.simpleName
 
     private val context = ApplicationUtils.getContext()
     private val sessionManager = SessionManager(context)
-    private val mySupplyService = RetrofitClient.makeCallsForSupplies(context)
+    private val myBidService = RetrofitClient.makeCallsForBids(context)
 
-    //For getting the details of the supply stock
+    //For getting the details of the Bid stock
     val successful: MutableLiveData<Boolean> = MutableLiveData()
     var message: MutableLiveData<String> = MutableLiveData()
 
-    var supplyHistory: MutableLiveData<SupplyHistoryResponse> = MutableLiveData()
+    var BidHistory: MutableLiveData<BidHistoryResponse> = MutableLiveData()
 
-    fun supplyFunction(): MutableLiveData<SupplyHistoryResponse> {
+    fun BidFunction(): MutableLiveData<BidHistoryResponse> {
 
-        supplyHistory = supplyStockFunction()
-        return supplyHistory
+        BidHistory = BidStockFunction()
+        return BidHistory
     }
 
 
-    fun supplyStockFunction(): MutableLiveData<SupplyHistoryResponse> {
+    private fun BidStockFunction(): MutableLiveData<BidHistoryResponse> {
 
-        mySupplyService.getFarmerSupplyHistory(
+        myBidService.getFarmerBidHistoryGlobal(
      )
-            .enqueue(object : retrofit2.Callback<SupplyHistoryResponse> {
-                override fun onFailure(call: Call<SupplyHistoryResponse>, t: Throwable) {
+            .enqueue(object : retrofit2.Callback<BidHistoryResponse> {
+                override fun onFailure(call: Call<BidHistoryResponse>, t: Throwable) {
                     successful.value = false
                     message.value = ExternalUtils.returnStateMessageForThrowable(t)
                     //Response is null
-                    Log.e(
-                        TAG,
-                        "Failed in Supply Hsitory because " + t.message + t.cause + " Setting" + message.value
-                    )
+                    Log.e(TAG, "TRhrowable ${t.message} ${t.cause}")
                 }
 
                 override fun onResponse(
-                    call: Call<SupplyHistoryResponse>,
-                    response: Response<SupplyHistoryResponse>
+                    call: Call<BidHistoryResponse>,
+                    response: Response<BidHistoryResponse>
                 ) {
 
                     Log.e(
@@ -63,7 +61,7 @@ class FarmerSupplyHistoryViewModel : ViewModel() {
 
                         successful.value = true
                         message.value =
-                            context.resources.getString(R.string.supplyHistorySuccess)
+                            context.resources.getString(R.string.bidHistorySucess)
 
 
                     } else {
@@ -71,16 +69,15 @@ class FarmerSupplyHistoryViewModel : ViewModel() {
                     }
 
 
-                    supplyHistory.value = response.body()
+                    BidHistory.value = response.body()
 
                 }
             })
 
 
-        return supplyHistory
+        return BidHistory
 
 
     }
-
 
 }

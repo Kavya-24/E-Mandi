@@ -7,15 +7,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.example.mandiexe.R
-import com.example.mandiexe.viewmodels.BidHistoryViewModel
+import com.example.mandiexe.viewmodels.BidDetailHistoryViewModel
 
-class BidHistory : Fragment() {
+class BidDetailHistoryFragment : Fragment() {
 
     companion object {
-        fun newInstance() = BidHistory()
+        fun newInstance() = BidDetailHistoryFragment()
     }
 
-    private lateinit var viewModel: BidHistoryViewModel
+    private lateinit var viewModel: BidDetailHistoryViewModel
     private lateinit var root: View
     private lateinit var args: Bundle
 
@@ -40,7 +40,7 @@ class BidHistory : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(BidHistoryViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(BidDetailHistoryViewModel::class.java)
 
     }
 

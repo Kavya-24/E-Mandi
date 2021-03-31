@@ -19,7 +19,6 @@ import com.example.mandiexe.ui.home.MapActivity
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.usables.OfflineTranslate
 import com.example.mandiexe.utils.usables.ValidationObject
-import com.example.mandiexe.viewmodels.SignUpViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
 import java.util.*
@@ -30,7 +29,6 @@ class SignUpFragment : Fragment() {
         fun newInstance() = SignUpFragment()
     }
 
-    private lateinit var viewModel: SignUpViewModel
     private lateinit var root: View
 
     //UI elements
@@ -173,9 +171,5 @@ class SignUpFragment : Fragment() {
         return isValid
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(SignUpViewModel::class.java)
-    }
 
 }
