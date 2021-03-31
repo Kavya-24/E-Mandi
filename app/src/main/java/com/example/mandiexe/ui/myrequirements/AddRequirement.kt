@@ -434,13 +434,17 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
 
         if (requestCode == VOICE_REC_CODE) {
 
-            Log.e("IN ARC", "")
+            Log.e(TAG, "In voice")
             if (data != null) {
                 //Put result
                 val res: java.util.ArrayList<String>? =
                     data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
                 val resultInDefault = res?.get(0)
                 searchView.setQuery(resultInDefault, false)
+
+                showProgress(pb,this)
+                getTranslatedSearch(resultInDefault.toString())
+                hideProgress(pb,this)
             }
 
         }
