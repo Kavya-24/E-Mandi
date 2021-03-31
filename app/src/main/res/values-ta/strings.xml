@@ -248,4 +248,6 @@
     <string name="logoutCnf">Are you sure you want to logout?</string>
     <string name="myCurrentBid">Current Bid</string>
 	<string name="updateBid">Update Bid</string>
+    <string name="searchCrops">Search crops</string>
+    <string name="emptyReq">No demands found for this crop.</string>
 </resources>

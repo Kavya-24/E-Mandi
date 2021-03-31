@@ -311,6 +311,8 @@
     <string name="updateBid">Update Bid</string>
     <string name="incDec" tools:ignore="MissingTranslation">Increasing Bid from %s to %s</string>
     <string name="decreasing" tools:ignore="MissingTranslation">Decreasing Bid from %s to %s</string>
+    <string name="searchCrops">Search crops</string>
+    <string name="emptyReq">No demands found for this crop.</string>
 
 
     <string-array name="arr_area_units">

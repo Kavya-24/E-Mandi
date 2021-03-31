@@ -24,6 +24,7 @@ import com.example.mandiexe.models.body.SearchCropReqBody
 import com.example.mandiexe.models.body.supply.CropSearchAutoCompleteBody
 import com.example.mandiexe.models.responses.SearchCropReqResponse
 import com.example.mandiexe.models.responses.supply.CropSearchAutocompleteResponse
+import com.example.mandiexe.ui.supply.AddStock
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.DefaultListOfCrops
 import com.example.mandiexe.utils.auth.PreferenceUtil
@@ -33,6 +34,7 @@ import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import com.example.mandiexe.utils.usables.UIUtils.hideProgress
 import com.example.mandiexe.viewmodels.AddRequirementViewModel
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.add_requirement_fragment.*
 import retrofit2.Call
 import retrofit2.Response
@@ -65,6 +67,8 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
         val body = SearchCropReqBody(txt.toString())
 
         Log.e(TAG, "In searcgh of make call for txt $txt")
+
+
         //TODO: Translations
         service.getSearchReq(
             body,
@@ -146,21 +150,38 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
 
     private fun loadResultInRV(response: SearchCropReqResponse) {
         //MAke call
-        val tv = findViewById<TextView>(R.id.tvNoNewReq)
+        val tv = findViewById<ImageView>(R.id.ivNoNewReq)
 
         if (response.demands.isEmpty()) {
             tv.visibility = View.VISIBLE
+            rv.visibility = View.GONE
+
+            //Create indefinite snackbar
+            Snackbar.make(
+                conatiner_add_req,
+                resources.getString(R.string.emptyReq),
+                Snackbar.LENGTH_INDEFINITE
+            )
+                .setAction(resources.getString(R.string.add_crop)) { mListener ->
+                    mListener.setOnClickListener {
+                        val i = Intent(this, AddStock::class.java)
+                        startActivity(i)
+                    }
+                }.show()
+
 
         } else {
 
             try {
+                rv.visibility = View.VISIBLE
                 tv.visibility = View.GONE
                 rv.layoutManager = LinearLayoutManager(this)
                 val adapter = NewReqAdapter(this)
                 adapter.lst = response.demands
                 rv.adapter = adapter
+                adapter.notifyDataSetChanged()
             } catch (e: Exception) {
-                Log.e(TAG, "Exce[tion ${e.cause} ${e.message}")
+                Log.e(TAG, "Exception ${e.cause} ${e.message}")
             }
         }
 
@@ -177,7 +198,7 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
         rv = findViewById(R.id.rv_search_requirements)
 
 
-        val tb = findViewById<Toolbar>(R.id.toolbarAddReq)
+        val tb = findViewById<Toolbar>(R.id.toolbarExternalSearch)
         tb.title = resources.getString(R.string.searchBuyers)
         tb.setNavigationOnClickListener {
             onBackPressed()
@@ -328,7 +349,6 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
             "FROM" to mFrom
 
         )
-
         val i = Intent(this, MyRequirementDetails::class.java)
         i.putExtra("bundle", bundle)
         startActivity(i)

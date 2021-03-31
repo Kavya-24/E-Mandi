@@ -8,24 +8,40 @@
 
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbarlayoutExternalSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <FrameLayout
+        <android.widget.Toolbar
+            android:id="@+id/toolbarExternalSearch"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:foregroundTint="@color/white"
+            android:navigationIcon="@drawable/ic_arrow_back"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:titleTextColor="@color/white"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:titleTextColor="@color/white">
 
-            <Toolbar
-                android:id="@+id/toolbarAddReq"
+            <SearchView
+                android:id="@+id/addSearch"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                android:navigationIcon="@drawable/ic_arrow_back"/>
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:searchIcon="@drawable/ic_search_black_24dp"
+                android:voiceIcon="@drawable/ic_action_voice_search"
+                app:queryHint="@string/searchCrops"
+                app:tint="@color/white">
 
-        </FrameLayout>
+                <requestFocus />
+            </SearchView>
+        </android.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
+
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/container_select_template"
@@ -34,34 +50,21 @@
         android:background="@color/bgGreen"
         android:orientation="vertical">
 
-        <SearchView
-            android:layout_width="match_parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_margin="@dimen/space"
-            android:searchHintIcon="@drawable/ic_search_black_24dp"
-            android:queryHint="@string/searchHint"
-            android:layout_height="wrap_content"
-            android:id="@+id/addSearch">
-
-            <requestFocus/>
-        </SearchView>
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_search_requirements"
             style="@style/styleRv"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/addSearch"
+            app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/item_demand" />
 
 
-        <TextView
-            android:id="@+id/tvNoNewReq"
+        <ImageView
+            android:id="@+id/ivNoNewReq"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/NoNewReqFound"
-            android:textSize="20sp"
-            android:visibility="gone"
+            android:src="@drawable/nothing2"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -74,6 +77,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
