@@ -1,4 +1,4 @@
-package com.example.mandiexe.ui.myrequirements
+package com.example.mandiexe.ui.demands
 
 import android.app.AlertDialog
 import android.content.Intent
@@ -56,10 +56,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
+class DemandDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
     companion object {
-        fun newInstance() = MyRequirementDetails()
+        fun newInstance() = DemandDetailActivity()
     }
 
     private val viewModel: MyRequirementDetailsViewModel by viewModels()
@@ -67,7 +67,7 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
     private lateinit var args: Bundle
 
     private var BID_ID = ""
-    private val TAG = MyRequirementDetails::class.java.simpleName
+    private val TAG = DemandDetailActivity::class.java.simpleName
 
     //Modify dialog
     private lateinit var d: androidx.appcompat.app.AlertDialog.Builder
@@ -114,7 +114,7 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
         pb = findViewById(R.id.pb_my_req_details)
 
         //Set views from 'FROM'
-        if (from == RequirementFragment::class.java.simpleName) {
+        if (from == MyDemandsFragment::class.java.simpleName) {
             //Do nothing
             this.apply {
 
@@ -726,7 +726,7 @@ class MyRequirementDetails : AppCompatActivity(), OnBidHistoryClickListener {
                     )
 
                 }
-                if (from == RequirementFragment::class.java.simpleName) {
+                if (from == MyDemandsFragment::class.java.simpleName) {
                     //Add in the bidding fragment
                     tv_requirement_detail_my_bid.text =
                         myCurrentBid.toString()

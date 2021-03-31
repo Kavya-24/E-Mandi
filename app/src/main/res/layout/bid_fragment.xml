@@ -7,7 +7,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".ui.myrequirements.BidFragment">
+        tools:context=".ui.demands.BidFragment">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/crop_card"

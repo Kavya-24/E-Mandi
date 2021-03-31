@@ -35,15 +35,15 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".ui.supply.MyCropBidDetails"
+            android:name=".ui.supply.SupplyDetailActivity"
             android:label="@string/details"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.myrequirements.MyRequirementDetails"
+            android:name=".ui.demands.DemandDetailActivity"
             android:label="@string/details"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.myrequirements.AddRequirement"
+            android:name=".ui.demands.AddRequirement"
             android:label="@string/searchBuyers"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

@@ -1,4 +1,4 @@
-package com.example.mandiexe.ui.myrequirements
+package com.example.mandiexe.ui.demands
 
 import android.os.Bundle
 import android.view.LayoutInflater

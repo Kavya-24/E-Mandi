@@ -19,7 +19,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="?attr/actionBarSize"
             android:background="@color/bgGreen"
-            tools:context=".ui.supply.MyCropBidDetails">
+            tools:context=".ui.supply.SupplyDetailActivity">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/mLayoutReq"

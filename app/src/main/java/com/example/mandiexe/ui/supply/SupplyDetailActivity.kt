@@ -45,10 +45,10 @@ import kotlinx.android.synthetic.main.supply_detail_activity.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
+class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
     companion object {
-        fun newInstance() = MyCropBidDetails()
+        fun newInstance() = SupplyDetailActivity()
     }
 
     private val viewModelCrop: MyCropBidDetailsViewModel by viewModels()
@@ -66,7 +66,7 @@ class MyCropBidDetails : AppCompatActivity(), OnBidHistoryClickListener {
 
     private var SUPPLY_ID = ""
     private var from = ""
-    private val TAG = MyCropBidDetails::class.java.simpleName
+    private val TAG = SupplyDetailActivity::class.java.simpleName
     private var modifyBody = ModifySupplyBody.Update(0, "", "", "", "")
 
     private var mPrice = ""

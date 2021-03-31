@@ -1,4 +1,4 @@
-package com.example.mandiexe.ui.myrequirements
+package com.example.mandiexe.ui.demands
 
 import android.content.Intent
 import android.os.Bundle
@@ -27,10 +27,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.my_demands_fragment.*
 
-class RequirementFragment : Fragment(), OnMyBidClickListener {
+class MyDemandsFragment : Fragment(), OnMyBidClickListener {
 
     companion object {
-        fun newInstance() = RequirementFragment()
+        fun newInstance() = MyDemandsFragment()
     }
 
 
@@ -133,13 +133,13 @@ class RequirementFragment : Fragment(), OnMyBidClickListener {
     }
 
     override fun viewMyBidDetails(_listItem: FamerBidsResponse.Bid) {
-        val mFrom = RequirementFragment::class.java.simpleName
+        val mFrom = MyDemandsFragment::class.java.simpleName
         val bundle = bundleOf(
             "BID_ID" to _listItem._id,
             "FROM" to mFrom
         )
 
-        val i = Intent(requireContext(), MyRequirementDetails::class.java)
+        val i = Intent(requireContext(), DemandDetailActivity::class.java)
         i.putExtra("bundle", bundle)
         startActivity(i)
     }

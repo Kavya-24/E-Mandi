@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/bgGreen"
-            tools:context=".ui.supply.MyCropBidDetails">
+            tools:context=".ui.supply.SupplyDetailActivity">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

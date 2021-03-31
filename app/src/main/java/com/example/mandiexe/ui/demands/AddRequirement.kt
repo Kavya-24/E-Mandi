@@ -1,4 +1,4 @@
-package com.example.mandiexe.ui.myrequirements
+package com.example.mandiexe.ui.demands
 
 import android.app.SearchManager
 import android.content.Context
@@ -458,7 +458,7 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
             "FROM" to mFrom
 
         )
-        val i = Intent(this, MyRequirementDetails::class.java)
+        val i = Intent(this, DemandDetailActivity::class.java)
         i.putExtra("bundle", bundle)
         startActivity(i)
     }

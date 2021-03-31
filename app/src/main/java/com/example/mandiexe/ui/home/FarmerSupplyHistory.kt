@@ -19,7 +19,7 @@ import com.example.mandiexe.R
 import com.example.mandiexe.adapter.OnMySupplyHistoryClickListener
 import com.example.mandiexe.adapter.SupplyHistoryAdapter
 import com.example.mandiexe.models.responses.supply.SupplyHistoryResponse
-import com.example.mandiexe.ui.supply.MyCropBidDetails
+import com.example.mandiexe.ui.supply.SupplyDetailActivity
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import com.example.mandiexe.utils.usables.UIUtils.hideProgress
 import com.example.mandiexe.utils.usables.UIUtils.showProgress
@@ -117,7 +117,7 @@ class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {
         )
 
         //   val supply = _listItem._id
-        val i = Intent(requireContext(), MyCropBidDetails::class.java)
+        val i = Intent(requireContext(), SupplyDetailActivity::class.java)
         i.putExtra("bundle", bundle)
         startActivity(i)
 

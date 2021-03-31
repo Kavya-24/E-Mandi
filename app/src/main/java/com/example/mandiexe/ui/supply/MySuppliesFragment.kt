@@ -143,7 +143,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
         )
 
         //   val supply = _listItem._id
-        val i = Intent(requireContext(), MyCropBidDetails::class.java)
+        val i = Intent(requireContext(), SupplyDetailActivity::class.java)
         i.putExtra("bundle", bundle)
         startActivity(i)
         //     navController.navigate(R.id.action_nav_home_to_myBidDetails, bundle)

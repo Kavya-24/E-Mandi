@@ -14,7 +14,6 @@ import com.example.mandiexe.models.body.LanguageBody
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.usables.ExternalUtils
-import com.example.mandiexe.viewmodels.LanguageViewModel
 import java.util.*
 
 
@@ -24,7 +23,6 @@ class LanguageFragment : AppCompatActivity(), OnMyLanguageListener {
         fun newInstance() = LanguageFragment()
     }
 
-    private lateinit var viewModel: LanguageViewModel
     private var pref = PreferenceUtil
 
     private val TAG = LanguageFragment::class.java.simpleName
