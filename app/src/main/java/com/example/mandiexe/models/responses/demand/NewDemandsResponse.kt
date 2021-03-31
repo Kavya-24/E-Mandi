@@ -1,11 +1,11 @@
-package com.example.mandiexe.models.responses
+package com.example.mandiexe.models.responses.demand
 
 
 import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
 
- @Keep data class SearchCropReqResponse(
+ @Keep data class NewDemandsResponse(
     @Json(name = "demands")
     val demands: List<Demand>
 ) {

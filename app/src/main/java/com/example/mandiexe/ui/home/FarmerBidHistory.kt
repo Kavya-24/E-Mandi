@@ -18,7 +18,7 @@ import com.example.mandiexe.R
 import com.example.mandiexe.adapter.BidHistoryAdapter
 import com.example.mandiexe.adapter.OnMyBidClickListenerGlobal
 import com.example.mandiexe.models.responses.bids.BidHistoryResponse
-import com.example.mandiexe.ui.demands.DemandDetailActivity
+import com.example.mandiexe.ui.bids.BidDetailActivity
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.usables.UIUtils
 import com.example.mandiexe.utils.usables.UIUtils.hideProgress
@@ -119,7 +119,7 @@ class FarmerBidHistory : Fragment(), OnMyBidClickListenerGlobal {
             "FROM" to FarmerBidHistory::class.java.simpleName
         )
 
-        val i = Intent(requireContext(), DemandDetailActivity::class.java)
+        val i = Intent(requireContext(), BidDetailActivity::class.java)
         i.putExtra("bundle", bundle)
         startActivity(i)
     }

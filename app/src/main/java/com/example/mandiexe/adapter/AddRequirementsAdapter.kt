@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
-import com.example.mandiexe.models.responses.SearchCropReqResponse
+import com.example.mandiexe.models.responses.demand.NewDemandsResponse
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.usables.OfflineTranslate
 import com.example.mandiexe.utils.usables.TimeConversionUtils
@@ -20,7 +20,7 @@ RecyclerView.Adapter<NewReqAdapter.MyViewHolder>() {
 
 
     //Initialize an empty list of the dataclass T
-    var lst: List<SearchCropReqResponse.Demand> = listOf()
+    var lst: List<NewDemandsResponse.Demand> = listOf()
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -45,7 +45,7 @@ RecyclerView.Adapter<NewReqAdapter.MyViewHolder>() {
 
         //Bind a single item
         @SuppressLint("SetTextI18n")
-        fun bindPost(_listItem: SearchCropReqResponse.Demand, itemClick: OnClickNewRequirement) {
+        fun bindPost(_listItem: NewDemandsResponse.Demand, itemClick: OnClickNewRequirement) {
             with(_listItem) {
 
 
@@ -160,5 +160,5 @@ RecyclerView.Adapter<NewReqAdapter.MyViewHolder>() {
 
 
 interface OnClickNewRequirement {
-    fun viewMyBidDetails(_listItem: SearchCropReqResponse.Demand)
+    fun viewMyBidDetails(_listItem: NewDemandsResponse.Demand)
 }

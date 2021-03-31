@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.example.mandiexe.R
-import com.example.mandiexe.ui.demands.MyDemandsFragment
+import com.example.mandiexe.ui.bids.MyBidsFragment
 import com.example.mandiexe.ui.supply.MySuppliesFragment
 import com.example.mandiexe.utils.ApplicationUtils
 
@@ -26,7 +26,7 @@ class MyViewPagerAdapter(manager: FragmentManager) :
         return when (position) {
 
             0 -> MySuppliesFragment.newInstance()
-            1 -> MyDemandsFragment.newInstance()
+            1 -> MyBidsFragment.newInstance()
             else -> MySuppliesFragment.newInstance()
         }
     }

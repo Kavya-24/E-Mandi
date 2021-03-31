@@ -7,15 +7,16 @@ import com.example.mandiexe.R
 import com.example.mandiexe.interfaces.RetrofitClient
 import com.example.mandiexe.models.body.bid.*
 import com.example.mandiexe.models.responses.bids.*
+import com.example.mandiexe.models.responses.demand.ViewDemandResponse
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.auth.SessionManager
 import com.example.mandiexe.utils.usables.ExternalUtils
 import retrofit2.Call
 import retrofit2.Response
 
-class DemandDetailsViewModel : ViewModel() {
+class BidDetailsViewModel : ViewModel() {
 
-    val TAG = DemandDetailsViewModel::class.java.simpleName
+    val TAG = BidDetailsViewModel::class.java.simpleName
 
     private val context = ApplicationUtils.getContext()
     private val sessionManager = SessionManager(context)

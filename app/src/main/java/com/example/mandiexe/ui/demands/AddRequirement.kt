@@ -23,8 +23,9 @@ import com.example.mandiexe.adapter.OnClickNewRequirement
 import com.example.mandiexe.interfaces.RetrofitClient
 import com.example.mandiexe.models.body.SearchCropReqBody
 import com.example.mandiexe.models.body.supply.CropSearchAutoCompleteBody
-import com.example.mandiexe.models.responses.SearchCropReqResponse
+import com.example.mandiexe.models.responses.demand.NewDemandsResponse
 import com.example.mandiexe.models.responses.supply.CropSearchAutocompleteResponse
+import com.example.mandiexe.ui.bids.BidDetailActivity
 import com.example.mandiexe.ui.supply.AddStock
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.DefaultListOfCrops
@@ -78,10 +79,10 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
         service.getSearchReq(
             body,
         )
-            .enqueue(object : retrofit2.Callback<SearchCropReqResponse> {
+            .enqueue(object : retrofit2.Callback<NewDemandsResponse> {
                 override fun onResponse(
-                    call: Call<SearchCropReqResponse>,
-                    response: Response<SearchCropReqResponse>
+                    call: Call<NewDemandsResponse>,
+                    response: Response<NewDemandsResponse>
                 ) {
                     Log.e(TAG, "The response is " + response.body().toString())
                     if (response.isSuccessful) {
@@ -97,7 +98,7 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
                     }
                 }
 
-                override fun onFailure(call: Call<SearchCropReqResponse>, t: Throwable) {
+                override fun onFailure(call: Call<NewDemandsResponse>, t: Throwable) {
                     val message = ExternalUtils.returnStateMessageForThrowable(t)
                     Log.e(TAG, "Failed to load req" + t.cause + t.message)
 
@@ -235,7 +236,7 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
 
     }
 
-    private fun loadResultInRV(response: SearchCropReqResponse) {
+    private fun loadResultInRV(response: NewDemandsResponse) {
         //MAke call
         val tv = findViewById<ImageView>(R.id.ivNoNewReq)
 
@@ -451,14 +452,14 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
     }
 
 
-    override fun viewMyBidDetails(_listItem: SearchCropReqResponse.Demand) {
+    override fun viewMyBidDetails(_listItem: NewDemandsResponse.Demand) {
         val mFrom = AddRequirement::class.java.simpleName
         val bundle = bundleOf(
             "BID_ID" to _listItem._id,
             "FROM" to mFrom
 
         )
-        val i = Intent(this, DemandDetailActivity::class.java)
+        val i = Intent(this, BidDetailActivity::class.java)
         i.putExtra("bundle", bundle)
         startActivity(i)
     }

@@ -1,4 +1,4 @@
-package com.example.mandiexe.ui.demands
+package com.example.mandiexe.ui.bids
 
 import android.app.AlertDialog
 import android.content.Intent
@@ -27,7 +27,8 @@ import com.example.mandiexe.models.body.bid.*
 import com.example.mandiexe.models.responses.bids.DeleteBidResponse
 import com.example.mandiexe.models.responses.bids.UpdateBidResponse
 import com.example.mandiexe.models.responses.bids.ViewBidResponse
-import com.example.mandiexe.models.responses.bids.ViewDemandResponse
+import com.example.mandiexe.models.responses.demand.ViewDemandResponse
+import com.example.mandiexe.ui.demands.AddRequirement
 import com.example.mandiexe.ui.home.FarmerBidHistory
 import com.example.mandiexe.utils.PermissionsHelper
 import com.example.mandiexe.utils.auth.PreferenceUtil
@@ -40,7 +41,7 @@ import com.example.mandiexe.utils.usables.UIUtils
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import com.example.mandiexe.utils.usables.UIUtils.hideProgress
 import com.example.mandiexe.utils.usables.UIUtils.showProgress
-import com.example.mandiexe.viewmodels.DemandDetailsViewModel
+import com.example.mandiexe.viewmodels.BidDetailsViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.jjoe64.graphview.DefaultLabelFormatter
@@ -51,23 +52,23 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.item_owner_detail.view.*
 import kotlinx.android.synthetic.main.supply_detail_activity.*
-import kotlinx.android.synthetic.main.demand_detail_activity.*
+import kotlinx.android.synthetic.main.bid_detail_activity.*
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class DemandDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
+class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
     companion object {
-        fun newInstance() = DemandDetailActivity()
+        fun newInstance() = BidDetailActivity()
     }
 
-    private val viewModel: DemandDetailsViewModel by viewModels()
+    private val viewModel: BidDetailsViewModel by viewModels()
 
     private lateinit var args: Bundle
 
     private var BID_ID = ""
-    private val TAG = DemandDetailActivity::class.java.simpleName
+    private val TAG = BidDetailActivity::class.java.simpleName
 
     //Modify dialog
     private lateinit var d: androidx.appcompat.app.AlertDialog.Builder
@@ -95,7 +96,7 @@ class DemandDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         setAppLocale(pref.getLanguageFromPreference(), this)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.demand_detail_activity)
+        setContentView(R.layout.bid_detail_activity)
 
         args = intent?.getBundleExtra("bundle")!!
         //Set the address in the box trimmed
@@ -114,7 +115,7 @@ class DemandDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
         pb = findViewById(R.id.pb_my_req_details)
 
         //Set views from 'FROM'
-        if (from == MyDemandsFragment::class.java.simpleName) {
+        if (from == MyBidsFragment::class.java.simpleName) {
             //Do nothing
             this.apply {
 
@@ -726,7 +727,7 @@ class DemandDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
                     )
 
                 }
-                if (from == MyDemandsFragment::class.java.simpleName) {
+                if (from == MyBidsFragment::class.java.simpleName) {
                     //Add in the bidding fragment
                     tv_requirement_detail_my_bid.text =
                         myCurrentBid.toString()

@@ -1,4 +1,4 @@
-package com.example.mandiexe.ui.demands
+package com.example.mandiexe.ui.bids
 
 import android.content.Intent
 import android.os.Bundle
@@ -19,22 +19,23 @@ import com.example.mandiexe.R
 import com.example.mandiexe.adapter.MyRequirementsAdapter
 import com.example.mandiexe.adapter.OnMyBidClickListener
 import com.example.mandiexe.models.responses.bids.FamerBidsResponse
+import com.example.mandiexe.ui.demands.AddRequirement
 import com.example.mandiexe.utils.usables.UIUtils
 import com.example.mandiexe.utils.usables.UIUtils.hideProgress
 import com.example.mandiexe.utils.usables.UIUtils.showProgress
-import com.example.mandiexe.viewmodels.MyDemandsViewmodel
+import com.example.mandiexe.viewmodels.MyBidsViewmodel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.my_demands_fragment.*
+import kotlinx.android.synthetic.main.my_bids_fragment.*
 
-class MyDemandsFragment : Fragment(), OnMyBidClickListener {
+class MyBidsFragment : Fragment(), OnMyBidClickListener {
 
     companion object {
-        fun newInstance() = MyDemandsFragment()
+        fun newInstance() = MyBidsFragment()
     }
 
 
-    private val viewModel: MyDemandsViewmodel by viewModels()
+    private val viewModel: MyBidsViewmodel by viewModels()
     private lateinit var root: View
     private lateinit var tabLayout: TabLayout
 
@@ -49,7 +50,7 @@ class MyDemandsFragment : Fragment(), OnMyBidClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        root = inflater.inflate(R.layout.my_demands_fragment, container, false)
+        root = inflater.inflate(R.layout.my_bids_fragment, container, false)
         pb = root.findViewById(R.id.pb_requirement)
         //Get the items from retrofit call and paged adapter
 
@@ -133,13 +134,13 @@ class MyDemandsFragment : Fragment(), OnMyBidClickListener {
     }
 
     override fun viewMyBidDetails(_listItem: FamerBidsResponse.Bid) {
-        val mFrom = MyDemandsFragment::class.java.simpleName
+        val mFrom = MyBidsFragment::class.java.simpleName
         val bundle = bundleOf(
             "BID_ID" to _listItem._id,
             "FROM" to mFrom
         )
 
-        val i = Intent(requireContext(), DemandDetailActivity::class.java)
+        val i = Intent(requireContext(), BidDetailActivity::class.java)
         i.putExtra("bundle", bundle)
         startActivity(i)
     }

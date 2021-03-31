@@ -39,7 +39,7 @@
             android:label="@string/details"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.demands.DemandDetailActivity"
+            android:name=".ui.bids.BidDetailActivity"
             android:label="@string/details"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

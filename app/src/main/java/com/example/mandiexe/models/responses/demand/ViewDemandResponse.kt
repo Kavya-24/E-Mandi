@@ -1,4 +1,4 @@
-package com.example.mandiexe.models.responses.bids
+package com.example.mandiexe.models.responses.demand
 
 
 import androidx.annotation.Keep
