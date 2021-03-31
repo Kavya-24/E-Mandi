@@ -334,12 +334,10 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
                 val txt = cursor.getString(cursor.getColumnIndex("suggestionList"))
 
                 //Get the index, and then find its equiavlied englihs
-                val mIndex = crops.indexOf(txt)
-
                 //Not necessary that the English Query exists
                 try {
 
-
+                    val mIndex = crops.indexOf(txt)
                     val englishQuery = DefaultListOfCrops.getTheDefaultCropsList().get(mIndex)
                     Log.e(
                         "MAIN",
