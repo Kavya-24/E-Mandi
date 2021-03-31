@@ -6,83 +6,83 @@ import com.squareup.moshi.Json
 
 
  @Keep data class NewDemandsResponse(
-    @Json(name = "demands")
+    @field:Json(name = "demands")
     val demands: List<Demand>
 ) {
     @Keep data class Demand(
-        @Json(name = "active")
+        @field:Json(name = "active")
         val active: Boolean, // true
-        @Json(name = "bids")
+        @field:Json(name = "bids")
         val bids: List<Any>,
-        @Json(name = "change")
+        @field:Json(name = "change")
         val change: Int, // 0
-        @Json(name = "crop")
+        @field:Json(name = "crop")
         val crop: String, // Wheat
-        @Json(name = "currentBid")
+        @field:Json(name = "currentBid")
         val currentBid: Int, // 0
-        @Json(name = "dateOfRequirement")
+        @field:Json(name = "dateOfRequirement")
         val dateOfRequirement: String, // 2021-03-06T00:00:00.000Z
-        @Json(name = "demandCreated")
+        @field:Json(name = "demandCreated")
         val demandCreated: String, // 2021-02-06T16:09:15.869Z
-        @Json(name = "demander")
+        @field:Json(name = "demander")
         val demander: List<Demander>,
-        @Json(name = "description")
+        @field:Json(name = "description")
         val description: String, // NA
-        @Json(name = "distance")
+        @field:Json(name = "distance")
         val distance: Int, // 0
-        @Json(name = "expiry")
+        @field:Json(name = "expiry")
         val expiry: String, // 2021-03-01T00:00:00.000Z
-        @Json(name = "_id")
+        @field:Json(name = "_id")
         val _id: String, // 601ebf2b5109c7a1f3f0f4ce
-        @Json(name = "lastBid")
+        @field:Json(name = "lastBid")
         val lastBid: List<Any>,
-        @Json(name = "lastModified")
+        @field:Json(name = "lastModified")
         val lastModified: String, // 2021-02-06T16:09:15.869Z
-        @Json(name = "location")
+        @field:Json(name = "location")
         val location: Location,
-        @Json(name = "offerPrice")
+        @field:Json(name = "offerPrice")
         val offerPrice: Int, // 2500
-        @Json(name = "qty")
+        @field:Json(name = "qty")
         val qty: Int, // 50
-        @Json(name = "__v")
+        @field:Json(name = "__v")
         val __v: Int, // 0
-        @Json(name = "variety")
+        @field:Json(name = "variety")
         val variety: String // White Wheat
     ) {
         @Keep data class Demander(
-            @Json(name = "address")
+            @field:Json(name = "address")
             val address: String, // b381, asia
-            @Json(name = "country")
+            @field:Json(name = "country")
             val country: String, // ind
-            @Json(name = "district")
+            @field:Json(name = "district")
             val district: String, // del
-            @Json(name = "_id")
+            @field:Json(name = "_id")
             val _id: String, // 5fea3e68b7f8bf2537b194ec
-            @Json(name = "location")
+            @field:Json(name = "location")
             val location: Location,
-            @Json(name = "name")
+            @field:Json(name = "name")
             val name: String, // kavya vatsal
-            @Json(name = "phone")
+            @field:Json(name = "phone")
             val phone: String, // +919610306949
-            @Json(name = "state")
+            @field:Json(name = "state")
             val state: String, // del
-            @Json(name = "__v")
+            @field:Json(name = "__v")
             val __v: Int, // 0
-            @Json(name = "village")
+            @field:Json(name = "village")
             val village: String // greno
         ) {
             @Keep data class Location(
-                @Json(name = "coordinates")
+                @field:Json(name = "coordinates")
                 val coordinates: List<Double>,
-                @Json(name = "type")
+                @field:Json(name = "type")
                 val type: String // Point
             )
         }
 
         @Keep data class Location(
-            @Json(name = "coordinates")
+            @field:Json(name = "coordinates")
             val coordinates: List<Double>,
-            @Json(name = "type")
+            @field:Json(name = "type")
             val type: String // Point
         )
     }
