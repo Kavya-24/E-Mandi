@@ -24,11 +24,11 @@
 	<string name="location_value">Location</string>
 	<string name="which_crop">Name of the crop</string>
 	<string name="str_my_crops">My crops</string>
-	<string name="str_my_req">My Bids</string>
+	<string name="str_my_req">Buyers</string>
 	<string name="crop_type">Variety:</string>
 	<string name="expiration_date">Expiration date:</string>
 	<string name="estimated_time_of_completion">Expected date of harvest</string>
-	<string name="offer_price">Offer Price</string>
+	<string name="offer_price">Initial Expected Price</string>
 	<string name="rs">Rs </string>
 	<string name="available_for_bidding">Available for bidding</string>
 	<string name="expDate">Expiration date for bidding</string>
@@ -47,7 +47,7 @@
 	<string name="cropTypeError">Please specify a type</string>
 	<string name="cropQuanityError">This can not be zero</string>
 	<string name="offerPriceError">This can not be zero</string>
-	<string name="etEstError">Add an estimated date of harvest</string>
+	<string name="etEstError">Please add the expected date of harvest</string>
 	<string name="addressError">Location can not be empty</string>
 	<string name="expError">Add an expiration date of the bid</string>
 	<string name="date_of_start">Date of sowing: </string>
@@ -107,12 +107,15 @@
 	<string name="no">No</string>
 	<string name="description">Description: </string>
 	<string name="modifyCrop">Modify crop</string>
-	<string name="supplyAdded">New stock of crop created successfully</string>
-	<string name="couldNotLoad">Could not load stocks</string>
+	<string name="supplyAdded">Crop  added successfully</string>
+	<string name="couldNotLoadSupplies" tools:ignore="MissingTranslation">Could not load crops</string>
+	<string name="couldNotLoadBids" tools:ignore="MissingTranslation">Could not load active bids</string>
 	<string name="suppliesLoaded">Stocks loaded successfully</string>
-	<string name="noSupply">You do not have any supplies as of now.</string>
+	<string name="noSupplyAct" tools:ignore="MissingTranslation">You do not have any active crops for bidding as of now</string>
+	<string name="noDemandAct" tools:ignore="MissingTranslation">You do not have any active bids as of now</string>
+	<string name="noSupply">You have not yet added any crop for bidding</string>
 	<string name="demanndLoaded">My demands loaded</string>
-	<string name="noDemand">You do not have any demands</string>
+	<string name="noDemand">You have not yet bid on any crop</string>
 	<string name="cancelBid">Delete bid?</string>
 	<string name="bidUpdated">Bid updated successfully</string>
 	<string name="BidDeleted">Bid deleted successfully.</string>
@@ -123,10 +126,10 @@
 	<string name="loginNew">Phone Number not registered.</string>
 	<string name="_91">+91</string>
 	<string name="otpSend">The OTP has been sent to: </string>
-	<string name="otpResend">Resend OTP</string>
+	<string name="otpResend"><b>Resend OTP</b></string>
 	<string name="otpResendInit">Not triggered</string>
 	<string name="resendIn">Resend OTP in <b>%s s</b> </string>
-	<string name="invalidCredentials">Invalid Credentials</string>
+	<string name="invalidCredentials">Invalid OTP</string>
 	<string name="addNumber">Add your number</string>
 	<string name="please_enter_your_mobile_number_to_receive_a_verification_code">Please enter your mobile number to receive a verification code</string>
 	<string name="pleaseOtp">.\nPlease enter the OTP here</string>
@@ -144,7 +147,7 @@
 	<string name="InCountry">In country:</string>
 	<string name="currentBid">Current Bid:</string>
 	<string name="successfullBidAdd">Bid added successfully</string>
-	<string name="i_also_want_to_grow_crop">I also want to grow crop</string>
+	<string name="i_also_want_to_grow_crop">Add this?</string>
 	<string name="village">Village</string>
 	<string name="numberVerifed">Phone number verified</string>
 	<string name="searchHead">Search Crop</string>
@@ -188,8 +191,8 @@
 	<string name="desc">Update the crop details</string>
 	<string name="no_bids_founds">No bids founds</string>
 	<string name="noDesc">-</string>
-	<string name="etEstLessThanSow">Completion date can not be before the date of sowing</string>
-	<string name="etEstLessIncomplete">Crop harvest date can not be done before 20 days after sowing.</string>
+	<string name="etEstLessThanSow">The crop can not be harvested before sowing</string>
+	<string name="etEstLessIncomplete">The date of crop harvest should be at least after 20 days of sowing</string>
 	<string name="expLess">Expiration date of the bid can not be before the date of sowing</string>
 
 
@@ -297,25 +300,32 @@
 	<string name="addCropGrowthOnly">Add the growth of this crop only</string>
 	<string name="add_crop">Add Crop</string>
 	<string name="addMissingCrop" tools:ignore="MissingTranslation">This crop is not found. \nWould you like to add this crop?</string>
-    <string name="addVariety">Add variety</string>
-    <string name="addDescription">Add a description for your crop.</string>
-    <string name="failAccessToken">Failed to log in.</string>
-    <string name="noon_has_bid">No bids have been made on this stock yet.</string>
-    <string name="Uttar">Uttar</string>
-    <string name="addBidPrice">Add bid price</string>
-    <string name="bidAdded">Bid added successfully.</string>
-    <string name="logoutCnf">Are you sure you want to logout?</string>
-    <string name="myCurrentBid">Current Bid</string>
+	<string name="addVariety">Add variety</string>
+	<string name="addDescription">Description for your crop</string>
+	<string name="failAccessToken">Failed to log in.</string>
+	<string name="noon_has_bid">No bids have been made on this crop yet.</string>
+	<string name="my_bid" tools:ignore="MissingTranslation">My Bid</string>
+	<string name="Uttar">Uttar</string>
+	<string name="bidInactive" tools:ignore="MissingTranslation">This bid is not active anymore.</string>
+	<string name="addBidPrice">Add bid price</string>
+	<string name="bidAdded">Bid added successfully.</string>
+	<string name="logoutCnf">Are you sure you want to logout?</string>
+	<string name="myCurrentBid">Current Bid</string>
 	<string name="updateBid">Update Bid</string>
-    <string name="searchCrops">Search crops</string>
-    <string name="emptyReq">No demands found for this crop.</string>
-    <string name="invalidOTP">Invalid OTP</string>
+	<string name="incDec" tools:ignore="MissingTranslation">Increasing Bid from %s to %s</string>
+	<string name="decreasing" tools:ignore="MissingTranslation">Decreasing Bid from %s to %s</string>
+	<string name="searchCrops">Search crops</string>
+	<string name="emptyReq">No demands found for this crop.</string>
+	<string name="invalidOTP">Invalid OTP</string>
 	<string name="addCropforBidding">Adding for bid</string>
-    <string name="confirm">Confirm</string>
-    <string name="unableToAddStock">Unable to add the crop. Please try again later</string>
-    <string name="add">Add</string>
+	<string name="confirm">Confirm</string>
+	<string name="adding_crop" translatable="false">Adding crop %s (%s %s)\nInitial expected price %s</string>
+	<string name="adding_bid_date" translatable="false">Bid ends on %s</string>
+	<string name="unableToAddStock">Unable to add the crop. Please try again later</string>
+	<string name="add">Add</string>
 
-    <string-array name="arr_area_units">
+
+	<string-array name="arr_area_units">
 		<item>@string/Hectare</item>
 		<item>@string/bigha</item>
 		<item>@string/acres</item>
