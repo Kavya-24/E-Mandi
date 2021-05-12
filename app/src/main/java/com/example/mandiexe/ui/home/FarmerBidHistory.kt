@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -90,14 +91,14 @@ class FarmerBidHistory : Fragment(), OnMyBidClickListenerGlobal {
         val adapter = BidHistoryAdapter(this)
         rv.adapter = adapter
 
-        val mTv = root.findViewById<AppCompatTextView>(R.id.tvEmptyListBid)
+        val empty = root.findViewById<ConstraintLayout>(R.id.llEmptyBidHistory)
 
         if (mResponse.bids.isEmpty()) {
-            mTv.visibility = View.VISIBLE
+            empty.visibility = View.VISIBLE
 
 
         } else {
-            mTv.visibility = View.GONE
+            empty.visibility = View.GONE
             adapter.lst = mResponse.bids
             adapter.notifyDataSetChanged()
         }

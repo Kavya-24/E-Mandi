@@ -31,19 +31,37 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvEmptyListBid"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:text="@string/noDemand"
-            android:textAlignment="center"
-            android:textSize="24sp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/llEmptyBidHistory"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
+            <ImageView
+                android:id="@+id/ivEmptyListBid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="@dimen/space"
+                app:layout_constraintBottom_toTopOf="@id/tvEmptyListBid"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/otp_image" />
+
+            <TextView
+                android:id="@+id/tvEmptyListBid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/space_3x"
+                android:padding="@dimen/space"
+                android:text="@string/noDemand"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
