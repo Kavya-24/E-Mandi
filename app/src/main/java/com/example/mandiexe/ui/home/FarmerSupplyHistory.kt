@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -88,16 +88,15 @@ class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {
         val rv = root.findViewById<RecyclerView>(R.id.rv_history_supply)
         rv.layoutManager = LinearLayoutManager(requireContext())
         val adapter = SupplyHistoryAdapter(this)
-        val mTv = root.findViewById<AppCompatTextView>(R.id.tvEmptyListSupply)
+        val empty = root.findViewById<ConstraintLayout>(R.id.llEmptySupplyHistory)
+
         if (mResponse.supplies.size == 0) {
-            mTv.visibility = View.VISIBLE
-            mTv.text =
-                context?.resources?.getString(R.string.noSupply)
+            empty.visibility = View.VISIBLE
 
 
         } else {
             adapter.lst = mResponse.supplies
-            mTv.visibility = View.GONE
+            empty.visibility = View.GONE
             //Notify adapter
             adapter.notifyDataSetChanged()
         }
