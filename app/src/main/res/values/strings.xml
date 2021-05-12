@@ -303,7 +303,7 @@
     <string name="addVariety">Add variety</string>
     <string name="addDescription">Description for your crop</string>
     <string name="failAccessToken">Failed to log in.</string>
-    <string name="noon_has_bid">No bids have been made on this stock yet.</string>
+    <string name="noon_has_bid">No bids have been made on this crop yet.</string>
     <string name="my_bid" tools:ignore="MissingTranslation">My Bid</string>
     <string name="Uttar">Uttar</string>
     <string name="bidInactive" tools:ignore="MissingTranslation">This bid is not active anymore.</string>

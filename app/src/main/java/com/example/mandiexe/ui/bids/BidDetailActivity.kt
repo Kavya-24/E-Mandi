@@ -115,7 +115,7 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
         pb = findViewById(R.id.pb_my_req_details)
 
         //Set views from 'FROM'
-        if (from == MyBidsFragment::class.java.simpleName) {
+        if (from == MyBidsFragment::class.java.simpleName || from == FarmerBidHistory::class.java.simpleName) {
             //Do nothing
             this.apply {
 
