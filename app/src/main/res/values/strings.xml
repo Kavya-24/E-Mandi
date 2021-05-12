@@ -28,7 +28,7 @@
     <string name="crop_type">Variety:</string>
     <string name="expiration_date">Expiration date:</string>
     <string name="estimated_time_of_completion">Expected date of harvest</string>
-    <string name="offer_price">Offer Price</string>
+    <string name="offer_price">Initial Expected Price</string>
     <string name="rs">Rs </string>
     <string name="available_for_bidding">Available for bidding</string>
     <string name="expDate">Expiration date for bidding</string>
@@ -47,7 +47,7 @@
     <string name="cropTypeError">Please specify a type</string>
     <string name="cropQuanityError">This can not be zero</string>
     <string name="offerPriceError">This can not be zero</string>
-    <string name="etEstError">Add an estimated date of harvest</string>
+    <string name="etEstError">Please add the expected date of harvest</string>
     <string name="addressError">Location can not be empty</string>
     <string name="expError">Add an expiration date of the bid</string>
     <string name="date_of_start">Date of sowing: </string>
@@ -191,8 +191,8 @@
     <string name="desc">Update the crop details</string>
     <string name="no_bids_founds">No bids founds</string>
     <string name="noDesc">-</string>
-    <string name="etEstLessThanSow">Completion date can not be before the date of sowing</string>
-    <string name="etEstLessIncomplete">Crop harvest date can not be done before 20 days after sowing.</string>
+    <string name="etEstLessThanSow">The crop can not be harvested before sowing</string>
+    <string name="etEstLessIncomplete">The date of crop harvest should be at least after 20 days of sowing</string>
     <string name="expLess">Expiration date of the bid can not be before the date of sowing</string>
 
 
@@ -301,7 +301,7 @@
     <string name="add_crop">Add Crop</string>
     <string name="addMissingCrop" tools:ignore="MissingTranslation">This crop is not found. \nWould you like to add this crop?</string>
     <string name="addVariety">Add variety</string>
-    <string name="addDescription">Add a description for your crop.</string>
+    <string name="addDescription">Description for your crop</string>
     <string name="failAccessToken">Failed to log in.</string>
     <string name="noon_has_bid">No bids have been made on this stock yet.</string>
     <string name="my_bid" tools:ignore="MissingTranslation">My Bid</string>
@@ -317,6 +317,7 @@
     <string name="searchCrops">Search crops</string>
     <string name="emptyReq">No demands found for this crop.</string>
     <string name="invalidOTP">Invalid OTP</string>
+    <string name="addCropforBidding">Adding for bid</string>
 
 
     <string-array name="arr_area_units">

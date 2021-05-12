@@ -54,7 +54,7 @@ class AddStockPage2 : AppCompatActivity() {
         args = intent?.getBundleExtra("bundle")!!
         pb = findViewById(R.id.pb_add_stock_page_2)
         val tb = findViewById<Toolbar>(R.id.toolbarExternal)
-        tb.title = resources.getString(R.string.add_stock)
+        tb.title = resources.getString(R.string.addCropforBidding)
         tb.setNavigationOnClickListener {
             onBackPressed()
         }
@@ -255,17 +255,36 @@ class AddStockPage2 : AppCompatActivity() {
     }
 
     private fun isValidate(): Boolean {
-        return ValidationObject.validateEmptyEditText(
-            offerPrice,
-            tilPrice,
-            R.string.offerPriceError,
-            this
-        ) && ValidationObject.validateEmptyEditText(
-            etExp,
-            tilExp,
-            R.string.expError,
-            this
-        )
+
+        var isValid = true
+
+        if (offerPrice.text.isNullOrEmpty()) {
+            tilPrice.error = resources.getString(R.string.offerPriceError)
+            isValid = false
+        } else {
+            tilPrice.error = null
+        }
+
+        val sow_date = args.getString("SOW").toString()
+        if (etExp.text.isNullOrEmpty()) {
+            tilExp.error = resources.getString(R.string.expError)
+            isValid = false
+        } else if (TimeConversionUtils.getDateInstanceFromString(etExp.text.toString()) < TimeConversionUtils.getDateInstanceFromString(
+                sow_date
+            )
+        ) {
+            tilExp.error = resources.getString(R.string.expLess)
+            isValid = false
+        } else {
+            tilExp.error = null
+        }
+
+
+
+
+
+        return isValid
+
     }
 
     override fun onBackPressed() {

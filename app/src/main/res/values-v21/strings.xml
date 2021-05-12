@@ -311,6 +311,7 @@
     <string name="searchCrops">Search crops</string>
     <string name="emptyReq">No demands found for this crop.</string>
     <string name="invalidOTP">Invalid OTP</string>
+    <string name="addCropforBidding">Adding for bid</string>
 
     <string-array name="arr_area_units">
         <item>@string/Hectare</item>
