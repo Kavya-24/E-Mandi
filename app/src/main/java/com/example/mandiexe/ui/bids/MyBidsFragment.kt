@@ -6,8 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -21,8 +20,6 @@ import com.example.mandiexe.adapter.OnMyBidClickListener
 import com.example.mandiexe.models.responses.bids.FamerBidsResponse
 import com.example.mandiexe.ui.demands.AddRequirement
 import com.example.mandiexe.utils.usables.UIUtils
-import com.example.mandiexe.utils.usables.UIUtils.hideProgress
-import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.example.mandiexe.viewmodels.MyBidsViewmodel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
@@ -39,7 +36,7 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
     private lateinit var root: View
     private lateinit var tabLayout: TabLayout
 
-    private lateinit var swl : SwipeRefreshLayout
+    private lateinit var swl: SwipeRefreshLayout
 
     override fun onResume() {
         super.onResume()
@@ -101,19 +98,18 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
         val rv = root.findViewById<RecyclerView>(R.id.rv_requirement)
         val adapter = MyRequirementsAdapter(this)
 
-        val mTV = root.findViewById<AppCompatTextView>(R.id.tvEmptyList)
-        Log.e("REQ", "Framer Bid Response $mResponse" )
+        val empty = root.findViewById<ConstraintLayout>(R.id.llEmptyMyBids)
+
         if (mResponse != null) {
             if (mResponse.bids.isEmpty()) {
-                mTV.visibility = View.VISIBLE
-                mTV.text =
-                    context?.resources?.getString(R.string.noDemand)
+                empty.visibility = View.VISIBLE
 
             } else {
+                empty.visibility = View.GONE
 
                 val mutableDemands = mutableListOf<FamerBidsResponse.Bid>()
-                for(i in mResponse.bids){
-                        mutableDemands.add(i)
+                for (i in mResponse.bids) {
+                    mutableDemands.add(i)
 
                 }
                 adapter.lst = mutableDemands
