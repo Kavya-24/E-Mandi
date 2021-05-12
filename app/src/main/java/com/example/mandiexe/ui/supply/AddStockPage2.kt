@@ -17,12 +17,14 @@ import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.usables.OfflineTranslate
 import com.example.mandiexe.utils.usables.TimeConversionUtils
+import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import com.example.mandiexe.utils.usables.UIUtils.hideProgress
 import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.example.mandiexe.utils.usables.ValidationObject
 import com.example.mandiexe.viewmodels.AddStockViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.android.synthetic.main.activity_add_stock_page2.*
 import kotlinx.android.synthetic.main.layout_add_stock.view.*
 import java.util.*
 
@@ -282,18 +284,33 @@ class AddStockPage2 : AppCompatActivity() {
 
     private fun manageStockCreateResponses(value: AddSupplyResponse?) {
 
-        if (value?.msg == "Supply added successfully.") {
+        if (value != null) {
+            if (value.msg == "Supply added successfully.") {
 
-            Toast.makeText(
+                Toast.makeText(
+                    this,
+                    resources.getString(R.string.supplyAdded),
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+
+                //Destroy AddStock
+                AddStock.mActivityInstance.finish()
+                onBackPressed()
+            } else {
+                val errorMessgae = value.msg
+                //Create snackbar for the error message
+                createSnackbar(errorMessgae.toString(), this, container_add_stock_page_2)
+
+            }
+        } else {
+
+            createSnackbar(
+                resources.getString(R.string.unableToAddStock),
                 this,
-                resources.getString(R.string.supplyAdded),
-                Toast.LENGTH_SHORT
+                container_add_stock_page_2
             )
-                .show()
 
-            //Destroy AddStock
-            AddStock.mActivityInstance.finish()
-            onBackPressed()
         }
 
     }

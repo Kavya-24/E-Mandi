@@ -12,6 +12,7 @@ import com.example.mandiexe.models.responses.supply.AddSupplyResponse
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.auth.SessionManager
 import com.example.mandiexe.utils.usables.ExternalUtils
+import com.example.mandiexe.utils.usables.UIUtils
 import retrofit2.Call
 import retrofit2.Response
 
@@ -20,7 +21,6 @@ class AddStockViewModel : ViewModel() {
     val TAG = AddStockViewModel::class.java.simpleName
 
     private val context = ApplicationUtils.getContext()
-    private val sessionManager = SessionManager(context)
     private val mySupplyService = RetrofitClient.makeCallsForSupplies(context)
 
     //For getting the details of the supply stock
@@ -40,7 +40,7 @@ class AddStockViewModel : ViewModel() {
     }
 
 
-    fun addStockFunction(body: AddSupplyBody): MutableLiveData<AddSupplyResponse> {
+    private fun addStockFunction(body: AddSupplyBody): MutableLiveData<AddSupplyResponse> {
 
 
         mySupplyService.getAddSupply(
@@ -50,7 +50,7 @@ class AddStockViewModel : ViewModel() {
                 override fun onFailure(call: Call<AddSupplyResponse>, t: Throwable) {
                     successful.value = false
                     message.value = ExternalUtils.returnStateMessageForThrowable(t)
-                    Log.e(TAG, "Throwable  Supply" + t.message + t.cause + message.value)
+                    Log.e(TAG, "Throwable  Supply for adding stock" + t.message + t.cause + message.value)
 
                     //Response is null
                 }
@@ -85,6 +85,7 @@ class AddStockViewModel : ViewModel() {
                         message.value = response.body()?.msg.toString()
                     }
 
+                    addStock.value = response.body()
 
                 }
             })
@@ -103,9 +104,9 @@ class AddStockViewModel : ViewModel() {
     }
 
 
-    fun growthStockFunction(body: AddGrowthBody): MutableLiveData<AddGrowthResponse> {
+    private fun growthStockFunction(body: AddGrowthBody): MutableLiveData<AddGrowthResponse> {
 
-        Log.e(TAG, "In add stpck")
+        Log.e(TAG, "In add growth internal function")
 
         mySupplyService.getFarmerGrowthAdd(
             body = body,
@@ -114,7 +115,7 @@ class AddStockViewModel : ViewModel() {
                 override fun onFailure(call: Call<AddGrowthResponse>, t: Throwable) {
                     successfulGrowth.value = false
                     messageGrowth.value = ExternalUtils.returnStateMessageForThrowable(t)
-                    Log.e(TAG, "Throwable " + t.message + t.cause)
+                    UIUtils.logThrowables(t,TAG)
                     //Response is null
                 }
 
@@ -148,6 +149,7 @@ class AddStockViewModel : ViewModel() {
                         messageGrowth.value = response.body()?.msg.toString()
                     }
 
+                    growthStock.value = response.body()
 
                 }
             })
