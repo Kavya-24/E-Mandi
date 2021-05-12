@@ -71,9 +71,10 @@ class OTPFragment : Fragment() {
     private val preferenceManager: PreferenceManager = PreferenceManager()
 
     private val sessionManager: SessionManager = SessionManager(ApplicationUtils.getContext())
-    private val mySupplyService = RetrofitClient.getAuthInstance()
+
 
     private lateinit var tvTimer: TextView
+    private lateinit var btnVerify: MaterialButton
 
     private lateinit var timer: CountDownTimer
 
@@ -86,6 +87,7 @@ class OTPFragment : Fragment() {
 
         otpTextView = root.findViewById(R.id.otpView)
         pb = root.findViewById(R.id.pb_otp_verify)
+        btnVerify = root.findViewById(R.id.mtb_verify_otp)
 
         showProgress(pb, requireContext())
 
@@ -97,7 +99,7 @@ class OTPFragment : Fragment() {
         tvTimer = root.findViewById<TextView>(R.id.tv_timer_resend)
 
         getOTP()
-        showProgress(pb, requireContext())
+
 
         otpTextView.otpListener = object : OTPListener {
             override fun onInteractionListener() {
@@ -107,37 +109,48 @@ class OTPFragment : Fragment() {
             override fun onOTPComplete(otp: String) {
                 //Verify OTP as in otp string
                 mOtp = otp
+                btnVerify.isEnabled = true
+
             }
 
         }
 
 
-        root.findViewById<MaterialButton>(R.id.mtb_verify_otp).setOnClickListener {
-            showProgress(pb, requireContext())
-            if (ValidationObject.validateOTP(mOtp)) {
-                verifyPhoneNumberWithCode(storedVerificationId, mOtp)
-            } else {
-                //Invalid OTP
-                createSnackbar(
-                    resources.getString(R.string.invalidOtp),
-                    requireContext(),
-                    container_frag_otp
-                )
+        btnVerify.setOnClickListener {
+
+            //Valid only when the verifucation is not in progress
+            if (!verificationInProgress) {
+
+
+                showProgress(pb, requireContext())
+                if (ValidationObject.validateOTP(mOtp)) {
+                    verifyPhoneNumberWithCode(storedVerificationId, mOtp)
+                } else {
+                    //Invalid OTP
+                    createSnackbar(
+                        resources.getString(R.string.invalidOtp),
+                        requireContext(),
+                        container_frag_otp
+                    )
+                }
+                hideProgress(pb, requireContext())
+            } else{
+                //When the verifucation is progress
+                Log.e(TAG, "Button clicked when not yet verified")
             }
 
-            hideProgress(pb, requireContext())
         }
 
 
-        root.findViewById<TextView>(R.id.tv_resend).setOnClickListener {
-
-            Log.e(TAG, "In resent")
-            if (root.findViewById<TextView>(R.id.tv_resend).text == resources.getString(R.string.otpResend)) {
-                //finsih rhe timer
-                timer.onFinish()
-                resendVerificationCode(phoneNumber, resendToken)
+        tvTimer.setOnClickListener {
+            if(tvTimer.text == resources.getString(R.string.otpResend)){
+                verificationInProgress = true
+                resendVerificationCode(phoneNumber,resendToken)
             }
+
         }
+
+
 
 
         return root
@@ -152,14 +165,13 @@ class OTPFragment : Fragment() {
         //Pause the timer
 
         tvTimer.visibility = View.GONE
-        root.findViewById<TextView>(R.id.tv_resend).visibility = View.GONE
         timer.onFinish()
         timer.cancel()
 
 
         val optionsBuilder = PhoneAuthOptions.newBuilder(auth)
             .setPhoneNumber(phoneNumber)       // Phone number to verify
-            .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+            .setTimeout(60L, TimeUnit.SECONDS)              // Timeout and unit
             .setActivity(context as Activity)                 // Activity (for callback binding)
             .setCallbacks(callbacks)          // OnVerificationStateChangedCallbacks
         if (token != null) {
@@ -187,7 +199,7 @@ class OTPFragment : Fragment() {
 
                 hideProgress(pb, requireContext())
                 Log.e(TAG, "on ver comp " + credential.toString())
-
+                verificationInProgress = false
                 signInWithPhoneAuthCredential(credential)
             }
 
@@ -196,9 +208,11 @@ class OTPFragment : Fragment() {
                 // for instance if the the phone number format is not valid.
                 hideProgress(pb, requireContext())
                 Log.e(TAG, "on ver failed " + e)
+                verificationInProgress =
+                    false
                 if (e is FirebaseAuthInvalidCredentialsException) {
                     UIUtils.createSnackbar(
-                        resources.getString(R.string.invalidRequest),
+                        resources.getString(R.string.invalidOTP),
                         requireContext(),
                         container_frag_otp
                     )
@@ -236,14 +250,14 @@ class OTPFragment : Fragment() {
                 // Save verification ID and resending token so we can use them later
                 storedVerificationId = verificationId
                 resendToken = token
+                verificationInProgress = false
 
                 //After code has been sent
                 //Remove the progress bar
                 hideProgress(pb, requireContext())
                 tvTimer.visibility = View.VISIBLE
-                root.findViewById<TextView>(R.id.tv_resend).visibility = View.VISIBLE
 
-                //Cretae snackbar
+
                 context?.let {
                     createSnackbar(
                         resources.getString(R.string.otpSent),
@@ -258,25 +272,15 @@ class OTPFragment : Fragment() {
 
                 timer = object : CountDownTimer(300000, 1000) {
                     override fun onTick(millisUntilFinished: Long) {
-                        tvTimer.apply {
-                            text = (millisUntilFinished / 1000).toString()
-                            visibility = View.VISIBLE
-                        }
+                        val timeValue = (millisUntilFinished/1000).toString()
+                        tvTimer.text = resources.getString(R.string.resendIn,timeValue)
+                        tvTimer.visibility = View.VISIBLE
 
-                        root.findViewById<TextView>(R.id.tv_resend).apply {
-                            text = resources.getString(R.string.resendIn)
-                            visibility = View.VISIBLE
 
-                        }
                     }
 
                     override fun onFinish() {
 
-                        root.findViewById<TextView>(R.id.tv_resend).apply {
-                            text = resources.getString(R.string.otpResend)
-                            visibility = View.VISIBLE
-                            setTextColor(resources.getColor(R.color.wildColor))
-                        }
 
                         tvTimer.visibility = View.GONE
 
@@ -287,8 +291,9 @@ class OTPFragment : Fragment() {
 
             }
         }
+        verificationInProgress = true
 
-
+        //Initialize Auth Item
         auth = FirebaseAuth.getInstance()
         auth.useAppLanguage()
 
@@ -320,6 +325,7 @@ class OTPFragment : Fragment() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
 
+                    verificationInProgress = false
                     val user = task.result?.user
                     Log.e(TAG, "Firebase user made user" + user.toString())
                     createSnackbar(
@@ -335,13 +341,14 @@ class OTPFragment : Fragment() {
 
                             str = idToken!!
 
-                            sendLoginRespone(str)
+                            sendLoginResponse(str)
 
                             // Send token to your backend via HTTPS
                             // ...
 
                         } else {
 
+                            Log.e(TAG, "Failed to get user id token from task with exception ${mTask.exception?.localizedMessage}")
                             // Handle error -> task.getException();
                             createSnackbar(
                                 mTask.exception?.localizedMessage.toString(),
@@ -384,13 +391,11 @@ class OTPFragment : Fragment() {
 
     }
 
-    private fun sendLoginRespone(str: String) {
+    private fun sendLoginResponse(str: String) {
 
         Log.e(TAG, "In send login")
-
         val body = LoginBody(str)
         makeCall(body, str)
-
 
     }
 
@@ -404,6 +409,7 @@ class OTPFragment : Fragment() {
                     checkResponse(mResponse, str)
                 } else {
                     //Create a snackbar
+                    Log.e(TAG, "In failed login")
                     createSnackbar(viewModel.message.value, requireContext(), container_frag_otp)
                 }
             }
@@ -474,6 +480,7 @@ class OTPFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        verificationInProgress = false
         timer.onFinish()
         timer.cancel()
         viewModel.successful.removeObservers(this)

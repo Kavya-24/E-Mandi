@@ -123,10 +123,10 @@
     <string name="loginNew">Phone Number not registered.</string>
     <string name="_91">+91</string>
     <string name="otpSend">The OTP has been sent to: </string>
-    <string name="otpResend">Resend OTP</string>
+    <string name="otpResend"><b>Resend OTP</b></string>
     <string name="otpResendInit">Not triggered</string>
-    <string name="resendIn">"Resend OTP in "</string>
-    <string name="invalidCredentials">Invalid Credentials</string>
+    <string name="resendIn">Resend OTP in <b>%s s</b> </string>
+    <string name="invalidCredentials">Invalid OTP</string>
     <string name="addNumber">Add your number</string>
     <string name="please_enter_your_mobile_number_to_receive_a_verification_code">Please enter your mobile number to receive a verification code</string>
     <string name="pleaseOtp">.\nPlease enter the OTP here</string>
@@ -313,6 +313,7 @@
     <string name="decreasing" tools:ignore="MissingTranslation">Decreasing Bid from %s to %s</string>
     <string name="searchCrops">Search crops</string>
     <string name="emptyReq">No demands found for this crop.</string>
+    <string name="invalidOTP">Invalid OTP</string>
 
 
     <string-array name="arr_area_units">

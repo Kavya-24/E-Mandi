@@ -11,6 +11,7 @@ import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.auth.PreferenceManager
 import com.example.mandiexe.utils.auth.SessionManager
 import com.example.mandiexe.utils.usables.ExternalUtils
+import com.example.mandiexe.utils.usables.UIUtils
 import retrofit2.Call
 import retrofit2.Response
 
@@ -19,17 +20,14 @@ class OTViewModel : ViewModel() {
     val TAG = OTViewModel::class.java.simpleName
 
     private val context = ApplicationUtils.getContext()
-    private val mySupplyService = RetrofitClient.getAuthInstance()
+    private val myAuthService = RetrofitClient.getAuthInstance()
 
 
-    //For getting the details of the supply stock
+    //For getting the details of the Auth stock
     var successful: MutableLiveData<Boolean> = MutableLiveData()
     var message: MutableLiveData<String> = MutableLiveData()
 
     var mLogin: MutableLiveData<LoginResponse> = MutableLiveData()
-
-    private val sessionManager = SessionManager(ApplicationUtils.getContext())
-    private val preferenceManager = PreferenceManager()
 
     fun lgnFunction(body: LoginBody): MutableLiveData<LoginResponse> {
 
@@ -39,12 +37,12 @@ class OTViewModel : ViewModel() {
     }
 
 
-    fun mLoginFunction(body: LoginBody): MutableLiveData<LoginResponse> {
+    private fun mLoginFunction(body: LoginBody): MutableLiveData<LoginResponse> {
 
         Log.e(TAG, body.toString())
 
 
-        mySupplyService.getLogin(
+        myAuthService.getLogin(
             mLoginBody = body
         )
             .enqueue(object : retrofit2.Callback<LoginResponse> {
@@ -54,8 +52,8 @@ class OTViewModel : ViewModel() {
                     successful.value = false
                     message.value = ExternalUtils.returnStateMessageForThrowable(t)
                     //Response is null
-                    Log.e(TAG, "In on Failure with cause " + t.cause)
-                    mLogin.value
+                    UIUtils.logThrowables(t,TAG)
+                    mLogin.value = null
 
                 }
 
@@ -85,36 +83,6 @@ class OTViewModel : ViewModel() {
                             successful.value = true
                             message.value =
                                 context.resources.getString(R.string.loginSuceed)
-//                            LoginResponse(
-//                                response.body()!!.msg,
-//                                response.body()!!.user,
-//                                ""
-//                            ).user?.accessToken?.let {
-//                                sessionManager.saveAuth_access_Token(
-//                                    it
-//                                )
-//                            }
-//
-//                            (LoginResponse(
-//                                response.body()!!.msg,
-//                                response.body()!!.user,
-//                                ""
-//                            )).user?.refreshToken?.let {
-//                                sessionManager.saveAuth_refresh_Token(
-//                                    it
-//                                )
-//                            }
-//
-//                            (LoginResponse(
-//                                response.body()!!.msg,
-//                                response.body()!!.user,
-//                                ""
-//                            )).user?.accessToken?.let {
-//                                preferenceManager.putAuthToken(
-//                                    it
-//                                )
-//                            }
-
 
                         } else if (response.body()?.msg == "Phone Number not registered.") {
                             successful.value = true
@@ -132,12 +100,16 @@ class OTViewModel : ViewModel() {
                         message.value = response.body()?.msg.toString()
                     }
 
+
+
+
+
                     mLogin.value = response.body()
                 }
             })
 
 
-        Log.e(TAG, "Befre retrurning " + mLogin.value)
+
         return mLogin
 
 

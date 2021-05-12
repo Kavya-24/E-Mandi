@@ -78,20 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/space"
             android:gravity="end"
-            android:text="@string/otpResendInit"
-            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/otpView" />
-
-
-        <TextView
-            android:id="@+id/tv_resend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/space"
-            android:text="@string/resendIn"
-            android:visibility="gone"
-            app:layout_constraintEnd_toStartOf="@id/tv_timer_resend"
             app:layout_constraintTop_toBottomOf="@id/otpView" />
 
         <ProgressBar
@@ -110,6 +97,7 @@
             android:layout_marginTop="@dimen/space_4x"
             android:layout_marginBottom="@dimen/space"
             android:backgroundTint="@color/colorAccent"
+            android:enabled="false"
             android:text="@string/verify_otp"
             app:backgroundTint="@color/colorAccent"
             app:layout_constraintEnd_toEndOf="parent"

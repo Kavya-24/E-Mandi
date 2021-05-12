@@ -2,6 +2,7 @@ package com.example.mandiexe.utils.usables
 
 import android.app.Activity
 import android.content.Context
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
@@ -60,5 +61,12 @@ object UIUtils {
         pb.visibility = View.GONE
     }
 
+    fun logExceptions(e: Exception, mTAG: String) {
+        Log.e(mTAG, "Exception with message ${e.message} and cause ${e.cause}")
+    }
+
+    fun logThrowables(e: Throwable, mTAG: String) {
+        Log.e(mTAG, "Throwable with message ${e.message} and cause ${e.cause}")
+    }
 
 }
