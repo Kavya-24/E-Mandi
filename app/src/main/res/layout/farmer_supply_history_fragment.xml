@@ -57,7 +57,7 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="@dimen/space_3x"
                 android:padding="@dimen/space"
-                android:text="@string/noDemand"
+                android:text="@string/noSupply"
                 android:textAlignment="center"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent" />

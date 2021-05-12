@@ -7,8 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
@@ -22,8 +21,6 @@ import com.example.mandiexe.adapter.MySuppliesAdapter
 import com.example.mandiexe.adapter.OnMyStockClickListener
 import com.example.mandiexe.models.responses.supply.FarmerSuppliesResponse
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
-import com.example.mandiexe.utils.usables.UIUtils.hideProgress
-import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.example.mandiexe.viewmodels.MySuppliesViewmodel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
@@ -40,7 +37,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
     private lateinit var root: View
     private lateinit var tabLayout: TabLayout
 
-   private lateinit var swl : SwipeRefreshLayout
+    private lateinit var swl: SwipeRefreshLayout
 
     override fun onResume() {
         super.onResume()
@@ -59,8 +56,6 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
 
 
         loadItems()
-
-
 
 
         //Get the items from normal adapter
@@ -110,16 +105,14 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
         swl.isRefreshing = true
         val rv = root.findViewById<RecyclerView>(R.id.rv_my_stocks)
         val adapter = MySuppliesAdapter(this)
+        val empty = root.findViewById<ConstraintLayout>(R.id.llEmptyMySupplies)
 
         if (mResponse != null) {
             if (mResponse.supplies.isEmpty()) {
-                root.findViewById<AppCompatTextView>(R.id.tvEmptyListCrop).visibility = View.VISIBLE
-                root.findViewById<AppCompatTextView>(R.id.tvEmptyListCrop).text =
-                    context?.resources?.getString(R.string.noSupply)
+                empty.visibility = View.VISIBLE
 
             } else {
-                root.findViewById<AppCompatTextView>(R.id.tvEmptyListCrop).visibility = View.GONE
-
+                empty.visibility = View.GONE
                 //Sort by timestamp
                 mResponse.supplies.sortedByDescending { it.lastModified }
 

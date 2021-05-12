@@ -111,7 +111,9 @@
     <string name="couldNotLoadSupplies" tools:ignore="MissingTranslation">Could not load crops</string>
     <string name="couldNotLoadBids" tools:ignore="MissingTranslation">Could not load active bids</string>
     <string name="suppliesLoaded">Stocks loaded successfully</string>
-    <string name="noSupply">You do not have any supplies as of now.</string>
+    <string name="noSupplyAct" tools:ignore="MissingTranslation">You do not have any active crops for bidding as of now.</string>
+    <string name="noDemandAct" tools:ignore="MissingTranslation">You do not have any active bids as of now.</string>
+    <string name="noSupply">You have not yet added any crop for bidding</string>
     <string name="demanndLoaded">My demands loaded</string>
     <string name="noDemand">You have not yet bid on any crop</string>
     <string name="cancelBid">Delete bid?</string>
