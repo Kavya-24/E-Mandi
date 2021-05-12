@@ -311,8 +311,9 @@
     <string name="emptyReq">No demands found for this crop.</string>
     <string name="invalidOTP">Invalid OTP</string>
 	<string name="addCropforBidding">Adding for bid</string>
+    <string name="confirm">Confirm</string>
 
-	<string-array name="arr_area_units">
+    <string-array name="arr_area_units">
 		<item>@string/Hectare</item>
 		<item>@string/bigha</item>
 		<item>@string/acres</item>

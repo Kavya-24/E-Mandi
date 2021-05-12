@@ -23,6 +23,7 @@ import com.example.mandiexe.utils.usables.ValidationObject
 import com.example.mandiexe.viewmodels.AddStockViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.android.synthetic.main.layout_add_stock.view.*
 import java.util.*
 
 class AddStockPage2 : AppCompatActivity() {
@@ -88,9 +89,52 @@ class AddStockPage2 : AppCompatActivity() {
 
         findViewById<MaterialButton>(R.id.mtb_add_stock).setOnClickListener {
             if (isValidate()) {
-                createStock()
+                createConfirmDialog()
             }
         }
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun createConfirmDialog() {
+
+        val dialog = android.app.AlertDialog.Builder(this)
+
+        val nCrop = args.getString("NAME").toString()
+        val nQuantity = args.getString("QUANTITY").toString()
+        val nQuantityTranslated = resources.getString(R.string.kg)
+        val nPrice = offerPrice.text.toString()
+        val nExpBid = etExp.text.toString()
+
+
+        //Inflate View
+        val v = layoutInflater.inflate(R.layout.layout_add_stock, null)
+        dialog.setView(v)
+
+        //Get references of the views in the layout_add_stock
+        v.apply {
+            tvcnfAddCrop.text = resources.getString(
+                R.string.adding_crop,
+                nCrop,
+                nQuantity,
+                nQuantityTranslated,
+                nPrice
+            )
+
+            tvcnfAddBiddate.text = resources.getString(R.string.adding_bid_date, nExpBid)
+        }
+
+        dialog.setTitle(resources.getString(R.string.confirm))
+        dialog.setPositiveButton(resources.getString(R.string.confirm)) { mDialog_, mInt ->
+            mDialog_.dismiss()
+            createStock()
+        }
+        dialog.setNegativeButton(resources.getString(R.string.cancel)) { _, _ ->
+
+        }
+
+        dialog.create()
+        dialog.show()
 
     }
 
