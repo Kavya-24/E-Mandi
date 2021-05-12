@@ -63,7 +63,7 @@ class MySuppliesViewmodel : ViewModel() {
                     } else {
 
                         successful.value = false
-                        message.value = context.resources.getString(R.string.couldNotLoad)
+                        message.value = context.resources.getString(R.string.couldNotLoadSupplies)
                     }
 
                     mSupplies.value = response.body()
