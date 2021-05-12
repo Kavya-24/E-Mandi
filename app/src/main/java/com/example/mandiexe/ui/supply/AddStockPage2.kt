@@ -126,7 +126,6 @@ class AddStockPage2 : AppCompatActivity() {
             tvcnfAddBiddate.text = resources.getString(R.string.adding_bid_date, nExpBid)
         }
 
-        dialog.setTitle(resources.getString(R.string.confirm))
         dialog.setPositiveButton(resources.getString(R.string.confirm)) { mDialog_, mInt ->
             mDialog_.dismiss()
             createStock()
