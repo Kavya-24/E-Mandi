@@ -14,6 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.mandiexe.R
 import com.example.mandiexe.adapter.BidHistoryAdapter
 import com.example.mandiexe.adapter.OnMyBidClickListenerGlobal
@@ -21,8 +22,6 @@ import com.example.mandiexe.models.responses.bids.BidHistoryResponse
 import com.example.mandiexe.ui.bids.BidDetailActivity
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.usables.UIUtils
-import com.example.mandiexe.utils.usables.UIUtils.hideProgress
-import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.example.mandiexe.viewmodels.FarmerBidHistoryViewModel
 import kotlinx.android.synthetic.main.farmer_bid_history_fragment.*
 
@@ -35,18 +34,24 @@ class FarmerBidHistory : Fragment(), OnMyBidClickListenerGlobal {
     private val viewModel: FarmerBidHistoryViewModel by viewModels()
     private lateinit var root: View
     private lateinit var pb: ProgressBar
+    private lateinit var swl: SwipeRefreshLayout
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         root = inflater.inflate(R.layout.farmer_bid_history_fragment, container, false)
         pb = root.findViewById(R.id.pb_history_bid)
+        swl = root.findViewById(R.id.swl_bid_history)
 
-        showProgress(pb, requireContext())
+
+
         loadHistory()
 
-        hideProgress(pb, requireContext())
-
+        swl.setOnRefreshListener {
+            loadHistory()
+            swl.isRefreshing = false
+        }
 
 
         return root
@@ -54,7 +59,7 @@ class FarmerBidHistory : Fragment(), OnMyBidClickListenerGlobal {
 
     private fun loadHistory() {
 
-        showProgress(pb, requireContext())
+        swl.isRefreshing = true
 
         viewModel.BidFunction().observe(viewLifecycleOwner, Observer { mResponse ->
             val success = viewModel.successful.value
@@ -74,8 +79,8 @@ class FarmerBidHistory : Fragment(), OnMyBidClickListenerGlobal {
 
         })
 
-        hideProgress(pb, requireContext())
 
+        swl.isRefreshing = false
     }
 
     private fun loadItemsInRV(mResponse: BidHistoryResponse) {
@@ -83,18 +88,19 @@ class FarmerBidHistory : Fragment(), OnMyBidClickListenerGlobal {
         val rv = root.findViewById<RecyclerView>(R.id.rv_history_bid)
         rv.layoutManager = LinearLayoutManager(requireContext())
         val adapter = BidHistoryAdapter(this)
+        rv.adapter = adapter
 
-        if (mResponse.bids.size == 0) {
-            root.findViewById<AppCompatTextView>(R.id.tvEmptyListBid).visibility = View.VISIBLE
+        val mTv = root.findViewById<AppCompatTextView>(R.id.tvEmptyListBid)
+
+        if (mResponse.bids.isEmpty()) {
+            mTv.visibility = View.VISIBLE
 
 
         } else {
-            root.findViewById<AppCompatTextView>(R.id.tvEmptyListBid).visibility = View.GONE
-
+            mTv.visibility = View.GONE
             adapter.lst = mResponse.bids
+            adapter.notifyDataSetChanged()
         }
-
-        rv.adapter = adapter
 
     }
 

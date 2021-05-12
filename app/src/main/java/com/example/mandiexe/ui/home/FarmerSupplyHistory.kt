@@ -21,8 +21,6 @@ import com.example.mandiexe.adapter.SupplyHistoryAdapter
 import com.example.mandiexe.models.responses.supply.SupplyHistoryResponse
 import com.example.mandiexe.ui.supply.SupplyDetailActivity
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
-import com.example.mandiexe.utils.usables.UIUtils.hideProgress
-import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.example.mandiexe.viewmodels.FarmerSupplyHistoryViewModel
 import kotlinx.android.synthetic.main.farmer_supply_history_fragment.*
 
@@ -36,6 +34,7 @@ class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {
     private lateinit var root: View
     private lateinit var pb: ProgressBar
 
+    private lateinit var swl: SwipeRefreshLayout
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,15 +42,12 @@ class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {
 
         root = inflater.inflate(R.layout.farmer_supply_history_fragment, container, false)
         pb = root.findViewById(R.id.pb_history_supply)
+        swl = root.findViewById<SwipeRefreshLayout>(R.id.swl_supply_history)
 
-        showProgress(pb, requireContext())
 
         loadHistory()
-        val swl = root.findViewById<SwipeRefreshLayout>(R.id.swl_supply_history)
 
-        hideProgress(pb, requireContext())
         swl.setOnRefreshListener {
-
             loadHistory()
             swl.isRefreshing = false
 
@@ -64,7 +60,7 @@ class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {
 
     private fun loadHistory() {
 
-        showProgress(pb, requireContext())
+        swl.isRefreshing = true
 
         viewModel.supplyFunction().observe(viewLifecycleOwner, Observer { mResponse ->
             val success = viewModel.successful.value
@@ -84,8 +80,7 @@ class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {
 
         })
 
-        hideProgress(pb, requireContext())
-
+        swl.isRefreshing = false
 
     }
 
@@ -103,6 +98,8 @@ class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {
         } else {
             adapter.lst = mResponse.supplies
             mTv.visibility = View.GONE
+            //Notify adapter
+            adapter.notifyDataSetChanged()
         }
 
         rv.adapter = adapter
