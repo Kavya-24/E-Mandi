@@ -39,7 +39,7 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
     private lateinit var root: View
     private lateinit var tabLayout: TabLayout
 
-    private lateinit var pb : ProgressBar
+    private lateinit var swl : SwipeRefreshLayout
 
     override fun onResume() {
         super.onResume()
@@ -50,15 +50,15 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         root = inflater.inflate(R.layout.my_bids_fragment, container, false)
-        pb = root.findViewById(R.id.pb_requirement)
         //Get the items from retrofit call and paged adapter
+        swl = root.findViewById<SwipeRefreshLayout>(R.id.swl_bid_fragment)
 
 
 
         loadRequirements()
 
-        val swl = root.findViewById<SwipeRefreshLayout>(R.id.swl_stock_fragment)
         swl.setOnRefreshListener {
             loadRequirements()
             swl.isRefreshing = false
@@ -74,7 +74,7 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
 
     private fun loadRequirements() {
 
-        showProgress(pb, requireContext())
+        swl.isRefreshing = true
 
         viewModel.reqFunction().observe(viewLifecycleOwner, Observer { mResponse ->
 
@@ -92,8 +92,7 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
             }
         })
 
-       hideProgress(pb, requireContext())
-
+        swl.isRefreshing = false
     }
 
     private fun manageReqLoadedResponses(mResponse: FamerBidsResponse?) {

@@ -40,8 +40,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
     private lateinit var root: View
     private lateinit var tabLayout: TabLayout
 
-    private lateinit var pb: ProgressBar
-
+   private lateinit var swl : SwipeRefreshLayout
 
     override fun onResume() {
         super.onResume()
@@ -56,7 +55,8 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
 
 
         root = inflater.inflate(R.layout.my_supplies_fragment, container, false)
-        pb = root.findViewById(R.id.pb_my_crops)
+        swl = root.findViewById<SwipeRefreshLayout>(R.id.swl_supplies_fragment)
+
 
         loadItems()
 
@@ -72,7 +72,6 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
 
         }
 
-        val swl = root.findViewById<SwipeRefreshLayout>(R.id.swl_supplies_fragment)
         swl.setOnRefreshListener {
             loadItems()
             swl.isRefreshing = false
@@ -83,8 +82,8 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
 
     private fun loadItems() {
 
-        showProgress(pb, requireContext())
 
+        swl.isRefreshing = true
         viewModel.supplyFunction().observe(viewLifecycleOwner, Observer { mResponse ->
             if (viewModel.successful.value != null) {
                 if (viewModel.successful.value!!) {
@@ -98,8 +97,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
 
         })
 
-        hideProgress(pb, requireContext())
-
+        swl.isRefreshing = false
     }
 
     @SuppressLint("CutPasteId")
@@ -108,7 +106,8 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
 
         Log.e("MY Supply", "In manage stock")
 
-        showProgress(pb, requireContext())
+
+        swl.isRefreshing = true
         val rv = root.findViewById<RecyclerView>(R.id.rv_my_stocks)
         val adapter = MySuppliesAdapter(this)
 
@@ -130,7 +129,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
             }
         }
 
-        hideProgress(pb, requireContext())
+        swl.isRefreshing = false
 
     }
 
