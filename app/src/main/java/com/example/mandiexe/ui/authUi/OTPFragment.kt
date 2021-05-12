@@ -19,7 +19,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.example.mandiexe.R
-import com.example.mandiexe.interfaces.RetrofitClient
 import com.example.mandiexe.models.body.authBody.LoginBody
 import com.example.mandiexe.models.responses.auth.LoginResponse
 import com.example.mandiexe.ui.home.MainActivity
@@ -134,7 +133,7 @@ class OTPFragment : Fragment() {
                     )
                 }
                 hideProgress(pb, requireContext())
-            } else{
+            } else {
                 //When the verifucation is progress
                 Log.e(TAG, "Button clicked when not yet verified")
             }
@@ -143,9 +142,9 @@ class OTPFragment : Fragment() {
 
 
         tvTimer.setOnClickListener {
-            if(tvTimer.text == resources.getString(R.string.otpResend)){
+            if (tvTimer.text == resources.getString(R.string.otpResend)) {
                 verificationInProgress = true
-                resendVerificationCode(phoneNumber,resendToken)
+                resendVerificationCode(phoneNumber, resendToken)
             }
 
         }
@@ -272,8 +271,8 @@ class OTPFragment : Fragment() {
 
                 timer = object : CountDownTimer(300000, 1000) {
                     override fun onTick(millisUntilFinished: Long) {
-                        val timeValue = (millisUntilFinished/1000).toString()
-                        tvTimer.text = resources.getString(R.string.resendIn,timeValue)
+                        val timeValue = (millisUntilFinished / 1000).toString()
+                        tvTimer.text = resources.getString(R.string.resendIn, timeValue)
                         tvTimer.visibility = View.VISIBLE
 
 
@@ -348,7 +347,10 @@ class OTPFragment : Fragment() {
 
                         } else {
 
-                            Log.e(TAG, "Failed to get user id token from task with exception ${mTask.exception?.localizedMessage}")
+                            Log.e(
+                                TAG,
+                                "Failed to get user id token from task with exception ${mTask.exception?.localizedMessage}"
+                            )
                             // Handle error -> task.getException();
                             createSnackbar(
                                 mTask.exception?.localizedMessage.toString(),

@@ -26,11 +26,4 @@
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:textColor="@color/white" />
 
-    <TextView
-        android:padding="@dimen/space"
-        android:textColor="@color/white"
-        android:id="@+id/tv_header_addr"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
 </LinearLayout>
