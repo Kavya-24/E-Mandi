@@ -322,6 +322,7 @@
     <string name="adding_crop" translatable="false">Adding crop %s (%s %s)\nInitial expected price %s</string>
     <string name="adding_bid_date" translatable="false">Bid ends on %s</string>
     <string name="unableToAddStock">Unable to add the crop. Please try again later</string>
+    <string name="add">Add</string>
 
 
     <string-array name="arr_area_units">

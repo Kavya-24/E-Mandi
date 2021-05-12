@@ -314,6 +314,7 @@
     <string name="addCropforBidding">Adding for bid</string>
     <string name="confirm">Confirm</string>
     <string name="unableToAddStock">Unable to add the crop. Please try again later</string>
+    <string name="add">Add</string>
 
     <string-array name="arr_area_units">
         <item>@string/Hectare</item>

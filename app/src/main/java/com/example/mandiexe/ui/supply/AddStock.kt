@@ -174,6 +174,20 @@ class AddStock : AppCompatActivity() {
 
 
         val bidCheck = findViewById<CheckBox>(R.id.checkbox)
+        bidCheck.setOnCheckedChangeListener { buttonView, isChecked ->
+
+            if (isChecked) {
+                //Then the button says next
+                mtb.text = resources.getString(R.string.next)
+                mtb.icon = resources.getDrawable(R.drawable.ic_arrow_forward, null)
+
+            } else {
+                mtb.text = resources.getString(R.string.add)
+                mtb.icon = resources.getDrawable(R.drawable.ic_check_black_24dp, null)
+
+            }
+        }
+
         mtb.setOnClickListener {
             if (isValidate()) {
                 if (bidCheck.isChecked) {
