@@ -354,7 +354,10 @@ class AddStockPage2 : AppCompatActivity() {
         viewModel.successfulGrowth.value = null
         viewModel.successful.removeObservers(this)
         viewModel.successful.value = null
+
+        //Finish this activty
         super.onBackPressed()
+        finish()
 
     }
 }
