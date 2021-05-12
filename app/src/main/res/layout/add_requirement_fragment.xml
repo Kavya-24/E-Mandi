@@ -55,7 +55,7 @@
             style="@style/styleRv"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/item_demand" />
+            tools:listitem="@layout/item_bid" />
 
 
         <ImageView

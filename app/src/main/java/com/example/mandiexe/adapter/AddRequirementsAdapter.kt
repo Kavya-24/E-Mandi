@@ -140,7 +140,7 @@ RecyclerView.Adapter<NewReqAdapter.MyViewHolder>() {
 
         val view =
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_demand, parent, false)
+                .inflate(R.layout.item_bid, parent, false)
         return MyViewHolder(view)
 
     }
