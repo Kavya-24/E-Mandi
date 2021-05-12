@@ -107,7 +107,7 @@
     <string name="no">No</string>
     <string name="description">Description: </string>
     <string name="modifyCrop">Modify crop</string>
-    <string name="supplyAdded">New stock of crop created successfully</string>
+    <string name="supplyAdded">Crop  added successfully</string>
     <string name="couldNotLoadSupplies" tools:ignore="MissingTranslation">Could not load crops</string>
     <string name="couldNotLoadBids" tools:ignore="MissingTranslation">Could not load active bids</string>
     <string name="suppliesLoaded">Stocks loaded successfully</string>
