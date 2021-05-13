@@ -16,6 +16,7 @@ import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -71,6 +72,9 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement {
     //Translate TextViews
     private lateinit var t: TextView           //For the autocomplete
     private lateinit var swl: SwipeRefreshLayout
+
+    private lateinit var empty: ConstraintLayout
+    private var isLoaded = false
 
     private fun makeCall(txt: String?, defaultQuery: String) {
 
@@ -241,11 +245,18 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement {
 
     private fun loadResultInRV(response: NewDemandsResponse) {
         //MAke call
+        isLoaded = true
         val tv = findViewById<ImageView>(R.id.ivNoNewReq)
-        val empty = findViewById<ConstraintLayout>(R.id.llEmptyNewDemands)
         if (response.demands.isEmpty()) {
 
             empty.visibility = View.VISIBLE
+
+
+            // TODO:
+            this.apply {
+                //ivNoNewReq.setImageDrawable()
+                tvEmptyListNewDemands.visibility = View.GONE
+            }
             //Create indefinite snackbar
             Snackbar.make(
                 conatiner_new_demand,
@@ -287,6 +298,10 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement {
         rv = findViewById(R.id.rv_search_requirements)
         t = findViewById<TextView>(R.id.tempTvAddReqTrans)
         swl = findViewById(R.id.swl_new_demands)
+        empty = findViewById<ConstraintLayout>(R.id.llEmptyNewDemands)
+
+        empty.visibility = View.VISIBLE
+
 
         val tb = findViewById<Toolbar>(R.id.toolbarExternalSearch)
         tb.title = resources.getString(R.string.searchBuyers)
@@ -398,6 +413,12 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement {
         }
 
 
+        empty.setOnClickListener {
+            if (!(empty.isVisible and isLoaded)) {
+                searchView.requestFocus()
+            }
+        }
+
     }
 
     private fun createVoiceIntent() {
@@ -463,6 +484,21 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement {
         val i = Intent(this, BidDetailActivity::class.java)
         i.putExtra("bundle", bundle)
         startActivity(i)
+    }
+
+    override fun onResume() {
+        super.onResume()
+    }
+
+    override fun recreate() {
+        super.recreate()
+        //Start from the basic empty
+        empty.visibility = View.VISIBLE
+        isLoaded = false
+        this.apply {
+            tvEmptyListNewDemands.visibility = View.VISIBLE
+            ivNoNewReq.setImageDrawable(resources.getDrawable(R.drawable.searchlogo, null))
+        }
     }
 
 }

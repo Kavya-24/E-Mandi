@@ -1,53 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/conatiner_new_demand"
     android:layout_width="match_parent"
-    android:id="@+id/swl_new_demands"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/conatiner_new_demand"
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbarlayoutExternalSearch"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:layout_constraintTop_toTopOf="parent">
 
-
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appbarlayoutExternalSearch"
+        <android.widget.Toolbar
+            android:id="@+id/toolbarExternalSearch"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:foregroundTint="@color/white"
+            android:navigationIcon="@drawable/ic_arrow_back"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:titleTextColor="@color/white"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:titleTextColor="@color/white">
 
-            <android.widget.Toolbar
-                android:id="@+id/toolbarExternalSearch"
+            <SearchView
+                android:id="@+id/addSearch"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                android:foregroundTint="@color/white"
-                android:navigationIcon="@drawable/ic_arrow_back"
-                android:theme="@style/AppTheme.NoActionBar"
-                android:titleTextColor="@color/white"
-                app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:titleTextColor="@color/white">
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:searchIcon="@drawable/ic_search_black_24dp"
+                android:voiceIcon="@drawable/ic_action_voice_search"
+                app:queryHint="@string/searchCrops"
+                app:tint="@color/white">
 
-                <SearchView
-                    android:id="@+id/addSearch"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:focusable="false"
-                    android:searchIcon="@drawable/ic_search_black_24dp"
-                    android:voiceIcon="@drawable/ic_action_voice_search"
-                    app:queryHint="@string/searchCrops"
-                    app:tint="@color/white">
+                <requestFocus />
+            </SearchView>
+        </android.widget.Toolbar>
 
-                    <requestFocus />
-                </SearchView>
-            </android.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
 
-        </com.google.android.material.appbar.AppBarLayout>
-
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swl_new_demands"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/container_select_template"
@@ -59,6 +59,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_search_requirements"
                 style="@style/styleRv"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:listitem="@layout/item_bid" />
@@ -67,16 +68,32 @@
                 android:id="@+id/llEmptyNewDemands"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone">
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
                     android:id="@+id/ivNoNewReq"
+                    android:layout_width="@dimen/space_220"
+                    android:layout_height="@dimen/space_220"
+                    android:gravity="center"
+                    android:src="@drawable/searchlogo"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvEmptyListNewDemands"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/space_5x"
                     android:gravity="center"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@drawable/nothing2" />
+                    android:padding="@dimen/space"
+                    android:text="@string/start_searchinhg"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp"
+                    app:layout_constraintTop_toBottomOf="@id/ivNoNewReq" />
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -98,6 +115,5 @@
                 android:visibility="gone"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </LinearLayout>
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</LinearLayout>
