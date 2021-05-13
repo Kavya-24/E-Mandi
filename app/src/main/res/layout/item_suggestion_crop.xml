@@ -2,32 +2,33 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/space"
-    android:elevation="@dimen/space"
-    app:cardCornerRadius="@dimen/space">
+    android:layout_margin="@dimen/space_half"
+    android:elevation="@dimen/space_half"
+    app:cardCornerRadius="@dimen/space_half">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/space"
+        android:gravity="center"
         android:orientation="horizontal"
-        android:padding="@dimen/space">
+        android:padding="@dimen/space_half">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tvItemDemandSuggestion"
             android:layout_gravity="center"
-            android:layout_margin="@dimen/space"
+            android:layout_margin="@dimen/space_half"
             tools:text="@string/rice" />
 
         <ImageView
             android:id="@+id/ivItemDemandSuggestion"
             android:layout_width="@dimen/space_6x"
             android:layout_height="@dimen/space_6x"
+            android:layout_margin="@dimen/space_half"
             android:layout_gravity="center"
             tools:src="@drawable/rice" />
 

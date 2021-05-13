@@ -57,6 +57,14 @@
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
+                style="@style/styleRv"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:listitem="@layout/item_suggestion_crop"
+                android:id="@+id/rv_demand_suggestions" />
+
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_search_requirements"
                 style="@style/styleRv"
                 android:visibility="gone"
