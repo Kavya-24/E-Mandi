@@ -91,6 +91,7 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
     private val pref = com.example.mandiexe.utils.auth.PreferenceUtil
     private lateinit var pb: ProgressBar
+    private lateinit var swl : SwipeRefreshLayout
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -112,12 +113,14 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
             onBackPressed()
         }
 
+        swl = findViewById(R.id.swl_detailsSupply)
         Log.e(TAG, "Supply id is" + SUPPLY_ID + "\nFrom " + from)
 
         pb = findViewById(R.id.pb_my_crops_details)
         //This gets an id as the argument and makes a call from it
+        swl.isRefreshing = true
         makeCall()
-
+        swl.isRefreshing = false
 
         //initViews
         findViewById<TextView>(R.id.tv_view_bid_history_stocks).setOnClickListener {
@@ -153,9 +156,9 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
         }
 
 
-        findViewById<SwipeRefreshLayout>(R.id.swl_details).setOnRefreshListener {
+        swl.setOnRefreshListener {
             makeCall()
-            findViewById<SwipeRefreshLayout>(R.id.swl_details).isRefreshing = false
+            swl.isRefreshing = false
         }
 
 

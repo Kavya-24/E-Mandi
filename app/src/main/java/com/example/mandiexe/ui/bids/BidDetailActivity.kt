@@ -18,6 +18,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.mandiexe.R
 import com.example.mandiexe.adapter.MyBidHistoryAdapter
 import com.example.mandiexe.adapter.OnBidHistoryClickListener
@@ -92,6 +93,8 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
     private var personObject: PersonObject? = null
 
+    private lateinit var swl : SwipeRefreshLayout
+
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         setAppLocale(pref.getLanguageFromPreference(), this)
@@ -113,7 +116,7 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
         }
         graph = findViewById(R.id.graphViewReq)
         pb = findViewById(R.id.pb_my_req_details)
-
+        swl = findViewById(R.id.swl_detailsReq)
         //Set views from 'FROM'
         if (from == MyBidsFragment::class.java.simpleName || from == FarmerBidHistory::class.java.simpleName) {
             //Do nothing
@@ -141,7 +144,9 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
         }
 
 
+        swl.isRefreshing = true
         makeCall()
+        swl.isRefreshing = false
 
 
         //initViews
