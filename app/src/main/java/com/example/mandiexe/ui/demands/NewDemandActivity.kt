@@ -23,7 +23,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.mandiexe.R
 import com.example.mandiexe.adapter.NewReqAdapter
 import com.example.mandiexe.adapter.OnClickNewRequirement
+import com.example.mandiexe.adapter.mDemandSuggestionClickListener
 import com.example.mandiexe.interfaces.RetrofitClient
+import com.example.mandiexe.models.DemandSuggestionObject
 import com.example.mandiexe.models.body.SearchCropReqBody
 import com.example.mandiexe.models.body.supply.CropSearchAutoCompleteBody
 import com.example.mandiexe.models.responses.demand.NewDemandsResponse
@@ -48,7 +50,8 @@ import retrofit2.Call
 import retrofit2.Response
 
 
-class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement {
+class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
+    mDemandSuggestionClickListener {
 
     companion object {
         fun newInstance() = NewDemandActivity()
@@ -75,6 +78,8 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement {
 
     private lateinit var empty: ConstraintLayout
     private var isLoaded = false
+
+    private lateinit var rvSuggestion: RecyclerView
 
     private fun makeCall(txt: String?, defaultQuery: String) {
 
@@ -246,7 +251,7 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement {
     private fun loadResultInRV(response: NewDemandsResponse) {
         //MAke call
         isLoaded = true
-        val tv = findViewById<ImageView>(R.id.ivNoNewReq)
+
         if (response.demands.isEmpty()) {
 
             empty.visibility = View.VISIBLE
@@ -298,8 +303,10 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement {
         t = findViewById<TextView>(R.id.tempTvAddReqTrans)
         swl = findViewById(R.id.swl_new_demands)
         empty = findViewById<ConstraintLayout>(R.id.llEmptyNewDemands)
+        rvSuggestion = findViewById(R.id.rv_demand_suggestions)
 
         empty.visibility = View.VISIBLE
+        rvSuggestion.visibility = View.GONE
 
 
         val tb = findViewById<Toolbar>(R.id.toolbarExternalSearch)
@@ -340,11 +347,14 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement {
         searchView.setOnSuggestionListener(object : SearchView.OnSuggestionListener {
 
             override fun onSuggestionSelect(position: Int): Boolean {
+                rvSuggestion.visibility = View.GONE
+                searchView.clearFocus()
                 return false        //Was true
             }
 
             override fun onSuggestionClick(position: Int): Boolean {
-
+                rvSuggestion.visibility = View.GONE
+                searchView.clearFocus()
                 //Wont come here
                 showProgress(pb, this@NewDemandActivity)
                 val cursor: Cursor = mAdapter!!.getItem(position) as Cursor
@@ -386,6 +396,8 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 //Returns query
                 //Do nothing here
+                rvSuggestion.visibility = View.GONE
+                searchView.clearFocus()
                 showProgress(pb, this@NewDemandActivity)
                 getTranslatedSearch(query.toString())
                 hideProgress(pb, this@NewDemandActivity)
@@ -394,7 +406,7 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-
+                rvSuggestion.visibility = View.VISIBLE
                 //Dont get suggestions
 //                showProgress(pb, this@NewDemandActivity)
 //                getTranslatedQuery(newText.toString())
@@ -489,6 +501,7 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement {
 
     override fun onResume() {
         super.onResume()
+        rvSuggestion.visibility = View.GONE
     }
 
     override fun recreate() {
@@ -500,6 +513,20 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement {
             tvEmptyListNewDemands.visibility = View.VISIBLE
             ivNoNewReq.setImageDrawable(resources.getDrawable(R.drawable.searchlogo, null))
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        searchView.clearFocus()
+    }
+
+    override fun clickDemandSuggestion(_listItem: DemandSuggestionObject) {
+
+        showProgress(pb, this@NewDemandActivity)
+        getTranslatedSearch(_listItem.nameOfCrop.toString())
+        hideProgress(pb, this@NewDemandActivity)
+
+
     }
 
 }
