@@ -345,6 +345,7 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement {
 
             override fun onSuggestionClick(position: Int): Boolean {
 
+                //Wont come here
                 showProgress(pb, this@NewDemandActivity)
                 val cursor: Cursor = mAdapter!!.getItem(position) as Cursor
                 val txt = cursor.getString(cursor.getColumnIndex("suggestionList"))
@@ -394,9 +395,10 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement {
 
             override fun onQueryTextChange(newText: String?): Boolean {
 
-                showProgress(pb, this@NewDemandActivity)
-                getTranslatedQuery(newText.toString())
-                hideProgress(pb, this@NewDemandActivity)
+                //Dont get suggestions
+//                showProgress(pb, this@NewDemandActivity)
+//                getTranslatedQuery(newText.toString())
+//                hideProgress(pb, this@NewDemandActivity)
                 return false
 
             }
