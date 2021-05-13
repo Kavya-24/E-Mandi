@@ -98,5 +98,4 @@
         <item name="android:hint">@string/searchHint</item>
     </style>
 
-
-</resources>
+    </resources>
