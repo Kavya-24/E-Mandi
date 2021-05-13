@@ -29,7 +29,7 @@ import com.example.mandiexe.models.responses.bids.DeleteBidResponse
 import com.example.mandiexe.models.responses.bids.UpdateBidResponse
 import com.example.mandiexe.models.responses.bids.ViewBidResponse
 import com.example.mandiexe.models.responses.demand.ViewDemandResponse
-import com.example.mandiexe.ui.demands.AddRequirement
+import com.example.mandiexe.ui.demands.NewDemandActivity
 import com.example.mandiexe.ui.home.FarmerBidHistory
 import com.example.mandiexe.utils.PermissionsHelper
 import com.example.mandiexe.utils.auth.PreferenceUtil
@@ -132,7 +132,7 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
             }
 
-        } else if (from == AddRequirement::class.java.simpleName) {
+        } else if (from == NewDemandActivity::class.java.simpleName) {
             mtb_add_bid.visibility = View.VISIBLE
             mtb_cancel_bid.visibility = View.GONE
             mtb_Modify_bid.visibility = View.GONE
@@ -277,7 +277,7 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
         val body = ViewBidBody(BID_ID)
 
-        if (from != AddRequirement::class.java.simpleName) {
+        if (from != NewDemandActivity::class.java.simpleName) {
             viewModel.viewBidFunction(body).observe(this, Observer { mResponse ->
                 val success = viewModel.successfulBid.value
                 if (success != null) {
@@ -294,7 +294,7 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
             })
         }
 
-        if (from == AddRequirement::class.java.simpleName) {
+        if (from == NewDemandActivity::class.java.simpleName) {
 
             val body2 = ViewDemandBody(BID_ID)
             viewModel.viewDemandFunction(body2).observe(this, Observer { mResponse ->

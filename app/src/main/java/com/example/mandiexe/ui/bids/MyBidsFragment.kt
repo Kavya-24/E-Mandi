@@ -18,7 +18,7 @@ import com.example.mandiexe.R
 import com.example.mandiexe.adapter.MyRequirementsAdapter
 import com.example.mandiexe.adapter.OnMyBidClickListener
 import com.example.mandiexe.models.responses.bids.FamerBidsResponse
-import com.example.mandiexe.ui.demands.AddRequirement
+import com.example.mandiexe.ui.demands.NewDemandActivity
 import com.example.mandiexe.utils.usables.UIUtils
 import com.example.mandiexe.viewmodels.MyBidsViewmodel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -62,7 +62,7 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
         }
 
         root.findViewById<FloatingActionButton>(R.id.fab_add_requirement).setOnClickListener {
-            val i = Intent(requireContext(), AddRequirement::class.java)
+            val i = Intent(requireContext(), NewDemandActivity::class.java)
             startActivity(i)
         }
 

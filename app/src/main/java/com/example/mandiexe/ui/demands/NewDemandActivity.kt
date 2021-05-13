@@ -38,20 +38,20 @@ import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import com.example.mandiexe.utils.usables.UIUtils.hideProgress
 import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.example.mandiexe.utils.usables.ValidationObject
-import com.example.mandiexe.viewmodels.AddRequirementViewModel
+import com.example.mandiexe.viewmodels.NewDemandViewModel
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.add_requirement_fragment.*
+import kotlinx.android.synthetic.main.activity_new_demand.*
 import retrofit2.Call
 import retrofit2.Response
 
 
-class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
+class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement {
 
     companion object {
-        fun newInstance() = AddRequirement()
+        fun newInstance() = NewDemandActivity()
     }
 
-    private lateinit var viewModel: AddRequirementViewModel
+    private lateinit var viewModel: NewDemandViewModel
 
     private lateinit var pb: ProgressBar
     private lateinit var rv: RecyclerView
@@ -61,7 +61,7 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
     val VOICE_REC_CODE = 1234
     private val ACTION_VOICE_SEARCH = "com.google.android.gms.actions.SEARCH_ACTION"
 
-    private val TAG = AddRequirement::class.java.simpleName
+    private val TAG = NewDemandActivity::class.java.simpleName
     private lateinit var searchView: SearchView
     private var mAdapter: SimpleCursorAdapter? = null
     private lateinit var searchManager: SearchManager
@@ -92,7 +92,7 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
                     } else {
                         createSnackbar(
                             resources.getString(R.string.NoLoadNewReq),
-                            this@AddRequirement,
+                            this@NewDemandActivity,
                             conatiner_add_req
                         )
                     }
@@ -278,7 +278,7 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setAppLocale(pref.getLanguageFromPreference(), this)
-        setContentView(R.layout.add_requirement_fragment)
+        setContentView(R.layout.activity_new_demand)
         super.onCreate(savedInstanceState)
 
         //UI init
@@ -330,7 +330,7 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
 
             override fun onSuggestionClick(position: Int): Boolean {
 
-                showProgress(pb, this@AddRequirement)
+                showProgress(pb, this@NewDemandActivity)
                 val cursor: Cursor = mAdapter!!.getItem(position) as Cursor
                 val txt = cursor.getString(cursor.getColumnIndex("suggestionList"))
 
@@ -350,7 +350,7 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
 
 
                     makeCall(englishQuery, txt)
-                    hideProgress(pb, this@AddRequirement)
+                    hideProgress(pb, this@NewDemandActivity)
                     return true
 
                 } catch (e: java.lang.Exception) {
@@ -359,7 +359,7 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
 
 
                 getTranslatedSearch(txt)
-                hideProgress(pb, this@AddRequirement)
+                hideProgress(pb, this@NewDemandActivity)
                 return true
 
             }
@@ -370,18 +370,18 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 //Returns query
                 //Do nothing here
-                showProgress(pb, this@AddRequirement)
+                showProgress(pb, this@NewDemandActivity)
                 getTranslatedSearch(query.toString())
-                hideProgress(pb, this@AddRequirement)
+                hideProgress(pb, this@NewDemandActivity)
 
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
 
-                showProgress(pb, this@AddRequirement)
+                showProgress(pb, this@NewDemandActivity)
                 getTranslatedQuery(newText.toString())
-                hideProgress(pb, this@AddRequirement)
+                hideProgress(pb, this@NewDemandActivity)
                 return false
 
             }
@@ -453,7 +453,7 @@ class AddRequirement : AppCompatActivity(), OnClickNewRequirement {
 
 
     override fun viewMyBidDetails(_listItem: NewDemandsResponse.Demand) {
-        val mFrom = AddRequirement::class.java.simpleName
+        val mFrom = NewDemandActivity::class.java.simpleName
         val bundle = bundleOf(
             "BID_ID" to _listItem._id,
             "FROM" to mFrom
