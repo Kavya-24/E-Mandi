@@ -16,5 +16,6 @@
     <dimen name="space_250">250dp</dimen>
     <dimen name="space_10x">80dp</dimen>
     <dimen name="space_400">400dp</dimen>
+    <dimen name="space_6x">48dp</dimen>
 
 </resources>
