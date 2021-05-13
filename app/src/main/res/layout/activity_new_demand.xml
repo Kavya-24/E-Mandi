@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/conatiner_add_req"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -43,7 +44,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container_select_template"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -57,16 +58,22 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/item_bid" />
 
-
-        <ImageView
-            android:id="@+id/ivNoNewReq"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/llEmptyNewDemands"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:src="@drawable/nothing2"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/ivNoNewReq"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/nothing2" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ProgressBar
             android:id="@+id/pb_add_req"

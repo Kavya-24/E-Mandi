@@ -324,6 +324,7 @@
 	<string name="unableToAddStock">Unable to add the crop. Please try again later</string>
 	<string name="add">Add</string>
     <string name="bidRetrivealFailed">Failed to retrive the bid</string>
+    <string name="noDemandsFound">No demands for this crop were found</string>
 
 
     <string-array name="arr_area_units">

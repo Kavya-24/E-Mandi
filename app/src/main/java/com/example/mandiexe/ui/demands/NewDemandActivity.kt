@@ -14,6 +14,7 @@ import android.view.View
 import android.widget.*
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -239,15 +240,14 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement {
     private fun loadResultInRV(response: NewDemandsResponse) {
         //MAke call
         val tv = findViewById<ImageView>(R.id.ivNoNewReq)
-
+        val empty = findViewById<ConstraintLayout>(R.id.llEmptyNewDemands)
         if (response.demands.isEmpty()) {
-            tv.visibility = View.VISIBLE
-            rv.visibility = View.GONE
 
+            empty.visibility = View.VISIBLE
             //Create indefinite snackbar
             Snackbar.make(
                 conatiner_add_req,
-                resources.getString(R.string.emptyReq),
+                resources.getString(R.string.noDemandsFound),
                 Snackbar.LENGTH_INDEFINITE
             )
                 .setAction(resources.getString(R.string.add_crop)) { mListener ->
@@ -259,10 +259,9 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement {
 
 
         } else {
-
+            empty.visibility = View.GONE
             try {
                 rv.visibility = View.VISIBLE
-                tv.visibility = View.GONE
                 rv.layoutManager = LinearLayoutManager(this)
                 val adapter = NewReqAdapter(this)
                 adapter.lst = response.demands
@@ -441,9 +440,9 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement {
                 val resultInDefault = res?.get(0)
                 searchView.setQuery(resultInDefault, false)
 
-                showProgress(pb,this)
+                showProgress(pb, this)
                 getTranslatedSearch(resultInDefault.toString())
-                hideProgress(pb,this)
+                hideProgress(pb, this)
             }
 
         }
