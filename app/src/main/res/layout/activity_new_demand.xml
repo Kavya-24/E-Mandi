@@ -1,97 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/conatiner_add_req"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:id="@+id/swl_new_demands"
+    android:layout_height="match_parent">
 
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbarlayoutExternalSearch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <android.widget.Toolbar
-            android:id="@+id/toolbarExternalSearch"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:foregroundTint="@color/white"
-            android:navigationIcon="@drawable/ic_arrow_back"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:titleTextColor="@color/white"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:titleTextColor="@color/white">
-
-            <SearchView
-                android:id="@+id/addSearch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:searchIcon="@drawable/ic_search_black_24dp"
-                android:voiceIcon="@drawable/ic_action_voice_search"
-                app:queryHint="@string/searchCrops"
-                app:tint="@color/white">
-
-                <requestFocus />
-            </SearchView>
-        </android.widget.Toolbar>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/container_select_template"
+    <LinearLayout
+        android:id="@+id/conatiner_new_demand"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/bgGreen"
         android:orientation="vertical">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_search_requirements"
-            style="@style/styleRv"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/item_bid" />
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbarlayoutExternalSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <android.widget.Toolbar
+                android:id="@+id/toolbarExternalSearch"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                android:foregroundTint="@color/white"
+                android:navigationIcon="@drawable/ic_arrow_back"
+                android:theme="@style/AppTheme.NoActionBar"
+                android:titleTextColor="@color/white"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                app:titleTextColor="@color/white">
+
+                <SearchView
+                    android:id="@+id/addSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:searchIcon="@drawable/ic_search_black_24dp"
+                    android:voiceIcon="@drawable/ic_action_voice_search"
+                    app:queryHint="@string/searchCrops"
+                    app:tint="@color/white">
+
+                    <requestFocus />
+                </SearchView>
+            </android.widget.Toolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/llEmptyNewDemands"
+            android:id="@+id/container_select_template"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone">
+            android:background="@color/bgGreen"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/ivNoNewReq"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_search_requirements"
+                style="@style/styleRv"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:listitem="@layout/item_bid" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/llEmptyNewDemands"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/ivNoNewReq"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@drawable/nothing2" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ProgressBar
+                android:id="@+id/pb_add_req"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tempTvAddReqTrans"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/nothing2" />
-
+                android:text="@string/temp"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ProgressBar
-            android:id="@+id/pb_add_req"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tempTvAddReqTrans"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/temp"
-            android:visibility="gone"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</LinearLayout>
+    </LinearLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

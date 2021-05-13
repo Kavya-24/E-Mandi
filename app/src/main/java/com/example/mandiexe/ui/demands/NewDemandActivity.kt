@@ -18,6 +18,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.mandiexe.R
 import com.example.mandiexe.adapter.NewReqAdapter
 import com.example.mandiexe.adapter.OnClickNewRequirement
@@ -69,6 +70,7 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement {
 
     //Translate TextViews
     private lateinit var t: TextView           //For the autocomplete
+    private lateinit var swl: SwipeRefreshLayout
 
     private fun makeCall(txt: String?, defaultQuery: String) {
 
@@ -94,7 +96,7 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement {
                         createSnackbar(
                             resources.getString(R.string.NoLoadNewReq),
                             this@NewDemandActivity,
-                            conatiner_add_req
+                            conatiner_new_demand
                         )
                     }
                 }
@@ -246,7 +248,7 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement {
             empty.visibility = View.VISIBLE
             //Create indefinite snackbar
             Snackbar.make(
-                conatiner_add_req,
+                conatiner_new_demand,
                 resources.getString(R.string.noDemandsFound),
                 Snackbar.LENGTH_INDEFINITE
             )
@@ -284,7 +286,7 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement {
         pb = findViewById(R.id.pb_add_req)
         rv = findViewById(R.id.rv_search_requirements)
         t = findViewById<TextView>(R.id.tempTvAddReqTrans)
-
+        swl = findViewById(R.id.swl_new_demands)
 
         val tb = findViewById<Toolbar>(R.id.toolbarExternalSearch)
         tb.title = resources.getString(R.string.searchBuyers)
