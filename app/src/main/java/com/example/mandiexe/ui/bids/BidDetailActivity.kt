@@ -50,9 +50,9 @@ import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
+import kotlinx.android.synthetic.main.bid_detail_activity.*
 import kotlinx.android.synthetic.main.item_owner_detail.view.*
 import kotlinx.android.synthetic.main.supply_detail_activity.*
-import kotlinx.android.synthetic.main.bid_detail_activity.*
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -273,12 +273,12 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
         val body = ViewBidBody(BID_ID)
 
         if (from != AddRequirement::class.java.simpleName) {
-            viewModel.getFunction(body).observe(this, Observer { mResponse ->
+            viewModel.viewBidFunction(body).observe(this, Observer { mResponse ->
                 val success = viewModel.successfulBid.value
                 if (success != null) {
                     if (!success) {
                         createSnackbar(
-                            viewModel.messageBid.value,
+                            resources.getString(R.string.bidRetrivealFailed),
                             this,
                             container_req_details
                         )
@@ -292,7 +292,7 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
         if (from == AddRequirement::class.java.simpleName) {
 
             val body2 = ViewDemandBody(BID_ID)
-            viewModel.getDemandFunction(body2).observe(this, Observer { mResponse ->
+            viewModel.viewDemandFunction(body2).observe(this, Observer { mResponse ->
                 val success = viewModel.successfulDemand.value
                 if (success != null) {
                     if (!success) {
@@ -542,7 +542,7 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
         val body = DeletBidBody(BID_ID)
 
-        viewModel.cancelFunction(body).observe(this, Observer { mResponse ->
+        viewModel.deleteFunction(body).observe(this, Observer { mResponse ->
 
             //Check with the sucessful of it
             if (viewModel.successfulCancel.value == false) {
@@ -659,10 +659,10 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
         findViewById<ConstraintLayout>(R.id.mLayoutReq).visibility = View.VISIBLE
         hideProgress(pb, this)
-
+        Log.e(TAG, "In init views")
         try {
 
-            Log.e(TAG, "\nREsposne \nis $value")
+            Log.e(TAG, "\nResposne \nis $value")
             //Translate
             OfflineTranslate.translateToDefault(
                 this,
@@ -946,6 +946,8 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
         viewModel.successfulAdd.removeObservers(this)
         viewModel.successfulAdd.value = null
 
+        viewModel.successfulDemand.removeObservers(this)
+        viewModel.successfulDemand.value = null
 
         finish()
         super.onBackPressed()

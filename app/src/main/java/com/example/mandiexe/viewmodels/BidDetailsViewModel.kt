@@ -6,11 +6,15 @@ import androidx.lifecycle.ViewModel
 import com.example.mandiexe.R
 import com.example.mandiexe.interfaces.RetrofitClient
 import com.example.mandiexe.models.body.bid.*
-import com.example.mandiexe.models.responses.bids.*
+import com.example.mandiexe.models.responses.bids.AddBidResponse
+import com.example.mandiexe.models.responses.bids.DeleteBidResponse
+import com.example.mandiexe.models.responses.bids.UpdateBidResponse
+import com.example.mandiexe.models.responses.bids.ViewBidResponse
 import com.example.mandiexe.models.responses.demand.ViewDemandResponse
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.auth.SessionManager
 import com.example.mandiexe.utils.usables.ExternalUtils
+import com.example.mandiexe.utils.usables.UIUtils
 import retrofit2.Call
 import retrofit2.Response
 
@@ -21,6 +25,7 @@ class BidDetailsViewModel : ViewModel() {
     private val context = ApplicationUtils.getContext()
     private val sessionManager = SessionManager(context)
     private val myBidService = RetrofitClient.makeCallsForBids(context)
+    private val myDemandService = RetrofitClient.makeCallsForDemands(context)
 
     //For getting the details of the Bid stock
     val successfulBid: MutableLiveData<Boolean> = MutableLiveData()
@@ -52,13 +57,12 @@ class BidDetailsViewModel : ViewModel() {
     private var demandStock: MutableLiveData<ViewDemandResponse> = MutableLiveData()
 
 
-    fun getFunction(body: ViewBidBody): MutableLiveData<ViewBidResponse> {
-
-        mBid = BidStockFunction(body)
+    //For viewing the bid
+    fun viewBidFunction(body: ViewBidBody): MutableLiveData<ViewBidResponse> {
+        mBid = bidFunction(body)
         return mBid
     }
-
-    private fun BidStockFunction(body: ViewBidBody): MutableLiveData<ViewBidResponse> {
+    private fun bidFunction(body: ViewBidBody): MutableLiveData<ViewBidResponse> {
 
         myBidService.getFarmerViewParticularBid(
 
@@ -68,8 +72,8 @@ class BidDetailsViewModel : ViewModel() {
                 override fun onFailure(call: Call<ViewBidResponse>, t: Throwable) {
                     successfulBid.value = false
                     messageBid.value = ExternalUtils.returnStateMessageForThrowable(t)
+                    UIUtils.logThrowables(t,TAG)
                     //Response is null
-                    Log.e(TAG, "For the farmer, throawable is ${t.message} ${t.cause}")
                 }
 
                 override fun onResponse(
@@ -109,13 +113,11 @@ class BidDetailsViewModel : ViewModel() {
     }
 
 
-    fun cancelFunction(body: DeletBidBody): MutableLiveData<DeleteBidResponse> {
+    fun deleteFunction(body: DeletBidBody): MutableLiveData<DeleteBidResponse> {
 
         deleteBid = deleteBidFunction(body)
         return deleteBid
     }
-
-
     private fun deleteBidFunction(body: DeletBidBody): MutableLiveData<DeleteBidResponse> {
 
         myBidService.getFarmerDeleteBid(
@@ -163,13 +165,14 @@ class BidDetailsViewModel : ViewModel() {
 
     }
 
+
     fun updateFunction(body: UpdateBidBody): MutableLiveData<UpdateBidResponse> {
 
-        modifyBid = updateStockFunction(body)
+        modifyBid = updateBidFunction(body)
         return modifyBid
     }
 
-    private fun updateStockFunction(body: UpdateBidBody): MutableLiveData<UpdateBidResponse> {
+    private fun updateBidFunction(body: UpdateBidBody): MutableLiveData<UpdateBidResponse> {
 
         myBidService.getFarmerUpdateBid(
             mUpdateBidBody = body,
@@ -277,16 +280,14 @@ class BidDetailsViewModel : ViewModel() {
     }
 
 
-
-    fun getDemandFunction(body: ViewDemandBody): MutableLiveData<ViewDemandResponse> {
-
-        demandStock = DemandStockFunction(body)
+    fun viewDemandFunction(body: ViewDemandBody): MutableLiveData<ViewDemandResponse> {
+        demandStock = demandFunction(body)
         return demandStock
     }
 
-    private fun DemandStockFunction(body: ViewDemandBody): MutableLiveData<ViewDemandResponse> {
+    private fun demandFunction(body: ViewDemandBody): MutableLiveData<ViewDemandResponse> {
 
-        myBidService.getOpenDemand(
+        myDemandService.getOpenDemand(
 
             body = body
         )
@@ -327,7 +328,6 @@ class BidDetailsViewModel : ViewModel() {
                     demandStock.value = response.body()
                 }
             })
-
 
         return demandStock
 

@@ -105,7 +105,7 @@
 	<string name="description">விளக்கம்:</string>
 	<string name="modifyCrop">பயிர் மாற்றவும்</string>
 	<string name="supplyAdded">பயிர் புதிய பங்கு வெற்றிகரமாக உருவாக்கப்பட்டது</string>
-	<string name="couldNotLoad">பங்குகளை ஏற்ற முடியவில்லை</string>
+
 	<string name="suppliesLoaded">பங்குகள் வெற்றிகரமாக ஏற்றப்பட்டன</string>
 	<string name="noSupply">நீங்கள் இப்போது எந்த பொருட்கள் இல்லை.</string>
 	<string name="demanndLoaded">என் கோரிக்கைகளை ஏற்றும்</string>
@@ -255,4 +255,5 @@
     <string name="confirm">Confirm</string>
     <string name="unableToAddStock">Unable to add the crop. Please try again later</string>
     <string name="add">Add</string>
+    <string name="bidRetrivealFailed">Failed to retrive the bid</string>
 </resources>

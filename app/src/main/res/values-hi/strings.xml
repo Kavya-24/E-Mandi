@@ -105,7 +105,7 @@
 	<string name="description">विवरण:</string>
 	<string name="modifyCrop">फसल संशोधित करें</string>
 	<string name="supplyAdded">सफलतापूर्वक बनाई गई फसल का नया स्टॉक</string>
-	<string name="couldNotLoad">स्टॉक लोड नहीं कर सका</string>
+
 	<string name="suppliesLoaded">स्टॉक सफलतापूर्वक लोड किया गया</string>
 	<string name="noSupply">आपके पास अभी तक कोई आपूर्ति नहीं है।</string>
 	<string name="demanndLoaded">मेरी मांग लोड हो गई</string>
@@ -255,4 +255,5 @@
     <string name="confirm">Confirm</string>
     <string name="unableToAddStock">Unable to add the crop. Please try again later</string>
     <string name="add">Add</string>
+    <string name="bidRetrivealFailed">Failed to retrive the bid</string>
 </resources>

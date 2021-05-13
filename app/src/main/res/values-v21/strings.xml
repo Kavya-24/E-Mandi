@@ -323,6 +323,7 @@
     <string name="adding_bid_date" translatable="false">Bid ends on %s</string>
     <string name="unableToAddStock">Unable to add the crop. Please try again later</string>
     <string name="add">Add</string>
+    <string name="bidRetrivealFailed">Failed to retrive the bid</string>
 
 
     <string-array name="arr_area_units">

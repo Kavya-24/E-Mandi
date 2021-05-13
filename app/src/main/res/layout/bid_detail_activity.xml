@@ -26,7 +26,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space"
-                android:padding="@dimen/space">
+                android:padding="@dimen/space"
+                android:visibility="invisible">
 
                 <TextView
                     android:id="@+id/tv_requirement_detail_crop_name"
@@ -259,18 +260,16 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
 
-
-
                 <!--        //##Add contact-->
                 <TextView
                     android:id="@+id/tv_req_details_buyer_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/space"
-                    android:textStyle="bold"
                     android:layout_marginStart="@dimen/space"
                     android:layout_marginTop="@dimen/space_2x"
+                    android:layout_marginEnd="@dimen/space"
                     android:layout_marginBottom="@dimen/space_2x"
+                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_requirement_detail_my_bid"
                     tools:text="@tools:sample/full_names" />

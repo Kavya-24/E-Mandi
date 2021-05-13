@@ -83,5 +83,21 @@ object RetrofitClient {
 
     }
 
+    fun makeCallsForDemands(context: Context): myDemandsInterface {
+
+        //Moshi class
+        val moshi = Moshi.Builder()
+            .add(KotlinJsonAdapterFactory())
+            .build()
+
+        return Retrofit.Builder()
+            .baseUrl(url)
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .addCallAdapterFactory(CoroutineCallAdapterFactory())
+            .client(okhttpClient(context))
+            .build().create(myDemandsInterface::class.java)
+
+    }
+
 
 }

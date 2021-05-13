@@ -71,13 +71,7 @@ interface myBidsInterface {
     ): Call<NewDemandsResponse>
 
 
-    //Open a demand
-    //Delete the bid
-    @Headers("Content-Type:application/json")
-    @POST("api/demand/view")
-    fun getOpenDemand(
-        @Body body: ViewDemandBody
-    ): Call<ViewDemandResponse>
+
 
 
 

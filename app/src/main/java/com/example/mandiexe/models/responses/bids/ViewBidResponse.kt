@@ -11,7 +11,9 @@ data class ViewBidResponse(
     @field:Json(name = "msg")
     val msg: String // Bid retrieved successfully.
 ) {
-    @Keep data class Bid(
+
+    @Keep
+    data class Bid(
         @field:Json(name = "active")
         val active: Boolean, // true
         @field:Json(name = "bidDate")
@@ -29,9 +31,10 @@ data class ViewBidResponse(
         @field:Json(name = "lastModified")
         val lastModified: String, // 2021-02-05T18:10:44.693Z
         @field:Json(name = "__v")
-        val v: Int // 0
+        val __v: Int // 0
     ) {
-        @Keep data class Bidder(
+        @Keep
+        data class Bidder(
             @field:Json(name = "accountCreated")
             val accountCreated: String, // 2020-12-24T14:12:31.396Z
             @field:Json(name = "address")
@@ -57,18 +60,20 @@ data class ViewBidResponse(
             @field:Json(name = "state")
             val state: String, // del
             @field:Json(name = "__v")
-            val v: Int, // 0
+            val __v: Int, // 0
             @field:Json(name = "village")
             val village: String // greno
         ) {
-            @Keep data class Area(
+            @Keep
+            data class Area(
                 @field:Json(name = "numerical")
                 val numerical: Int, // 100
                 @field:Json(name = "unit")
                 val unit: String // acre
             )
 
-            @Keep data class Location(
+            @Keep
+            data class Location(
                 @field:Json(name = "coordinates")
                 val coordinates: List<Double>,
                 @field:Json(name = "type")
@@ -76,7 +81,8 @@ data class ViewBidResponse(
             )
         }
 
-        @Keep data class BidDetails(
+        @Keep
+        data class BidDetails(
             @field:Json(name = "amount")
             val amount: Int, // 10000
             @field:Json(name = "_id")
@@ -85,7 +91,8 @@ data class ViewBidResponse(
             val timestamp: String // 2021-02-05T18:10:44.693Z
         )
 
-        @Keep data class Demand(
+        @Keep
+        data class Demand(
             @field:Json(name = "active")
             val active: Boolean, // true
             @field:Json(name = "bids")
@@ -119,11 +126,12 @@ data class ViewBidResponse(
             @field:Json(name = "qty")
             val qty: Int, // 100
             @field:Json(name = "__v")
-            val v: Int, // 1
+            val __v: Int, // 1
             @field:Json(name = "variety")
             val variety: String // Basmati
         ) {
-            @Keep data class LastBid(
+            @Keep
+            data class LastBid(
                 @field:Json(name = "amount")
                 val amount: Int, // 0
                 @field:Json(name = "_id")
@@ -132,7 +140,8 @@ data class ViewBidResponse(
                 val timestamp: String // 2021-02-04T18:32:31.389Z
             )
 
-            @Keep data class Location(
+            @Keep
+            data class Location(
                 @field:Json(name = "coordinates")
                 val coordinates: List<Double>,
                 @field:Json(name = "type")

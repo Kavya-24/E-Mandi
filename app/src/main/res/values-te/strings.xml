@@ -105,7 +105,6 @@
 	<string name="description"></string>
 	<string name="modifyCrop"></string>
 	<string name="supplyAdded"></string>
-	<string name="couldNotLoad"></string>
 	<string name="suppliesLoaded"></string>
 	<string name="noSupply"></string>
 	<string name="demanndLoaded"></string>
@@ -255,4 +254,5 @@
     <string name="confirm">Confirm</string>
     <string name="unableToAddStock">Unable to add the crop. Please try again later</string>
     <string name="add">Add</string>
+    <string name="bidRetrivealFailed">Failed to retrive the bid</string>
 </resources>
