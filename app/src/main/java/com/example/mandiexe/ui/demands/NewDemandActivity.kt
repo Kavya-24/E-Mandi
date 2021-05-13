@@ -252,9 +252,8 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement {
             empty.visibility = View.VISIBLE
 
 
-            // TODO:
             this.apply {
-                //ivNoNewReq.setImageDrawable()
+                ivNoNewReq.setImageDrawable(resources.getDrawable(R.drawable.nothing2, null))
                 tvEmptyListNewDemands.visibility = View.GONE
             }
             //Create indefinite snackbar
