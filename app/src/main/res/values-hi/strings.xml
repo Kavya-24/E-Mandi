@@ -258,4 +258,5 @@
     <string name="bidRetrivealFailed">Failed to retrive the bid</string>
     <string name="noDemandsFound">No demands for this crop were found</string>
     <string name="start_searchinhg">Start searching for demand of crops</string>
+    <string name="mango">Mango</string>
 </resources>

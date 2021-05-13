@@ -13,7 +13,7 @@ class DemandsSuggestionAdapterClass(val itemClick: mDemandSuggestionClickListene
     RecyclerView.Adapter<DemandsSuggestionAdapterClass.MyViewHolder>() {
 
 
-    val lst: MutableList<DemandSuggestionObject> = mutableListOf()
+    var lst: MutableList<DemandSuggestionObject> = mutableListOf()
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 

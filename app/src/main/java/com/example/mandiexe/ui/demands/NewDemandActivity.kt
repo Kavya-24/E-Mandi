@@ -17,10 +17,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.mandiexe.R
+import com.example.mandiexe.adapter.DemandsSuggestionAdapterClass
 import com.example.mandiexe.adapter.NewReqAdapter
 import com.example.mandiexe.adapter.OnClickNewRequirement
 import com.example.mandiexe.adapter.mDemandSuggestionClickListener
@@ -308,6 +310,8 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
         empty.visibility = View.VISIBLE
         rvSuggestion.visibility = View.GONE
 
+        initiateDemandsSuggestionAdapter()
+
 
         val tb = findViewById<Toolbar>(R.id.toolbarExternalSearch)
         tb.title = resources.getString(R.string.searchBuyers)
@@ -526,7 +530,46 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
         getTranslatedSearch(_listItem.nameOfCrop.toString())
         hideProgress(pb, this@NewDemandActivity)
 
+    }
 
+    private fun initiateDemandsSuggestionAdapter() {
+        val newadapter = DemandsSuggestionAdapterClass(this)
+        rvSuggestion.layoutManager = GridLayoutManager(this, 2)
+        newadapter.lst = getList()
+        rvSuggestion.adapter = newadapter
+        newadapter.notifyDataSetChanged()
+    }
+
+    private fun getList(): MutableList<DemandSuggestionObject> {
+        val newList = mutableListOf<DemandSuggestionObject>()
+
+        newList.add(
+            DemandSuggestionObject(
+                resources.getString(R.string.rice),
+                resources.getDrawable(R.drawable.rice)
+            )
+        )
+        newList.add(
+            DemandSuggestionObject(
+                resources.getString(R.string.wheat),
+                resources.getDrawable(R.drawable.wweat)
+            )
+        )
+        newList.add(
+            DemandSuggestionObject(
+                resources.getString(R.string.potato),
+                resources.getDrawable(R.drawable.potato)
+            )
+        )
+        newList.add(
+            DemandSuggestionObject(
+                resources.getString(R.string.mango),
+                resources.getDrawable(R.drawable.mangi)
+            )
+        )
+
+
+        return newList
     }
 
 }

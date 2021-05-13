@@ -326,6 +326,7 @@
     <string name="bidRetrivealFailed">Failed to retrive the bid</string>
     <string name="noDemandsFound">No demands for this crop were found</string>
     <string name="start_searchinhg">Start searching for orders</string>
+    <string name="mango">Mango</string>
 
 
     <string-array name="arr_area_units">
