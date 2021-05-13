@@ -309,8 +309,8 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement {
             onBackPressed()
         }
 
-        //Inflate menu
-        tb.inflateMenu(R.menu.search_requirement_menu)
+//        //Inflate menu
+//        tb.inflateMenu(R.menu.search_requirement_menu)
 
         val crops: Array<String> = resources.getStringArray(R.array.arr_crop_names)
         searchView = findViewById(R.id.addSearch)
