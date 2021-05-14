@@ -270,6 +270,8 @@
         <item>@string/gram</item>
         <item>@string/chole</item>
         <item>@string/rajma</item>
+        <item>@string/mango</item>
+
 
     </string-array>
 
@@ -326,7 +328,6 @@
     <string name="bidRetrivealFailed">Failed to retrive the bid</string>
     <string name="noDemandsFound">No demands for this crop were found</string>
     <string name="start_searchinhg">Start searching for orders</string>
-    <string name="mango">Mango</string>
 
 
     <string-array name="arr_area_units">
@@ -334,7 +335,9 @@
         <item>@string/bigha</item>
         <item>@string/acres</item>
         <item>@string/sqrmetres</item>
+
     </string-array>
 
+    <string name="mango">Mango</string>
 
 </resources>
