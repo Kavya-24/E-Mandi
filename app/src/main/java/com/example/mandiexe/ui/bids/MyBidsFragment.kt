@@ -83,6 +83,8 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
                         requireContext(),
                         container_req
                     )
+                    doThrowableState()
+
                 } else {
                     manageReqLoadedResponses(mResponse)
                 }
@@ -99,13 +101,15 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
         val adapter = MyRequirementsAdapter(this)
 
         val empty = root.findViewById<ConstraintLayout>(R.id.llEmptyMyBids)
-
+        val tError = root.findViewById<ConstraintLayout>(R.id.llErrorThrowableBid)
         if (mResponse != null) {
             if (mResponse.bids.isEmpty()) {
                 empty.visibility = View.VISIBLE
+                doEmptyStates()
 
             } else {
                 empty.visibility = View.GONE
+                tError.visibility = View.GONE
 
                 val mutableDemands = mutableListOf<FamerBidsResponse.Bid>()
                 for (i in mResponse.bids) {
@@ -138,6 +142,20 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
         val i = Intent(requireContext(), BidDetailActivity::class.java)
         i.putExtra("bundle", bundle)
         startActivity(i)
+    }
+
+    private fun doEmptyStates() {
+        this.apply {
+            llEmptyMyBids.visibility = View.VISIBLE
+            llErrorThrowableBid.visibility = View.GONE
+        }
+    }
+
+    private fun doThrowableState() {
+        this.apply {
+            llEmptyMyBids.visibility = View.GONE
+            llErrorThrowableBid.visibility = View.VISIBLE
+        }
     }
 
 

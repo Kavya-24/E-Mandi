@@ -21,7 +21,6 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_requirement"
                 style="@style/styleRv"
-                android:visibility="gone"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 tools:listitem="@layout/item_bid" />
 
@@ -32,6 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -43,7 +43,7 @@
                 android:layout_margin="@dimen/space"
                 app:layout_constraintBottom_toTopOf="@id/tvEmptyListBid"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/otp_image" />
+                tools:src="@drawable/nothingimg" />
 
             <TextView
                 android:id="@+id/tvEmptyListBid"
@@ -58,6 +58,28 @@
                 android:textAlignment="center"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/llErrorThrowableBid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <ImageView
+                android:id="@+id/ivEmptyThrowable"
+                android:layout_width="@dimen/space_10x"
+                android:layout_height="@dimen/space_10x"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="@dimen/space_5x"
+                android:src="@drawable/connection"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
