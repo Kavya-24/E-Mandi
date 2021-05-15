@@ -137,9 +137,11 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
             //When no filter is selected
             if (actvDays.text.isNullOrEmpty() and actvDistance.text.isNullOrEmpty()) {
                 //Drop down the days spinner
+                actvDays.showDropDown()
 
             } else {
                 doAdvancedSearch()
+
             }
         }
 
