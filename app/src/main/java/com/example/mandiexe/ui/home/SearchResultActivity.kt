@@ -19,6 +19,7 @@ import com.example.mandiexe.adapter.YoutubeAdapter
 import com.example.mandiexe.interfaces.RetrofitClient
 import com.example.mandiexe.models.body.AdvancedSearchBody
 import com.example.mandiexe.models.body.supply.SearchGlobalCropBody
+import com.example.mandiexe.models.responses.AdvancedSearchResponse
 import com.example.mandiexe.models.responses.supply.SearchGlobalCropResponse
 import com.example.mandiexe.ui.supply.AddStock
 import com.example.mandiexe.utils.ApplicationUtils
@@ -28,6 +29,7 @@ import com.example.mandiexe.utils.auth.SessionManager
 import com.example.mandiexe.utils.usables.ExternalUtils
 import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.usables.OfflineTranslate
+import com.example.mandiexe.utils.usables.UIUtils
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import com.example.mandiexe.utils.usables.UIUtils.hideProgress
 import com.example.mandiexe.utils.usables.UIUtils.showProgress
@@ -57,6 +59,8 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
     private lateinit var actvDistance: AutoCompleteTextView
     private lateinit var mtbFilter: MaterialButton
     private var isFiltered = false
+
+    private val TAG = SearchResultActivity::class.java.simpleName
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -159,6 +163,48 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
             newBody = AdvancedSearchBody(englishFinalQuery, numDays.toInt(), numDistance.toInt())
         }
 
+        makeAdvcall(newBody)
+
+    }
+
+    private fun makeAdvcall(newBody: AdvancedSearchBody) {
+
+        Log.e(
+            "SEARCH",
+            "Crop" + englishFinalQuery + "Advanced search body is " + newBody.toString()
+        )
+
+        val service = RetrofitClient.makeCallsForSupplies(this)
+
+        showProgress(pb, this)
+
+        service.getAdvancedSearch(
+            newBody
+        )
+            .enqueue(object : retrofit2.Callback<AdvancedSearchResponse> {
+                override fun onResponse(
+                    call: Call<AdvancedSearchResponse>,
+                    response: Response<AdvancedSearchResponse>
+                ) {
+                    if (response.isSuccessful) {
+
+                        if (response.body() != null) {
+                            loadAdvancedSearch(response.body()!!)
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<AdvancedSearchResponse>, t: Throwable) {
+                    val message = ExternalUtils.returnStateMessageForThrowable(t)
+                    UIUtils.logThrowables(t, TAG)
+                }
+            })
+
+        hideProgress(pb, this)
+
+    }
+
+    private fun loadAdvancedSearch(body: AdvancedSearchResponse) {
 
     }
 
