@@ -44,9 +44,10 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
     private var crop = ""
     private val mHandler = Handler()
 
-
     private lateinit var mTv: TextView
     private lateinit var pb: ProgressBar
+
+    private var englishFinalQuery = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,17 +81,25 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
         val t = findViewById<TextView>(R.id.tempTv)
 
         if (crop != "e-mandi-farmer-null-query") {
+            //This is the case, when we have clicked on a crop suggestion and which has been translated and pulled in with crop arg
+            //The locale query is in title variable
+
             searchCrops()
         } else {
+            //This is when we have
+            //This is the case when we have directly submitted
             OfflineTranslate.translateToEnglish(this, crop, t)
             if (t.text != resources.getString(R.string.noDesc)) {
                 searchCrops()
             } else {
-                mHandler.postDelayed({ searchCrops() }, 4000)
+                //Wait for 2 seconds
+                mHandler.postDelayed({ searchCrops() }, 2000)
             }
 
         }
 
+
+        hideProgress(pb, this)
 
         findViewById<ExtendedFloatingActionButton>(R.id.eFab_grow).setOnClickListener {
             addStock()
@@ -99,6 +108,12 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
         mTv.setOnClickListener {
             addStock()
         }
+
+
+        /*
+        For the filter layout
+         */
+
     }
 
     private fun addStock() {
