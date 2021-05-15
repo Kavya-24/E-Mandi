@@ -45,7 +45,7 @@
                 android:layout_margin="@dimen/space"
                 app:layout_constraintBottom_toTopOf="@id/tvEmptyListCrop"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/otp_image" />
+                android:src="@drawable/nothingimg" />
 
             <TextView
                 android:id="@+id/tvEmptyListCrop"
