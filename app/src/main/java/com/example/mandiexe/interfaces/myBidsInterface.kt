@@ -1,10 +1,9 @@
 package com.example.mandiexe.interfaces
 
-import com.example.mandiexe.models.body.SearchCropReqBody
+import com.example.mandiexe.models.body.NewDemandSearchBody
 import com.example.mandiexe.models.body.bid.*
 import com.example.mandiexe.models.responses.demand.NewDemandsResponse
 import com.example.mandiexe.models.responses.bids.*
-import com.example.mandiexe.models.responses.demand.ViewDemandResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Headers
@@ -67,7 +66,7 @@ interface myBidsInterface {
     @Headers("Content-Type:application/json")
     @POST("api/demand/search")
     fun getSearchReq(
-        @Body body: SearchCropReqBody
+        @Body body: NewDemandSearchBody
     ): Call<NewDemandsResponse>
 
 

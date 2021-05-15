@@ -1,6 +1,8 @@
 package com.example.mandiexe.interfaces
 
+import com.example.mandiexe.models.body.AdvancedSearchBody
 import com.example.mandiexe.models.body.supply.*
+import com.example.mandiexe.models.responses.AdvancedSearchResponse
 import com.example.mandiexe.models.responses.supply.*
 import retrofit2.Call
 import retrofit2.http.Body
@@ -60,6 +62,14 @@ interface mySupplyInterface {
         @Body body: SearchGlobalCropBody
     ): Call<SearchGlobalCropResponse>
 
+    //Advanced search
+    @Headers("Content-Type:application/json")
+    @POST("api/farmer/crop/advsearch")
+    fun getAdvancedSearch(
+        @Body body: AdvancedSearchBody
+    ): Call<AdvancedSearchResponse>
+
+
     //Crop autocomplete
     @Headers("Content-Type:application/json")
     @POST("api/farmer/crop/autocomplete")
@@ -74,6 +84,8 @@ interface mySupplyInterface {
     fun getFarmerGrowthAdd(
         @Body body: AddGrowthBody
     ): Call<AddGrowthResponse>
+
+
 
 
 }

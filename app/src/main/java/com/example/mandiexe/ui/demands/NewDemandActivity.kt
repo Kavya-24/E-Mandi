@@ -28,7 +28,7 @@ import com.example.mandiexe.adapter.OnClickNewRequirement
 import com.example.mandiexe.adapter.mDemandSuggestionClickListener
 import com.example.mandiexe.interfaces.RetrofitClient
 import com.example.mandiexe.models.DemandSuggestionObject
-import com.example.mandiexe.models.body.SearchCropReqBody
+import com.example.mandiexe.models.body.NewDemandSearchBody
 import com.example.mandiexe.models.body.supply.CropSearchAutoCompleteBody
 import com.example.mandiexe.models.responses.demand.NewDemandsResponse
 import com.example.mandiexe.models.responses.supply.CropSearchAutocompleteResponse
@@ -86,7 +86,7 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
     private fun makeCall(txt: String?, defaultQuery: String) {
 
         val service = RetrofitClient.makeCallsForBids(this)
-        val body = SearchCropReqBody(txt.toString())
+        val body = NewDemandSearchBody(txt.toString())
 
         Log.e(TAG, "In search of make call for txt $txt and the default query is $defaultQuery")
 

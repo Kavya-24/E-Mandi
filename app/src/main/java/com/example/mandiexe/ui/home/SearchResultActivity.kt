@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.View
+import android.widget.AutoCompleteTextView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toolbar
@@ -16,10 +17,12 @@ import com.example.mandiexe.R
 import com.example.mandiexe.adapter.OnYoutubeClickListener
 import com.example.mandiexe.adapter.YoutubeAdapter
 import com.example.mandiexe.interfaces.RetrofitClient
+import com.example.mandiexe.models.body.AdvancedSearchBody
 import com.example.mandiexe.models.body.supply.SearchGlobalCropBody
 import com.example.mandiexe.models.responses.supply.SearchGlobalCropResponse
 import com.example.mandiexe.ui.supply.AddStock
 import com.example.mandiexe.utils.ApplicationUtils
+import com.example.mandiexe.utils.Constants.defaultDaysAndDistance
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.auth.SessionManager
 import com.example.mandiexe.utils.usables.ExternalUtils
@@ -29,8 +32,10 @@ import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import com.example.mandiexe.utils.usables.UIUtils.hideProgress
 import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.android.synthetic.main.activity_search_result.*
+import kotlinx.android.synthetic.main.layout_filter.*
 import retrofit2.Call
 import retrofit2.Response
 
@@ -48,6 +53,10 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
     private lateinit var pb: ProgressBar
 
     private var englishFinalQuery = ""
+    private lateinit var actvDays: AutoCompleteTextView
+    private lateinit var actvDistance: AutoCompleteTextView
+    private lateinit var mtbFilter: MaterialButton
+    private var isFiltered = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +71,11 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
         //Add the side drawable
         mTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_add_black_24dp, 0, 0, 0)
         //Process the crop here
+        this.apply {
+            actvDays = actv_days
+            actvDistance = actv_distance
+            mtbFilter = mtb_filter
+        }
 
         crop = args.getString("crop")!!
         val title = args.getString("title").toString()
@@ -83,17 +97,17 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
         if (crop != "e-mandi-farmer-null-query") {
             //This is the case, when we have clicked on a crop suggestion and which has been translated and pulled in with crop arg
             //The locale query is in title variable
-
-            searchCrops()
+            englishFinalQuery = crop
+            searchCrops(crop)
         } else {
             //This is when we have
             //This is the case when we have directly submitted
             OfflineTranslate.translateToEnglish(this, crop, t)
             if (t.text != resources.getString(R.string.noDesc)) {
-                searchCrops()
+                searchCrops(t.text.toString())
             } else {
                 //Wait for 2 seconds
-                mHandler.postDelayed({ searchCrops() }, 2000)
+                mHandler.postDelayed({ searchCrops(t.text.toString()) }, 2000)
             }
 
         }
@@ -113,6 +127,38 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
         /*
         For the filter layout
          */
+        mtbFilter.setOnClickListener {
+
+            //When no filter is selected
+            if (actvDays.text.isNullOrEmpty() and actvDistance.text.isNullOrEmpty()) {
+                //Drop down the days spinner
+
+            } else {
+                doAdvancedSearch()
+            }
+        }
+
+
+    }
+
+    private fun doAdvancedSearch() {
+        val numDays = actvDays.text.toString()
+        val numDistance = actvDistance.text.toString()
+
+        //Default
+        var newBody =
+            AdvancedSearchBody(englishFinalQuery, defaultDaysAndDistance, defaultDaysAndDistance)
+
+        if (numDays.isEmpty()) {
+            newBody =
+                AdvancedSearchBody(englishFinalQuery, defaultDaysAndDistance, numDistance.toInt())
+        } else if (numDistance.isEmpty()) {
+            newBody =
+                AdvancedSearchBody(englishFinalQuery, numDays.toInt(), defaultDaysAndDistance)
+        } else {
+            newBody = AdvancedSearchBody(englishFinalQuery, numDays.toInt(), numDistance.toInt())
+        }
+
 
     }
 
@@ -123,12 +169,12 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
 
     }
 
-    private fun searchCrops() {
+    private fun searchCrops(englishQueryTranslated: String) {
 
-        Log.e("SEARCH RES", "Crop" + crop)
+        Log.e("SEARCH RES", "Crop" + crop + " and from translated = " + englishQueryTranslated)
 
         val service = RetrofitClient.makeCallsForSupplies(this)
-        val body = SearchGlobalCropBody(crop)
+        val body = SearchGlobalCropBody(englishQueryTranslated)
 
         service.getSearchCropGlobally(
             body,
