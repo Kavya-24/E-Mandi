@@ -9,10 +9,12 @@ import com.example.mandiexe.models.responses.bids.FamerBidsResponse
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.auth.SessionManager
 import com.example.mandiexe.utils.usables.ExternalUtils
+import com.example.mandiexe.utils.usables.UIUtils
 import retrofit2.Call
 import retrofit2.Response
 
 class MyBidsViewmodel : ViewModel() {
+
     val TAG = MyBidsViewmodel::class.java.simpleName
 
     private val context = ApplicationUtils.getContext()
@@ -35,13 +37,13 @@ class MyBidsViewmodel : ViewModel() {
     private fun mReqFunction(): MutableLiveData<FamerBidsResponse> {
 
         mySupplyService.getFarmerDemands(
-     )
+        )
             .enqueue(object : retrofit2.Callback<FamerBidsResponse> {
                 override fun onFailure(call: Call<FamerBidsResponse>, t: Throwable) {
                     successful.value = false
                     message.value = ExternalUtils.returnStateMessageForThrowable(t)
                     //Response is null
-                    Log.e(TAG,"Throwable ${t.message}")
+                    UIUtils.logThrowables(t, TAG)
                 }
 
                 override fun onResponse(
@@ -65,12 +67,11 @@ class MyBidsViewmodel : ViewModel() {
 
                         successful.value = false
                         message.value = context.resources.getString(R.string.couldNotLoadBids)
-                    }
 
+                    }
 
                 }
             })
-
 
         return mReq
 

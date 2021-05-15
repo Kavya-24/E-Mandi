@@ -19,7 +19,7 @@ import com.example.mandiexe.adapter.MyRequirementsAdapter
 import com.example.mandiexe.adapter.OnMyBidClickListener
 import com.example.mandiexe.models.responses.bids.FamerBidsResponse
 import com.example.mandiexe.ui.demands.NewDemandActivity
-import com.example.mandiexe.utils.usables.UIUtils
+import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import com.example.mandiexe.viewmodels.MyBidsViewmodel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
@@ -37,10 +37,12 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
     private lateinit var tabLayout: TabLayout
 
     private lateinit var swl: SwipeRefreshLayout
+    private val TAG = MyBidsFragment::class.java.simpleName
 
     override fun onResume() {
         super.onResume()
-        Log.e("Req", "In resume")
+        Log.e(TAG, "In on resume")
+
     }
 
     override fun onCreateView(
@@ -48,6 +50,7 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
         savedInstanceState: Bundle?
     ): View? {
 
+        Log.e(TAG, "In on create")
         root = inflater.inflate(R.layout.my_bids_fragment, container, false)
         //Get the items from retrofit call and paged adapter
         swl = root.findViewById<SwipeRefreshLayout>(R.id.swl_bid_fragment)
@@ -57,6 +60,7 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
         loadRequirements()
 
         swl.setOnRefreshListener {
+            Log.e(TAG, "In on swipe refresh")
             loadRequirements()
             swl.isRefreshing = false
         }
@@ -72,26 +76,36 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
     private fun loadRequirements() {
 
         swl.isRefreshing = true
+        Log.e(TAG, "In load requirements")
+        clearObservers()
 
         viewModel.reqFunction().observe(viewLifecycleOwner, Observer { mResponse ->
 
             //Check with the successful of it
             if (viewModel.successful.value != null) {
-                if (viewModel.successful.value == false) {
-                    UIUtils.createSnackbar(
+                //Log the response
+                if (viewModel.successful.value!!) {
+
+                    manageReqLoadedResponses(mResponse)
+                } else {
+                    createSnackbar(
                         viewModel.message.value,
                         requireContext(),
                         container_req
                     )
                     doThrowableState()
-
-                } else {
-                    manageReqLoadedResponses(mResponse)
                 }
+            } else {
+                doThrowableState()
             }
         })
 
         swl.isRefreshing = false
+    }
+
+    private fun clearObservers() {
+        viewModel.successful.removeObservers(this)
+        viewModel.successful.value = null
     }
 
     private fun manageReqLoadedResponses(mResponse: FamerBidsResponse?) {
@@ -125,9 +139,8 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
     }
 
     override fun onDestroy() {
-        viewModel.successful.removeObservers(this)
-        viewModel.successful.value = null
-        Log.e("In requirements", "In destroy")
+        clearObservers()
+        Log.e(TAG, "In on destroy")
         super.onDestroy()
 
     }
@@ -145,6 +158,7 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
     }
 
     private fun doEmptyStates() {
+        Log.e(TAG, "In empty state")
         this.apply {
             llEmptyMyBids.visibility = View.VISIBLE
             llErrorThrowableBid.visibility = View.GONE
@@ -152,6 +166,7 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
     }
 
     private fun doThrowableState() {
+        Log.e(TAG, "In throwable state")
         this.apply {
             llEmptyMyBids.visibility = View.GONE
             llErrorThrowableBid.visibility = View.VISIBLE

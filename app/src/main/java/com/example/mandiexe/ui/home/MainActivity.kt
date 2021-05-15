@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity(), OnMyLanguageListener,
 
     private lateinit var mMenu: Menu
 
-
+    private val TAG = MainActivity::class.java.simpleName
     //SearchUtils
     private lateinit var search_view: com.miguelcatalan.materialsearchview.MaterialSearchView
     private lateinit var mListOfSuggestions: MutableList<String>
@@ -541,7 +541,8 @@ class MainActivity : AppCompatActivity(), OnMyLanguageListener,
 
 
     override fun onBackPressed() {
-        super.onBackPressed();
+        super.onBackPressed()
+        Log.e(TAG, "In on back pressed")
 
     }
 

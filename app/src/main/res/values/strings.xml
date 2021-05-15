@@ -24,7 +24,7 @@
     <string name="location_value">Location</string>
     <string name="which_crop">Name of the crop</string>
     <string name="str_my_crops">My crops</string>
-    <string name="str_my_req">Buyers</string>
+    <string name="str_my_req">My Bids</string>
     <string name="crop_type">Variety:</string>
     <string name="expiration_date">Expiration date:</string>
     <string name="estimated_time_of_completion">Expected date of harvest</string>

@@ -1,6 +1,5 @@
 package com.example.mandiexe.ui.supply
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -9,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
-import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -23,11 +21,10 @@ import com.example.mandiexe.models.responses.supply.FarmerSuppliesResponse
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import com.example.mandiexe.viewmodels.MySuppliesViewmodel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.my_supplies_fragment.*
 
 
-class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
+class MySuppliesFragment : Fragment(), OnMyStockClickListener {
 
     companion object {
         fun newInstance() = MySuppliesFragment()
@@ -35,13 +32,14 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
 
     private val viewModel: MySuppliesViewmodel by viewModels()
     private lateinit var root: View
-    private lateinit var tabLayout: TabLayout
+
+    private val TAG = MySuppliesFragment::class.java.simpleName
 
     private lateinit var swl: SwipeRefreshLayout
 
     override fun onResume() {
         super.onResume()
-        loadItems()
+        Log.e(TAG, "In on resume")
 
     }
 
@@ -50,7 +48,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
         savedInstanceState: Bundle?
     ): View? {
 
-
+        Log.e(TAG, "In on create")
         root = inflater.inflate(R.layout.my_supplies_fragment, container, false)
         swl = root.findViewById<SwipeRefreshLayout>(R.id.swl_supplies_fragment)
 
@@ -68,6 +66,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
         }
 
         swl.setOnRefreshListener {
+            Log.e(TAG, "In on swipe refresh")
             loadItems()
             swl.isRefreshing = false
         }
@@ -77,8 +76,10 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
 
     private fun loadItems() {
 
-
+        Log.e(TAG, "In load requirements")
         swl.isRefreshing = true
+        clearObservers()
+
         viewModel.supplyFunction().observe(viewLifecycleOwner, Observer { mResponse ->
             if (viewModel.successful.value != null) {
                 if (viewModel.successful.value!!) {
@@ -89,6 +90,8 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
                     createSnackbar(viewModel.message.value, requireContext(), container_my_crops)
 
                 }
+            } else {
+                doThrowableState()
             }
 
         })
@@ -96,7 +99,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
         swl.isRefreshing = false
     }
 
-    @SuppressLint("CutPasteId")
+
     private fun manageStockLoadedResponses(mResponse: FarmerSuppliesResponse?) {
         //Create rv
 
@@ -150,23 +153,20 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
 
     override fun onDestroy() {
 
-        viewModel.successful.removeObservers(this)
-        viewModel.successful.value = null
-
-        Log.e("In supplies", "In on destroy")
+        clearObservers()
+        Log.e(TAG, "In on destroy")
         super.onDestroy()
 
     }
 
-    override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
-
-    }
-
-    override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
+    private fun clearObservers() {
+        viewModel.successful.removeObservers(this)
+        viewModel.successful.value = null
 
     }
 
     private fun doEmptyStates() {
+        Log.e(TAG, "In empty state")
         this.apply {
             llEmptyMySupplies.visibility = View.VISIBLE
             llErrorThrowableSupply.visibility = View.GONE
@@ -174,6 +174,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
     }
 
     private fun doThrowableState() {
+        Log.e(TAG, "In throwable state")
         this.apply {
             llEmptyMySupplies.visibility = View.GONE
             llErrorThrowableSupply.visibility = View.VISIBLE

@@ -23,6 +23,7 @@ class HomeFragment : Fragment() {
 
     private val TAG = HomeFragment::class.java.simpleName
     private lateinit var pagerAdapter: MyViewPagerAdapter
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.e(TAG, "In on view created")
@@ -34,14 +35,16 @@ class HomeFragment : Fragment() {
         //Set the tabbed layout
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
+                Log.e(TAG, "In on tab selected with position ${tab?.position}")
                 viewPager.currentItem = tab!!.position
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
-
+                Log.e(TAG, "In on tab UN_selected with position ${tab?.position}")
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
+                Log.e(TAG, "In on tab RE_selected with position ${tab?.position}")
 
             }
         })
@@ -63,6 +66,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        Log.e(TAG, "In onCreateView")
         root = inflater.inflate(R.layout.fragment_home, container, false)
 
         tabLayout = root.findViewById<View>(R.id.tabs) as TabLayout
@@ -78,7 +82,10 @@ class HomeFragment : Fragment() {
 
 
     override fun onDestroy() {
-        Log.e(TAG, "In on destroy")
+        Log.e(
+            TAG,
+            "In on destroy with current viewpager position = ${viewPager.currentItem} and tab layout current position = ${tabLayout.selectedTabPosition}"
+        )
 
         if (viewPager.currentItem == 0) {
             //Default brhaviour
