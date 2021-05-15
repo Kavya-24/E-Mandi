@@ -9,6 +9,7 @@ import android.widget.AutoCompleteTextView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toolbar
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -49,6 +50,8 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
     private val sessionManager = SessionManager(ApplicationUtils.getContext())
 
     private var crop = ""
+    private var title = ""
+
     private val mHandler = Handler()
 
     private lateinit var mTv: TextView
@@ -82,7 +85,7 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
         }
 
         crop = args.getString("crop")!!
-        val title = args.getString("title").toString()
+        title = args.getString("title").toString()
 
         val tb = findViewById<Toolbar>(R.id.toolbarExternal)
         tb.title = title
@@ -145,7 +148,27 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
             }
         }
 
+        this.apply {
 
+            ivInformation.setOnClickListener {
+                if (isFiltered) {
+                    //The circular map information
+                } else {
+                    //The information of what is happening and informations about filters
+                    getInformationAboutFilters()
+                }
+            }
+        }
+
+    }
+
+    private fun getInformationAboutFilters() {
+
+        val d = AlertDialog.Builder(this)
+        d.setTitle(resources.getString(R.string.howMuchGrown))
+        d.setMessage(resources.getString(R.string.infoHowMuchGrown, title))
+        d.setPositiveButton(resources.getString(R.string.ok)) { _, _ -> }
+        d.create().show()
     }
 
     private fun setUpFilterSpinners() {
@@ -198,6 +221,7 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
                 ) {
                     if (response.isSuccessful) {
 
+                        isFiltered = true
                         if (response.body() != null) {
                             loadAdvancedSearch(response.body()!!)
                         }
@@ -242,6 +266,7 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
                 ) {
                     if (response.isSuccessful) {
 
+                        isFiltered = false
                         if (response.body() != null) {
                             loadItemsFunction(response.body()!!)
                         }
