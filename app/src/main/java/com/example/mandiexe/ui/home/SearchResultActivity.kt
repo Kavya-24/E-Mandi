@@ -361,7 +361,6 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
         try {
             this.apply {
                 Log.e("SEARCH RES", "response " + response.toString())
-                clVis.visibility = View.VISIBLE
                 cslAdvancedSearch.visibility = View.GONE
                 cslNormalSearchData.visibility = View.VISIBLE
                 tvInCountry.text = response.country.total.toString()

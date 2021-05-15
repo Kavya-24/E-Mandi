@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container_search"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -18,29 +19,68 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ProgressBar
-                android:id="@+id/pb_searchCrop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+            <include
+                android:id="@+id/filter"
+                layout="@layout/layout_filter"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tvAddMissing"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/llErrorSearch"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/space"
-                android:gravity="center"
-                android:maxLines="4"
-                android:padding="@dimen/space"
-                android:text="@string/addMissingCrop"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toBottomOf="@id/filter">
+
+                <ProgressBar
+                    android:id="@+id/pb_searchCrop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ivEmptySearch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="@dimen/space_3x"
+                    app:layout_constraintBottom_toTopOf="@id/tvAddMissing"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@drawable/nothingimg" />
+
+                <TextView
+                    android:id="@+id/tvAddMissing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/space"
+                    android:gravity="center"
+                    android:maxLines="4"
+                    android:padding="@dimen/space"
+                    android:text="@string/addMissingCrop"
+                    app:layout_constraintTop_toBottomOf="@id/ivEmptySearch" />
+
+
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    android:id="@+id/eFab_grow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/space"
+                    android:backgroundTint="@color/colorAccent"
+                    android:text="@string/i_also_want_to_grow_crop"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@color/colorAccent"
+                    app:icon="@drawable/ic_add"
+                    app:iconTint="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvAddMissing" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <!--filter-->
 
             <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/clVis"
@@ -48,14 +88,10 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space"
                 android:padding="@dimen/space"
-                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/filter"
                 tools:context=".ui.home.SearchResultActivity">
 
-                <!--filter-->
-                <include
-                    android:id="@+id/filter"
-                    layout="@layout/layout_filter"
-                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/ivInformation"
@@ -68,61 +104,15 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/tv" />
 
-
                 <TextView
                     android:id="@id/tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/space"
                     android:text="@string/howMuchGrown"
                     android:textColor="@color/colorPrimary"
                     android:textSize="24sp"
                     android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@id/filter" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/cslAdvancedSearch"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/space_half"
-                    android:background="@color/white"
-                    android:padding="@dimen/space_half"
-                    app:layout_constraintTop_toBottomOf="@id/cslNormalSearchData">
-
-
-                    <TextView
-                        android:id="@+id/tvAdvData"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/quantity_grown_is"
-                        android:textColor="@color/colorPrimaryDark"
-                        app:layout_constraintBottom_toBottomOf="@id/ivAdvData"
-                        app:layout_constraintEnd_toStartOf="@id/ivAdvData"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/ivAdvData" />
-
-                    <ImageView
-                        android:id="@+id/ivAdvData"
-                        android:layout_width="@dimen/space_150"
-                        android:layout_height="@dimen/space_150"
-                        android:src="@drawable/landitem"
-                        app:layout_constraintEnd_toEndOf="@id/tvAdvDistance"
-                        app:layout_constraintStart_toEndOf="@id/tvAdvData"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-
-                    <TextView
-                        android:id="@+id/tvAdvDistance"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/within"
-                        android:textColor="@color/darkBlue"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="@id/ivAdvData"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/ivAdvData" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cslNormalSearchData"
@@ -236,6 +226,50 @@
                         app:layout_constraintTop_toBottomOf="@id/tvInState" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cslAdvancedSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/space_half"
+                    android:background="@color/white"
+                    android:padding="@dimen/space_half"
+                    app:layout_constraintTop_toBottomOf="@id/cslNormalSearchData">
+
+
+                    <TextView
+                        android:id="@+id/tvAdvData"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/quantity_grown_is"
+                        android:textColor="@color/colorPrimaryDark"
+                        app:layout_constraintBottom_toBottomOf="@id/ivAdvData"
+                        app:layout_constraintEnd_toStartOf="@id/ivAdvData"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/ivAdvData" />
+
+                    <ImageView
+                        android:id="@+id/ivAdvData"
+                        android:layout_width="@dimen/space_150"
+                        android:layout_height="@dimen/space_150"
+                        android:src="@drawable/landitem"
+                        app:layout_constraintEnd_toEndOf="@id/tvAdvDistance"
+                        app:layout_constraintStart_toEndOf="@id/tvAdvData"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <TextView
+                        android:id="@+id/tvAdvDistance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/within"
+                        android:textColor="@color/darkBlue"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@id/ivAdvData"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/ivAdvData" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_youtubeLinks"
                     android:layout_width="match_parent"
@@ -245,31 +279,15 @@
                     app:layout_constraintTop_toBottomOf="@id/cslAdvancedSearch"
                     tools:listitem="@layout/item_link_crop_file" />
 
-                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                    android:id="@+id/eFab_grow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/space"
-                    android:backgroundTint="@color/colorAccent"
-                    android:text="@string/i_also_want_to_grow_crop"
-                    android:textColor="@color/white"
-                    app:backgroundTint="@color/colorAccent"
-                    app:icon="@drawable/ic_add"
-                    app:iconTint="@color/white"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/rv_youtubeLinks" />
-
-                <TextView
-                    android:id="@+id/tempTv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/noDesc"
-                    android:visibility="gone"
-                    app:layout_constraintTop_toTopOf="parent" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/tempTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/noDesc"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
