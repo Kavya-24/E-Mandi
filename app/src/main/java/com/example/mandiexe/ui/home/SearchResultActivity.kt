@@ -38,6 +38,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_search_result.*
 import kotlinx.android.synthetic.main.layout_filter.*
+import kotlinx.android.synthetic.main.layout_toolbar.*
 import retrofit2.Call
 import retrofit2.Response
 import java.text.SimpleDateFormat

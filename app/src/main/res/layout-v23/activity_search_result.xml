@@ -115,17 +115,6 @@
                 tools:context=".ui.home.SearchResultActivity">
 
 
-                <ImageView
-                    android:id="@+id/ivInformation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/space"
-                    android:padding="@dimen/space"
-                    android:src="@drawable/ic_info_outline_black_24dp"
-                    app:layout_constraintBottom_toBottomOf="@id/tv"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/tv" />
-
                 <TextView
                     android:id="@id/tv"
                     android:layout_width="match_parent"

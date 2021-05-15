@@ -8,6 +8,7 @@ import android.speech.RecognizerIntent
 import android.util.Log
 import android.widget.*
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
@@ -27,6 +28,7 @@ import com.example.mandiexe.viewmodels.AddStockViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.add_stock_fragment.*
+import kotlinx.android.synthetic.main.layout_toolbar.*
 import java.util.*
 
 
@@ -202,8 +204,26 @@ class AddStock : AppCompatActivity() {
         //Get the variables for the bidding
 
 
+        this.apply {
+
+            ivInformation.setOnClickListener {
+                getInformationNormalFilters()
+            }
+        }
+
     }
 
+    private fun getInformationNormalFilters() {
+
+        val kgLocale = resources.getString(R.string.kg)
+        val kmLocale = resources.getString(R.string.kilometeres)
+
+        val d = AlertDialog.Builder(this)
+        d.setTitle(resources.getString(R.string.add_crop))
+        d.setMessage(resources.getString(R.string.addStockProposal))
+        d.setPositiveButton(resources.getString(R.string.ok)) { _, _ -> }
+        d.create().show()
+    }
 
     private fun createGrowth() {
 

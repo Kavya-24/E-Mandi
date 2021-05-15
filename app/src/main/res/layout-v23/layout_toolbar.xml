@@ -17,12 +17,27 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             android:foregroundTint="@color/white"
-            android:titleTextColor="@color/white"
             android:navigationIcon="@drawable/ic_arrow_back"
             android:theme="@style/AppTheme.NoActionBar"
+            android:titleTextColor="@color/white"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
+                <ImageView
+                    android:id="@+id/ivInformation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_margin="@dimen/space"
+                    android:padding="@dimen/space"
+                    android:src="@drawable/ic_info_outline_black_24dp"
+                    android:tint="@color/white" />
+
+
+            </RelativeLayout>
         </Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>

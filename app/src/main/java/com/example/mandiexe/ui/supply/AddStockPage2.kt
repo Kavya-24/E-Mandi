@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mandiexe.R
 import com.example.mandiexe.models.body.supply.AddGrowthBody
@@ -26,6 +27,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_add_stock_page2.*
 import kotlinx.android.synthetic.main.layout_add_stock.view.*
+import kotlinx.android.synthetic.main.layout_toolbar.*
 import java.util.*
 
 class AddStockPage2 : AppCompatActivity() {
@@ -95,6 +97,24 @@ class AddStockPage2 : AppCompatActivity() {
             }
         }
 
+
+        this.apply {
+
+            ivInformation.setOnClickListener {
+                getInformationNormalFilters()
+            }
+        }
+
+    }
+
+    private fun getInformationNormalFilters() {
+
+        val kgLocale = resources.getString(R.string.kg)
+        val d = AlertDialog.Builder(this)
+        d.setTitle(resources.getString(R.string.addCropforBidding))
+        d.setMessage(resources.getString(R.string.addBidProposal))
+        d.setPositiveButton(resources.getString(R.string.ok)) { _, _ -> }
+        d.create().show()
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)

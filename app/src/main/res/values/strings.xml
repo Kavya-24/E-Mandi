@@ -343,12 +343,17 @@
     <string name="distance">Distance</string>
     <string name="n_30">30</string>
     <string name="km">Km</string>
-    <string name="infoHowMuchGrown">This shows how much of %s is grown in %s at various levels. You can filter them according to the range of days and distance as shown by the chart</string>
+
+    <string name="infoHowMuchGrown">This shows how much of %s is grown in %s at various levels. You can filter them according to the range of days and distance from your current location as shown by the chart.</string>
+
+
     <string name="quantity_grown_is">Quantity grown\n<b>%s %s</b>\n<i>%s to %s</i></string>
     <string name="within">Within %s %s</string>
     <string name="kilometeres">Kilometers</string>
-    <string name="infoHowMuchGrownFilter">This shows the amount of %s grown within %s %s of your current location between a time period of last %s days and to be grown in the next %s days</string>
+    <string name="infoHowMuchGrownFilter">This shows the amount of %s grown within %s %s of your current location between a time period of last %s days and to be grown in the next %s days.</string>
     <string name="retry">RETRY</string>
+    <string name="addStockProposal">You will be able to list your crops and add their quantities. The expected date of sowing and harvest will make it easier for you to find prospective buyers. You can also put an expected initial price for your produce by clicking next.</string>
+    <string name="addBidProposal">The initial expected price is price on which you want to sell your complete produce. Note that you can change this price anytime you want. Also, add the date when you wish to close the bidding on the crop.</string>
 
 
     <!--    Spinners for days and distance-->
