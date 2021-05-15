@@ -53,6 +53,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.bid_detail_activity.*
 import kotlinx.android.synthetic.main.item_owner_detail.view.*
+import kotlinx.android.synthetic.main.layout_toolbar.*
 import kotlinx.android.synthetic.main.supply_detail_activity.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -93,7 +94,7 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
     private var personObject: PersonObject? = null
 
-    private lateinit var swl : SwipeRefreshLayout
+    private lateinit var swl: SwipeRefreshLayout
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -205,7 +206,30 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
         }
 
+
+        this.apply {
+
+            ivInformation.setOnClickListener {
+                getInformationNormalFilters()
+            }
+        }
+
     }
+
+    private fun getInformationNormalFilters() {
+
+        val d = androidx.appcompat.app.AlertDialog.Builder(this)
+        d.setTitle(resources.getString(R.string.cropDetailtitle))
+
+        if (from == NewDemandActivity::class.java.simpleName) {
+            d.setMessage(resources.getString(R.string.bidDetailInfo))
+        } else {
+            d.setMessage(resources.getString(R.string.bidDetailInfoMy))
+        }
+        d.setPositiveButton(resources.getString(R.string.ok)) { _, _ -> }
+        d.create().show()
+    }
+
 
     private fun viewBuyer() {
         val dialog = AlertDialog.Builder(this)
