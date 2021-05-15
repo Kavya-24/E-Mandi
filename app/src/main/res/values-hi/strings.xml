@@ -264,6 +264,7 @@
     <string name="n_30">30</string>
 	<string name="km">Km</string>
     <string name="infoHowMuchGrown">This shows how much of %s is grown in kilograms at various levels. You can filter them according to the range of days and distance.</string>
-    <string name="quantity_grown_is">Quantity grown is %s %s</string>
+    <string name="quantity_grown_is">Quantity grown is %s %s %s %s</string>
     <string name="within">Within %s %s</string>
+	<string name="kilometeres">Kilometers</string>
 </resources>

@@ -41,6 +41,8 @@ import kotlinx.android.synthetic.main.activity_search_result.*
 import kotlinx.android.synthetic.main.layout_filter.*
 import retrofit2.Call
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.*
 
 class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
 
@@ -252,6 +254,32 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
             cslNormalSearchData.visibility = View.GONE
             cslAdvancedSearch.visibility = View.VISIBLE
 
+            val kgLocale = resources.getString(R.string.kg)
+            val kmLocale = resources.getString(R.string.kilometeres)
+
+            val mCalendar = Calendar.getInstance();
+            val myFormat = "dd/MMM/yyyy" //In which you need put here
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+
+            val currentDayMark = actvDays.text.toString()
+            mCalendar.add(Calendar.DATE, currentDayMark.toInt())
+            val afterDate = sdf.format(mCalendar.time)
+            mCalendar.add(Calendar.DATE, -(2 * currentDayMark.toInt()))
+            val beforeDate = sdf.format(mCalendar.time)
+
+
+            //Load
+            tvAdvData.text =
+                resources.getString(
+                    R.string.quantity_grown_is,
+                    body.info.qty.toString(),
+                    kgLocale.toString(),
+                    beforeDate.toString(),
+                    afterDate.toString()
+                )
+
+            tvAdvDistance.text =
+                resources.getString(R.string.within, actvDistance.text.toString(), kmLocale)
         }
     }
 

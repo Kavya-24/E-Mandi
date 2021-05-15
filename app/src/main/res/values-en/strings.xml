@@ -346,6 +346,7 @@
     <string name="infoHowMuchGrown">This shows how much of %s is grown in kilograms at various levels. You can filter them according to the range of days and distance.</string>
     <string name="quantity_grown_is">Quantity grown\n<b>%s %s</b>\n<i>%s to %s</i></string>
     <string name="within">Within %s %s</string>
+    <string name="kilometeres">Kilometers</string>
 
 
     <!--    Spinners for days and distance-->
