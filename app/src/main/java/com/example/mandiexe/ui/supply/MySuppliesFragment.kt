@@ -85,6 +85,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
                     manageStockLoadedResponses(mResponse)
 
                 } else {
+                    doThrowableState()
                     createSnackbar(viewModel.message.value, requireContext(), container_my_crops)
 
                 }
@@ -106,13 +107,17 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
         val rv = root.findViewById<RecyclerView>(R.id.rv_my_stocks)
         val adapter = MySuppliesAdapter(this)
         val empty = root.findViewById<ConstraintLayout>(R.id.llEmptyMySupplies)
+        val tError = root.findViewById<ConstraintLayout>(R.id.llErrorThrowableSupply)
 
         if (mResponse != null) {
             if (mResponse.supplies.isEmpty()) {
                 empty.visibility = View.VISIBLE
+                doEmptyStates()
 
             } else {
                 empty.visibility = View.GONE
+                tError.visibility = View.GONE
+
                 //Sort by timestamp
                 mResponse.supplies.sortedByDescending { it.lastModified }
 
@@ -159,6 +164,20 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener, Observable {
 
     override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
 
+    }
+
+    private fun doEmptyStates() {
+        this.apply {
+            llEmptyMySupplies.visibility = View.VISIBLE
+            llErrorThrowableSupply.visibility = View.GONE
+        }
+    }
+
+    private fun doThrowableState() {
+        this.apply {
+            llEmptyMySupplies.visibility = View.GONE
+            llErrorThrowableSupply.visibility = View.VISIBLE
+        }
     }
 
 

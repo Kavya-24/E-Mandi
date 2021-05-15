@@ -9,6 +9,7 @@ import com.example.mandiexe.models.responses.supply.FarmerSuppliesResponse
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.auth.SessionManager
 import com.example.mandiexe.utils.usables.ExternalUtils
+import com.example.mandiexe.utils.usables.UIUtils
 import retrofit2.Call
 import retrofit2.Response
 
@@ -43,7 +44,7 @@ class MySuppliesViewmodel : ViewModel() {
                     successful.value = false
                     message.value = ExternalUtils.returnStateMessageForThrowable(t)
                     //Response is null
-                    Log.e(TAG, "Throwable " + t.message + t.cause)
+                    UIUtils.logThrowables(t, TAG)
                 }
 
                 override fun onResponse(
