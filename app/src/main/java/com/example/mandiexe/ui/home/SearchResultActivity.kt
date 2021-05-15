@@ -153,7 +153,7 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
         this.apply {
 
             ivInformation.setOnClickListener {
-                if (isFiltered) {
+                if (!isFiltered) {
                     //The circular map information
                     getInformationAboutFilteredData()
                 } else {
@@ -166,6 +166,25 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
     }
 
     private fun getInformationAboutFilteredData() {
+
+        val kmLocale = resources.getString(R.string.kilometeres)
+
+        val d = AlertDialog.Builder(this)
+        d.setTitle(resources.getString(R.string.howMuchGrown))
+        d.setMessage(
+            resources.getString(
+                R.string.infoHowMuchGrownFilter,
+                title,
+                actvDistance.text.toString(),
+                kmLocale,
+                actvDays.text.toString(),
+                actvDays.text.toString()
+            )
+        )
+
+        d.setPositiveButton(resources.getString(R.string.ok)) { _, _ -> }
+        d.create().show()
+
 
     }
 

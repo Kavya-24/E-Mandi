@@ -347,6 +347,7 @@
     <string name="quantity_grown_is">Quantity grown\n<b>%s %s</b>\n<i>%s to %s</i></string>
     <string name="within">Within %s %s</string>
     <string name="kilometeres">Kilometers</string>
+    <string name="infoHowMuchGrownFilter">This shows the amount of %s grown within %s %s of your current location between a time period of last %s days and to be grown in the next %s days</string>
 
 
     <!--    Spinners for days and distance-->
