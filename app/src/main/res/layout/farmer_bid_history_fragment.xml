@@ -46,9 +46,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="@dimen/space"
+                android:src="@drawable/nothingimg"
                 app:layout_constraintBottom_toTopOf="@id/tvEmptyListBid"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/otp_image" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tvEmptyListBid"
