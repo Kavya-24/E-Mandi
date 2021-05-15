@@ -181,7 +181,7 @@
                     android:layout_marginTop="@dimen/space_2x"
                     android:layout_marginBottom="@dimen/space_4x"
                     app:layout_constraintTop_toBottomOf="@id/tvInCountry"
-                    tools:listitem="@layout/item_youtube_resource_file" />
+                    tools:listitem="@layout/item_link_crop_file" />
 
                 <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                     android:id="@+id/eFab_grow"

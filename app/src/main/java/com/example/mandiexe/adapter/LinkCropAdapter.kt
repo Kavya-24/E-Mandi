@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
 import com.example.mandiexe.models.responses.supply.SearchGlobalCropResponse
@@ -66,7 +65,7 @@ class YoutubeAdapter(val itemClick: OnYoutubeClickListener) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view =
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_youtube_resource_file, parent, false)
+                .inflate(R.layout.item_link_crop_file, parent, false)
 
         return YoutubeAdapter.MyViewHolder(view)
     }
