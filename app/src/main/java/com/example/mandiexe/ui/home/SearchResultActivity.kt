@@ -131,6 +131,7 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
         /*
         For the filter layout
          */
+        setUpFilterSpinners()
         mtbFilter.setOnClickListener {
 
             //When no filter is selected
@@ -142,6 +143,13 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
             }
         }
 
+
+    }
+
+    private fun setUpFilterSpinners() {
+
+        UIUtils.getSpinnerAdapter(R.array.arr_days_limit, actvDays, this)
+        UIUtils.getSpinnerAdapter(R.array.arr_distance_limit, actvDistance, this)
 
     }
 
