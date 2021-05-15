@@ -2,9 +2,9 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/container_search"
-    android:background="@color/bgGreen"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/bgGreen">
 
     <include layout="@layout/layout_toolbar" />
 
@@ -29,14 +29,14 @@
 
             <TextView
                 android:id="@+id/tvAddMissing"
-                android:visibility="invisible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space"
-                android:maxLines="4"
                 android:gravity="center"
+                android:maxLines="4"
                 android:padding="@dimen/space"
                 android:text="@string/addMissingCrop"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -45,14 +45,18 @@
             <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/clVis"
                 android:layout_width="match_parent"
-                android:visibility="invisible"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space"
                 android:padding="@dimen/space"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:context=".ui.home.SearchResultActivity">
 
-                <!--    Youtube Links-->
+                <!--filter-->
+                <include
+                    android:id="@+id/filter"
+                    app:layout_constraintTop_toTopOf="parent"
+                    layout="@layout/layout_filter" />
+
 
                 <TextView
                     android:id="@id/tv"
@@ -63,7 +67,7 @@
                     android:textColor="@color/colorPrimary"
                     android:textSize="24sp"
                     android:textStyle="bold"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@id/filter" />
 
 
                 <TextView
@@ -175,9 +179,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_2x"
-                    tools:listitem="@layout/item_youtube_resource_file"
                     android:layout_marginBottom="@dimen/space_4x"
-                    app:layout_constraintTop_toBottomOf="@id/tvInCountry" />
+                    app:layout_constraintTop_toBottomOf="@id/tvInCountry"
+                    tools:listitem="@layout/item_youtube_resource_file" />
 
                 <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                     android:id="@+id/eFab_grow"

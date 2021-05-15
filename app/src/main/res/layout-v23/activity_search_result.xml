@@ -53,6 +53,12 @@
                 tools:context=".ui.home.SearchResultActivity">
 
                 <!--    Youtube Links-->
+                <!--filter-->
+                <include
+                    android:id="@+id/filter"
+                    app:layout_constraintTop_toTopOf="parent"
+                    layout="@layout/layout_filter" />
+
 
                 <TextView
                     android:id="@id/tv"

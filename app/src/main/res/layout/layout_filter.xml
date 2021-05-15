@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvDays"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/space"
+        android:text="@string/days"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/tilDays"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tilDays" />
+
+    <com.google.android.material.textfield.TextInputLayout
+
+        android:id="@+id/tilDays"
+        style="@style/styleTIL2"
+        android:hint="@string/n_30"
+        android:padding="@dimen/space"
+        app:layout_constraintStart_toEndOf="@id/tvDays"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <AutoCompleteTextView
+            android:id="@+id/actv_days"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <TextView
+        android:id="@+id/tvDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_3x"
+        android:padding="@dimen/space"
+        android:text="@string/distance"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/tilDays"
+        app:layout_constraintStart_toEndOf="@id/tilDays"
+        app:layout_constraintTop_toTopOf="@id/tilDays" />
+
+    <com.google.android.material.textfield.TextInputLayout
+
+        android:id="@+id/tilDistance"
+        style="@style/styleTIL2"
+        android:hint="@string/n_30"
+        android:padding="@dimen/space"
+        app:layout_constraintStart_toEndOf="@id/tvDistance"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <AutoCompleteTextView
+            android:id="@+id/actv_distance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+    
+    <TextView
+        android:text="@string/km"
+        app:layout_constraintBottom_toBottomOf="@id/tilDays"
+        app:layout_constraintTop_toTopOf="@id/tilDays"
+        app:layout_constraintStart_toEndOf="@id/tilDistance"
+        android:layout_width="wrap_content"
+        android:textSize="14sp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvkm"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -78,6 +78,13 @@
     </style>
 
 
+    <style name="styleTIL2" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+
     <style name="MaterialSearchViewStyle" parent="Theme.MaterialComponents">
         <!-- Background for the search bar -->
         <item name="searchBackground">@color/white</item>

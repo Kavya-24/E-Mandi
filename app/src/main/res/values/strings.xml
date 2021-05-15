@@ -339,5 +339,9 @@
     </string-array>
 
     <string name="mango">Mango</string>
+    <string name="days">Days</string>
+    <string name="distance">Distance</string>
+    <string name="n_30">30</string>
+    <string name="km">Km</string>
 
 </resources>
