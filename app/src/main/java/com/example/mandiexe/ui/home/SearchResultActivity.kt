@@ -11,7 +11,6 @@ import android.widget.TextView
 import android.widget.Toolbar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
@@ -31,12 +30,12 @@ import com.example.mandiexe.utils.usables.ExternalUtils
 import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.usables.OfflineTranslate
 import com.example.mandiexe.utils.usables.UIUtils
-import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import com.example.mandiexe.utils.usables.UIUtils.hideProgress
 import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_search_result.*
 import kotlinx.android.synthetic.main.layout_filter.*
 import retrofit2.Call
@@ -56,14 +55,13 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
 
     private val mHandler = Handler()
 
-    private lateinit var mTv: TextView
     private lateinit var pb: ProgressBar
 
     private var englishFinalQuery = ""
     private lateinit var actvDays: AutoCompleteTextView
     private lateinit var actvDistance: AutoCompleteTextView
     private lateinit var mtbFilter: MaterialButton
-    private var isFiltered = false
+
 
     private val TAG = SearchResultActivity::class.java.simpleName
 
@@ -76,9 +74,6 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
 
         args = intent?.getBundleExtra("bundle")!!
 
-        mTv = findViewById(R.id.tvAddMissing)
-        //Add the side drawable
-        mTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_add_black_24dp, 0, 0, 0)
         //Process the crop here
         this.apply {
             actvDays = actv_days
@@ -128,10 +123,6 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
             addStock()
         }
 
-        mTv.setOnClickListener {
-            addStock()
-        }
-
 
         /*
         For the filter layout
@@ -153,46 +144,18 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
         this.apply {
 
             ivInformation.setOnClickListener {
-                if (!isFiltered) {
-                    //The circular map information
-                    getInformationAboutFilteredData()
-                } else {
-                    //The information of what is happening and informations about filters
-                    getInformationNormalFilters()
-                }
+                getInformationNormalFilters()
             }
         }
 
     }
 
-    private fun getInformationAboutFilteredData() {
-
-        val kmLocale = resources.getString(R.string.kilometeres)
-
-        val d = AlertDialog.Builder(this)
-        d.setTitle(resources.getString(R.string.howMuchGrown))
-        d.setMessage(
-            resources.getString(
-                R.string.infoHowMuchGrownFilter,
-                title,
-                actvDistance.text.toString(),
-                kmLocale,
-                actvDays.text.toString(),
-                actvDays.text.toString()
-            )
-        )
-
-        d.setPositiveButton(resources.getString(R.string.ok)) { _, _ -> }
-        d.create().show()
-
-
-    }
-
     private fun getInformationNormalFilters() {
 
+        val kgLocale = resources.getString(R.string.kg)
         val d = AlertDialog.Builder(this)
         d.setTitle(resources.getString(R.string.howMuchGrown))
-        d.setMessage(resources.getString(R.string.infoHowMuchGrown, title))
+        d.setMessage(resources.getString(R.string.infoHowMuchGrown, title, kgLocale))
         d.setPositiveButton(resources.getString(R.string.ok)) { _, _ -> }
         d.create().show()
     }
@@ -250,16 +213,26 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
                 ) {
                     if (response.isSuccessful) {
 
-                        isFiltered = true
                         if (response.body() != null) {
                             loadAdvancedSearch(response.body()!!)
                         }
+                    } else {
+                        doEmptyStates()
                     }
                 }
 
                 override fun onFailure(call: Call<AdvancedSearchResponse>, t: Throwable) {
                     val message = ExternalUtils.returnStateMessageForThrowable(t)
                     UIUtils.logThrowables(t, TAG)
+                    doThrowableState()
+                    Snackbar.make(container_search, message, Snackbar.LENGTH_INDEFINITE)
+                        .setAction(resources.getString(R.string.retry)) { mItem ->
+                            mItem.setOnClickListener {
+                                makeAdvcall(newBody)
+                            }
+
+                        }
+
                 }
             })
 
@@ -268,38 +241,49 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
     }
 
     private fun loadAdvancedSearch(body: AdvancedSearchResponse) {
-        isFiltered = true
-        this.apply {
-            cslNormalSearchData.visibility = View.GONE
-            cslAdvancedSearch.visibility = View.VISIBLE
 
-            val kgLocale = resources.getString(R.string.kg)
-            val kmLocale = resources.getString(R.string.kilometeres)
+        Log.e(TAG, "In adv load")
+        showProgress(pb, this)
 
-            val mCalendar = Calendar.getInstance();
-            val myFormat = "dd/MMM/yyyy" //In which you need put here
-            val sdf = SimpleDateFormat(myFormat, Locale.US)
+        try {
+            this.apply {
+                cslAdvancedSearch.visibility = View.VISIBLE
 
-            val currentDayMark = actvDays.text.toString()
-            mCalendar.add(Calendar.DATE, currentDayMark.toInt())
-            val afterDate = sdf.format(mCalendar.time)
-            mCalendar.add(Calendar.DATE, -(2 * currentDayMark.toInt()))
-            val beforeDate = sdf.format(mCalendar.time)
+                val kgLocale = resources.getString(R.string.kg)
+                val kmLocale = resources.getString(R.string.kilometeres)
+
+                val mCalendar = Calendar.getInstance();
+                val myFormat = "dd/MMM/yyyy" //In which you need put here
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+
+                val currentDayMark = actvDays.text.toString()
+                mCalendar.add(Calendar.DATE, currentDayMark.toInt())
+                val afterDate = sdf.format(mCalendar.time)
+                mCalendar.add(Calendar.DATE, -(2 * currentDayMark.toInt()))
+                val beforeDate = sdf.format(mCalendar.time)
 
 
-            //Load
-            tvAdvData.text =
-                resources.getString(
-                    R.string.quantity_grown_is,
-                    body.info.qty.toString(),
-                    kgLocale.toString(),
-                    beforeDate.toString(),
-                    afterDate.toString()
-                )
+                //Load
+                tvAdvData.text =
+                    resources.getString(
+                        R.string.quantity_grown_is,
+                        body.info.qty.toString(),
+                        kgLocale.toString(),
+                        beforeDate.toString(),
+                        afterDate.toString()
+                    )
 
-            tvAdvDistance.text =
-                resources.getString(R.string.within, actvDistance.text.toString(), kmLocale)
+                tvAdvDistance.text =
+                    resources.getString(R.string.within, actvDistance.text.toString(), kmLocale)
+            }
+        } catch (e: Exception) {
+            UIUtils.logExceptions(e, TAG)
+            doEmptyStates()
         }
+
+        Log.e(TAG, "Ending with search result adv daya as well")
+        hideProgress(pb, this)
+
     }
 
     private fun addStock() {
@@ -310,6 +294,7 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
     }
 
     private fun searchCrops(englishQueryTranslated: String) {
+
 
         Log.e("SEARCH RES", "Crop" + crop + " and from translated = " + englishQueryTranslated)
 
@@ -326,61 +311,88 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
                 ) {
                     if (response.isSuccessful) {
 
-                        isFiltered = false
                         if (response.body() != null) {
                             loadItemsFunction(response.body()!!)
                         }
+                    } else {
+                        doEmptyStates()
                     }
                 }
 
                 override fun onFailure(call: Call<SearchGlobalCropResponse>, t: Throwable) {
                     val message = ExternalUtils.returnStateMessageForThrowable(t)
+                    doThrowableState()
+                    //Create Snackbar
+                    Snackbar.make(container_search, message, Snackbar.LENGTH_INDEFINITE)
+                        .setAction(resources.getString(R.string.retry)) { mItem ->
+                            mItem.setOnClickListener {
+                                searchCrops(englishQueryTranslated)
+                            }
+
+                        }
                 }
             })
 
         hideProgress(pb, this)
     }
 
+    private fun doEmptyStates() {
+        this.apply {
+            clVis.visibility = View.GONE
+            llErrorSearch.visibility = View.VISIBLE
+            llErrorThrowable.visibility = View.GONE
+        }
+    }
+
+    private fun doThrowableState() {
+        this.apply {
+            clVis.visibility = View.GONE
+            llErrorSearch.visibility = View.GONE
+            llErrorThrowable.visibility = View.VISIBLE
+        }
+    }
+
     override fun onBackPressed() {
 
-        if (isFiltered) {
-            isFiltered = false
-            actvDays.text = null
-            actvDistance.text = null
-            this.apply {
-                cslNormalSearchData.visibility = View.VISIBLE
-                cslAdvancedSearch.visibility = View.GONE
-            }
-        }
+        finish()
         super.onBackPressed()
     }
 
     private fun loadItemsFunction(response: SearchGlobalCropResponse) {
 
-        isFiltered = false
+        showProgress(pb, this)
         try {
             this.apply {
                 Log.e("SEARCH RES", "response " + response.toString())
+
+                clVis.visibility = View.VISIBLE
                 cslAdvancedSearch.visibility = View.GONE
                 cslNormalSearchData.visibility = View.VISIBLE
+
                 tvInCountry.text = response.country.total.toString()
                 tvInState.text = response.state.total.toString()
                 tvInVillage.text = response.village.qty.toString()
                 tvInDistrict.text = response.district.total.toString()
 
+
+
+                loadYoutubeLinks(response.links)
+                //Load the advanced data
+                val newBody = AdvancedSearchBody(
+                    englishFinalQuery,
+                    defaultDaysAndDistance.toInt(),
+                    defaultDaysAndDistance.toInt()
+                )
+                makeAdvcall(newBody)
+
             }
 
-            loadYoutubeLinks(response.links)
         } catch (e: Exception) {
-            findViewById<ConstraintLayout>(R.id.clVis).visibility = View.INVISIBLE
-            Log.e("SEARCh", e.message + e.cause + " Error")
-            createSnackbar(
-                resources.getString(R.string.unableToGetSearch),
-                this,
-                container_search
-            )
 
-            mTv.visibility = View.VISIBLE
+            Log.e("SEARCh", e.message + e.cause + " Error")
+            doEmptyStates()
+            //When we dont find anything
+            //Show the error field
 
 
         }

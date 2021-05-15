@@ -28,6 +28,7 @@
                 android:id="@+id/llErrorSearch"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/filter">
 
                 <ProgressBar
@@ -45,11 +46,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="@dimen/space_3x"
+                    android:src="@drawable/nothingimg"
                     app:layout_constraintBottom_toTopOf="@id/tvAddMissing"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@drawable/nothingimg" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tvAddMissing"
@@ -80,7 +81,29 @@
                     app:layout_constraintTop_toBottomOf="@id/tvAddMissing" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-            <!--filter-->
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/llErrorThrowable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/filter">
+
+
+                <ImageView
+                    android:id="@+id/ivEmptyThrowable"
+                    android:layout_width="@dimen/space_10x"
+                    android:layout_height="@dimen/space_10x"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="@dimen/space_5x"
+                    android:src="@drawable/connection"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/clVis"
@@ -88,7 +111,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space"
                 android:padding="@dimen/space"
-                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/filter"
                 tools:context=".ui.home.SearchResultActivity">
 
@@ -119,7 +141,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="2dp"
-                    android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@id/tv">
 
                     <TextView
