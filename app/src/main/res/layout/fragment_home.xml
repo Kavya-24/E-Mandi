@@ -31,6 +31,7 @@
                 android:layout_height="match_parent"
                 android:text="@string/str_my_req" />
         </com.google.android.material.tabs.TabLayout>
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager.widget.ViewPager

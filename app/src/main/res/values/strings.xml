@@ -358,6 +358,7 @@
     <string name="cropDetailtitle">Details</string>
     <string name="bidDetailInfo">These are the demands of crops by consumers, companies and buyers. Click on <b>ADD BID</b> to place your bid. You can change and alter your bid anytime.</string>
     <string name="bidDetailInfoMy">You can see the bids of other people on the demand of the produce. You can modify and delete your bid if you want. You can contact the buyer as well.</string>
+    <string name="str_my_bids">My bids</string>
 
 
     <!--    Spinners for days and distance-->
