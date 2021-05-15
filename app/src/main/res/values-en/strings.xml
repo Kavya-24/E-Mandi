@@ -351,6 +351,8 @@
     <string name="retry">RETRY</string>
     <string name="addStockProposal">You will be able to list your crops in our database. Please be specific.</string>
     <string name="addBidProposal">The initial expected price is price on whih you want to sell your complete produce. Note that you can change this price anytime you want. Also, add the date when you wish to close the bidding on the crop.</string>
+    <string name="cropDetail">You can view the bids by the prospective buyers here. You can also update and delete the information about your crop if you want to.</string>
+    <string name="cropDetailtitle">Details</string>
 
 
     <!--    Spinners for days and distance-->

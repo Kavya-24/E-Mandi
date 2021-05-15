@@ -41,6 +41,7 @@ import com.jjoe64.graphview.DefaultLabelFormatter
 import com.jjoe64.graphview.GraphView
 import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
+import kotlinx.android.synthetic.main.layout_toolbar.*
 import kotlinx.android.synthetic.main.supply_detail_activity.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -91,7 +92,7 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
     private val pref = com.example.mandiexe.utils.auth.PreferenceUtil
     private lateinit var pb: ProgressBar
-    private lateinit var swl : SwipeRefreshLayout
+    private lateinit var swl: SwipeRefreshLayout
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -162,6 +163,23 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
         }
 
 
+
+        this.apply {
+
+            ivInformation.setOnClickListener {
+                getInformationNormalFilters()
+            }
+        }
+
+    }
+
+    private fun getInformationNormalFilters() {
+
+        val d = androidx.appcompat.app.AlertDialog.Builder(this)
+        d.setTitle(resources.getString(R.string.cropDetailtitle))
+        d.setMessage(resources.getString(R.string.cropDetail))
+        d.setPositiveButton(resources.getString(R.string.ok)) { _, _ -> }
+        d.create().show()
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
