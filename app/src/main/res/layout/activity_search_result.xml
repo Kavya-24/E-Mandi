@@ -81,10 +81,55 @@
                     app:layout_constraintTop_toBottomOf="@id/filter" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cslAdvancedSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/space_half"
+                    android:background="@color/white"
+                    android:padding="@dimen/space_half"
+                    app:layout_constraintTop_toBottomOf="@id/cslNormalSearchData">
+
+
+                    <TextView
+                        android:id="@+id/tvAdvData"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/quantity_grown_is"
+                        android:textColor="@color/colorPrimaryDark"
+                        app:layout_constraintBottom_toBottomOf="@id/ivAdvData"
+                        app:layout_constraintEnd_toStartOf="@id/ivAdvData"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/ivAdvData" />
+
+                    <ImageView
+                        android:id="@+id/ivAdvData"
+                        android:layout_width="@dimen/space_150"
+                        android:layout_height="@dimen/space_150"
+                        android:src="@drawable/landitem"
+                        app:layout_constraintEnd_toEndOf="@id/tvAdvDistance"
+                        app:layout_constraintStart_toEndOf="@id/tvAdvData"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <TextView
+                        android:id="@+id/tvAdvDistance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/within"
+                        android:textColor="@color/darkBlue"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@id/ivAdvData"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/ivAdvData" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cslNormalSearchData"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="2dp"
+                    android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@id/tv">
 
                     <TextView
@@ -197,7 +242,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_2x"
                     android:layout_marginBottom="@dimen/space_4x"
-                    app:layout_constraintTop_toBottomOf="@id/cslNormalSearchData"
+                    app:layout_constraintTop_toBottomOf="@id/cslAdvancedSearch"
                     tools:listitem="@layout/item_link_crop_file" />
 
                 <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

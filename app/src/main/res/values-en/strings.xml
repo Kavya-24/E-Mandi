@@ -272,6 +272,7 @@
         <item>@string/rajma</item>
         <item>@string/mango</item>
 
+
     </string-array>
 
     <string name="cropvarietyNull" tools:ignore="MissingTranslation">No variety found</string>
@@ -327,12 +328,6 @@
     <string name="bidRetrivealFailed">Failed to retrive the bid</string>
     <string name="noDemandsFound">No demands for this crop were found</string>
     <string name="start_searchinhg">Start searching for orders</string>
-    <string name="mango">Mango</string>
-    <string name="days">Days</string>
-    <string name="distance">Distance</string>
-    <string name="n_30">30</string>
-    <string name="km">Km</string>
-    <string name="infoHowMuchGrown">This shows how much of %s is grown in kilograms at various levels. You can filter them according to the range of days and distance.</string>
 
 
     <string-array name="arr_area_units">
@@ -340,7 +335,64 @@
         <item>@string/bigha</item>
         <item>@string/acres</item>
         <item>@string/sqrmetres</item>
+
+    </string-array>
+
+    <string name="mango">Mango</string>
+    <string name="days">Days</string>
+    <string name="distance">Distance</string>
+    <string name="n_30">30</string>
+    <string name="km">Km</string>
+    <string name="infoHowMuchGrown">This shows how much of %s is grown in kilograms at various levels. You can filter them according to the range of days and distance.</string>
+    <string name="quantity_grown_is">Quantity grown\n<b>%s %s</b>\n<i>%s to %s</i></string>
+    <string name="within">Within %s %s</string>
+
+
+    <!--    Spinners for days and distance-->
+    <string-array name="arr_days_limit">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+        <item>60</item>
+        <item>80</item>
+        <item>90</item>
+        <item>100</item>
+        <item>110</item>
+        <item>120</item>
+        <item>130</item>
+        <item>140</item>
+        <item>150</item>
+        <item>160</item>
+        <item>170</item>
+        <item>180</item>
+    </string-array>
+
+
+    <string-array name="arr_distance_limit">
+        <item>50</item>
+        <item>100</item>
+        <item>150</item>
+        <item>200</item>
+        <item>250</item>
+        <item>300</item>
+        <item>350</item>
+        <item>400</item>
+        <item>450</item>
+        <item>500</item>
+        <item>550</item>
+        <item>600</item>
+        <item>650</item>
+        <item>700</item>
+        <item>750</item>
+        <item>800</item>
+        <item>850</item>
+        <item>900</item>
+        <item>950</item>
+        <item>1000</item>
     </string-array>
 
 
 </resources>
+

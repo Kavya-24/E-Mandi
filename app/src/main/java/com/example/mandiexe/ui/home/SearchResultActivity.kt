@@ -178,6 +178,9 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
 
     private fun setUpFilterSpinners() {
 
+        actvDays.setText(defaultDaysAndDistance.toString(), TextView.BufferType.EDITABLE)
+        actvDistance.setText(defaultDaysAndDistance.toString(), TextView.BufferType.EDITABLE)
+
         UIUtils.getSpinnerAdapter(R.array.arr_days_limit, actvDays, this)
         UIUtils.getSpinnerAdapter(R.array.arr_distance_limit, actvDistance, this)
 
@@ -244,7 +247,12 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
     }
 
     private fun loadAdvancedSearch(body: AdvancedSearchResponse) {
+        isFiltered = true
+        this.apply {
+            cslNormalSearchData.visibility = View.GONE
+            cslAdvancedSearch.visibility = View.VISIBLE
 
+        }
     }
 
     private fun addStock() {
@@ -287,25 +295,44 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
     }
 
     override fun onBackPressed() {
-        finish()
+
+        if (isFiltered) {
+            isFiltered = false
+            actvDays.text = null
+            actvDistance.text = null
+            this.apply {
+                cslNormalSearchData.visibility = View.VISIBLE
+                cslAdvancedSearch.visibility = View.GONE
+            }
+        }
         super.onBackPressed()
     }
 
     private fun loadItemsFunction(response: SearchGlobalCropResponse) {
 
+        isFiltered = false
         try {
-            findViewById<ConstraintLayout>(R.id.clVis).visibility = View.VISIBLE
-            Log.e("SEARCH RES", "response " + response.toString())
-            findViewById<TextView>(R.id.tvInCountry).text = response.country.total.toString()
-            findViewById<TextView>(R.id.tvInState).text = response.state.total.toString()
-            findViewById<TextView>(R.id.tvInVillage).text = response.village.qty.toString()
-            findViewById<TextView>(R.id.tvInDistrict).text = response.district.total.toString()
+            this.apply {
+                Log.e("SEARCH RES", "response " + response.toString())
+                clVis.visibility = View.VISIBLE
+                cslAdvancedSearch.visibility = View.GONE
+                cslNormalSearchData.visibility = View.VISIBLE
+                tvInCountry.text = response.country.total.toString()
+                tvInState.text = response.state.total.toString()
+                tvInVillage.text = response.village.qty.toString()
+                tvInDistrict.text = response.district.total.toString()
+
+            }
 
             loadYoutubeLinks(response.links)
         } catch (e: Exception) {
             findViewById<ConstraintLayout>(R.id.clVis).visibility = View.INVISIBLE
             Log.e("SEARCh", e.message + e.cause + " Error")
-            createSnackbar(resources.getString(R.string.unableToGetSearch), this, container_search)
+            createSnackbar(
+                resources.getString(R.string.unableToGetSearch),
+                this,
+                container_search
+            )
 
             mTv.visibility = View.VISIBLE
 
@@ -325,6 +352,6 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
         adapter.lst = links
         rv.adapter = adapter
 
-
     }
+
 }
