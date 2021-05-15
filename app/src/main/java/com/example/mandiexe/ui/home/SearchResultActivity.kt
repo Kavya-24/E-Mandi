@@ -153,16 +153,21 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
             ivInformation.setOnClickListener {
                 if (isFiltered) {
                     //The circular map information
+                    getInformationAboutFilteredData()
                 } else {
                     //The information of what is happening and informations about filters
-                    getInformationAboutFilters()
+                    getInformationNormalFilters()
                 }
             }
         }
 
     }
 
-    private fun getInformationAboutFilters() {
+    private fun getInformationAboutFilteredData() {
+
+    }
+
+    private fun getInformationNormalFilters() {
 
         val d = AlertDialog.Builder(this)
         d.setTitle(resources.getString(R.string.howMuchGrown))
