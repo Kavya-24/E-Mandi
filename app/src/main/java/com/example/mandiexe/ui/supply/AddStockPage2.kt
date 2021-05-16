@@ -60,6 +60,10 @@ class AddStockPage2 : AppCompatActivity() {
         pb = findViewById(R.id.pb_add_stock_page_2)
         val tb = findViewById<Toolbar>(R.id.toolbarExternal)
         tb.title = resources.getString(R.string.addCropforBidding)
+
+        this.apply {
+            tvTitleToolbar.text = resources.getString(R.string.addCropforBidding)
+        }
         tb.setNavigationOnClickListener {
             onBackPressed()
         }

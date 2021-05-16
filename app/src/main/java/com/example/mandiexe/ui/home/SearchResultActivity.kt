@@ -87,6 +87,9 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
 
         val tb = findViewById<Toolbar>(R.id.toolbarExternal)
         tb.title = title
+        this.apply {
+            tvTitleToolbar.text = title
+        }
         tb.setNavigationOnClickListener {
             onBackPressed()
         }

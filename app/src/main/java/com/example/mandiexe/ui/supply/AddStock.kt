@@ -103,9 +103,14 @@ class AddStock : AppCompatActivity() {
 
         val tb = findViewById<Toolbar>(R.id.toolbarExternal)
         tb.title = resources.getString(R.string.add_crop)
+        this.apply {
+            tvTitleToolbar.text = resources.getString(R.string.add_crop)
+        }
         tb.setNavigationOnClickListener {
             onBackPressed()
         }
+
+
 
         mHandler = Handler()
         //UI Init

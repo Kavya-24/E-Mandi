@@ -112,6 +112,9 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
         val tb = findViewById<Toolbar>(R.id.toolbarExternal)
         tb.title = resources.getString(R.string.details)
+        this.apply {
+            tvTitleToolbar.text = resources.getString(R.string.details)
+        }
         tb.setNavigationOnClickListener {
             onBackPressed()
         }
