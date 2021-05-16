@@ -66,6 +66,7 @@ class FarmerBidHistoryViewModel : ViewModel() {
 
                     } else {
                         successful.value = false
+                        message.value = context.resources.getString(R.string.couldNotLoadAllBids)
                     }
 
 
