@@ -21,7 +21,6 @@
 
         android:id="@+id/tilDays"
         style="@style/styleTIL2"
-        android:hint="@string/n_30"
         android:padding="@dimen/space_half"
         app:layout_constraintStart_toEndOf="@id/tvDays"
         app:layout_constraintTop_toTopOf="parent">
@@ -53,7 +52,6 @@
 
         android:id="@+id/tilDistance"
         style="@style/styleTIL2"
-        android:hint="@string/n_30"
         android:padding="@dimen/space_half"
         app:layout_constraintStart_toEndOf="@id/tvDistance"
         app:layout_constraintTop_toTopOf="parent">
