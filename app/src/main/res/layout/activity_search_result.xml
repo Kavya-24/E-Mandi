@@ -261,12 +261,14 @@
                         app:layout_constraintBottom_toBottomOf="@id/ivAdvData"
                         app:layout_constraintEnd_toStartOf="@id/ivAdvData"
                         app:layout_constraintStart_toStartOf="parent"
+                        android:maxLines="5"
+                        android:textSize="16sp"
                         app:layout_constraintTop_toTopOf="@id/ivAdvData" />
 
                     <ImageView
                         android:id="@+id/ivAdvData"
-                        android:layout_width="@dimen/space_128"
-                        android:layout_height="@dimen/space_128"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         android:src="@drawable/landitem"
                         app:layout_constraintBottom_toTopOf="@id/tvAdvDistance"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -279,7 +281,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/within"
                         android:textColor="@color/darkBlue"
-                        android:layout_margin="@dimen/space_half"
+                        android:layout_margin="@dimen/space"
                         android:textStyle="bold"
                         app:layout_constraintTop_toBottomOf="@id/ivAdvData"
                         app:layout_constraintEnd_toEndOf="parent" />

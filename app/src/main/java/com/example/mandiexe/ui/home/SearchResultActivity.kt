@@ -167,8 +167,13 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
     private fun setUpFilterSpinners() {
 
         //Null at first
-        actvDays.setText(null)
-        actvDistance.setText(null)
+        actvDays.setText(
+            resources.getString(R.string.num50).toString(),
+            TextView.BufferType.EDITABLE
+        )
+        actvDistance.setText(resources.getString(R.string.num50), TextView.BufferType.EDITABLE)
+
+
 
         UIUtils.getSpinnerAdapter(R.array.arr_days_limit, actvDays, this)
         UIUtils.getSpinnerAdapter(R.array.arr_distance_limit, actvDistance, this)
@@ -261,7 +266,17 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
                 val myFormat = "dd/MMM/yyyy" //In which you need put here
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
 
-                val currentDayMark = actvDays.text.toString()
+                var mDays = actvDays.text.toString()
+                if (mDays.isEmpty()) {
+                    mDays = defaultDaysAndDistance.toString()
+                }
+
+                var mDistance = actvDistance.text.toString()
+                if (mDistance.isEmpty()) {
+                    mDistance = defaultDaysAndDistance.toString()
+                }
+
+                val currentDayMark = mDays.toString()
                 mCalendar.add(Calendar.DATE, currentDayMark.toInt())
                 val afterDate = sdf.format(mCalendar.time)
                 mCalendar.add(Calendar.DATE, -(2 * currentDayMark.toInt()))
@@ -279,7 +294,7 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
                     )
 
                 tvAdvDistance.text =
-                    resources.getString(R.string.within, actvDistance.text.toString(), kmLocale)
+                    resources.getString(R.string.within, mDistance, kmLocale)
             }
         } catch (e: Exception) {
             UIUtils.logExceptions(e, TAG)

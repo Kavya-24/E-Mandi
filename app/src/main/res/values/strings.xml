@@ -362,6 +362,7 @@
     <string name="couldNotLoadAllBids">Could not get bids</string>
     <string name="searchbyCrops">Search</string>
     <string name="kgQuantityValueString">%s %s</string>
+    <string name="num50">50</string>
 
 
     <!--    Spinners for days and distance-->
