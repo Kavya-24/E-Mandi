@@ -1,5 +1,6 @@
 package com.example.mandiexe.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,6 +36,7 @@ class DemandsSuggestionAdapterClass(val itemClick: mDemandSuggestionClickListene
                 iCrop.setImageDrawable(itemView.context.resources.getDrawable(R.drawable.farmerx))
             }
 
+            Log.e("DEMAND", "In binding")
             itemView.setOnClickListener {
                 itemclick.clickDemandSuggestion(_listItem)
             }
@@ -64,7 +66,9 @@ class DemandsSuggestionAdapterClass(val itemClick: mDemandSuggestionClickListene
 }
 
 interface mDemandSuggestionClickListener {
+
     fun clickDemandSuggestion(_listItem: DemandSuggestionObject)
+
 }
 
 

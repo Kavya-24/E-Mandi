@@ -21,22 +21,22 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
+            android:contentInsetStart="0dp"
+            android:contentInsetLeft="0dp"
             android:foregroundTint="@color/white"
             android:navigationIcon="@drawable/ic_arrow_back"
             android:theme="@style/AppTheme.NoActionBar"
-            android:titleTextColor="@color/white"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:titleTextColor="@color/white">
 
             <SearchView
                 android:id="@+id/addSearch"
-                style="@style/MaterialSearchViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:focusable="false"
+                android:iconifiedByDefault="false"
                 android:searchHintIcon="@drawable/ic_history_black_24dp"
                 android:voiceIcon="@drawable/ic_action_voice_search"
-                app:queryHint="@string/searchCrops"
+                app:queryHint="@string/searchbyCrops"
                 app:tint="@color/white">
 
             </SearchView>
@@ -57,12 +57,12 @@
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_demand_suggestions"
                 style="@style/styleRv"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:listitem="@layout/item_suggestion_crop"
-                android:id="@+id/rv_demand_suggestions" />
+                tools:listitem="@layout/item_suggestion_crop" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_search_requirements"
@@ -85,6 +85,7 @@
                     android:layout_height="@dimen/space_220"
                     android:gravity="center"
                     android:src="@drawable/searchlogo"
+                    android:tint="@color/colorPrimaryDark"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -94,7 +95,7 @@
                     android:id="@+id/tvEmptyListNewDemands"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/space_5x"
+                    android:layout_marginBottom="40dp"
                     android:gravity="center"
                     android:padding="@dimen/space"
                     android:text="@string/start_searchinhg"

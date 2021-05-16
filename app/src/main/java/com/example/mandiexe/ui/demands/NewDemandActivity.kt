@@ -1,5 +1,6 @@
 package com.example.mandiexe.ui.demands
 
+import android.app.ActionBar
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
@@ -16,7 +17,6 @@ import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -307,6 +307,7 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
         empty = findViewById<ConstraintLayout>(R.id.llEmptyNewDemands)
         rvSuggestion = findViewById(R.id.rv_demand_suggestions)
 
+
         empty.visibility = View.VISIBLE
         rvSuggestion.visibility = View.GONE
 
@@ -431,10 +432,21 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
 
 
         empty.setOnClickListener {
-            if (!(empty.isVisible and isLoaded)) {
-                searchView.requestFocus()
-            }
+            searchView.requestFocus()
         }
+
+
+        val searchPlateId =
+            searchView.context.resources.getIdentifier("android:id/search_plate", null, null)
+        val searchPlate = searchView.findViewById<View>(searchPlateId)
+        searchPlate.setBackgroundResource(R.drawable.searchview_selector)
+
+
+        //Hide Magnification glass
+        val magId = resources.getIdentifier("android:id/search_mag_icon", null, null)
+        val magImage = searchView.findViewById<View>(magId) as ImageView
+        magImage.layoutParams = LinearLayout.LayoutParams(0,0)
+        magImage.visibility = View.GONE
 
     }
 
@@ -526,6 +538,7 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
 
     override fun clickDemandSuggestion(_listItem: DemandSuggestionObject) {
 
+        Log.e(TAG, "clciked suggetion ${_listItem.nameOfCrop}")
         showProgress(pb, this@NewDemandActivity)
         getTranslatedSearch(_listItem.nameOfCrop.toString())
         hideProgress(pb, this@NewDemandActivity)
