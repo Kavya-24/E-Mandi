@@ -102,7 +102,7 @@
                     android:layout_height="80dp"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="40dp"
-                    android:src="@drawable/connection"
+                    android:src="@drawable/searchbg"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
