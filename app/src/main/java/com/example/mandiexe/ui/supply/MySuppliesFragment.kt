@@ -42,7 +42,6 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
     private lateinit var mSwipeable: ConstraintLayout
 
 
-
     override fun onResume() {
         super.onResume()
         Log.e(TAG, "In on resume")
@@ -211,6 +210,9 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
     }
 
     private fun clearObservers() {
+
+        //Hide throwable states
+
         viewModel.successful.removeObservers(this)
         viewModel.successful.value = null
 

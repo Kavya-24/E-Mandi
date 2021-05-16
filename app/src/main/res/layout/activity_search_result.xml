@@ -22,9 +22,11 @@
             <include
                 android:id="@+id/filter"
                 layout="@layout/layout_filter"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space_half"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -113,8 +115,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space"
-                android:padding="@dimen/space"
                 android:visibility="gone"
+                android:padding="@dimen/space"
                 app:layout_constraintTop_toBottomOf="@id/filter"
                 tools:context=".ui.home.SearchResultActivity">
 
@@ -263,11 +265,11 @@
 
                     <ImageView
                         android:id="@+id/ivAdvData"
-                        android:layout_width="@dimen/space_150"
-                        android:layout_height="@dimen/space_150"
+                        android:layout_width="@dimen/space_128"
+                        android:layout_height="@dimen/space_128"
                         android:src="@drawable/landitem"
-                        app:layout_constraintEnd_toEndOf="@id/tvAdvDistance"
-                        app:layout_constraintStart_toEndOf="@id/tvAdvData"
+                        app:layout_constraintBottom_toTopOf="@id/tvAdvDistance"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -277,10 +279,10 @@
                         android:layout_height="wrap_content"
                         android:text="@string/within"
                         android:textColor="@color/darkBlue"
+                        android:layout_margin="@dimen/space_half"
                         android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="@id/ivAdvData"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/ivAdvData" />
+                        app:layout_constraintTop_toBottomOf="@id/ivAdvData"
+                        app:layout_constraintEnd_toEndOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
