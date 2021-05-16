@@ -373,10 +373,28 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
                 cslAdvancedSearch.visibility = View.GONE
                 cslNormalSearchData.visibility = View.VISIBLE
 
-                tvInCountry.text = response.country.total.toString()
-                tvInState.text = response.state.total.toString()
-                tvInVillage.text = response.village.qty.toString()
-                tvInDistrict.text = response.district.total.toString()
+                val kgLocale = resources.getString(R.string.kg)
+
+                tvInCountry.text = resources.getString(
+                    R.string.kgQuantityValueString,
+                    response.country.total.toString(),
+                    kgLocale
+                )
+                tvInState.text = resources.getString(
+                    R.string.kgQuantityValueString,
+                    response.state.total.toString(),
+                    kgLocale
+                )
+                tvInVillage.text = resources.getString(
+                    R.string.kgQuantityValueString,
+                    response.village.qty.toString(),
+                    kgLocale
+                )
+                tvInDistrict.text = resources.getString(
+                    R.string.kgQuantityValueString,
+                    response.district.total.toString(),
+                    kgLocale
+                )
 
 
 

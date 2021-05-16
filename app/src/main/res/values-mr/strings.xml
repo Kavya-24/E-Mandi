@@ -278,4 +278,5 @@
     <string name="str_my_bids">My bids</string>
     <string name="couldNotLoadAllBids">Could not get bids</string>
     <string name="searchbyCrops">Search</string>
+    <string name="kgQuantityValueString">%s %s</string>
 </resources>

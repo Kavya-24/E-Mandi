@@ -13,6 +13,7 @@ object Constants {
     val SWIPE_THRESHOLD = 100
     val SWIPE_VELOCITY_THRESHOLD = 100
 
+
     fun getDaysSpinnerList(): MutableList<Int> {
 
         val daysList = mutableListOf<Int>()

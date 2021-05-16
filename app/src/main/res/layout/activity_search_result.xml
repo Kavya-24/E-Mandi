@@ -114,6 +114,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space"
                 android:padding="@dimen/space"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/filter"
                 tools:context=".ui.home.SearchResultActivity">
 
