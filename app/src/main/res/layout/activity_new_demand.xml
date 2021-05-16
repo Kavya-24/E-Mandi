@@ -24,13 +24,13 @@
             android:contentInsetStart="0dp"
             android:contentInsetLeft="0dp"
             android:foregroundTint="@color/white"
-            android:navigationIcon="@drawable/ic_arrow_back"
             android:theme="@style/AppTheme.NoActionBar"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:titleTextColor="@color/white">
 
             <SearchView
                 android:id="@+id/addSearch"
+                android:layout_margin="@dimen/space"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:iconifiedByDefault="false"

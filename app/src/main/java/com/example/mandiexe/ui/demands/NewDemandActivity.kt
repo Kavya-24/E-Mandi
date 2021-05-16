@@ -316,9 +316,9 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
 
         val tb = findViewById<Toolbar>(R.id.toolbarExternalSearch)
         tb.title = resources.getString(R.string.searchBuyers)
-        tb.setNavigationOnClickListener {
-            onBackPressed()
-        }
+//        tb.setNavigationOnClickListener {
+//            onBackPressed()
+//        }
 
 //        //Inflate menu
 //        tb.inflateMenu(R.menu.search_requirement_menu)
