@@ -18,7 +18,7 @@ class YoutubeAdapter(val itemClick: OnYoutubeClickListener) :
     RecyclerView.Adapter<YoutubeAdapter.MyViewHolder>() {
 
 
-    var lst:List<SearchGlobalCropResponse.Link> = mutableListOf()
+    var lst: List<SearchGlobalCropResponse.Link> = mutableListOf()
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -41,8 +41,15 @@ class YoutubeAdapter(val itemClick: OnYoutubeClickListener) :
             //The link will not be transklated
             URL.text = _listItem.url
             //Set the text movement here
+
+
             URL.movementMethod = LinkMovementMethod.getInstance()
+
             URL.setOnClickListener {
+                watchYoutubeVideo(_listItem.url)
+            }
+
+            itemView.setOnClickListener {
                 watchYoutubeVideo(_listItem.url)
             }
 
