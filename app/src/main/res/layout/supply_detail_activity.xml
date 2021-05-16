@@ -188,7 +188,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/space_half"
                         android:gravity="center"
-                        android:text="@string/initial_offer_price"
+                        android:text="@string/initial_expected_price"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_weight="1"
                         app:layout_constraintStart_toEndOf="@id/tv_stock_detail_current_bid"
