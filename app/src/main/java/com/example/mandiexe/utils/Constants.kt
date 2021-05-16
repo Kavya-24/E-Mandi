@@ -10,6 +10,9 @@ object Constants {
     val maximumDistanceRange = 1000
     val stepDistance = 50          //50
 
+    val SWIPE_THRESHOLD = 100
+    val SWIPE_VELOCITY_THRESHOLD = 100
+
     fun getDaysSpinnerList(): MutableList<Int> {
 
         val daysList = mutableListOf<Int>()

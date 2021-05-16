@@ -19,6 +19,7 @@ import com.example.mandiexe.R
 import com.example.mandiexe.adapter.MySuppliesAdapter
 import com.example.mandiexe.adapter.OnMyStockClickListener
 import com.example.mandiexe.models.responses.supply.FarmerSuppliesResponse
+import com.example.mandiexe.utils.OnSwipeTouchListener
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import com.example.mandiexe.viewmodels.MySuppliesViewmodel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -38,6 +39,9 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
     private val TAG = MySuppliesFragment::class.java.simpleName
 
     private lateinit var swl: SwipeRefreshLayout
+    private lateinit var mSwipeable: ConstraintLayout
+
+
 
     override fun onResume() {
         super.onResume()
@@ -53,6 +57,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
         Log.e(TAG, "In on create")
         root = inflater.inflate(R.layout.my_supplies_fragment, container, false)
         swl = root.findViewById<SwipeRefreshLayout>(R.id.swl_supplies_fragment)
+        mSwipeable = root.findViewById<ConstraintLayout>(R.id.swipeablecslsuuplies)
 
 
         loadItems()
@@ -94,7 +99,30 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
             }
         })
 
+        //Swipeable
+        mSwipeable.setOnTouchListener(object : OnSwipeTouchListener(requireContext()) {
+
+            override fun onSwipeLeft() {
+                super.onSwipeLeft()
+                Log.e(TAG, "In left swipe")
+                goToMyBids()
+            }
+
+            override fun onSwipeRight() {
+                super.onSwipeRight()
+                Log.e(TAG, "In right swipe")
+            }
+        })
+
+
         return root
+    }
+
+    private fun goToMyBids() {
+        Log.e(TAG, "On on swipe left")
+        root.findNavController().navigate(R.id.action_nav_supply_to_nav_bids)
+
+
     }
 
     private fun loadItems() {
