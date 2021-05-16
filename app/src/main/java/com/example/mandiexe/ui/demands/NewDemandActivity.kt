@@ -1,6 +1,5 @@
 package com.example.mandiexe.ui.demands
 
-import android.app.ActionBar
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
@@ -446,7 +445,7 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
         //Hide Magnification glass
         val magId = resources.getIdentifier("android:id/search_mag_icon", null, null)
         val magImage = searchView.findViewById<View>(magId) as ImageView
-        magImage.layoutParams = LinearLayout.LayoutParams(0,0)
+        magImage.layoutParams = LinearLayout.LayoutParams(0, 0)
         magImage.visibility = View.GONE
 
     }
@@ -541,6 +540,7 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
 
         Log.e(TAG, "Here")
         rvSuggestion.visibility = View.GONE
+        searchView.setQuery(_listItem.nameOfCrop, false)
         Log.e(TAG, "clciked suggetion ${_listItem.nameOfCrop}")
         showProgress(pb, this@NewDemandActivity)
         getTranslatedSearch(_listItem.nameOfCrop.toString())
