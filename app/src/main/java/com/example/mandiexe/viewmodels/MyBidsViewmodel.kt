@@ -51,10 +51,6 @@ class MyBidsViewmodel : ViewModel() {
                     response: Response<FamerBidsResponse>
                 ) {
 
-                    Log.e(
-                        TAG,
-                        response.message() + response.body().toString()
-                    )
                     if (response.isSuccessful) {
 
                         successful.value = true
@@ -66,6 +62,7 @@ class MyBidsViewmodel : ViewModel() {
                     } else {
 
                         successful.value = false
+
                         message.value = context.resources.getString(R.string.couldNotLoadBids)
 
                     }

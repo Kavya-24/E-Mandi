@@ -25,6 +25,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.my_bids_fragment.*
 
+
 class MyBidsFragment : Fragment(), OnMyBidClickListener {
 
     companion object {
@@ -69,6 +70,25 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
             val i = Intent(requireContext(), NewDemandActivity::class.java)
             startActivity(i)
         }
+
+        val tabLayout = root.findViewById<TabLayout>(R.id.tabsBids)
+        val tab = tabLayout.getTabAt(1)
+        tab!!.select()
+
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                //The other tab is selected
+                onDestroy()
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                //Do nothing
+            }
+        })
 
         return root
     }

@@ -27,13 +27,11 @@
             <com.google.android.material.tabs.TabItem
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:focusedByDefault="false"
                 android:text="@string/str_my_crops" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:focusedByDefault="true"
                 android:text="@string/str_my_bids" />
         </com.google.android.material.tabs.TabLayout>
 

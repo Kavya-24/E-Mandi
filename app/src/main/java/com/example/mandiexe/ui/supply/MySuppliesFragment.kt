@@ -11,6 +11,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -21,6 +22,7 @@ import com.example.mandiexe.models.responses.supply.FarmerSuppliesResponse
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import com.example.mandiexe.viewmodels.MySuppliesViewmodel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.my_supplies_fragment.*
 
 
@@ -70,6 +72,27 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
             loadItems()
             swl.isRefreshing = false
         }
+
+
+        //For the tab
+        val tabLayout = root.findViewById<TabLayout>(R.id.tabsSupplies)
+        val tab = tabLayout.getTabAt(0)
+        tab!!.select()
+
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                //The other tab is selected
+                root.findNavController().navigate(R.id.action_nav_supply_to_nav_bids)
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                //Do nothing
+            }
+        })
 
         return root
     }
