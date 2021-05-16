@@ -166,8 +166,9 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
 
     private fun setUpFilterSpinners() {
 
-        actvDays.setText(defaultDaysAndDistance.toString(), TextView.BufferType.EDITABLE)
-        actvDistance.setText(defaultDaysAndDistance.toString(), TextView.BufferType.EDITABLE)
+        //Null at first
+        actvDays.setText(null)
+        actvDistance.setText(null)
 
         UIUtils.getSpinnerAdapter(R.array.arr_days_limit, actvDays, this)
         UIUtils.getSpinnerAdapter(R.array.arr_distance_limit, actvDistance, this)
@@ -400,12 +401,12 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
 
                 loadYoutubeLinks(response.links)
                 //Load the advanced data
-                val newBody = AdvancedSearchBody(
-                    englishFinalQuery,
-                    defaultDaysAndDistance.toInt(),
-                    defaultDaysAndDistance.toInt()
-                )
-                makeAdvcall(newBody)
+//                val newBody = AdvancedSearchBody(
+//                    englishFinalQuery,
+//                    defaultDaysAndDistance.toInt(),
+//                    defaultDaysAndDistance.toInt()
+//                )
+//                makeAdvcall(newBody)
 
             }
 
