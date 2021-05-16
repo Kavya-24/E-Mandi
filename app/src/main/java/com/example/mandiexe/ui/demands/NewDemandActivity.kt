@@ -538,6 +538,8 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
 
     override fun clickDemandSuggestion(_listItem: DemandSuggestionObject) {
 
+        Log.e(TAG, "Here")
+        rvSuggestion.visibility = View.GONE
         Log.e(TAG, "clciked suggetion ${_listItem.nameOfCrop}")
         showProgress(pb, this@NewDemandActivity)
         getTranslatedSearch(_listItem.nameOfCrop.toString())
@@ -551,6 +553,7 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
         newadapter.lst = getList()
         rvSuggestion.adapter = newadapter
         newadapter.notifyDataSetChanged()
+
     }
 
     private fun getList(): MutableList<DemandSuggestionObject> {
@@ -581,7 +584,7 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
             )
         )
 
-
+        Log.e(TAG, "New list for demands suggestions is $newList")
         return newList
     }
 

@@ -11,6 +11,8 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -77,7 +79,13 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                Log.e(TAG, "In Tab selected")
+                Log.e(TAG, "In Tab selected position ${tab?.position}")
+                if (tab?.position == 0) {
+                    onDestroy()
+                } else{
+                    //Do nothing
+                    onTabReselected(tab)
+                }
 
             }
 
@@ -85,11 +93,12 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
                 //The other tab is selected
                 Log.e(TAG, "In Tab un selected")
                 onDestroy()
+
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
                 //Do nothing
-                Log.e(TAG, "In un selected selected")
+                Log.e(TAG, "In re selected selected")
             }
         })
 
@@ -162,9 +171,13 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
     }
 
     override fun onDestroy() {
-        clearObservers()
-        Log.e(TAG, "In on destroy")
         super.onDestroy()
+        clearObservers()
+
+        val navC = findNavController()
+        navC.navigateUp()
+        Log.e(TAG, "In on destroy")
+
 
     }
 

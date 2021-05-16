@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
 import com.example.mandiexe.models.DemandSuggestionObject
@@ -21,6 +22,7 @@ class DemandsSuggestionAdapterClass(val itemClick: mDemandSuggestionClickListene
         // val NAME = itemView.findViewById<TextView>(R.id.tvSearch)
         val nCrop = itemView.findViewById<TextView>(R.id.tvItemDemandSuggestion)
         val iCrop = itemView.findViewById<ImageView>(R.id.ivItemDemandSuggestion)
+        val cCard = itemView.findViewById<CardView>(R.id.cvItemDemandSuggestion)
 
         fun bindPost(
             _listItem: DemandSuggestionObject,
@@ -36,8 +38,12 @@ class DemandsSuggestionAdapterClass(val itemClick: mDemandSuggestionClickListene
                 iCrop.setImageDrawable(itemView.context.resources.getDrawable(R.drawable.farmerx))
             }
 
-            Log.e("DEMAND", "In binding")
+            Log.e("DEMAND", "In binding for uterm name ${_listItem.nameOfCrop}")
             itemView.setOnClickListener {
+                itemclick.clickDemandSuggestion(_listItem)
+            }
+
+            cCard.setOnClickListener {
                 itemclick.clickDemandSuggestion(_listItem)
             }
 
