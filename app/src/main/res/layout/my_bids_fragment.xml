@@ -26,11 +26,13 @@
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="0dp"
+                android:focusable="false"
                 android:layout_height="match_parent"
                 android:text="@string/str_my_crops" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="0dp"
+                android:focusable="true"
                 android:layout_height="match_parent"
                 android:text="@string/str_my_bids" />
         </com.google.android.material.tabs.TabLayout>
@@ -68,7 +70,7 @@
                 android:layout_margin="@dimen/space"
                 app:layout_constraintBottom_toTopOf="@id/tvEmptyListBid"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/nothingimg" />
+                android:src="@drawable/nothingimg" />
 
             <TextView
                 android:id="@+id/tvEmptyListBid"

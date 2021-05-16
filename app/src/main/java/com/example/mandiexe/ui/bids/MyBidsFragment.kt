@@ -77,16 +77,19 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
+                Log.e(TAG, "In Tab selected")
 
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
                 //The other tab is selected
+                Log.e(TAG, "In Tab un selected")
                 onDestroy()
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
                 //Do nothing
+                Log.e(TAG, "In un selected selected")
             }
         })
 
