@@ -100,7 +100,7 @@
     <string name="initPrice">Price demanded for crop:</string>
     <string name="myBidPrice">Price you are adding</string>
     <string name="noChangeInBid">No change in bid</string>
-    <string name="modifyStock">Modify stock</string>
+    <string name="modifyStock">Modify crop</string>
     <string name="supplyDeleted">Crop deleted successfully</string>
     <string name="supplyUpdated">Crop updated successfully</string>
     <string name="cancelStock">Delete crop</string>
