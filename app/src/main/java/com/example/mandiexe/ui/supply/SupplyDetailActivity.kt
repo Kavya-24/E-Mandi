@@ -201,11 +201,17 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
         viewModelCrop.getFunction(body).observe(this, Observer { mResponse ->
             if (viewModelCrop.successfulSupply.value != null) {
+
+                //Hide Progress
+                hideProgress(pb, this)
                 if (viewModelCrop.successfulSupply.value!! || viewModelCrop.messageSupply.value == "Supply retrieved successfully.") {
                     initViews(mResponse)
                 } else {
                     createSnackbar(viewModelCrop.messageCancel.value)
                 }
+            } else {
+                Log.e(TAG, "Loading")
+                showProgress(pb, this)
             }
 
         })
@@ -239,14 +245,17 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
         viewModelCrop.cancelFunction(body).observe(this, Observer { mResponse ->
             val success = viewModelCrop.successfulCancel.value
-            if (success != null)
+            if (success != null) {
+                hideProgress(pb, this)
                 if (success) {
                     manageCancelResponses(mResponse)
                 } else {
                     createSnackbar(viewModelCrop.messageCancel.value)
 
                 }
-
+            } else {
+                showProgress(pb, this)
+            }
         })
 
 
@@ -405,12 +414,18 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
         viewModelCrop.updateFunction(body).observe(this, Observer { mResponse ->
 
-            //Check with the sucessful of it
-            if (viewModelCrop.successfulUpdate.value == false) {
-                createSnackbar(viewModelCrop.messageUpdate.value)
+            if (viewModelCrop.successfulUpdate != null) {
+                //Check with the sucessful of it
+                hideProgress(pb, this)
+                if (viewModelCrop.successfulUpdate.value == false) {
+                    createSnackbar(viewModelCrop.messageUpdate.value)
+                } else {
+                    manageModifyResponse(mResponse)
+                }
             } else {
-                manageModifyResponse(mResponse)
+                showProgress(pb, this)
             }
+
         })
 
 
