@@ -132,6 +132,7 @@ class AddStockPage2 : AppCompatActivity() {
         val nPrice = offerPrice.text.toString()
         val nExpBid = etExp.text.toString()
 
+        val rsLocale = resources.getString(R.string.rs)
 
         //Inflate View
         val v = layoutInflater.inflate(R.layout.layout_add_stock, null)
@@ -144,6 +145,7 @@ class AddStockPage2 : AppCompatActivity() {
                 nCrop,
                 nQuantity,
                 nQuantityTranslated,
+                rsLocale,
                 nPrice
             )
 
