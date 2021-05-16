@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -19,8 +20,9 @@ import com.example.mandiexe.R
 import com.example.mandiexe.adapter.MySuppliesAdapter
 import com.example.mandiexe.adapter.OnMyStockClickListener
 import com.example.mandiexe.models.responses.supply.FarmerSuppliesResponse
-import com.example.mandiexe.utils.OnSwipeTouchListener
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
+import com.example.mandiexe.utils.usables.UIUtils.hideProgress
+import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.example.mandiexe.viewmodels.MySuppliesViewmodel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
@@ -41,10 +43,12 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
     private lateinit var swl: SwipeRefreshLayout
     private lateinit var mSwipeable: ConstraintLayout
 
+    private lateinit var pb: ProgressBar
 
     override fun onResume() {
         super.onResume()
         Log.e(TAG, "In on resume")
+        loadItems()
 
     }
 
@@ -57,7 +61,12 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
         root = inflater.inflate(R.layout.my_supplies_fragment, container, false)
         swl = root.findViewById<SwipeRefreshLayout>(R.id.swl_supplies_fragment)
         mSwipeable = root.findViewById<ConstraintLayout>(R.id.swipeablecslsuuplies)
+        pb = root.findViewById(R.id.pb_my_crops)
 
+
+        Log.e(TAG, "In load requirements")
+        swl.isRefreshing = true
+        clearObservers()
 
         loadItems()
 
@@ -99,20 +108,20 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
         })
 
         //Swipeable
-        mSwipeable.setOnTouchListener(object : OnSwipeTouchListener(requireContext()) {
-
-            override fun onSwipeLeft() {
-                super.onSwipeLeft()
-                Log.e(TAG, "In left swipe")
-                goToMyBids()
-            }
-
-            override fun onSwipeRight() {
-                super.onSwipeRight()
-                Log.e(TAG, "In right swipe")
-            }
-        })
-
+//        mSwipeable.setOnTouchListener(object : OnSwipeTouchListener(requireContext()) {
+//
+//            override fun onSwipeLeft() {
+//                super.onSwipeLeft()
+//                Log.e(TAG, "In left swipe")
+//                goToMyBids()
+//            }
+//
+//            override fun onSwipeRight() {
+//                super.onSwipeRight()
+//                Log.e(TAG, "In right swipe")
+//            }
+//        })
+//
 
         return root
     }
@@ -126,13 +135,12 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
 
     private fun loadItems() {
 
-        Log.e(TAG, "In load requirements")
-        swl.isRefreshing = true
-        clearObservers()
 
         viewModel.supplyFunction().observe(viewLifecycleOwner, Observer { mResponse ->
             if (viewModel.successful.value != null) {
+                hideProgress(pb, requireContext())
                 if (viewModel.successful.value!!) {
+
                     manageStockLoadedResponses(mResponse)
 
                 } else {
@@ -141,7 +149,8 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
 
                 }
             } else {
-                doThrowableState()
+                //While state
+                showProgress(pb, requireContext())
             }
 
         })

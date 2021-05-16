@@ -6,12 +6,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +22,7 @@ import com.example.mandiexe.adapter.OnMyBidClickListener
 import com.example.mandiexe.models.responses.bids.FamerBidsResponse
 import com.example.mandiexe.ui.demands.NewDemandActivity
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
+import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.example.mandiexe.viewmodels.MyBidsViewmodel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
@@ -42,9 +43,13 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
     private lateinit var swl: SwipeRefreshLayout
     private val TAG = MyBidsFragment::class.java.simpleName
 
+    private lateinit var pb: ProgressBar
+
     override fun onResume() {
         super.onResume()
         Log.e(TAG, "In on resume")
+
+        loadRequirements()
 
     }
 
@@ -57,9 +62,10 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
         root = inflater.inflate(R.layout.my_bids_fragment, container, false)
         //Get the items from retrofit call and paged adapter
         swl = root.findViewById<SwipeRefreshLayout>(R.id.swl_bid_fragment)
+        pb = root.findViewById(R.id.pb_my_bids)
 
-
-
+        swl.isRefreshing = true
+        clearObservers()
         loadRequirements()
 
         swl.setOnRefreshListener {
@@ -82,7 +88,7 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
                 Log.e(TAG, "In Tab selected position ${tab?.position}")
                 if (tab?.position == 0) {
                     onDestroy()
-                } else{
+                } else {
                     //Do nothing
                     onTabReselected(tab)
                 }
@@ -107,15 +113,13 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
 
     private fun loadRequirements() {
 
-        swl.isRefreshing = true
-        Log.e(TAG, "In load requirements")
-        clearObservers()
 
         viewModel.reqFunction().observe(viewLifecycleOwner, Observer { mResponse ->
 
             //Check with the successful of it
             if (viewModel.successful.value != null) {
                 //Log the response
+                showProgress(pb, requireContext())
                 if (viewModel.successful.value!!) {
 
                     manageReqLoadedResponses(mResponse)
@@ -128,7 +132,8 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
                     doThrowableState()
                 }
             } else {
-                doThrowableState()
+                Log.e(TAG, "Loading")
+                showProgress(pb, requireContext())
             }
         })
 

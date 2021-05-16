@@ -100,8 +100,8 @@
 
             <ImageView
                 android:id="@+id/ivEmptyThrowable"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="40dp"
                 android:src="@drawable/searchbg"
@@ -127,7 +127,6 @@
         <ProgressBar
             android:id="@+id/pb_my_crops"
             style="@style/styleProgressBar"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
