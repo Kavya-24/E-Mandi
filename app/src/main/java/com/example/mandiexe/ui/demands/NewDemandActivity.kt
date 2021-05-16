@@ -448,6 +448,7 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
         magImage.layoutParams = LinearLayout.LayoutParams(0, 0)
         magImage.visibility = View.GONE
 
+
     }
 
     private fun createVoiceIntent() {

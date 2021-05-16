@@ -759,7 +759,7 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
                     )
 
                 }
-                if (from == MyBidsFragment::class.java.simpleName) {
+                if (from == MyBidsFragment::class.java.simpleName || from == FarmerBidHistory::class.java.simpleName) {
                     //Add in the bidding fragment
                     tv_requirement_detail_my_bid.text =
                         myCurrentBid.toString()
