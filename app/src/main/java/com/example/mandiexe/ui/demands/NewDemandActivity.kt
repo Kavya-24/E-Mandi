@@ -260,7 +260,6 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
 
 
             this.apply {
-                ivNoNewReq.setImageDrawable(resources.getDrawable(R.drawable.nothingimg, null))
                 tvEmptyListNewDemands.visibility = View.GONE
             }
             //Create indefinite snackbar
@@ -271,6 +270,8 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
             )
                 .setAction(resources.getString(R.string.add_crop)) { mListener ->
                     mListener.setOnClickListener {
+
+                        Log.e(TAG, "On on clikc of set action")
                         val i = Intent(this, AddStock::class.java)
                         startActivity(i)
                     }

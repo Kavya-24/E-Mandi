@@ -30,9 +30,9 @@
 
             <SearchView
                 android:id="@+id/addSearch"
-                android:layout_margin="@dimen/space_half"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space_half"
                 android:iconifiedByDefault="false"
                 android:searchHintIcon="@drawable/ic_history_black_24dp"
                 android:voiceIcon="@drawable/ic_action_voice_search"
@@ -81,11 +81,10 @@
 
                 <ImageView
                     android:id="@+id/ivNoNewReq"
-                    android:layout_width="@dimen/space_220"
-                    android:layout_height="@dimen/space_220"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:src="@drawable/searchlogo"
-                    android:tint="@color/colorPrimaryDark"
+                    android:src="@drawable/nothingimg"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
