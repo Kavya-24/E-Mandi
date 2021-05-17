@@ -41,6 +41,7 @@ import com.example.mandiexe.utils.usables.ExternalUtils
 import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.usables.OfflineTranslate
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
+import com.example.mandiexe.utils.usables.UIUtils.hideKeyboard
 import com.example.mandiexe.utils.usables.UIUtils.hideProgress
 import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.example.mandiexe.utils.usables.ValidationObject
@@ -99,6 +100,8 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
                     response: Response<NewDemandsResponse>
                 ) {
                     Log.e(TAG, "The response is " + response.body().toString())
+                    //hIDE THE RV SUGGESTIONS
+                    rvSuggestion.visibility = View.GONE
                     if (response.isSuccessful) {
 
                         response.body()?.let { loadResultInRV(it) }
@@ -128,8 +131,7 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
 
             })
 
-        hideProgress(pb,this)
-
+        hideProgress(pb, this)
 
 
     }
@@ -322,10 +324,9 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
 
 
         empty.visibility = View.VISIBLE
-        rvSuggestion.visibility = View.GONE
 
         initiateDemandsSuggestionAdapter()
-        hideProgress(pb,this)
+        hideProgress(pb, this)
 
         val tb = findViewById<Toolbar>(R.id.toolbarExternalSearch)
         tb.title = resources.getString(R.string.searchBuyers)
@@ -374,7 +375,7 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
                 rvSuggestion.visibility = View.GONE
                 searchView.clearFocus()
                 //Wont come here
-              //  showProgress(pb, this@NewDemandActivity)
+                //  showProgress(pb, this@NewDemandActivity)
                 val cursor: Cursor = mAdapter!!.getItem(position) as Cursor
                 val txt = cursor.getString(cursor.getColumnIndex("suggestionList"))
 
@@ -394,7 +395,7 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
 
 
                     makeCall(englishQuery, txt)
-                //    hideProgress(pb, this@NewDemandActivity)
+                    //    hideProgress(pb, this@NewDemandActivity)
                     return true
 
                 } catch (e: java.lang.Exception) {
@@ -550,8 +551,9 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
 
     override fun clickDemandSuggestion(_listItem: DemandSuggestionObject) {
 
-        Log.e(TAG, "Here")
         rvSuggestion.visibility = View.GONE
+        //HideKeyBoard
+        hideKeyboard(this, this)
         searchView.setQuery(_listItem.nameOfCrop, false)
         Log.e(TAG, "clciked suggetion ${_listItem.nameOfCrop}")
         showProgress(pb, this)
@@ -575,29 +577,28 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
         newList.add(
             DemandSuggestionObject(
                 resources.getString(R.string.rice),
-                resources.getDrawable(R.drawable.rice)
+                resources.getDrawable(R.drawable.rice, null)
             )
         )
         newList.add(
             DemandSuggestionObject(
                 resources.getString(R.string.wheat),
-                resources.getDrawable(R.drawable.wweat)
+                resources.getDrawable(R.drawable.wweat, null)
             )
         )
         newList.add(
             DemandSuggestionObject(
                 resources.getString(R.string.potato),
-                resources.getDrawable(R.drawable.potato)
+                resources.getDrawable(R.drawable.potato, null)
             )
         )
         newList.add(
             DemandSuggestionObject(
                 resources.getString(R.string.mango),
-                resources.getDrawable(R.drawable.mangi)
+                resources.getDrawable(R.drawable.mangi, null)
             )
         )
 
-        Log.e(TAG, "New list for demands suggestions is $newList")
         return newList
     }
 
