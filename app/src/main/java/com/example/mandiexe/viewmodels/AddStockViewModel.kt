@@ -1,6 +1,9 @@
 package com.example.mandiexe.viewmodels
 
 import android.util.Log
+import android.view.View
+import android.widget.ProgressBar
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mandiexe.R
@@ -10,7 +13,6 @@ import com.example.mandiexe.models.body.supply.AddSupplyBody
 import com.example.mandiexe.models.responses.supply.AddGrowthResponse
 import com.example.mandiexe.models.responses.supply.AddSupplyResponse
 import com.example.mandiexe.utils.ApplicationUtils
-import com.example.mandiexe.utils.auth.SessionManager
 import com.example.mandiexe.utils.usables.ExternalUtils
 import com.example.mandiexe.utils.usables.UIUtils
 import retrofit2.Call
@@ -33,14 +35,20 @@ class AddStockViewModel : ViewModel() {
     var addStock: MutableLiveData<AddSupplyResponse> = MutableLiveData()
     var growthStock: MutableLiveData<AddGrowthResponse> = MutableLiveData()
 
-    fun addFunction(body: AddSupplyBody): MutableLiveData<AddSupplyResponse> {
+    fun addFunction(
+        body: AddSupplyBody, mSnackbar: CoordinatorLayout,
+        pb: ProgressBar
+    ): MutableLiveData<AddSupplyResponse> {
 
-        addStock = addStockFunction(body)
+        addStock = addStockFunction(body, mSnackbar, pb)
         return addStock
     }
 
 
-    private fun addStockFunction(body: AddSupplyBody): MutableLiveData<AddSupplyResponse> {
+    private fun addStockFunction(
+        body: AddSupplyBody, mSnackbar: CoordinatorLayout,
+        pb: ProgressBar
+    ): MutableLiveData<AddSupplyResponse> {
 
 
         mySupplyService.getAddSupply(
@@ -50,7 +58,13 @@ class AddStockViewModel : ViewModel() {
                 override fun onFailure(call: Call<AddSupplyResponse>, t: Throwable) {
                     successful.value = false
                     message.value = ExternalUtils.returnStateMessageForThrowable(t)
-                    Log.e(TAG, "Throwable  Supply for adding stock" + t.message + t.cause + message.value)
+                    Log.e(
+                        TAG,
+                        "Throwable  Supply for adding stock" + t.message + t.cause + message.value
+                    )
+
+                    UIUtils.createSnackbar(message.value, context, mSnackbar)
+                    pb.visibility = View.GONE
 
                     //Response is null
                 }
@@ -97,14 +111,22 @@ class AddStockViewModel : ViewModel() {
     }
 
 
-    fun growthFunction(body: AddGrowthBody): MutableLiveData<AddGrowthResponse> {
+    fun growthFunction(
+        body: AddGrowthBody,
+        mSnackbar: CoordinatorLayout,
+        pb: ProgressBar
+    ): MutableLiveData<AddGrowthResponse> {
 
-        growthStock = growthStockFunction(body)
+        growthStock = growthStockFunction(body, mSnackbar, pb)
         return growthStock
     }
 
 
-    private fun growthStockFunction(body: AddGrowthBody): MutableLiveData<AddGrowthResponse> {
+    private fun growthStockFunction(
+        body: AddGrowthBody,
+        mSnackbar: CoordinatorLayout,
+        pb: ProgressBar
+    ): MutableLiveData<AddGrowthResponse> {
 
         Log.e(TAG, "In add growth internal function")
 
@@ -115,8 +137,10 @@ class AddStockViewModel : ViewModel() {
                 override fun onFailure(call: Call<AddGrowthResponse>, t: Throwable) {
                     successfulGrowth.value = false
                     messageGrowth.value = ExternalUtils.returnStateMessageForThrowable(t)
-                    UIUtils.logThrowables(t,TAG)
-                    //Response is null
+                    UIUtils.logThrowables(t, TAG)
+                    UIUtils.createSnackbar(messageGrowth.value, context, mSnackbar)
+                    pb.visibility = View.GONE
+
                 }
 
                 override fun onResponse(

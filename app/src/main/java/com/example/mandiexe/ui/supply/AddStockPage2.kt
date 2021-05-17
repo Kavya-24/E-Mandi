@@ -10,6 +10,7 @@ import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.example.mandiexe.R
 import com.example.mandiexe.models.body.supply.AddGrowthBody
 import com.example.mandiexe.models.body.supply.AddSupplyBody
@@ -206,8 +207,6 @@ class AddStockPage2 : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun createStock() {
 
-        findViewById<ProgressBar>(R.id.pb_add_stock_page_2).visibility = View.VISIBLE
-
         showProgress(pb, this)
 
         //Get the translation
@@ -274,11 +273,13 @@ class AddStockPage2 : AppCompatActivity() {
             "AddSupply Body \n$body\n Add growth body$growthBody"
         )
 
+        val mSnackbar = findViewById<CoordinatorLayout>(R.id.container_add_stock_page_2)
 
-        viewModel.growthFunction(growthBody)
+        viewModel.growthFunction(growthBody, mSnackbar, pb)
             .observe(this, { mResponse ->
                 val success = viewModel.successfulGrowth.value
                 if (success != null) {
+                    hideProgress(pb, this)
                     Log.e(
                         TAG,
                         "In growth function and success is " + success + viewModel.messageGrowth
@@ -290,14 +291,21 @@ class AddStockPage2 : AppCompatActivity() {
                         Log.e(TAG, "In failed added growth")
                     }
 
+                } else {
+                    showProgress(pb, this)
                 }
             })
 
 
-        viewModel.addFunction(body).observe(this, { mResponse ->
+        viewModel.addFunction(body, mSnackbar, pb).observe(this, { mResponse ->
 
+            if (viewModel.successful.value != null) {
+                hideProgress(pb, this)
 
-            manageStockCreateResponses(mResponse)
+                manageStockCreateResponses(mResponse)
+            } else {
+                showProgress(pb, this)
+            }
 
 
         })

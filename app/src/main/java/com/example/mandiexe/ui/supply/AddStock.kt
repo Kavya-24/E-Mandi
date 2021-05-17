@@ -10,6 +10,7 @@ import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import com.example.mandiexe.R
@@ -91,14 +92,6 @@ class AddStock : AppCompatActivity() {
 
 
         mActivityInstance = this
-        if (intent?.getBundleExtra("bundle") != null) {
-            //When there is an argumenet of cimpletetion
-            viewModel.successful.removeObservers(this)
-            viewModel.successful.value = null
-            onBackPressed()
-            finish()
-
-        }
 
 
         val tb = findViewById<Toolbar>(R.id.toolbarExternal)
@@ -132,7 +125,7 @@ class AddStock : AppCompatActivity() {
         mtb = findViewById(R.id.mtb_go_to_bidding)
         pb = findViewById(R.id.pb_add_stock)
 
-
+        hideProgress(pb, this)
         //Populate views
         setUpCropNameSpinner()
 
@@ -291,24 +284,23 @@ class AddStock : AppCompatActivity() {
             TAG,
             "In add growth" + growthBody.toString()
         )
-        viewModel.growthFunction(growthBody).observe(this, Observer { mResponse ->
+
+
+        val mSnackbar = findViewById<CoordinatorLayout>(R.id.container_add_stock)
+
+        viewModel.growthFunction(growthBody, mSnackbar, pb).observe(this, Observer { mResponse ->
             val success = viewModel.successfulGrowth.value
             if (success != null) {
-                Log.e(
-                    TAG,
-                    "In growth function and success is " + success + viewModel.messageGrowth
-                )
+                hideProgress(pb, this)
 
                 if (success == true) {
-                    Log.e(TAG, "In successfully added growth")
-                } else if (viewModel.messageGrowth.value == "Crop growth added successfully.") {
-                    Log.e(TAG, "In success ")
                     createToast(
                         this.resources.getString(R.string.supplyAdded),
                         this,
                         container_add_stock
                     )
                     onBackPressed()
+
                 } else {
                     UIUtils.createSnackbar(
                         viewModel.messageGrowth.value,
@@ -316,6 +308,9 @@ class AddStock : AppCompatActivity() {
                         container_add_stock
                     )
                 }
+
+            } else {
+                showProgress(pb, this)
             }
         })
 
@@ -477,7 +472,7 @@ class AddStock : AppCompatActivity() {
 
     override fun onPause() {
 
-        //Remove observers
+
         Log.e(TAG, "On Pause")
         super.onPause()
 
@@ -488,4 +483,5 @@ class AddStock : AppCompatActivity() {
         super.onResume()
 
     }
+
 }
