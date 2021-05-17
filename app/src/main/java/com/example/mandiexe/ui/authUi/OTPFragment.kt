@@ -194,8 +194,12 @@ class OTPFragment : Fragment() {
         if (token != null) {
             optionsBuilder.setForceResendingToken(token) // callback's ForceResendingToken
         }
-        PhoneAuthProvider.verifyPhoneNumber(optionsBuilder.build())
 
+        try {
+            PhoneAuthProvider.verifyPhoneNumber(optionsBuilder.build())
+        } catch (e: Exception) {
+            Log.e(TAG, "Resend exception ${e.cause} ad ${e.message}")
+        }
     }
 
 
@@ -301,8 +305,13 @@ class OTPFragment : Fragment() {
             .setActivity(context as Activity)                 // Activity (for callback binding)
             .setCallbacks(callbacks)          // OnVerificationStateChangedCallbacks
             .build()
-        PhoneAuthProvider.verifyPhoneNumber(options)
 
+
+        try {
+            PhoneAuthProvider.verifyPhoneNumber(options)
+        } catch (e: Exception) {
+            Log.e(TAG, " Exception ${e.message} and ${e.cause} for phone ver")
+        }
 
     }
 

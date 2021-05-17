@@ -27,6 +27,7 @@ import com.example.mandiexe.models.body.authBody.SignUpBody
 import com.example.mandiexe.models.responses.auth.LoginResponse
 import com.example.mandiexe.models.responses.auth.SignUpResponse
 import com.example.mandiexe.utils.ApplicationUtils
+import com.example.mandiexe.utils.LocationHelper
 import com.example.mandiexe.utils.auth.PreferenceManager
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.auth.SessionManager
@@ -38,8 +39,6 @@ import com.example.mandiexe.viewmodels.OTViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
@@ -161,6 +160,7 @@ class MapActivity : AppCompatActivity() {
 
         pb = ProgressDialog(this)
         pb.setMessage(resources.getString(R.string.creatinguser))
+        pb.show()
 
         try {
 
@@ -196,44 +196,66 @@ class MapActivity : AppCompatActivity() {
                 village
             )
 
-            Log.e(TAG, "Map SignUp body number is ph " + phone)
-
-            Log.e(
-                TAG,
-                "Map variates fA line 1 in Default lamnguage " + fetchedAddress.getAddressLine(0)
-                        + "\nfA l2 " + fetchedAddress.getAddressLine(1)
-                        + "\ncuty locale " + fetchedAddress.locality
-                        + " \n country and sub " + fetchedAddress.countryName + fetchedAddress.subLocality
-                        + "Admin area, sub" + fetchedAddress.adminArea + fetchedAddress.subAdminArea
-                        + "Map variates fA line 1 in Englise " + fetchedEnglishAddress.getAddressLine(
-                    0
-                )
-                        + "\nfA l2 " + fetchedEnglishAddress.getAddressLine(1)
-                        + "\ncuty locale " + fetchedEnglishAddress.locality
-                        + " \n country and sub " + fetchedEnglishAddress.countryName + fetchedEnglishAddress.subLocality
-                        + "Admin area, sub" + fetchedEnglishAddress.adminArea + fetchedEnglishAddress.subAdminArea
+            makeMapCall(body)
 
 
+        } catch (e: java.lang.Exception) {
+            //Case when we are not able to get the location of the person
+
+            val myCurrentAddress = getMyExactLocationWhileError()
+
+            UIUtils.logExceptions(e, TAG)
+
+            val mCountry = myCurrentAddress.countryName
+            val mDistrict = myCurrentAddress.subAdminArea
+            val mState = myCurrentAddress.adminArea
+            val village = args?.getString("ADDRESS_USER")!!
+            val mAddress = "$village,$mDistrict"
+            val lat = myCurrentAddress.latitude.toString()
+            val long = myCurrentAddress.longitude.toString()
+            val token = args?.getString("TOKEN")
+            val name = args?.getString("NAME").toString()
+            val area = args?.getString("AREA").toString().toInt()
+            val area_unit = args?.getString("AREA_UNIT").toString()
+            val phone = args?.getString("PHONE").toString()
+
+            //val phone = args?.getString("PHONE")!!.drop(2).toString()
+
+            body = SignUpBody(
+                mAddress,
+                area,
+                area_unit,
+                mCountry,
+                mDistrict,
+                lat,
+                long,
+                name,
+                phone,
+                mState,
+                token!!,
+                village
             )
 
-            val mView = findViewById<ConstraintLayout>(R.id.container_map)
-            viewModel.signFunction(body, mView).observe(this, Observer { mResponse ->
-                val success = viewModel.successful.value
-                if (success != null) {
-                    manageSignUpResponse(viewModel.mSignUp.value)
+            makeMapCall(body)
 
-                } else {
-                    Log.e(TAG, "Loading.......")
-                    createSnackbar(resources.getString(R.string.unableMaps), this, container_map)
-                }
-
-            })
-
-            pb.dismiss()
-        } catch (e: java.lang.Exception) {
-            UIUtils.logExceptions(e, TAG)
-            createSnackbar(resources.getString(R.string.unableMaps), this, container_map)
         }
+    }
+
+
+    private fun makeMapCall(body: SignUpBody) {
+        val mView = findViewById<ConstraintLayout>(R.id.container_map)
+        viewModel.signFunction(body, mView, pb).observe(this, Observer { mResponse ->
+            val success = viewModel.successful.value
+            if (success != null) {
+                pb.dismiss()
+                manageSignUpResponse(viewModel.mSignUp.value)
+
+            } else {
+                Log.e(TAG, "Loading.......")
+                pb.show()
+            }
+
+        })
     }
 
     private fun manageSignUpResponse(value: SignUpResponse?) {
@@ -451,74 +473,104 @@ class MapActivity : AppCompatActivity() {
 
     private fun getLocationInMap() {
 
+        val myCurrentLatLong = getMarkerForCurrentPosition()
+
         val task: Task<Location> = client.lastLocation
 
         task.addOnSuccessListener { mLocation ->
 
             if (mLocation != null) {
-                supportMapFragment.getMapAsync(object : OnMapReadyCallback {
+                supportMapFragment.getMapAsync { gMap ->
 
-                    override fun onMapReady(gMap: GoogleMap?) {
-                        //Initialize a latitude and longitude
-                        val latitudeLongitude = LatLng(mLocation.latitude, mLocation.longitude)
-                        val marker = MarkerOptions().position(latitudeLongitude)
+
+                    //Set Up the marker
+                    val marker = MarkerOptions().position(myCurrentLatLong)
+                        .title(resources.getString(R.string.you_are_here))
+
+                    val zoomLevel = 16.0f //This goes up to 21
+                    gMap?.moveCamera(
+                        CameraUpdateFactory.newLatLngZoom(
+                            myCurrentLatLong,
+                            zoomLevel
+                        )
+                    )
+
+                    if (gMap != null) {
+                        gMap.addMarker(marker)
+                    }
+
+
+
+                    gMap?.setOnMapClickListener { newLatLong ->
+                        //Create a new marker
+
+                        gMap.clear()
+                        val newmarker = MarkerOptions().position(myCurrentLatLong)
                             .title(resources.getString(R.string.you_are_here))
 
+                        gMap.moveCamera(
+                            CameraUpdateFactory.newLatLngZoom(
+                                myCurrentLatLong,
+                                zoomLevel
+                            )
+                        )
 
-                        if (gMap != null) {
-                            gMap.animateCamera(CameraUpdateFactory.newLatLng(latitudeLongitude))
-                            gMap.addMarker(marker)
+                        gMap.addMarker(newmarker)
 
-                            //Mark this as the current location
-                            fetchedLocation = getAddress(latitudeLongitude)
-                            getEnglishAddress(latitudeLongitude)
-                            createSnackbar(fetchedLocation, this@MapActivity, container_map)
-
-                        } else {
-                            Toast.makeText(
-                                this@MapActivity,
-                                resources.getString(R.string.unableToOpenMaps),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-
-
-                        gMap?.setOnMapClickListener { newLatLong ->
-                            //Create a new marker
-
-                            gMap.clear()
-                            val newMarker = MarkerOptions()
-                            newMarker.position(newLatLong)
-                            newMarker.title(newLatLong.latitude.toString() + "," + newLatLong.longitude)
-                            //Remove other markers
-                            //Animation and zoom
-                            gMap.animateCamera(CameraUpdateFactory.newLatLng(newLatLong))
-                            gMap.addMarker(newMarker)
-
-                            //Update the location
-                            fetchedLocation = getAddress(newLatLong)
-                            getEnglishAddress(newLatLong)
-                            createSnackbar(fetchedLocation, this@MapActivity, container_map)
-
-
-                        }
+                        fetchedLocation = getAddress(newLatLong)
+                        getEnglishAddress(newLatLong)
+                        createSnackbar(fetchedLocation, this@MapActivity, container_map)
 
 
                     }
-
-                })
+                }
             } else {
                 fetchedLocation = resources.getString(R.string.NotFound)
             }
         }
 
-        task.addOnFailureListener { excetion->
+        task.addOnFailureListener { excetion ->
             Log.e(TAG, "Failed to load maps, willing to reexecute")
             //Get permisions again
             getPermissions()
         }
 
+
     }
+
+    private fun getMarkerForCurrentPosition(): LatLng {
+
+        val myCurrentLocation = LocationHelper(this).getLocation(this)
+        val myCurrentLatLong = LatLng(myCurrentLocation.latitude, myCurrentLocation.longitude)
+        fetchedLocation = getAddress(myCurrentLatLong)
+        getEnglishAddress(myCurrentLatLong)
+        Log.e(TAG, "The current location is given by $fetchedLocation")
+
+        return myCurrentLatLong
+
+    }
+
+    private fun getMyExactLocationWhileError(): Address {
+
+        val myCurrentLocation = LocationHelper(this).getLocation(this)
+        val myCurrentLatLog = LatLng(myCurrentLocation.latitude, myCurrentLocation.longitude)
+        val locale = Locale("en")
+        var myCurrentAddress = Address(Locale("en"))
+        val geocoder = Geocoder(this, locale)
+        try {
+            val addresses: List<Address> =
+                geocoder.getFromLocation(myCurrentLatLog.latitude, myCurrentLatLog.longitude, 1)
+            val mAddress = addresses.get(0).getAddressLine(0)
+            Log.e(TAG, mAddress.toString())
+            myCurrentAddress = addresses.get(0)
+
+        } catch (e: Exception) {
+            Log.e("Exception", e.message.toString())
+        }
+
+        return myCurrentAddress
+    }
+
 
     private fun getAddress(latLang: LatLng): String {
         var theAddress = ""

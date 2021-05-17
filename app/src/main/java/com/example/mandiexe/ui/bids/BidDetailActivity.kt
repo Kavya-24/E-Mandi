@@ -74,7 +74,6 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
     //Modify dialog
     private lateinit var d: androidx.appcompat.app.AlertDialog.Builder
-    private lateinit var tempRef: androidx.appcompat.app.AlertDialog
     private lateinit var graph: GraphView
     private var from = ""
     private var isOpen = false

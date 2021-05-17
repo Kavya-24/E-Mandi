@@ -47,11 +47,11 @@ android {
             manifestPlaceholders = [usesCleartextTraffic: "true"]
         }
         debug {
-            minifyEnabled true           //Need to add serialized name annotation if enabled true
-            shrinkResources true
+            minifyEnabled false           //Need to add serialized name annotation if enabled true
+            shrinkResources false
 
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            manifestPlaceholders = [usesCleartextTraffic: "true"]
+            manifestPlaceholders = [usesCleartextTraffic: "false"]
         }
 
     }
