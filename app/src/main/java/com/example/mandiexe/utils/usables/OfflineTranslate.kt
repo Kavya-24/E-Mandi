@@ -61,7 +61,7 @@ object OfflineTranslate {
                 .addOnFailureListener { exception ->
                     // Model couldn’t be downloaded or other internal error.
                     //Set the Enlgilsg query
-                    tvInstance.text = query
+                    tvInstance.setText(query)
                     Log.e("TAG", "Model not downloaded" + exception.cause + exception.message)
                 }
 
@@ -86,7 +86,7 @@ object OfflineTranslate {
         val pref = PreferenceUtil.getLanguageFromPreference()
         if (pref != null && pref == "en") {
             //Set the textView q
-            tvInstance.text = query.capitalize(Locale("en"))
+            tvInstance.setText(query.capitalize(Locale("en")))
             return
         }
 
@@ -111,7 +111,7 @@ object OfflineTranslate {
                 .addOnFailureListener { exception ->
                     // Model couldn’t be downloaded or other internal error.
                     //Set the Enlgilsg query
-                    tvInstance.text = query
+                    tvInstance.setText(query)
                     Log.e("TAG", "Model not downloaded" + exception.cause + exception.message)
                 }
 
@@ -140,13 +140,13 @@ object OfflineTranslate {
         mTranslator.translate(query)
             .addOnSuccessListener { translatedText ->
                 // Translation successful.
-                tvInstance.text = translatedText.toString()
+                tvInstance.setText(translatedText.toString())
 
             }
             .addOnFailureListener { exception ->
                 // Error.
                 // ...
-                tvInstance.text = query
+                tvInstance.setText(query)
                 Log.e("TAG Exception", exception.message + exception.cause)
             }
 

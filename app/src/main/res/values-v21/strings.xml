@@ -1,14 +1,27 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <string name="app_name_main" translatable="false">E-Mandi</string>
     <string name="app_name">E-Mandi</string>
 
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
 
+    <string name="action_settings">Settings</string>
     <string name="menu_home">Home</string>
+    <string name="Mandi">Mandi Prices</string>
+    <string name="stocks">Stocks</string>
     <string name="crop">Crop</string>
     <string name="quantity">Quantity</string>
     <string name="location">Location</string>
+    <string name="price">Price</string>
+    <string name="expected_ready">Expected date of harvest</string>
+    <string name="date_posted">Date Created</string>
+    <string name="contact">Contact</string>
+    <string name="crop_value">Value of crop</string>
+    <string name="location_value">Location</string>
     <string name="which_crop">Name of the crop</string>
     <string name="str_my_crops">My crops</string>
     <string name="str_my_req">My Bids</string>
@@ -28,6 +41,8 @@
     <string name="error_request_timed_out">Request timed out</string>
     <string name="error_something_went_wrong">Something went wrong</string>
     <string name="you_are_here">You are here</string>
+    <string name="maddress_and_lorem">mAddress and Lorem</string>
+    <string name="multi">This is my home number \n It is GNoida \n OkaY</string>
     <string name="cropNameError">Add crop name</string>
     <string name="cropTypeError">Please specify a type</string>
     <string name="cropQuanityError">This can not be zero</string>
@@ -46,8 +61,13 @@
     <string name="date">Date</string>
     <string name="price_rs">Price(Rs)</string>
     <string name="cancel_bid">Delete bid</string>
+    <string name="bid">Bid</string>
+    <string name="emptyBidError">Bid price can not be empty</string>
+    <string name="lesserBidError">Place a lower value in the bid</string>
+    <string name="Language">Language</string>
     <string name="choose_language">Choose Language</string>
     <string name="english">English</string>
+    <string name="hindi">Hindi</string>
     <string name="next">Next</string>
     <string name="phone_number">Phone number</string>
     <string name="get_otp">Get OTP</string>
@@ -60,14 +80,25 @@
     <string name="invalidName">The name is invalid</string>
     <string name="emptyAreaError">Area can not be empty</string>
     <string name="cancel">Cancel</string>
+    <string name="Login">Login</string>
+    <string name="changeLanguage">Change language</string>
     <string name="changeCurrentLanguage">Change the language</string>
+    <string name="helpForPage">Get a walk through</string>
+    <string name="Notifications">Notifications</string>
     <string name="search">Search</string>
     <string name="bigha">Bigha</string>
     <string name="searchHint">Search the crops</string>
     <string name="details">Details</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="searchBuyers">Search buyers</string>
     <string name="delta">delta</string>
     <string name="modifyBid">Modify bid</string>
+    <string name="myBid">My bid Price: </string>
+    <string name="bidAPrice">Enter price</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="tvDesc">Please note the following changes before adding the bid.</string>
+    <string name="initPrice">Price demanded for crop:</string>
+    <string name="myBidPrice">Price you are adding</string>
     <string name="noChangeInBid">No change in bid</string>
     <string name="modifyStock">Modify crop</string>
     <string name="supplyDeleted">Crop deleted successfully</string>
@@ -88,6 +119,7 @@
     <string name="cancelBid">Delete bid?</string>
     <string name="bidUpdated">Bid updated successfully</string>
     <string name="BidDeleted">Bid deleted successfully.</string>
+    <string name="newBidPrice">New bid price:</string>
     <string name="invalidRequest">Request is invalid.</string>
     <string name="quotaRequest">Quota of requests exceeded. Please try again after some time.</string>
     <string name="loginSuceed">Login successful</string>
@@ -95,20 +127,26 @@
     <string name="_91">+91</string>
     <string name="otpSend">The OTP has been sent to: </string>
     <string name="otpResend"><b>Resend OTP</b></string>
+    <string name="otpResendInit">Not triggered</string>
     <string name="resendIn">Resend OTP in <b>%s s</b> </string>
     <string name="invalidCredentials">Invalid OTP</string>
     <string name="addNumber">Add your number</string>
     <string name="please_enter_your_mobile_number_to_receive_a_verification_code">Please enter your mobile number to receive a verification code</string>
+    <string name="pleaseOtp">.\nPlease enter the OTP here</string>
+    <string name="loggingIn">Logging in</string>
     <string name="signUpSuccess">Registeration successful.</string>
     <string name="failedLogin">Failed to log in. Please try again later.</string>
     <string name="kg">kg</string>
     <string name="NotFound">Not found</string>
+    <string name="graphTitle">Bid history</string>
+    <string name="graphError">Graph not available</string>
     <string name="howMuchGrown">How much is grown?</string>
     <string name="InVillage">In Village:</string>
     <string name="InVDistrict">In district:</string>
     <string name="InState">In state:</string>
     <string name="InCountry">In country:</string>
     <string name="currentBid">Current Bid:</string>
+    <string name="successfullBidAdd">Bid added successfully</string>
     <string name="i_also_want_to_grow_crop">Add this?</string>
     <string name="village">Village</string>
     <string name="numberVerifed">Phone number verified</string>
@@ -120,6 +158,7 @@
     <string name="initial_expected_price">Initial Expected Price</string>
     <string name="initial_offer_price">Initial Offer Price</string>
 
+    <string name="graphDataSet">Price vs Time Graph</string>
     <string name="supplyHistorySuccess">Supply history retrieved successfully</string>
     <string name="lastPrice">Last Price</string>
     <string name="activeSupply">Stock is active</string>
@@ -130,8 +169,11 @@
     <string name="dateOfSowing">Date of sowing</string>
     <string name="etSowError">Please add the date of sowing</string>
     <string name="GrowthAdded">Growth added successfully</string>
+    <string name="add_growth">Add growth</string>
     <string name="lastModified">Last Modified:</string>
     <string name="variety">"Variety: "</string>
+    <string name="time">Time</string>
+    <string name="i">i</string>
     <string name="call">Call</string>
     <string name="canNotCall">Can not make call</string>
     <string name="permissionPhone">Permission to dial call from this app.</string>
@@ -147,6 +189,7 @@
     <string name="unableToOpenMaps">Unable to open maps</string>
     <string name="register">Register</string>
     <string name="creatinguser">Creating User</string>
+    <string name="eMandi">E-Mandi</string>
     <string name="desc">Update the crop details</string>
     <string name="no_bids_founds">No bids founds</string>
     <string name="noDesc">-</string>
@@ -234,20 +277,36 @@
 
     </string-array>
 
+    <string name="cropvarietyNull">No variety found</string>
+
+    <string-array name="arr_crop_types" tools:ignore="InconsistentArrays">
+        <item>Grey Wheat</item>
+        <item>Basmati Rice</item>
+        <item>@string/cropvarietyNull</item>
+        <item>Kala Chana</item>
+    </string-array>
+
 
     <string name="Hectare">Hectare</string>
     <string name="acres">Acres</string>
     <string name="sqrmetres">Sq Metres</string>
+    <string name="NoNewReqFound">No requirements found.</string>
     <string name="NoLoadNewReq">Could not load new requirements</string>
+    <string name="asia">asia</string>
     <string name="temp">temp</string>
+    <string name="expm20">Expiry of bid should be after at least 20 days from sowing date</string>
     <string name="unableMaps">Unable to get location.</string>
     <string name="placeBid">Place bid</string>
     <string name="doDeleteBid">Do you want to delete your bid on this demand?</string>
     <string name="logout">Logout</string>
+    <string name="unableToGetSearch">Unable to search for the crop.</string>
+    <string name="addThisInBidding">Add this crop for bidding</string>
+    <string name="addCropGrowthOnly">Add the growth of this crop only</string>
     <string name="add_crop">Add Crop</string>
     <string name="addMissingCrop">This crop is not found. \nWould you like to add this crop?</string>
     <string name="addVariety">Add variety</string>
     <string name="addDescription">Description for your crop</string>
+    <string name="failAccessToken">Failed to log in.</string>
     <string name="noon_has_bid">No bids have been made on this crop yet.</string>
     <string name="my_bid">My Bid</string>
     <string name="Uttar">Uttar</string>
@@ -259,6 +318,8 @@
     <string name="updateBid">Update Bid</string>
     <string name="incDec">Increasing Bid from %s to %s</string>
     <string name="decreasing">Decreasing Bid from %s to %s</string>
+    <string name="searchCrops">Search crops</string>
+    <string name="emptyReq">No demands found for this crop.</string>
     <string name="invalidOTP">Invalid OTP</string>
     <string name="addCropforBidding">Adding for bid</string>
     <string name="confirm">Confirm</string>
@@ -267,6 +328,7 @@
     <string name="unableToAddStock">Unable to add the crop. Please try again later</string>
     <string name="add">Add</string>
     <string name="bidRetrivealFailed">Failed to retrive the bid</string>
+    <string name="noDemandsFound">No demands for this crop were found</string>
     <string name="start_searchinhg">Start searching for orders</string>
 
 
@@ -281,6 +343,8 @@
     <string name="mango">Mango</string>
     <string name="days">Days</string>
     <string name="distance">Distance</string>
+    <string name="n_30">30</string>
+    <string name="km">Km</string>
 
     <string name="infoHowMuchGrown">This shows how much of %s is grown in %s at various levels. You can filter them according to the range of days and distance from your current location as shown by the chart.</string>
 
@@ -288,6 +352,8 @@
     <string name="quantity_grown_is">Quantity grown\n<b>%s %s</b>\n<i>%s to %s</i></string>
     <string name="within">Within %s %s</string>
     <string name="kilometeres">Kilometers</string>
+    <string name="infoHowMuchGrownFilter">This shows the amount of %s grown within %s %s of your current location between a time period of last %s days and to be grown in the next %s days.</string>
+    <string name="retry">RETRY</string>
     <string name="addStockProposal">You will be able to list your crops and add their quantities. The expected date of sowing and harvest will make it easier for you to find prospective buyers. You can also put an expected initial price for your produce by clicking next.</string>
     <string name="addBidProposal">The initial expected price is price on which you want to sell your complete produce. Note that you can change this price anytime you want. Also, add the date when you wish to close the bidding on the crop.</string>
     <string name="cropDetail">You can view the bids by the prospective buyers here. You can also update and delete the information about your crop if you want to. You can contact the potentials buyers as well.</string>
@@ -299,6 +365,7 @@
     <string name="searchbyCrops">Search</string>
     <string name="kgQuantityValueString">%s %s</string>
     <string name="num50">50</string>
+    <string name="distanceKm">Distance(Km)</string>
     <string name="noDemandsFoundCrop">No demands found for %s</string>
     <string name="quantity_grown_is_without_date">Quantity grown\n<b>%s %s</b>></string>
 

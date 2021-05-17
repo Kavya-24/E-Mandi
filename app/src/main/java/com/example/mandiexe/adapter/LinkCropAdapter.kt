@@ -89,4 +89,6 @@ class YoutubeAdapter(val itemClick: OnYoutubeClickListener) :
 
 }
 
-interface OnYoutubeClickListener
+interface OnYoutubeClickListener {
+
+}

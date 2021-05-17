@@ -272,11 +272,11 @@ class AddStock : AppCompatActivity() {
                 .capitalize((Locale("en")))
 
         val growthBody = AddGrowthBody(
-            transCropName,
+            transCropName ?: cropName.text.toString().capitalize(Locale.ROOT),
             TimeConversionUtils.convertDateToReqForm(etEst.text.toString()),
             TimeConversionUtils.convertDateToReqForm(findViewById<EditText>(R.id.etSowDate).text.toString()),
             cropQuantity.text.toString(),
-            transCropType
+            transCropType ?: cropType.text.toString().capitalize(Locale.ROOT)
         )
 
         Log.e(
@@ -469,6 +469,12 @@ class AddStock : AppCompatActivity() {
 
         Log.e(TAG, "On Pause")
         super.onPause()
+
+    }
+
+    override fun onResume() {
+
+        super.onResume()
 
     }
 

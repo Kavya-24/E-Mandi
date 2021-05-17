@@ -255,7 +255,7 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
                 val kgLocale = resources.getString(R.string.kg)
                 val kmLocale = resources.getString(R.string.kilometeres)
 
-                val mCalendar = Calendar.getInstance()
+                val mCalendar = Calendar.getInstance();
                 val myFormat = "dd MMM yyyy" //In which you need put here
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
 

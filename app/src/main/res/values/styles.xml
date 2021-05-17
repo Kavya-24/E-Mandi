@@ -38,6 +38,14 @@
         <item name="iconTint">@color/white</item>
     </style>
 
+    <style name="styleTextViewHeadingItem">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+
+
+    </style>
+
     <style name="WhiteDrawerIconStyle" parent="Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">true</item>
         <item name="color">@android:color/white</item>
@@ -76,6 +84,11 @@
         <item name="android:orientation">horizontal</item>
     </style>
 
+
+    <style name="ShapeAppearanceOverlay.MyApp.Button.Circle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
 
     <style name="MaterialSearchViewStyle" parent="Theme.MaterialComponents">
         <!-- Background for the search bar -->
