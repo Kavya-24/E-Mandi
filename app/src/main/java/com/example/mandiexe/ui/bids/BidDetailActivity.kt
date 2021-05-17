@@ -300,7 +300,7 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun makeCall() {
 
-        showProgress(pb, this)
+        showProgress(pb, this@BidDetailActivity)
 
         val body = ViewBidBody(BID_ID)
 
@@ -343,7 +343,7 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
 
 
-        hideProgress(pb, this)
+        hideProgress(pb, this@BidDetailActivity)
 
     }
 

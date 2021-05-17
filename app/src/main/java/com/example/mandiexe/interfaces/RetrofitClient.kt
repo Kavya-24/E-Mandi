@@ -32,6 +32,9 @@ object RetrofitClient {
             )
             .followRedirects(false)
             .writeTimeout(20, TimeUnit.SECONDS)
+            .readTimeout(20, TimeUnit.SECONDS)
+            .callTimeout(2, TimeUnit.MINUTES)
+            .connectTimeout(20, TimeUnit.SECONDS)
             .build()
     }
 

@@ -135,8 +135,9 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
 
     private fun loadItems() {
 
+        val mSnackbarView = root.findViewById<ConstraintLayout>(R.id.container_my_crops)
 
-        viewModel.supplyFunction().observe(viewLifecycleOwner, Observer { mResponse ->
+        viewModel.supplyFunction(mSnackbarView,pb).observe(viewLifecycleOwner, Observer { mResponse ->
             if (viewModel.successful.value != null) {
                 hideProgress(pb, requireContext())
                 if (viewModel.successful.value!!) {

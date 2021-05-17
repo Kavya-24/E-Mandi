@@ -1,6 +1,9 @@
 package com.example.mandiexe.viewmodels
 
 import android.util.Log
+import android.view.View
+import android.widget.ProgressBar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mandiexe.R
@@ -27,14 +30,14 @@ class MySuppliesViewmodel : ViewModel() {
 
     private var mSupplies: MutableLiveData<FarmerSuppliesResponse> = MutableLiveData()
 
-    fun supplyFunction(): MutableLiveData<FarmerSuppliesResponse> {
+    fun supplyFunction(container_my_crops: ConstraintLayout, pb: ProgressBar): MutableLiveData<FarmerSuppliesResponse> {
 
-        mSupplies = mSuppliesFunction()
+        mSupplies = mSuppliesFunction(container_my_crops,pb)
         return mSupplies
     }
 
 
-    fun mSuppliesFunction(): MutableLiveData<FarmerSuppliesResponse> {
+    fun mSuppliesFunction(container_my_crops: ConstraintLayout, pb: ProgressBar): MutableLiveData<FarmerSuppliesResponse> {
 
 
         mySupplyService.getFarmerActiveSupplies(
@@ -45,6 +48,8 @@ class MySuppliesViewmodel : ViewModel() {
                     message.value = ExternalUtils.returnStateMessageForThrowable(t)
                     //Response is null
                     UIUtils.logThrowables(t, TAG)
+                    UIUtils.createSnackbar(message.value,context,container_my_crops)
+                    pb.visibility = View.GONE
                 }
 
                 override fun onResponse(
