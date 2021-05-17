@@ -28,18 +28,18 @@
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:titleTextColor="@color/white">
 
+
             <SearchView
                 android:id="@+id/addSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space_half"
                 android:iconifiedByDefault="false"
-                android:searchHintIcon="@drawable/ic_history_black_24dp"
-                android:voiceIcon="@drawable/ic_action_voice_search"
+                android:voiceIcon="@drawable/ic_mic_black_24dp"
                 app:queryHint="@string/searchbyCrops"
-                app:tint="@color/white">
+                app:tint="@color/white" />
 
-            </SearchView>
+
         </android.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -70,6 +70,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:listitem="@layout/item_bid" />
+
+
+            <ProgressBar
+                android:id="@+id/pb_add_req"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/llEmptyNewDemands"
@@ -104,14 +114,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <ProgressBar
-                android:id="@+id/pb_add_req"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tempTvAddReqTrans"

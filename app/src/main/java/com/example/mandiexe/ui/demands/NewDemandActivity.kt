@@ -32,7 +32,6 @@ import com.example.mandiexe.models.body.supply.CropSearchAutoCompleteBody
 import com.example.mandiexe.models.responses.demand.NewDemandsResponse
 import com.example.mandiexe.models.responses.supply.CropSearchAutocompleteResponse
 import com.example.mandiexe.ui.bids.BidDetailActivity
-import com.example.mandiexe.ui.supply.AddStock
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.DefaultListOfCrops
 import com.example.mandiexe.utils.auth.PreferenceUtil
@@ -43,10 +42,8 @@ import com.example.mandiexe.utils.usables.OfflineTranslate
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import com.example.mandiexe.utils.usables.UIUtils.hideKeyboard
 import com.example.mandiexe.utils.usables.UIUtils.hideProgress
-import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.example.mandiexe.utils.usables.ValidationObject
 import com.example.mandiexe.viewmodels.NewDemandViewModel
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_new_demand.*
 import retrofit2.Call
 import retrofit2.Response
@@ -90,7 +87,7 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
 
         Log.e(TAG, "In search of make call for txt $txt and the default query is $defaultQuery")
 
-        showProgress(pb, this)
+        pb.visibility = View.VISIBLE
         service.getSearchReq(
             body,
         )
@@ -274,22 +271,9 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
 
             this.apply {
                 ivNoNewReq.setImageDrawable(resources.getDrawable(R.drawable.nothingimg))
-                tvEmptyListNewDemands.visibility = View.GONE
-            }
-            //Create indefinite snackbar
-            Snackbar.make(
-                conatiner_new_demand,
-                resources.getString(R.string.noDemandsFound),
-                Snackbar.LENGTH_INDEFINITE
-            )
-                .setAction(resources.getString(R.string.add_crop)) { mListener ->
-                    mListener.setOnClickListener {
+                tvEmptyListNewDemands.text = resources.getString(R.string.noDemandsFound)
 
-                        Log.e(TAG, "On on clikc of set action")
-                        val i = Intent(this, AddStock::class.java)
-                        startActivity(i)
-                    }
-                }.show()
+            }
 
 
         } else {
@@ -326,7 +310,8 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
         empty.visibility = View.VISIBLE
 
         initiateDemandsSuggestionAdapter()
-        hideProgress(pb, this)
+        pb.visibility = View.GONE
+
 
         val tb = findViewById<Toolbar>(R.id.toolbarExternalSearch)
         tb.title = resources.getString(R.string.searchBuyers)
@@ -342,6 +327,7 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
 
         searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+
 
         val from = arrayOf("suggestionList")
         val to = intArrayOf(android.R.id.text1)
@@ -436,7 +422,8 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
 
         //For the voice,
         val voiceId = resources.getIdentifier("android:id/search_voice_btn", null, null)
-        val voiceImage = searchView.findViewById<View>(voiceId) as ImageView
+        val voiceImage = searchView.findViewById<View>(voiceId)
+
         voiceImage.visibility = View.VISIBLE
         voiceImage.setOnClickListener {
             createVoiceIntent()
@@ -460,6 +447,17 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
         magImage.layoutParams = LinearLayout.LayoutParams(0, 0)
         magImage.visibility = View.GONE
 
+
+        //Swl
+        swl.setOnRefreshListener {
+
+            val tQuery = searchView.query
+            if (!tQuery.isNullOrEmpty()) {
+                getTranslatedQuery(tQuery.toString())
+
+            }
+            swl.isRefreshing = false
+        }
 
     }
 
@@ -505,7 +503,7 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
                 val resultInDefault = res?.get(0)
                 searchView.setQuery(resultInDefault, false)
 
-                showProgress(pb, this)
+                pb.visibility = View.VISIBLE
                 getTranslatedSearch(resultInDefault.toString())
                 hideProgress(pb, this)
             }
@@ -556,7 +554,7 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
         hideKeyboard(this, this)
         searchView.setQuery(_listItem.nameOfCrop, false)
         Log.e(TAG, "clciked suggetion ${_listItem.nameOfCrop}")
-        showProgress(pb, this)
+        pb.visibility = View.VISIBLE
         getTranslatedSearch(_listItem.nameOfCrop.toString())
         hideProgress(pb, this)
 

@@ -42,6 +42,7 @@
             android:name=".ui.bids.BidDetailActivity"
             android:label="@string/details"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".ui.demands.NewDemandActivity"
             android:label="@string/searchBuyers"
@@ -54,6 +55,8 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+
+
         <activity
             android:name=".ui.home.SearchResultActivity"
             android:theme="@style/AppTheme.NoActionBar">
