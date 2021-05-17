@@ -362,6 +362,7 @@
     <string name="num50">50</string>
     <string name="distanceKm">Distance(Km)</string>
     <string name="noDemandsFoundCrop">No demands found for %s</string>
+    <string name="quantity_grown_is_without_date"><![CDATA[Quantity grown\n<b>%s %s</b>]]></string>
 
 
     <!--    Spinners for days and distance-->

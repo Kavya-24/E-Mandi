@@ -21,7 +21,6 @@ import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.usables.OfflineTranslate
 import com.example.mandiexe.utils.usables.TimeConversionUtils
 import com.example.mandiexe.utils.usables.UIUtils
-import com.example.mandiexe.utils.usables.UIUtils.createToast
 import com.example.mandiexe.utils.usables.UIUtils.hideProgress
 import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.example.mandiexe.utils.usables.ValidationObject
@@ -293,21 +292,16 @@ class AddStock : AppCompatActivity() {
             if (success != null) {
                 hideProgress(pb, this)
 
-                if (success == true) {
-                    createToast(
-                        this.resources.getString(R.string.supplyAdded),
-                        this,
-                        container_add_stock
-                    )
-                    onBackPressed()
 
-                } else {
-                    UIUtils.createSnackbar(
-                        viewModel.messageGrowth.value,
-                        this,
-                        container_add_stock
-                    )
-                }
+                UIUtils.createToast(
+                    viewModel.messageGrowth.value!!,
+                    this,
+                    container_add_stock
+
+                )
+
+                onBackPressed()
+
 
             } else {
                 showProgress(pb, this)
@@ -466,7 +460,7 @@ class AddStock : AppCompatActivity() {
         //Now we need to destroy this fragment and on resume of home, go to remove views
         Log.e(TAG, "In on destroy")
         super.onBackPressed()
-
+        finish()
 
     }
 

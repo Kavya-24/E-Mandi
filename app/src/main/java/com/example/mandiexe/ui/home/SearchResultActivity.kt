@@ -275,16 +275,23 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
                 mCalendar.add(Calendar.DATE, -(2 * currentDayMark.toInt()))
                 val beforeDate = sdf.format(mCalendar.time)
 
-
-                //Load
                 tvAdvData.text =
                     resources.getString(
-                        R.string.quantity_grown_is,
+                        R.string.quantity_grown_is_without_date,
                         body.info.qty.toString(),
-                        kgLocale.toString(),
-                        beforeDate.toString(),
-                        afterDate.toString()
+                        kgLocale.toString()
                     )
+
+
+                //Load
+//                tvAdvData.text =
+//                    resources.getString(
+//                        R.string.quantity_grown_is,
+//                        body.info.qty.toString(),
+//                        kgLocale.toString(),
+//                        beforeDate.toString(),
+//                        afterDate.toString()
+//                    )
 
                 tvAdvDistance.text =
                     resources.getString(R.string.within, mDistance, kmLocale)

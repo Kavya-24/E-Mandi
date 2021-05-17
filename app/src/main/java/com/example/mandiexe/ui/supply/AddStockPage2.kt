@@ -275,6 +275,8 @@ class AddStockPage2 : AppCompatActivity() {
 
         val mSnackbar = findViewById<CoordinatorLayout>(R.id.container_add_stock_page_2)
 
+        clearObservers()
+
         viewModel.growthFunction(growthBody, mSnackbar, pb)
             .observe(this, { mResponse ->
                 val success = viewModel.successfulGrowth.value
@@ -381,13 +383,16 @@ class AddStockPage2 : AppCompatActivity() {
 
     }
 
-    override fun onBackPressed() {
-
+     private fun clearObservers(){
         viewModel.successfulGrowth.removeObservers(this)
         viewModel.successfulGrowth.value = null
         viewModel.successful.removeObservers(this)
         viewModel.successful.value = null
 
+    }
+    override fun onBackPressed() {
+
+        clearObservers()
         //Finish this activty
         super.onBackPressed()
         finish()
