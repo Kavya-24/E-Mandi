@@ -508,8 +508,9 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
         dialog.setView(v)
         dialog.setPositiveButton(resources.getString(R.string.updateBid)) { x, y ->
-            confirmModify(proceView.text.toString())
             x.dismiss()
+            confirmModify(proceView.text.toString())
+
 
         }
         dialog.setNegativeButton(resources.getString(R.string.cancel)) { _, _ -> }
@@ -522,7 +523,6 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun confirmModify(newBid: String) {
 
-        tempRef.dismiss()
 
         val body = UpdateBidBody(BID_ID, newBid)
 

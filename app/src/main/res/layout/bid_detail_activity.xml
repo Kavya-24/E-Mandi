@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/bgGreen">
+
 
     <include layout="@layout/layout_toolbar" />
 
@@ -11,7 +13,8 @@
         android:id="@+id/swl_detailsReq"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize">
+        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_marginBottom="@dimen/space_3x">
 
         <ScrollView
             android:id="@+id/container_req_details"
@@ -26,8 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space"
-                android:padding="@dimen/space"
-                android:visibility="invisible">
+                android:padding="@dimen/space">
 
                 <TextView
                     android:id="@+id/tv_requirement_detail_crop_name"
@@ -187,7 +189,7 @@
                     android:layout_margin="@dimen/space_half"
                     android:gravity="center"
                     android:text="@string/_1234"
-                    android:textColor="@android:color/holo_green_dark"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="24sp"
                     app:layout_constraintEnd_toStartOf="@id/tv_requirement_detail_initial_offer_price"
                     app:layout_constraintHorizontal_weight="1"
@@ -214,7 +216,7 @@
                     android:layout_margin="@dimen/space_half"
                     android:gravity="center"
                     android:text="@string/_1234"
-                    android:textColor="@android:color/holo_green_dark"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="24sp"
                     app:layout_constraintEnd_toStartOf="@id/tv_requirement_detail_initial_offer_price"
                     app:layout_constraintHorizontal_weight="1"
@@ -241,7 +243,7 @@
                     android:layout_margin="@dimen/space_half"
                     android:gravity="center"
                     android:text="@string/_1234"
-                    android:textColor="@android:color/holo_blue_dark"
+                    android:textColor="@color/wildColor"
                     android:textSize="24sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_weight="1"
