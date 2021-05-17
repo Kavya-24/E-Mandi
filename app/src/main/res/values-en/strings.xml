@@ -108,11 +108,11 @@
     <string name="description">Description: </string>
     <string name="modifyCrop">Modify crop</string>
     <string name="supplyAdded">Crop  added successfully</string>
-    <string name="couldNotLoadSupplies" tools:ignore="MissingTranslation">Could not load crops</string>
-    <string name="couldNotLoadBids" tools:ignore="MissingTranslation">Could not load active bids</string>
+    <string name="couldNotLoadSupplies">Could not load crops</string>
+    <string name="couldNotLoadBids">Could not load active bids</string>
     <string name="suppliesLoaded">Stocks loaded successfully</string>
-    <string name="noSupplyAct" tools:ignore="MissingTranslation">You do not have any active crops for bidding as of now</string>
-    <string name="noDemandAct" tools:ignore="MissingTranslation">You do not have any active bids as of now</string>
+    <string name="noSupplyAct">You do not have any active crops for bidding as of now</string>
+    <string name="noDemandAct">You do not have any active bids as of now</string>
     <string name="noSupply">You have not yet added any crop for bidding</string>
     <string name="demanndLoaded">My demands loaded</string>
     <string name="noDemand">You have not yet bid on any crop</string>
@@ -155,7 +155,7 @@
     <string name="mySupplyHistory">Supply History</string>
     <string name="myBidHistory">Bid History</string>
     <string name="current_bid">Current Bid</string>
-    <string name="initial_expected_price" tools:ignore="MissingTranslation">Initial Expected Price</string>
+    <string name="initial_expected_price">Initial Expected Price</string>
     <string name="initial_offer_price">Initial Offer Price</string>
 
     <string name="graphDataSet">Price vs Time Graph</string>
@@ -173,7 +173,7 @@
     <string name="lastModified">Last Modified:</string>
     <string name="variety">"Variety: "</string>
     <string name="time">Time</string>
-    <string name="i" translatable="false">i</string>
+    <string name="i">i</string>
     <string name="call">Call</string>
     <string name="canNotCall">Can not make call</string>
     <string name="permissionPhone">Permission to dial call from this app.</string>
@@ -189,7 +189,7 @@
     <string name="unableToOpenMaps">Unable to open maps</string>
     <string name="register">Register</string>
     <string name="creatinguser">Creating User</string>
-    <string name="eMandi" translatable="false">E-Mandi</string>
+    <string name="eMandi">E-Mandi</string>
     <string name="desc">Update the crop details</string>
     <string name="no_bids_founds">No bids founds</string>
     <string name="noDesc">-</string>
@@ -277,7 +277,7 @@
 
     </string-array>
 
-    <string name="cropvarietyNull" tools:ignore="MissingTranslation">No variety found</string>
+    <string name="cropvarietyNull">No variety found</string>
 
     <string-array name="arr_crop_types" tools:ignore="InconsistentArrays">
         <item>Grey Wheat</item>
@@ -291,7 +291,7 @@
     <string name="acres">Acres</string>
     <string name="sqrmetres">Sq Metres</string>
     <string name="NoNewReqFound">No requirements found.</string>
-    <string name="NoLoadNewReq" tools:ignore="MissingTranslation">Could not load new requirements</string>
+    <string name="NoLoadNewReq">Could not load new requirements</string>
     <string name="asia">asia</string>
     <string name="temp">temp</string>
     <string name="expm20">Expiry of bid should be after at least 20 days from sowing date</string>
@@ -303,28 +303,28 @@
     <string name="addThisInBidding">Add this crop for bidding</string>
     <string name="addCropGrowthOnly">Add the growth of this crop only</string>
     <string name="add_crop">Add Crop</string>
-    <string name="addMissingCrop" tools:ignore="MissingTranslation">This crop is not found. \nWould you like to add this crop?</string>
+    <string name="addMissingCrop">This crop is not found. \nWould you like to add this crop?</string>
     <string name="addVariety">Add variety</string>
     <string name="addDescription">Description for your crop</string>
     <string name="failAccessToken">Failed to log in.</string>
     <string name="noon_has_bid">No bids have been made on this crop yet.</string>
-    <string name="my_bid" tools:ignore="MissingTranslation">My Bid</string>
+    <string name="my_bid">My Bid</string>
     <string name="Uttar">Uttar</string>
-    <string name="bidInactive" tools:ignore="MissingTranslation">This bid is not active anymore.</string>
+    <string name="bidInactive">This bid is not active anymore.</string>
     <string name="addBidPrice">Add bid price</string>
     <string name="bidAdded">Bid added successfully.</string>
     <string name="logoutCnf">Are you sure you want to logout?</string>
     <string name="myCurrentBid">Current Bid</string>
     <string name="updateBid">Update Bid</string>
-    <string name="incDec" tools:ignore="MissingTranslation">Increasing Bid from %s to %s</string>
-    <string name="decreasing" tools:ignore="MissingTranslation">Decreasing Bid from %s to %s</string>
+    <string name="incDec">Increasing Bid from %s to %s</string>
+    <string name="decreasing">Decreasing Bid from %s to %s</string>
     <string name="searchCrops">Search crops</string>
     <string name="emptyReq">No demands found for this crop.</string>
     <string name="invalidOTP">Invalid OTP</string>
     <string name="addCropforBidding">Adding for bid</string>
     <string name="confirm">Confirm</string>
-    <string name="adding_crop" translatable="false">Adding crop %s (%s %s)\nInitial expected price %s %s</string>
-    <string name="adding_bid_date" translatable="false">Bid ends on %s</string>
+    <string name="adding_crop">Adding crop %s (%s %s)\nInitial expected price %s %s</string>
+    <string name="adding_bid_date">Bid ends on %s</string>
     <string name="unableToAddStock">Unable to add the crop. Please try again later</string>
     <string name="add">Add</string>
     <string name="bidRetrivealFailed">Failed to retrive the bid</string>
@@ -367,7 +367,7 @@
     <string name="num50">50</string>
     <string name="distanceKm">Distance(Km)</string>
     <string name="noDemandsFoundCrop">No demands found for %s</string>
-    <string name="quantity_grown_is_without_date"><![CDATA[Quantity grown\n<b>%s %s</b>]]></string>
+    <string name="quantity_grown_is_without_date">Quantity grown\n<b>%s %s</b>></string>
 
 
     <!--    Spinners for days and distance-->

@@ -545,7 +545,7 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
         isLoaded = false
         this.apply {
             tvEmptyListNewDemands.visibility = View.VISIBLE
-            ivNoNewReq.setImageDrawable(resources.getDrawable(R.drawable.searchlogo, null))
+            ivNoNewReq.setImageDrawable(resources.getDrawable(R.drawable.searchbg, null))
         }
     }
 

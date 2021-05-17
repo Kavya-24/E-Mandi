@@ -125,7 +125,7 @@
 	<string name="otpSend"></string>
 	<string name="otpResend"></string>
 	<string name="otpResendInit"></string>
-	<string name="resendIn">Resend OTP in <b>%s s</b> </string>
+	<string name="resendIn"></string>
 	<string name="invalidCredentials"></string>
 	<string name="addNumber"></string>
 	<string name="please_enter_your_mobile_number_to_receive_a_verification_code"></string>
@@ -169,6 +169,7 @@
 	<string name="lastModified"></string>
 	<string name="variety"></string>
 	<string name="time"></string>
+	<string name="i"></string>
 	<string name="call"></string>
 	<string name="canNotCall"></string>
 	<string name="permissionPhone"></string>
@@ -184,6 +185,7 @@
 	<string name="unableToOpenMaps"></string>
 	<string name="register"></string>
 	<string name="creatinguser"></string>
+	<string name="eMandi"></string>
 	<string name="desc"></string>
 	<string name="no_bids_founds"></string>
 	<string name="noDesc"></string>
@@ -261,6 +263,8 @@
 	<string name="invalidOTP"></string>
 	<string name="addCropforBidding"></string>
 	<string name="confirm"></string>
+	<string name="adding_crop"></string>
+	<string name="adding_bid_date"></string>
 	<string name="unableToAddStock"></string>
 	<string name="add"></string>
 	<string name="bidRetrivealFailed"></string>
@@ -289,6 +293,6 @@
 	<string name="kgQuantityValueString"></string>
 	<string name="num50"></string>
 	<string name="distanceKm"></string>
-	<string name="noDemandsFoundCrop"></string>
+	<string name="noDemandsFoundCrop">No demands found for %s</string>
 	<string name="quantity_grown_is_without_date"></string>
 </resources>

@@ -4,9 +4,9 @@ import androidx.annotation.Keep
 
 @Keep
 data class PersonObject(
-    val name : String,
-    val phone : String,
-    val address : String,
-    val addressLine1 : String,
-    val addressLine2 : String
+    val name: String,
+    val phone: String,
+    val address: String,
+    val addressLine1: String,
+    val addressLine2: String
 )
