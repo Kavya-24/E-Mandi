@@ -30,6 +30,7 @@ import com.example.mandiexe.utils.usables.ExternalUtils
 import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.usables.OfflineTranslate
 import com.example.mandiexe.utils.usables.UIUtils
+import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import com.example.mandiexe.utils.usables.UIUtils.hideProgress
 import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.google.android.material.appbar.AppBarLayout
@@ -174,7 +175,6 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
         actvDistance.setText(resources.getString(R.string.num50), TextView.BufferType.EDITABLE)
 
 
-
         UIUtils.getSpinnerAdapter(R.array.arr_days_limit, actvDays, this)
         UIUtils.getSpinnerAdapter(R.array.arr_distance_limit, actvDistance, this)
 
@@ -233,15 +233,9 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
 
                 override fun onFailure(call: Call<AdvancedSearchResponse>, t: Throwable) {
                     val message = ExternalUtils.returnStateMessageForThrowable(t)
-                    UIUtils.logThrowables(t, TAG)
                     doThrowableState()
-                    Snackbar.make(container_search, message, Snackbar.LENGTH_INDEFINITE)
-                        .setAction(resources.getString(R.string.retry)) { mItem ->
-                            mItem.setOnClickListener {
-                                makeAdvcall(newBody)
-                            }
-
-                        }
+                    UIUtils.logThrowables(t,TAG)
+                    createSnackbar(message,this@SearchResultActivity,container_search)
 
                 }
             })
@@ -341,15 +335,11 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
 
                 override fun onFailure(call: Call<SearchGlobalCropResponse>, t: Throwable) {
                     val message = ExternalUtils.returnStateMessageForThrowable(t)
+                    UIUtils.logThrowables(t,TAG)
+                    createSnackbar(message,this@SearchResultActivity,container_search)
                     doThrowableState()
-                    //Create Snackbar
-                    Snackbar.make(container_search, message, Snackbar.LENGTH_INDEFINITE)
-                        .setAction(resources.getString(R.string.retry)) { mItem ->
-                            mItem.setOnClickListener {
-                                searchCrops(englishQueryTranslated)
-                            }
 
-                        }
+
                 }
             })
 
@@ -416,12 +406,12 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
 
                 loadYoutubeLinks(response.links)
                 //Load the advanced data
-//                val newBody = AdvancedSearchBody(
-//                    englishFinalQuery,
-//                    defaultDaysAndDistance.toInt(),
-//                    defaultDaysAndDistance.toInt()
-//                )
-//                makeAdvcall(newBody)
+                val newBody = AdvancedSearchBody(
+                    englishFinalQuery,
+                    defaultDaysAndDistance.toInt(),
+                    defaultDaysAndDistance.toInt()
+                )
+                makeAdvcall(newBody)
 
             }
 

@@ -9,9 +9,9 @@
 
         android:id="@+id/tilDays"
         style="@style/styleTIL2"
-        android:padding="@dimen/space_half"
-
+        android:layout_margin="@dimen/space_half"
         android:hint="@string/days"
+        app:layout_constraintEnd_toStartOf="@id/tilDistance"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -22,17 +22,17 @@
             android:layout_height="wrap_content"
             android:inputType="none" />
 
-        <requestFocus/>
+        <requestFocus />
     </com.google.android.material.textfield.TextInputLayout>
-
 
 
     <com.google.android.material.textfield.TextInputLayout
 
         android:id="@+id/tilDistance"
         style="@style/styleTIL2"
-        android:padding="@dimen/space_half"
-        android:hint="@string/distance"
+        android:layout_margin="@dimen/space_half"
+        android:hint="@string/distanceKm"
+        app:layout_constraintEnd_toStartOf="@id/mtb_filter"
         app:layout_constraintStart_toEndOf="@id/tilDays"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -45,29 +45,20 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/tvkm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/km"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@id/tilDays"
-        app:layout_constraintStart_toEndOf="@id/tilDistance"
-        app:layout_constraintTop_toTopOf="@id/tilDays" />
-
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/mtb_filter"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_margin="@dimen/space"
-        android:background="@drawable/ic_arrow_forward"
+        android:background="@drawable/ic_filter_list_black_24dp"
         android:elevation="0dp"
         app:elevation="0dp"
-        app:layout_constraintStart_toEndOf="@id/tvkm"
         app:iconTint="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@id/tilDistance"
+        app:layout_constraintTop_toTopOf="parent"
+        app:rippleColor="@color/grey" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
