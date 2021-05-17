@@ -139,7 +139,7 @@ object TimeConversionUtils {
             DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 //View is the date picker object
 
-                view.minDate = System.currentTimeMillis() - 1000;
+                view.minDate = System.currentTimeMillis() - 1000
                 myCalendar.set(Calendar.YEAR, year)
                 myCalendar.set(Calendar.MONTH, monthOfYear)
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
