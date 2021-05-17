@@ -41,10 +41,12 @@ class DemandsSuggestionAdapterClass(val itemClick: mDemandSuggestionClickListene
             Log.e("DEMAND", "In binding for uterm name ${_listItem.nameOfCrop}")
             itemView.setOnClickListener {
                 itemclick.clickDemandSuggestion(_listItem)
+                Log.e("DEMAND", "In item click")
             }
 
             cCard.setOnClickListener {
                 itemclick.clickDemandSuggestion(_listItem)
+                Log.e("DEMAND", "in card clikc")
             }
 
         }

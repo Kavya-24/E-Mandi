@@ -89,6 +89,7 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
 
         Log.e(TAG, "In search of make call for txt $txt and the default query is $defaultQuery")
 
+        showProgress(pb, this)
         service.getSearchReq(
             body,
         )
@@ -109,17 +110,28 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
                             conatiner_new_demand
                         )
                     }
+
                 }
 
                 override fun onFailure(call: Call<NewDemandsResponse>, t: Throwable) {
                     val message = ExternalUtils.returnStateMessageForThrowable(t)
                     Log.e(TAG, "Failed to load req" + t.cause + t.message)
+                    createSnackbar(
+                        message,
+                        this@NewDemandActivity,
+                        conatiner_new_demand
+                    )
 
 
                 }
 
 
             })
+
+        hideProgress(pb,this)
+
+
+
     }
 
     private fun fetchSuggestions(query: String) {
@@ -313,7 +325,7 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
         rvSuggestion.visibility = View.GONE
 
         initiateDemandsSuggestionAdapter()
-
+        hideProgress(pb,this)
 
         val tb = findViewById<Toolbar>(R.id.toolbarExternalSearch)
         tb.title = resources.getString(R.string.searchBuyers)
@@ -362,7 +374,7 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
                 rvSuggestion.visibility = View.GONE
                 searchView.clearFocus()
                 //Wont come here
-                showProgress(pb, this@NewDemandActivity)
+              //  showProgress(pb, this@NewDemandActivity)
                 val cursor: Cursor = mAdapter!!.getItem(position) as Cursor
                 val txt = cursor.getString(cursor.getColumnIndex("suggestionList"))
 
@@ -382,7 +394,7 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
 
 
                     makeCall(englishQuery, txt)
-                    hideProgress(pb, this@NewDemandActivity)
+                //    hideProgress(pb, this@NewDemandActivity)
                     return true
 
                 } catch (e: java.lang.Exception) {
@@ -391,7 +403,7 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
 
 
                 getTranslatedSearch(txt)
-                hideProgress(pb, this@NewDemandActivity)
+
                 return true
 
             }
@@ -404,9 +416,7 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
                 //Do nothing here
                 rvSuggestion.visibility = View.GONE
                 searchView.clearFocus()
-                showProgress(pb, this@NewDemandActivity)
                 getTranslatedSearch(query.toString())
-                hideProgress(pb, this@NewDemandActivity)
 
                 return true
             }
@@ -544,9 +554,9 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
         rvSuggestion.visibility = View.GONE
         searchView.setQuery(_listItem.nameOfCrop, false)
         Log.e(TAG, "clciked suggetion ${_listItem.nameOfCrop}")
-        showProgress(pb, this@NewDemandActivity)
+        showProgress(pb, this)
         getTranslatedSearch(_listItem.nameOfCrop.toString())
-        hideProgress(pb, this@NewDemandActivity)
+        hideProgress(pb, this)
 
     }
 

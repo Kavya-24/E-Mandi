@@ -45,8 +45,8 @@
         <activity
             android:name=".ui.demands.NewDemandActivity"
             android:label="@string/searchBuyers"
-            android:windowSoftInputMode="adjustNothing"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
