@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:inputType="none" />
 
-        <requestFocus />
+
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -43,6 +43,7 @@
             android:layout_height="wrap_content"
             android:inputType="none" />
 
+        <requestFocus />
     </com.google.android.material.textfield.TextInputLayout>
 
 

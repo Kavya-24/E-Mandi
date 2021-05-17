@@ -36,7 +36,6 @@ import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_search_result.*
 import kotlinx.android.synthetic.main.layout_filter.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
@@ -234,8 +233,8 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
                 override fun onFailure(call: Call<AdvancedSearchResponse>, t: Throwable) {
                     val message = ExternalUtils.returnStateMessageForThrowable(t)
                     doThrowableState()
-                    UIUtils.logThrowables(t,TAG)
-                    createSnackbar(message,this@SearchResultActivity,container_search)
+                    UIUtils.logThrowables(t, TAG)
+                    createSnackbar(message, this@SearchResultActivity, container_search)
 
                 }
             })
@@ -257,7 +256,7 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
                 val kmLocale = resources.getString(R.string.kilometeres)
 
                 val mCalendar = Calendar.getInstance();
-                val myFormat = "dd/MMM/yyyy" //In which you need put here
+                val myFormat = "dd MMM yyyy" //In which you need put here
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
 
                 var mDays = actvDays.text.toString()
@@ -335,8 +334,8 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
 
                 override fun onFailure(call: Call<SearchGlobalCropResponse>, t: Throwable) {
                     val message = ExternalUtils.returnStateMessageForThrowable(t)
-                    UIUtils.logThrowables(t,TAG)
-                    createSnackbar(message,this@SearchResultActivity,container_search)
+                    UIUtils.logThrowables(t, TAG)
+                    createSnackbar(message, this@SearchResultActivity, container_search)
                     doThrowableState()
 
 

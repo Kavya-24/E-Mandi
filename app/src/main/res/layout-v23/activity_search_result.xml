@@ -127,6 +127,7 @@
                     android:id="@+id/cslNormalSearchData"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/space_2x"
                     android:padding="2dp"
                     app:layout_constraintTop_toBottomOf="@id/tv">
 
@@ -234,54 +235,64 @@
                         app:layout_constraintTop_toBottomOf="@id/tvInState" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/cslAdvancedSearch"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/madvcard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/space_half"
-                    android:background="@color/white"
+                    android:layout_margin="@dimen/space"
                     android:padding="@dimen/space_half"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="@dimen/space_half"
                     app:layout_constraintTop_toBottomOf="@id/cslNormalSearchData">
 
-
-                    <TextView
-                        android:id="@+id/tvAdvData"
-                        android:layout_width="wrap_content"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cslAdvancedSearch"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/space"
-                        android:lineSpacingMultiplier="1.5"
-                        android:maxLines="5"
-                        android:text="@string/quantity_grown_is"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="@id/ivAdvData"
-                        app:layout_constraintEnd_toStartOf="@id/ivAdvData"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/ivAdvData" />
-
-                    <ImageView
-                        android:id="@+id/ivAdvData"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_margin="@dimen/space"
-                        android:src="@drawable/landitem"
-                        app:layout_constraintBottom_toTopOf="@id/tvAdvDistance"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:layout_margin="@dimen/space_half"
+                        android:background="@color/white"
+                        android:padding="@dimen/space_half"
+                        app:layout_constraintTop_toBottomOf="@id/cslNormalSearchData">
 
 
-                    <TextView
-                        android:id="@+id/tvAdvDistance"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/space"
-                        android:text="@string/within"
-                        android:textColor="@color/darkBlue"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/ivAdvData" />
+                        <TextView
+                            android:id="@+id/tvAdvData"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/space"
+                            android:lineSpacingMultiplier="1.5"
+                            android:maxLines="5"
+                            android:text="@string/quantity_grown_is"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="16sp"
+                            app:layout_constraintBottom_toBottomOf="@id/ivAdvData"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/ivAdvData" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        <ImageView
+                            android:id="@+id/ivAdvData"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_margin="@dimen/space"
+                            android:src="@drawable/landitem"
+                            app:layout_constraintBottom_toTopOf="@id/tvAdvDistance"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                        <TextView
+                            android:id="@+id/tvAdvDistance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/space"
+                            android:text="@string/within"
+                            android:textColor="@color/darkBlue"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/ivAdvData" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_youtubeLinks"
@@ -289,7 +300,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_2x"
                     android:layout_marginBottom="@dimen/space_4x"
-                    app:layout_constraintTop_toBottomOf="@id/cslAdvancedSearch"
+                    app:layout_constraintTop_toBottomOf="@id/madvcard"
                     tools:listitem="@layout/item_link_crop_file" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -308,9 +319,9 @@
 
     <ProgressBar
         android:id="@+id/pb_searchCrop"
+        style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
