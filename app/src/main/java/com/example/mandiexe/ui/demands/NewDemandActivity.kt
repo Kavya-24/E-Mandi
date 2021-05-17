@@ -44,6 +44,7 @@ import com.example.mandiexe.utils.usables.UIUtils.hideKeyboard
 import com.example.mandiexe.utils.usables.UIUtils.hideProgress
 import com.example.mandiexe.utils.usables.ValidationObject
 import com.example.mandiexe.viewmodels.NewDemandViewModel
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_new_demand.*
 import retrofit2.Call
 import retrofit2.Response
@@ -271,8 +272,13 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
 
             this.apply {
                 ivNoNewReq.setImageDrawable(resources.getDrawable(R.drawable.nothingimg))
-                tvEmptyListNewDemands.text =
-                    resources.getString(R.string.noDemandsFoundCrop, searchView.query.toString())
+                tvEmptyListNewDemands.visibility = View.GONE
+                Snackbar.make(
+                    conatiner_new_demand,
+                    resources.getString(R.string.noDemandsFoundCrop, searchView.query.toString()),
+                    Snackbar.LENGTH_INDEFINITE
+                ).show()
+
 
             }
 
