@@ -256,8 +256,8 @@
     <string name="logoutCnf"></string>
     <string name="myCurrentBid"></string>
     <string name="updateBid"></string>
-    <string name="incDec"></string>
-    <string name="decreasing"></string>
+    <string name="incDec">Increasing Bid from %s to %s</string>
+    <string name="decreasing">Decreasing Bid from %s to %s</string>
     <string name="searchCrops"></string>
     <string name="emptyReq"></string>
     <string name="invalidOTP"></string>
@@ -275,9 +275,9 @@
     <string name="distance"></string>
     <string name="n_30"></string>
     <string name="km"></string>
-    <string name="infoHowMuchGrown"></string>
-    <string name="quantity_grown_is"></string>
-    <string name="within"></string>
+    <string name="infoHowMuchGrown">This shows how much of %s is grown in %s at various levels. You can filter them according to the range of days and distance from your current location as shown by the chart.</string>
+    <string name="quantity_grown_is">Quantity grown\n<b>%s %s</b>\n<i>%s to %s</i></string>
+    <string name="within">Within %s %s</string>
     <string name="kilometeres"></string>
     <string name="infoHowMuchGrownFilter"></string>
     <string name="retry"></string>
@@ -290,9 +290,10 @@
     <string name="str_my_bids"></string>
     <string name="couldNotLoadAllBids"></string>
     <string name="searchbyCrops"></string>
-    <string name="kgQuantityValueString"></string>
+    <string name="kgQuantityValueString">%s %s</string>
+    <string name="quantity_grown_is_without_date">Quantity grown\n<b>%s %s</b>></string>
     <string name="num50"></string>
     <string name="distanceKm"></string>
     <string name="noDemandsFoundCrop">No demands found for %s</string>
-    <string name="quantity_grown_is_without_date"></string>
+
 </resources>
