@@ -21,6 +21,8 @@ import com.example.mandiexe.adapter.SupplyHistoryAdapter
 import com.example.mandiexe.models.responses.supply.SupplyHistoryResponse
 import com.example.mandiexe.ui.supply.SupplyDetailActivity
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
+import com.example.mandiexe.utils.usables.UIUtils.hideProgress
+import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.example.mandiexe.viewmodels.FarmerSupplyHistoryViewModel
 import kotlinx.android.synthetic.main.farmer_supply_history_fragment.*
 
@@ -66,6 +68,8 @@ class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {
             val success = viewModel.successful.value
 
             if (success != null) {
+                hideProgress(pb, requireContext())
+
                 if (success) {
                     loadItemsInRV(mResponse)
                 } else {
@@ -75,6 +79,8 @@ class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {
                         container_supply_history
                     )
                 }
+            } else{
+                showProgress(pb, requireContext())
             }
 
 

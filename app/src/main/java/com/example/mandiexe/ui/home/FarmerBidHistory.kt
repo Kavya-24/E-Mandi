@@ -65,6 +65,8 @@ class FarmerBidHistory : Fragment(), OnMyBidClickListenerGlobal {
             val success = viewModel.successful.value
 
             if (success != null) {
+                UIUtils.hideProgress(pb, requireContext())
+
                 if (success) {
                     loadItemsInRV(mResponse)
                 } else {
@@ -74,6 +76,8 @@ class FarmerBidHistory : Fragment(), OnMyBidClickListenerGlobal {
                         container_bid_history
                     )
                 }
+            } else{
+                UIUtils.showProgress(pb, requireContext())
             }
 
 

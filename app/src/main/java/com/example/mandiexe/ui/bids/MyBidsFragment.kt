@@ -22,6 +22,7 @@ import com.example.mandiexe.adapter.OnMyBidClickListener
 import com.example.mandiexe.models.responses.bids.FamerBidsResponse
 import com.example.mandiexe.ui.demands.NewDemandActivity
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
+import com.example.mandiexe.utils.usables.UIUtils.hideProgress
 import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.example.mandiexe.viewmodels.MyBidsViewmodel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -119,7 +120,7 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
             //Check with the successful of it
             if (viewModel.successful.value != null) {
                 //Log the response
-                showProgress(pb, requireContext())
+                hideProgress(pb, requireContext())
                 if (viewModel.successful.value!!) {
 
                     manageReqLoadedResponses(mResponse)
