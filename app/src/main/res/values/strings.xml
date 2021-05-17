@@ -75,7 +75,7 @@
     <string name="invalidOtp">The OTP is invalid</string>
     <string name="invalidPhoneError">The phone number is invalid</string>
     <string name="address">Address</string>
-    <string name="area">Area</string>
+    <string name="area">Area of farm</string>
     <string name="emptyName">Name can not be empty</string>
     <string name="invalidName">The name is invalid</string>
     <string name="emptyAreaError">Area can not be empty</string>

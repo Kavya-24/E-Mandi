@@ -1,6 +1,7 @@
 package com.example.mandiexe.viewmodels
 
 import android.util.Log
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mandiexe.R
@@ -9,6 +10,7 @@ import com.example.mandiexe.models.body.authBody.SignUpBody
 import com.example.mandiexe.models.responses.auth.SignUpResponse
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.usables.ExternalUtils
+import com.example.mandiexe.utils.usables.UIUtils
 import retrofit2.Call
 import retrofit2.Response
 
@@ -25,15 +27,21 @@ class MapViewmodel : ViewModel() {
 
     var mSignUp: MutableLiveData<SignUpResponse> = MutableLiveData()
 
-    fun signFunction(body: SignUpBody): MutableLiveData<SignUpResponse> {
+    fun signFunction(
+        body: SignUpBody,
+        containerView: ConstraintLayout
+    ): MutableLiveData<SignUpResponse> {
 
         Log.e(TAG, "In sign up function")
-        mSignUp = mSignUpFunction(body)
+        mSignUp = mSignUpFunction(body, containerView)
         return mSignUp
     }
 
 
-    fun mSignUpFunction(body: SignUpBody): MutableLiveData<SignUpResponse> {
+    fun mSignUpFunction(
+        body: SignUpBody,
+        containerView: ConstraintLayout
+    ): MutableLiveData<SignUpResponse> {
 
         Log.e(TAG, body.toString())
         mySupplyService.getSignUp(
@@ -49,19 +57,14 @@ class MapViewmodel : ViewModel() {
                         TAG,
                         "In on failed and message {${message.value}} and cause is " + t.cause + t.message
                     )
+
+                    UIUtils.createSnackbar(message.value, context, containerView)
                 }
 
                 override fun onResponse(
                     call: Call<SignUpResponse>,
                     response: Response<SignUpResponse>
                 ) {
-
-                    Log.e(
-                        TAG,
-                        " In on response " + response.message() + response.body()?.msg + response.body()
-                            .toString() + " \n and header ans" + response.errorBody()
-                            .toString() + "\n" + response.headers()
-                    )
 
 
                     if (response.isSuccessful) {
@@ -73,7 +76,7 @@ class MapViewmodel : ViewModel() {
                                 context.resources.getString(R.string.signUpSuccess)
 
                         } else {
-                            successful.value = false
+                            successful.value = true
                             message.value = response.body()?.msg.toString()
                         }
 
@@ -88,7 +91,6 @@ class MapViewmodel : ViewModel() {
                 }
             })
 
-        Log.e(TAG, " Outside retrofit call and mSignUp is " + mSignUp.value.toString())
         return mSignUp
 
 

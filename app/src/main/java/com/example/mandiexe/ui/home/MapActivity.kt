@@ -15,6 +15,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -140,7 +141,8 @@ class MapActivity : AppCompatActivity() {
 
         //Create observer on Text
 
-        d.setPositiveButton(resources.getString(R.string.register)) { _, _ ->
+        d.setPositiveButton(resources.getString(R.string.register)) { md, _ ->
+            md.dismiss()
             createUser()
         }
 
@@ -149,14 +151,12 @@ class MapActivity : AppCompatActivity() {
         }
         d.create()
 
-        tempRef = d.create()
         d.show()
 
 
     }
 
     private fun createUser() {
-        tempRef.dismiss()
         //Create a new user
 
         pb = ProgressDialog(this)
@@ -216,30 +216,31 @@ class MapActivity : AppCompatActivity() {
 
             )
 
-            viewModel.signFunction(body).observe(this, Observer { mResponse ->
+            val mView = findViewById<ConstraintLayout>(R.id.container_map)
+            viewModel.signFunction(body, mView).observe(this, Observer { mResponse ->
                 val success = viewModel.successful.value
                 if (success != null) {
-                    if (success) {
-                        manageSignUpResponse(viewModel.mSignUp.value)
-                    } else {
-                        UIUtils.createSnackbar(
-                            viewModel.message.value,
-                            this,
-                            container_map
-                        )
-                    }
+                    manageSignUpResponse(viewModel.mSignUp.value)
+
+                } else {
+                    Log.e(TAG, "Loading.......")
+                    createSnackbar(resources.getString(R.string.unableMaps), this, container_map)
                 }
 
             })
 
             pb.dismiss()
         } catch (e: java.lang.Exception) {
+            UIUtils.logExceptions(e, TAG)
             createSnackbar(resources.getString(R.string.unableMaps), this, container_map)
         }
     }
 
     private fun manageSignUpResponse(value: SignUpResponse?) {
+        Log.e(TAG, "In manageSignUp resonse with value")
         if (value != null) {
+
+            Log.e(TAG, "In manage signup response with response as $value")
 
             if (value.msg == "Registeration successful.") {
 
@@ -250,13 +251,13 @@ class MapActivity : AppCompatActivity() {
                 )
                 signUpSuccess(value)
 
-            } else if (value.msg == "Farmer already registered.") {
+            } else {
 
                 loginFromSignUp()
 
-            } else {
-                createSnackbar(value.msg, this, container_map)
             }
+        } else {
+            createSnackbar(resources.getString(R.string.failedLogin), this, container_map)
         }
     }
 
@@ -304,7 +305,7 @@ class MapActivity : AppCompatActivity() {
 
         viewmodelLogin.lgnFunction(body).observe(this, Observer { mResponse ->
 
-            Log.e(TAG, "In vm")
+
             val success = viewmodelLogin.successful.value
             if (success != null) {
                 if (success == false) {
@@ -314,6 +315,8 @@ class MapActivity : AppCompatActivity() {
 
                     manageLoginResponse(viewmodelLogin.mLogin.value, token)
                 }
+            } else {
+                createSnackbar(resources.getString(R.string.failedLogin), this, container_map)
             }
 
         })
@@ -332,6 +335,7 @@ class MapActivity : AppCompatActivity() {
 
             }
         } else {
+
             createSnackbar(resources.getString(R.string.failedLogin), this, container_map)
         }
     }
@@ -506,6 +510,12 @@ class MapActivity : AppCompatActivity() {
             } else {
                 fetchedLocation = resources.getString(R.string.NotFound)
             }
+        }
+
+        task.addOnFailureListener { excetion->
+            Log.e(TAG, "Failed to load maps, willing to reexecute")
+            //Get permisions again
+            getPermissions()
         }
 
     }
