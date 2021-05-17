@@ -20,7 +20,17 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 -keepattributes Signature
+-keepattributes *Annotation*
+-keepattributes EnclosingMethod
+-keepattributes InnerClasses
 
+-keep class com.google.firebase.quickstart.database.java.viewholder.** {
+    *;
+}
+
+-keepclassmembers class com.google.firebase.quickstart.database.java.models.** {
+    *;
+}
 # This rule will properly ProGuard all the model classes in
 # the package com.yourcompany.models. Modify to fit the structure
 # of your app.
