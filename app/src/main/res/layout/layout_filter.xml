@@ -31,7 +31,7 @@
         android:id="@+id/tilDistance"
         style="@style/styleTIL2"
         android:layout_margin="@dimen/space_half"
-        android:hint="@string/distanceKm"
+        android:hint="@string/distance"
         app:layout_constraintEnd_toStartOf="@id/mtb_filter"
         app:layout_constraintStart_toEndOf="@id/tilDays"
         app:layout_constraintTop_toTopOf="parent">
