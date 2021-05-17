@@ -97,6 +97,24 @@ class OTPFragment : Fragment() {
         root.findViewById<TextView>(R.id.tv_phoneNumber_ans).text = phoneNumber
         tvTimer = root.findViewById<TextView>(R.id.tv_timer_resend)
 
+        timer = object : CountDownTimer(300000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                val timeValue = (millisUntilFinished / 1000).toString()
+                tvTimer.text = resources.getString(R.string.resendIn, timeValue)
+                tvTimer.visibility = View.VISIBLE
+
+
+            }
+
+            override fun onFinish() {
+
+
+                tvTimer.visibility = View.GONE
+
+
+            }
+        }
+
         getOTP()
 
 
@@ -207,8 +225,7 @@ class OTPFragment : Fragment() {
                 // for instance if the the phone number format is not valid.
                 hideProgress(pb, requireContext())
                 Log.e(TAG, "on ver failed " + e)
-                verificationInProgress =
-                    false
+                verificationInProgress = false
                 if (e is FirebaseAuthInvalidCredentialsException) {
                     UIUtils.createSnackbar(
                         resources.getString(R.string.invalidOTP),
@@ -257,6 +274,7 @@ class OTPFragment : Fragment() {
                 tvTimer.visibility = View.VISIBLE
 
 
+                timer.start()
                 context?.let {
                     createSnackbar(
                         resources.getString(R.string.otpSent),
@@ -266,26 +284,6 @@ class OTPFragment : Fragment() {
 
                 //Change the text
                 root.findViewById<TextView>(R.id.tv_phoneNumber).setText(R.string.otpSend)
-
-
-
-                timer = object : CountDownTimer(300000, 1000) {
-                    override fun onTick(millisUntilFinished: Long) {
-                        val timeValue = (millisUntilFinished / 1000).toString()
-                        tvTimer.text = resources.getString(R.string.resendIn, timeValue)
-                        tvTimer.visibility = View.VISIBLE
-
-
-                    }
-
-                    override fun onFinish() {
-
-
-                        tvTimer.visibility = View.GONE
-
-
-                    }
-                }.start()
 
 
             }

@@ -121,7 +121,7 @@
     <string name="BidDeleted">Bid deleted successfully.</string>
     <string name="newBidPrice">New bid price:</string>
     <string name="invalidRequest">Request is invalid.</string>
-    <string name="quotaRequest">Quota of requests exceeded.</string>
+    <string name="quotaRequest">Quota of requests exceeded. Please try again after some time.</string>
     <string name="loginSuceed">Login successful</string>
     <string name="loginNew">Phone Number not registered.</string>
     <string name="_91">+91</string>
