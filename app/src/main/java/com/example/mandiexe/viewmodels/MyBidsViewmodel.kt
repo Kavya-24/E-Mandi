@@ -1,6 +1,8 @@
 package com.example.mandiexe.viewmodels
 
-import android.util.Log
+import android.view.View
+import android.widget.ProgressBar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mandiexe.R
@@ -27,14 +29,20 @@ class MyBidsViewmodel : ViewModel() {
 
     private var mReq: MutableLiveData<FamerBidsResponse> = MutableLiveData()
 
-    fun reqFunction(): MutableLiveData<FamerBidsResponse> {
+    fun reqFunction(
+        container_my_bids: ConstraintLayout,
+        pb: ProgressBar
+    ): MutableLiveData<FamerBidsResponse> {
 
-        mReq = mReqFunction()
+        mReq = mReqFunction(container_my_bids, pb)
         return mReq
     }
 
 
-    private fun mReqFunction(): MutableLiveData<FamerBidsResponse> {
+    private fun mReqFunction(
+        container_my_bids: ConstraintLayout,
+        pb: ProgressBar
+    ): MutableLiveData<FamerBidsResponse> {
 
         mySupplyService.getFarmerDemands(
         )
@@ -44,6 +52,9 @@ class MyBidsViewmodel : ViewModel() {
                     message.value = ExternalUtils.returnStateMessageForThrowable(t)
                     //Response is null
                     UIUtils.logThrowables(t, TAG)
+                    UIUtils.createSnackbar(message.value, context, container_my_bids)
+                    pb.visibility = View.GONE
+
                 }
 
                 override fun onResponse(

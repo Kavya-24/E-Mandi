@@ -64,27 +64,29 @@ class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {
 
         swl.isRefreshing = true
 
-        viewModel.supplyFunction().observe(viewLifecycleOwner, Observer { mResponse ->
-            val success = viewModel.successful.value
+        val mSnapbarView = root.findViewById<ConstraintLayout>(R.id.container_supply_history)
+        viewModel.supplyFunction(mSnapbarView, pb)
+            .observe(viewLifecycleOwner, Observer { mResponse ->
+                val success = viewModel.successful.value
 
-            if (success != null) {
-                hideProgress(pb, requireContext())
+                if (success != null) {
+                    hideProgress(pb, requireContext())
 
-                if (success) {
-                    loadItemsInRV(mResponse)
+                    if (success) {
+                        loadItemsInRV(mResponse)
+                    } else {
+                        createSnackbar(
+                            viewModel.message.value,
+                            requireContext(),
+                            container_supply_history
+                        )
+                    }
                 } else {
-                    createSnackbar(
-                        viewModel.message.value,
-                        requireContext(),
-                        container_supply_history
-                    )
+                    showProgress(pb, requireContext())
                 }
-            } else{
-                showProgress(pb, requireContext())
-            }
 
 
-        })
+            })
 
         swl.isRefreshing = false
 

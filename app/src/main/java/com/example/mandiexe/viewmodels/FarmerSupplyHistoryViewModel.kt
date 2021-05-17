@@ -1,6 +1,9 @@
 package com.example.mandiexe.viewmodels
 
 import android.util.Log
+import android.view.View
+import android.widget.ProgressBar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mandiexe.R
@@ -9,6 +12,7 @@ import com.example.mandiexe.models.responses.supply.SupplyHistoryResponse
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.auth.SessionManager
 import com.example.mandiexe.utils.usables.ExternalUtils
+import com.example.mandiexe.utils.usables.UIUtils
 import retrofit2.Call
 import retrofit2.Response
 
@@ -26,26 +30,32 @@ class FarmerSupplyHistoryViewModel : ViewModel() {
 
     var supplyHistory: MutableLiveData<SupplyHistoryResponse> = MutableLiveData()
 
-    fun supplyFunction(): MutableLiveData<SupplyHistoryResponse> {
+    fun supplyFunction(
+        mSnackBar: ConstraintLayout,
+        pb: ProgressBar
+    ): MutableLiveData<SupplyHistoryResponse> {
 
-        supplyHistory = supplyStockFunction()
+        supplyHistory = supplyStockFunction(mSnackBar, pb)
         return supplyHistory
     }
 
 
-    fun supplyStockFunction(): MutableLiveData<SupplyHistoryResponse> {
+    fun supplyStockFunction(
+        mSnackBar: ConstraintLayout,
+        pb: ProgressBar
+    ): MutableLiveData<SupplyHistoryResponse> {
 
         mySupplyService.getFarmerSupplyHistory(
-     )
+        )
             .enqueue(object : retrofit2.Callback<SupplyHistoryResponse> {
                 override fun onFailure(call: Call<SupplyHistoryResponse>, t: Throwable) {
                     successful.value = false
                     message.value = ExternalUtils.returnStateMessageForThrowable(t)
                     //Response is null
-                    Log.e(
-                        TAG,
-                        "Failed in Supply Hsitory because " + t.message + t.cause + " Setting" + message.value
-                    )
+                    UIUtils.logThrowables(t, TAG)
+                    UIUtils.createSnackbar(message.value, context, mSnackBar)
+                    pb.visibility = View.GONE
+
                 }
 
                 override fun onResponse(

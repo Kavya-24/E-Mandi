@@ -114,8 +114,9 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
 
     private fun loadRequirements() {
 
+        val mSnackbarView = root.findViewById<ConstraintLayout>(R.id.container_req)
 
-        viewModel.reqFunction().observe(viewLifecycleOwner, Observer { mResponse ->
+        viewModel.reqFunction(mSnackbarView,pb).observe(viewLifecycleOwner, Observer { mResponse ->
 
             //Check with the successful of it
             if (viewModel.successful.value != null) {

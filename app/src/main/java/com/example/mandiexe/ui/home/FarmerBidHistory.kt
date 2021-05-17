@@ -60,8 +60,9 @@ class FarmerBidHistory : Fragment(), OnMyBidClickListenerGlobal {
     private fun loadHistory() {
 
         swl.isRefreshing = true
+        val mSnackbarView = root.findViewById<ConstraintLayout>(R.id.container_bid_history)
 
-        viewModel.BidFunction().observe(viewLifecycleOwner, Observer { mResponse ->
+        viewModel.BidFunction(mSnackbarView,pb).observe(viewLifecycleOwner, Observer { mResponse ->
             val success = viewModel.successful.value
 
             if (success != null) {
