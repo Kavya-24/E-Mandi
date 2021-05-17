@@ -621,10 +621,10 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
                 TimeConversionUtils.convertDateTimestampUtil(item.get(0).timestamp)?.time?.toDouble()
                     ?.let {
-                        graph.getViewport().setMinX(
+                        graph.viewport.setMinX(
                             it
                         )
-                    };
+                    }
                 graph.viewport.isXAxisBoundsManual = true
             }
 

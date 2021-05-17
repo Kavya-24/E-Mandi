@@ -125,7 +125,7 @@
     <string name="otpSend"></string>
     <string name="otpResend"></string>
     <string name="otpResendInit"></string>
-    <string name="resendIn"></string>
+    <string name="resendIn">Resend OTP in <b>%s s</b> </string>
     <string name="invalidCredentials"></string>
     <string name="addNumber"></string>
     <string name="please_enter_your_mobile_number_to_receive_a_verification_code"></string>

@@ -392,7 +392,7 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
                 this.apply {
 
-                    tv_req_details_buyer_name.setText((ownerName))
+                    tv_req_details_buyer_name.text = (ownerName)
                     tv_requirement_detail_crop_location.text =
                         OfflineTranslate.transliterateToDefault(value.demand.demander.address)
 
@@ -404,9 +404,7 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
                     this.ans_detail_bid_init_date.text =
                         convertTimeToEpoch(value.demand.demandCreated)
 
-                    tv_requirement_detail_current_bid.setText(
-                        currrentBid.toString()
-                    )
+                    tv_requirement_detail_current_bid.text = currrentBid.toString()
 
                     tv_requirement_detail_initial_offer_price.text =
                         initialOfferPrice.toString()
@@ -467,7 +465,7 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
         val v = layoutInflater.inflate(R.layout.layout_modify_bid, null)
 
         val proceView = v.findViewById<EditText>(R.id.numberPickerModifyPrice)
-        proceView.setHint(mPrice)
+        proceView.hint = mPrice
         proceView.setText(mPrice, TextView.BufferType.EDITABLE)
 
         val tv = v.findViewById<TextView>(R.id.tvIncDec)!!
@@ -731,7 +729,7 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
             this.apply {
 
-                tv_req_details_buyer_name.setText((ownerName))
+                tv_req_details_buyer_name.text = (ownerName)
                 tv_requirement_detail_crop_location.text =
                     OfflineTranslate.transliterateToDefault(value.bid.bidder.address)
 
@@ -743,9 +741,7 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
                 this.ans_detail_bid_init_date.text =
                     convertTimeToEpoch(value.bid.demand.demandCreated)
 
-                tv_requirement_detail_current_bid.setText(
-                    currrentBid.toString()
-                )
+                tv_requirement_detail_current_bid.text = currrentBid.toString()
 
                 tv_requirement_detail_initial_offer_price.text =
                     initialOfferPrice.toString()
@@ -883,10 +879,10 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
                 TimeConversionUtils.convertDateTimestampUtil(value.get(0).timestamp)?.time?.toDouble()
                     ?.let {
-                        graph.getViewport().setMinX(
+                        graph.viewport.setMinX(
                             it
                         )
-                    };
+                    }
                 graph.viewport.isXAxisBoundsManual = true
             }
 

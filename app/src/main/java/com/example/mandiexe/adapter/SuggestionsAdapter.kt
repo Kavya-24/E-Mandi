@@ -99,6 +99,4 @@ class SuggestionsAdapter(val itemClick: mSearchViewOnSuggestionClick) :
 
 }
 
-interface mSearchViewOnSuggestionClick {
-
-}
+interface mSearchViewOnSuggestionClick

@@ -101,7 +101,7 @@ class MapActivity : AppCompatActivity() {
 
         supportMapFragment =
             supportFragmentManager.findFragmentById(R.id.frag_map) as SupportMapFragment
-        client = this.let { LocationServices.getFusedLocationProviderClient(it) }!!
+        client = this.let { LocationServices.getFusedLocationProviderClient(it) }
 
         getPermissions()
 

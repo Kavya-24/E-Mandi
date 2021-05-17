@@ -142,7 +142,7 @@ class MainActivity : AppCompatActivity(), OnMyLanguageListener,
                     Log.e("MAIN", "In on query submit")
 
                     searchCrop(
-                        query ?: resources.getString(R.string.rice),
+                        query,
                         "e-mandi-farmer-null-query"
                     )
 
