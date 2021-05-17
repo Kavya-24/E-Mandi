@@ -366,6 +366,7 @@
     <string name="kgQuantityValueString">%s %s</string>
     <string name="num50">50</string>
     <string name="distanceKm">Distance(Km)</string>
+    <string name="noDemandsFoundCrop">No demands found for %s</string>
 
 
     <!--    Spinners for days and distance-->

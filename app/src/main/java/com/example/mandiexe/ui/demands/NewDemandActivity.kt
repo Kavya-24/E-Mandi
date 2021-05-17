@@ -271,7 +271,8 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement,
 
             this.apply {
                 ivNoNewReq.setImageDrawable(resources.getDrawable(R.drawable.nothingimg))
-                tvEmptyListNewDemands.text = resources.getString(R.string.noDemandsFound)
+                tvEmptyListNewDemands.text =
+                    resources.getString(R.string.noDemandsFoundCrop, searchView.query.toString())
 
             }
 

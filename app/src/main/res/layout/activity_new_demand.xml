@@ -72,14 +72,6 @@
                 tools:listitem="@layout/item_bid" />
 
 
-            <ProgressBar
-                android:id="@+id/pb_add_req"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/llEmptyNewDemands"
@@ -115,6 +107,17 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+            <ProgressBar
+                android:id="@+id/pb_add_req"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
             <TextView
                 android:id="@+id/tempTvAddReqTrans"
                 android:layout_width="match_parent"
