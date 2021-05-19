@@ -42,7 +42,7 @@ android {
     }
 
     configurations {
-        all{
+        all {
             exclude group: 'commons-logging', module: 'commons-logging'
             exclude group: 'org.apache.httpcomponents'
         }
@@ -58,11 +58,11 @@ android {
             manifestPlaceholders = [usesCleartextTraffic: "true"]
         }
         debug {
-            minifyEnabled false           //Need to add serialized name annotation if enabled true
-            shrinkResources false
+            minifyEnabled true           //Need to add serialized name annotation if enabled true
+            shrinkResources true
 
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            manifestPlaceholders = [usesCleartextTraffic: "false"]
+            manifestPlaceholders = [usesCleartextTraffic: "true"]
         }
 
     }
