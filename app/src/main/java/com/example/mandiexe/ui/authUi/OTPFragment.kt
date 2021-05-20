@@ -4,6 +4,7 @@ import `in`.aabhasjindal.otptextview.OTPListener
 import `in`.aabhasjindal.otptextview.OtpTextView
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
@@ -13,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -98,18 +100,22 @@ class OTPFragment : Fragment() {
         tvTimer = root.findViewById<TextView>(R.id.tv_timer_resend)
 
         timer = object : CountDownTimer(300000, 1000) {
+            @RequiresApi(Build.VERSION_CODES.M)
             override fun onTick(millisUntilFinished: Long) {
                 val timeValue = (millisUntilFinished / 1000).toString()
                 tvTimer.text = resources.getString(R.string.resendIn, timeValue)
                 tvTimer.visibility = View.VISIBLE
+                tvTimer.setTextColor(resources.getColor(R.color.black, null))
 
 
             }
 
+            @RequiresApi(Build.VERSION_CODES.M)
             override fun onFinish() {
 
-
-                tvTimer.visibility = View.GONE
+                tvTimer.text = resources.getString(R.string.otpResend)
+                tvTimer.setTextColor(resources.getColor(R.color.wildColor, null))
+                tvTimer.visibility = View.VISIBLE
 
 
             }
