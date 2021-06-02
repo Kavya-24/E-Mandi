@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/bgGreen">
 
-
     <include layout="@layout/layout_toolbar" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -23,6 +22,7 @@
             android:layout_marginTop="?attr/actionBarSize"
             android:background="@color/bgGreen"
             tools:context=".ui.supply.SupplyDetailActivity">
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/mLayoutReq"
@@ -92,6 +92,7 @@
                 <TextView
                     android:id="@+id/tv_requirement_detail_crop_description"
                     android:layout_width="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/space"
                     app:layout_constraintBottom_toBottomOf="@id/mDetDesc"

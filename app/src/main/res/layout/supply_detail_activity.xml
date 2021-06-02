@@ -69,6 +69,7 @@
                     <TextView
                         android:id="@+id/tv_stock_detail_crop_description"
                         android:layout_width="0dp"
+                        app:layout_constraintEnd_toEndOf="parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:maxLines="4"
