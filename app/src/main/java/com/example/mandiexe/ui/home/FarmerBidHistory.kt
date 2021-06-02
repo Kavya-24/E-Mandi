@@ -36,6 +36,11 @@ class FarmerBidHistory : Fragment(), OnMyBidClickListenerGlobal {
     private lateinit var pb: ProgressBar
     private lateinit var swl: SwipeRefreshLayout
 
+    override fun onResume() {
+        loadHistory()
+        super.onResume()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -62,7 +67,7 @@ class FarmerBidHistory : Fragment(), OnMyBidClickListenerGlobal {
         swl.isRefreshing = true
         val mSnackbarView = root.findViewById<ConstraintLayout>(R.id.container_bid_history)
 
-        viewModel.BidFunction(mSnackbarView,pb).observe(viewLifecycleOwner, Observer { mResponse ->
+        viewModel.BidFunction(mSnackbarView, pb).observe(viewLifecycleOwner, Observer { mResponse ->
             val success = viewModel.successful.value
 
             if (success != null) {
@@ -77,7 +82,7 @@ class FarmerBidHistory : Fragment(), OnMyBidClickListenerGlobal {
                         container_bid_history
                     )
                 }
-            } else{
+            } else {
                 UIUtils.showProgress(pb, requireContext())
             }
 

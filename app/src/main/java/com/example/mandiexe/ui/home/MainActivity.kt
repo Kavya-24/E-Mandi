@@ -89,6 +89,7 @@ class MainActivity : AppCompatActivity(), OnMyLanguageListener,
     private lateinit var mMenu: Menu
 
     private val TAG = MainActivity::class.java.simpleName
+
     //SearchUtils
     private lateinit var search_view: com.miguelcatalan.materialsearchview.MaterialSearchView
     private lateinit var mListOfSuggestions: MutableList<String>
@@ -110,7 +111,7 @@ class MainActivity : AppCompatActivity(), OnMyLanguageListener,
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_supply, R.id.nav_supply_history, R.id.nav_bid_history, R.id.nav_bids
+                R.id.nav_home, R.id.nav_supply_history, R.id.nav_bid_history
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -539,12 +540,6 @@ class MainActivity : AppCompatActivity(), OnMyLanguageListener,
         Handler().postDelayed({ updateApp() }, 1000)
     }
 
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        Log.e(TAG, "In on back pressed")
-
-    }
 
     override fun selectLanguage(_listItem: LanguageBody, position: Int) {
         val newLocale = ExternalUtils.getLocaleFromAdapterIndex(position)

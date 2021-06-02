@@ -3,15 +3,15 @@ package com.example.mandiexe.ui.supply
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.*
-import android.view.View.OnTouchListener
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -19,16 +19,12 @@ import com.example.mandiexe.R
 import com.example.mandiexe.adapter.MySuppliesAdapter
 import com.example.mandiexe.adapter.OnMyStockClickListener
 import com.example.mandiexe.models.responses.supply.FarmerSuppliesResponse
-import com.example.mandiexe.utils.ApplicationUtils
-import com.example.mandiexe.utils.usables.UIUtils
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import com.example.mandiexe.utils.usables.UIUtils.hideProgress
 import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.example.mandiexe.viewmodels.MySuppliesViewmodel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.my_supplies_fragment.*
-import kotlin.math.abs
 
 
 class MySuppliesFragment : Fragment(), OnMyStockClickListener {
@@ -90,47 +86,41 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
         }
 
 
-        //For the tab
-        val tabLayout = root.findViewById<TabLayout>(R.id.tabsSupplies)
-        val tab = tabLayout.getTabAt(0)
-        tab!!.select()
-
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-                //The other tab is selected
-                root.findNavController().navigate(R.id.action_nav_supply_to_nav_bids)
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-                //Do nothing
-            }
-        })
-
-        val newSwipeListener = SwipeGestureDetector(mSwipeable)
-
-
-//        gestureDetector = GestureDetector(SwipeGestureDetector())
-//        gestureListener = OnTouchListener { v, event ->
-//            Log.e(TAG, "In gesture luistener")
-//            gestureDetector!!.onTouchEvent(event)
-//        }
+//        //For the tab
+//        val tabLayout = root.findViewById<TabLayout>(R.id.tabsSupplies)
+//        val tab = tabLayout.getTabAt(0)
+//        tab!!.select()
 //
-//        mSwipeable.setOnTouchListener(gestureListener)
-
+//        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+//            override fun onTabSelected(tab: TabLayout.Tab?) {
+//
+//            }
+//
+//            override fun onTabUnselected(tab: TabLayout.Tab?) {
+//                //The other tab is selected
+//                root.findNavController().navigate(R.id.action_nav_supply_to_nav_bids)
+//            }
+//
+//            override fun onTabReselected(tab: TabLayout.Tab?) {
+//                //Do nothing
+//            }
+//        })
+//
+//        val newSwipeListener = SwipeGestureDetector(mSwipeable)
+//
+//
+////        gestureDetector = GestureDetector(SwipeGestureDetector())
+////        gestureListener = OnTouchListener { v, event ->
+////            Log.e(TAG, "In gesture luistener")
+////            gestureDetector!!.onTouchEvent(event)
+////        }
+////
+////        mSwipeable.setOnTouchListener(gestureListener)
+//
 
         return root
     }
 
-    private fun goToMyBids() {
-        Log.e(TAG, "On on swipe left")
-        root.findNavController().navigate(R.id.action_nav_supply_to_nav_bids)
-
-
-    }
 
     private fun loadItems() {
 
@@ -248,6 +238,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
             llErrorThrowableSupply.visibility = View.VISIBLE
         }
     }
+/*
 
     private fun onSwipeLeftToMyBids() {
         Log.e(TAG, "In left swipe")
@@ -257,76 +248,78 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
     private fun onSwipeRight() {
         Log.e(TAG, "In right swipe")
     }
+*/
 
-    private class SwipeGestureDetector// Left swipe
-        () : View.OnTouchListener {
-
-        private lateinit var swipegestureDetector: GestureDetector
-
-        private val TAG = SwipeGestureDetector::class.java.simpleName
-        private val ctx = ApplicationUtils.getContext()
-        private val SWIPE_MIN_DISTANCE = 100
-        private val SWIPE_MAX_OFF_PATH = 200
-        private val SWIPE_THRESHOLD_VELOCITY = 100
-
-
-        constructor(view: View) : this() {
-
-            val listener = (object : GestureDetector.SimpleOnGestureListener() {
-                override fun onDown(e: MotionEvent?): Boolean {
-                    Log.e(TAG, "In down")
-                    return true
-                }
-
-                override fun onFling(
-                    e1: MotionEvent?,
-                    e2: MotionEvent?,
-                    velocityX: Float,
-                    velocityY: Float
-                ): Boolean {
-                    try {
-
-                        val diffAbs = abs((e1?.y!!) - e2?.y!!)
-                        val diff = (e1.x) - e2.x
-                        if (diffAbs > SWIPE_MAX_OFF_PATH) return false
-
-                        // Left swipe
-                        if (diff > SWIPE_MIN_DISTANCE
-                            && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY
-                        ) {
-
-                            Log.e("SWIPE", "In left swipe")
-                            MySuppliesFragment.newInstance().onSwipeLeftToMyBids()
-
-
-                        } else if (-diff > SWIPE_MIN_DISTANCE
-                            && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY
-                        ) {
-                            Log.e("SWIPE", "In right swipe")
-                            MySuppliesFragment.newInstance().onSwipeRight()
-
-
-                        }
-                    } catch (e: Exception) {
-                        UIUtils.logExceptions(e, "SWIPE")
-                    }
-                    return false
-                }
-            })
-
-            swipegestureDetector = GestureDetector(listener)
-            view.setOnTouchListener(this)
-
-        }
-
-
-        override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-
-            return swipegestureDetector.onTouchEvent(event)
-        }
-
-
-    }
+//
+//    private class SwipeGestureDetector// Left swipe
+//        () : View.OnTouchListener {
+//
+//        private lateinit var swipegestureDetector: GestureDetector
+//
+//        private val TAG = SwipeGestureDetector::class.java.simpleName
+//        private val ctx = ApplicationUtils.getContext()
+//        private val SWIPE_MIN_DISTANCE = 100
+//        private val SWIPE_MAX_OFF_PATH = 200
+//        private val SWIPE_THRESHOLD_VELOCITY = 100
+//
+//
+//        constructor(view: View) : this() {
+//
+//            val listener = (object : GestureDetector.SimpleOnGestureListener() {
+//                override fun onDown(e: MotionEvent?): Boolean {
+//                    Log.e(TAG, "In down")
+//                    return true
+//                }
+//
+//                override fun onFling(
+//                    e1: MotionEvent?,
+//                    e2: MotionEvent?,
+//                    velocityX: Float,
+//                    velocityY: Float
+//                ): Boolean {
+//                    try {
+//
+//                        val diffAbs = abs((e1?.y!!) - e2?.y!!)
+//                        val diff = (e1.x) - e2.x
+//                        if (diffAbs > SWIPE_MAX_OFF_PATH) return false
+//
+//                        // Left swipe
+//                        if (diff > SWIPE_MIN_DISTANCE
+//                            && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY
+//                        ) {
+//
+//                            Log.e("SWIPE", "In left swipe")
+//                            MySuppliesFragment.newInstance().onSwipeLeftToMyBids()
+//
+//
+//                        } else if (-diff > SWIPE_MIN_DISTANCE
+//                            && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY
+//                        ) {
+//                            Log.e("SWIPE", "In right swipe")
+//                            MySuppliesFragment.newInstance().onSwipeRight()
+//
+//
+//                        }
+//                    } catch (e: Exception) {
+//                        UIUtils.logExceptions(e, "SWIPE")
+//                    }
+//                    return false
+//                }
+//            })
+//
+//            swipegestureDetector = GestureDetector(listener)
+//            view.setOnTouchListener(this)
+//
+//        }
+//
+//
+//        override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+//
+//            return swipegestureDetector.onTouchEvent(event)
+//        }
+//
+//
+//    }
 
 
 }

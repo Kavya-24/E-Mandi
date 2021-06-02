@@ -36,7 +36,15 @@ class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {
     private lateinit var root: View
     private lateinit var pb: ProgressBar
 
+
     private lateinit var swl: SwipeRefreshLayout
+
+    override fun onResume() {
+        loadHistory()
+        super.onResume()
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

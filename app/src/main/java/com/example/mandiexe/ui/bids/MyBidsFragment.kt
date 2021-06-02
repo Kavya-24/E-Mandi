@@ -80,34 +80,34 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
             startActivity(i)
         }
 
-        val tabLayout = root.findViewById<TabLayout>(R.id.tabsBids)
-        val tab = tabLayout.getTabAt(1)
-        tab!!.select()
-
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                Log.e(TAG, "In Tab selected position ${tab?.position}")
-                if (tab?.position == 0) {
-                    onDestroy()
-                } else {
-                    //Do nothing
-                    onTabReselected(tab)
-                }
-
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-                //The other tab is selected
-                Log.e(TAG, "In Tab un selected")
-                onDestroy()
-
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-                //Do nothing
-                Log.e(TAG, "In re selected selected")
-            }
-        })
+//        val tabLayout = root.findViewById<TabLayout>(R.id.tabsBids)
+//        val tab = tabLayout.getTabAt(1)
+//        tab!!.select()
+//
+//        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+//            override fun onTabSelected(tab: TabLayout.Tab?) {
+//                Log.e(TAG, "In Tab selected position ${tab?.position}")
+//                if (tab?.position == 0) {
+//                    onDestroy()
+//                } else {
+//                    //Do nothing
+//                    onTabReselected(tab)
+//                }
+//
+//            }
+//
+//            override fun onTabUnselected(tab: TabLayout.Tab?) {
+//                //The other tab is selected
+//                Log.e(TAG, "In Tab un selected")
+//                onDestroy()
+//
+//            }
+//
+//            override fun onTabReselected(tab: TabLayout.Tab?) {
+//                //Do nothing
+//                Log.e(TAG, "In re selected selected")
+//            }
+//        })
 
         return root
     }

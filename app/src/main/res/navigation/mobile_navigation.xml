@@ -3,17 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_supply">
+    app:startDestination="@+id/nav_home">
 
 
     <fragment
-        android:id="@+id/nav_supply"
-        android:name="com.example.mandiexe.ui.supply.MySuppliesFragment"
+        android:id="@+id/nav_home"
+        android:name="com.example.mandiexe.ui.home.HomeFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/my_supplies_fragment">
-        <action
-            android:id="@+id/action_nav_supply_to_nav_bids"
-            app:destination="@id/nav_bids" />
+        tools:layout="@layout/fragment_home">
+
     </fragment>
 
     <fragment
@@ -28,12 +26,6 @@
         android:name="com.example.mandiexe.ui.home.FarmerBidHistory"
         android:label="@string/myBidHistory"
         tools:layout="@layout/farmer_bid_history_fragment" />
-
-    <fragment
-        android:id="@+id/nav_bids"
-        android:name="com.example.mandiexe.ui.bids.MyBidsFragment"
-        android:label="@string/app_name"
-        tools:layout="@layout/my_bids_fragment" />
 
 
 </navigation>
