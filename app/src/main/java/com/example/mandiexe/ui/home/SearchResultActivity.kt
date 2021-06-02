@@ -59,6 +59,7 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
     private lateinit var pb: ProgressBar
 
     private var englishFinalQuery = ""
+
     private lateinit var actvDays: AutoCompleteTextView
     private lateinit var actvDistance: AutoCompleteTextView
     private lateinit var mtbFilter: MaterialButton
@@ -97,6 +98,7 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
         pb = findViewById(R.id.pb_searchCrop)
 
         val aBar = findViewById<AppBarLayout>(R.id.appbarlayoutExternal)
+        setUpFilterSpinners()
 
         showProgress(pb, this)
 
@@ -131,7 +133,6 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
         /*
         For the filter layout
          */
-        setUpFilterSpinners()
         mtbFilter.setOnClickListener {
 
             //When no filter is selected
@@ -180,6 +181,7 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
     }
 
     private fun doAdvancedSearch() {
+
         val numDays = actvDays.text.toString()
         val numDistance = actvDistance.text.toString()
 

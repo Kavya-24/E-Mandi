@@ -7,6 +7,14 @@ apply plugin: 'com.google.gms.google-services'
 
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('C:\\Users\\Kavya Goyal\\Desktop\\Technical Things\\Android Projects\\Mandiexe\\app\\build\\outputs\\apk\\debug\\app-debug.apk')
+            storePassword 'emandi@skyring24'
+            keyPassword 'emandi@skyring24'
+            keyAlias = 'E-Mandi'
+        }
+    }
     compileSdkVersion 30
     buildToolsVersion "29.0.3"
 
@@ -58,11 +66,11 @@ android {
             manifestPlaceholders = [usesCleartextTraffic: "true"]
         }
         debug {
-            minifyEnabled true           //Need to add serialized name annotation if enabled true
-            shrinkResources true
+            minifyEnabled false           //Need to add serialized name annotation if enabled true
+            shrinkResources false
 
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            manifestPlaceholders = [usesCleartextTraffic: "true"]
+            manifestPlaceholders = [usesCleartextTraffic: "false"]
         }
 
     }

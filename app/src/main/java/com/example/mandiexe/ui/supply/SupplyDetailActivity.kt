@@ -94,6 +94,9 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
     private lateinit var pb: ProgressBar
     private lateinit var swl: SwipeRefreshLayout
 
+    private var crop_date_created = ""
+    private var crop_amount_created = ""
+
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -492,7 +495,8 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
             )
 
 
-
+            crop_amount_created = value.supply.askPrice.toString()
+            crop_date_created = value.supply.supplyCreated
 
             findViewById<TextView>(R.id.ans_detail_crop_quanity).text = value.supply.qty.toString()
             findViewById<TextView>(R.id.ans_detail_crop_exp).text =
@@ -575,7 +579,16 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
         } else {
 
-//            mList.add(ViewSupplyResponse.Supply.LastBid(currentBid, "", lastModified))
+            mList.add(ViewSupplyResponse.Supply.LastBid(currentBid, "", lastModified))
+            mList.add(
+                ViewSupplyResponse.Supply.LastBid(
+                    crop_amount_created.toInt(),
+                    "",
+                    crop_date_created,
+                )
+            )
+            mList.sortBy { it.timestamp }
+
 
             numberOfBid = 0
             val series: LineGraphSeries<DataPoint> =
@@ -585,8 +598,15 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
             graph.addSeries(series)
 
 
+            graph.addSeries(series)
+
+
             // graph.gridLabelRenderer.horizontalAxisTitle = resources.getString(R.string.time)
             // graph.gridLabelRenderer.verticalAxisTitle = resources.getString(R.string.price_rs)
+
+            graph.gridLabelRenderer.numHorizontalLabels = 3 // only 4 because of the space
+            graph.viewport.isXAxisBoundsManual = true
+
 
             graph.gridLabelRenderer.labelFormatter = object : DefaultLabelFormatter() {
                 override fun formatLabel(value: Double, isValueX: Boolean): String {
@@ -600,38 +620,43 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
             }
 
-            //Enable scrolling and zooming
-            graph.viewport.isScalable = true
-            graph.viewport.setScalableY(true)
-            graph.gridLabelRenderer.numHorizontalLabels = numberOfBid
+
+
+
+            graph.viewport.isScrollable = true // enables horizontal scrolling
+            graph.gridLabelRenderer.setHumanRounding(false)
+
+            graph.gridLabelRenderer.numHorizontalLabels = 3
             graph.gridLabelRenderer.labelsSpace = 20
 
 
-            Log.e(TAG, numberOfBid.toString() + "Number ")
-            graph.gridLabelRenderer.setHorizontalLabelsAngle(90)
 
-            // set manual x bounds to have nice steps
+            Log.e(TAG, numberOfBid.toString() + "Number ")
 
             if (!item.isEmpty()) {
-                Log.e(
-                    TAG,
-                    "Start X is " + TimeConversionUtils.convertDateTimestampUtil(item.get(0).timestamp)
-                        .toString()
-                )
 
-                TimeConversionUtils.convertDateTimestampUtil(item.get(0).timestamp)?.time?.toDouble()
+                //Start x will be the initial price of the item
+
+
+                TimeConversionUtils.convertDateTimestampUtil(crop_date_created)?.time?.toDouble()
                     ?.let {
                         graph.viewport.setMinX(
                             it
                         )
                     }
+
+
                 graph.viewport.isXAxisBoundsManual = true
             }
 
             graph.title = resources.getString(R.string.myBidHistory)
             graph.titleColor = Color.BLACK
 
-            graph.gridLabelRenderer.labelHorizontalHeight = 300
+            series.isDrawDataPoints = true
+            series.dataPointsRadius = 6f
+
+            //graph.gridLabelRenderer.labelHorizontalHeight = 300
+
         }
         numberOfBid = 0
     }
