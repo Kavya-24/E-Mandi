@@ -133,7 +133,7 @@
                     android:background="@color/bgGreen"
                     android:hint="@string/quantity"
                     android:inputType="numberDecimal"
-                    android:textColor="@color/grey_700" />
+                    android:textColor="@color/grey_hint_color" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
