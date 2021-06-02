@@ -668,20 +668,24 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
         for (element in item) {
 
-            numberOfBid++
+            if (element.amount > 0) {
+                numberOfBid++
 
-            arrayDataPoints.add(
-                DataPoint(
-                    TimeConversionUtils.convertDateTimestampUtil(element.timestamp),
-                    element.amount.toDouble()
+                arrayDataPoints.add(
+                    DataPoint(
+                        TimeConversionUtils.convertDateTimestampUtil(element.timestamp),
+                        element.amount.toDouble()
+                    )
                 )
-            )
 
-            Log.e(
-                TAG,
-                "In get series data point " + TimeConversionUtils.convertDateTimestampUtil(element.timestamp)
-                    .toString() + " Amount : " + element.amount.toDouble() + " Num" + numberOfBid.toString()
-            )
+                Log.e(
+                    TAG,
+                    "In get series data point " + TimeConversionUtils.convertDateTimestampUtil(
+                        element.timestamp
+                    )
+                        .toString() + " Amount : " + element.amount.toDouble() + " Num" + numberOfBid.toString()
+                )
+            }
         }
 
 

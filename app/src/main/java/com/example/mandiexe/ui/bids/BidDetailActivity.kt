@@ -94,6 +94,8 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
     private var personObject: PersonObject? = null
 
     private lateinit var swl: SwipeRefreshLayout
+    private var crop_date_created = ""
+    private var crop_amount_created = ""
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -374,6 +376,8 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
                     findViewById<TextView>(R.id.tv_requirement_detail_crop_description)
                 )
 
+                crop_amount_created = value.demand.offerPrice.toString()
+                crop_date_created = value.demand.demandCreated
 
                 //Owner Details
                 ownerPhone = value.demand.demander.phone
@@ -717,6 +721,9 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
             ownerName = transliterateToDefault(value.bid.bidder.name)
             mPrice = value.bid.currentBid.toString()
 
+            crop_amount_created = value.bid.demand.offerPrice.toString()
+            crop_date_created = value.bid.demand.demandCreated.toString()
+
             val currrentBid = value.bid.demand.currentBid
             val initialOfferPrice = value.bid.demand.offerPrice
             val myCurrentBid = value.bid.currentBid
@@ -833,6 +840,14 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
         } else {
 
+            mList.add(
+                ViewBidResponse.Bid.Demand.LastBid(
+                    crop_amount_created.toInt(),
+                    "",
+                    crop_date_created,
+                )
+            )
+            mList.sortBy { it.timestamp }
 
             numberOfBids = 0
             val series: LineGraphSeries<DataPoint> =
@@ -842,8 +857,15 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
             graph.addSeries(series)
 
 
+            graph.addSeries(series)
+
+
             // graph.gridLabelRenderer.horizontalAxisTitle = resources.getString(R.string.time)
             // graph.gridLabelRenderer.verticalAxisTitle = resources.getString(R.string.price_rs)
+
+            graph.gridLabelRenderer.numHorizontalLabels = 3 // only 4 because of the space
+            graph.viewport.isXAxisBoundsManual = true
+
 
             graph.gridLabelRenderer.labelFormatter = object : DefaultLabelFormatter() {
                 override fun formatLabel(value: Double, isValueX: Boolean): String {
@@ -857,38 +879,43 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
             }
 
-            //Enable scrolling and zooming
-            graph.viewport.isScalable = true
-            graph.viewport.setScalableY(true)
-            graph.gridLabelRenderer.numHorizontalLabels = numberOfBids
+
+
+
+            graph.viewport.isScrollable = true // enables horizontal scrolling
+            graph.gridLabelRenderer.setHumanRounding(false)
+
+            graph.gridLabelRenderer.numHorizontalLabels = 3
             graph.gridLabelRenderer.labelsSpace = 20
 
 
-            Log.e(TAG, numberOfBids.toString() + "Number ")
-            graph.gridLabelRenderer.setHorizontalLabelsAngle(90)
 
-            // set manual x bounds to have nice steps
+            Log.e(TAG, numberOfBids.toString() + "Number ")
 
             if (!value.isEmpty()) {
-                Log.e(
-                    TAG,
-                    "Start X is " + TimeConversionUtils.convertDateTimestampUtil(value.get(0).timestamp)
-                        .toString()
-                )
 
-                TimeConversionUtils.convertDateTimestampUtil(value.get(0).timestamp)?.time?.toDouble()
+                //Start x will be the initial price of the item
+
+
+                TimeConversionUtils.convertDateTimestampUtil(crop_date_created)?.time?.toDouble()
                     ?.let {
                         graph.viewport.setMinX(
                             it
                         )
                     }
+
+
                 graph.viewport.isXAxisBoundsManual = true
             }
 
             graph.title = resources.getString(R.string.myBidHistory)
             graph.titleColor = Color.BLACK
 
-            graph.gridLabelRenderer.labelHorizontalHeight = 300
+            series.isDrawDataPoints = true
+            series.dataPointsRadius = 6f
+
+            //graph.gridLabelRenderer.labelHorizontalHeight = 300
+
         }
         numberOfBids = 0
     }
@@ -900,20 +927,24 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
         for (element in item) {
 
-            numberOfBids++
+            if (element.amount > 0) {
+                numberOfBids++
 
-            arrayDataPoints.add(
-                DataPoint(
-                    TimeConversionUtils.convertDateTimestampUtil(element.timestamp),
-                    element.amount.toDouble()
+                arrayDataPoints.add(
+                    DataPoint(
+                        TimeConversionUtils.convertDateTimestampUtil(element.timestamp),
+                        element.amount.toDouble()
+                    )
                 )
-            )
 
-            Log.e(
-                TAG,
-                "In get series data point " + TimeConversionUtils.convertDateTimestampUtil(element.timestamp)
-                    .toString() + " Amount : " + element.amount.toDouble() + " Num" + numberOfBids.toString()
-            )
+                Log.e(
+                    TAG,
+                    "In get series data point " + TimeConversionUtils.convertDateTimestampUtil(
+                        element.timestamp
+                    )
+                        .toString() + " Amount : " + element.amount.toDouble() + " Num" + numberOfBids.toString()
+                )
+            }
         }
 
 
