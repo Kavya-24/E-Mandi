@@ -22,7 +22,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="LockedOrientationActivity"
-        tools:replace="android:icon">
+        tools:replace="android:icon"
+        tools:targetApi="m">
 
         <activity
             android:name=".ui.supply.AddStockPage2"
