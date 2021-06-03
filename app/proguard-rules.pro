@@ -70,5 +70,8 @@
 -keep class com.shaded.fasterxml.jackson.** { *; }
 -keepnames class com.my.package.beans.** { *; }
 
-
+-keep class com.google.android.gms.** { *; }
+-dontwarn com.google.android.gms.**
+-dontwarn com.squareup.okhttp.**
+-dontwarn org.w3c.dom.bootstrap.DOMImplementationRegistry
 
