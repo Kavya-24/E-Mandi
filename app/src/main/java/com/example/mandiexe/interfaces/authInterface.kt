@@ -1,5 +1,7 @@
 package com.example.mandiexe.interfaces
 
+
+import androidx.annotation.Keep
 import com.example.mandiexe.models.body.authBody.AccessTokenBody
 import com.example.mandiexe.models.body.authBody.LoginBody
 import com.example.mandiexe.models.body.authBody.SignUpBody
@@ -11,6 +13,7 @@ import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
+@Keep
 interface authInterface {
 
 

@@ -1,5 +1,6 @@
 package com.example.mandiexe.interfaces
 
+import androidx.annotation.Keep
 import com.example.mandiexe.models.body.AdvancedSearchBody
 import com.example.mandiexe.models.body.supply.*
 import com.example.mandiexe.models.responses.AdvancedSearchResponse
@@ -9,6 +10,7 @@ import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
+@Keep
 interface mySupplyInterface {
 
     //Get the active stocks
@@ -84,8 +86,6 @@ interface mySupplyInterface {
     fun getFarmerGrowthAdd(
         @Body body: AddGrowthBody
     ): Call<AddGrowthResponse>
-
-
 
 
 }

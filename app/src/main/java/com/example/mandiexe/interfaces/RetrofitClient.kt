@@ -4,6 +4,7 @@ package com.example.mandiexe.interfaces
 
 import android.content.Context
 import android.util.Log
+import androidx.annotation.Keep
 import com.example.mandiexe.utils.auth.AuthInterceptor
 import com.example.mandiexe.utils.auth.TokenAuthenticator
 import okhttp3.OkHttpClient
@@ -11,6 +12,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
+@Keep
 object RetrofitClient {
 
     private val url = "https://e-mandi-app.herokuapp.com/"

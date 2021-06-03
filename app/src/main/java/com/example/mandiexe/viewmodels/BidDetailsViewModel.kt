@@ -1,6 +1,7 @@
 package com.example.mandiexe.viewmodels
 
 import android.util.Log
+import androidx.annotation.Keep
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mandiexe.R
@@ -17,6 +18,8 @@ import com.example.mandiexe.utils.usables.ExternalUtils
 import com.example.mandiexe.utils.usables.UIUtils
 import retrofit2.Call
 import retrofit2.Response
+
+@Keep
 
 class BidDetailsViewModel : ViewModel() {
 
@@ -62,6 +65,7 @@ class BidDetailsViewModel : ViewModel() {
         mBid = bidFunction(body)
         return mBid
     }
+
     private fun bidFunction(body: ViewBidBody): MutableLiveData<ViewBidResponse> {
 
         myBidService.getFarmerViewParticularBid(
@@ -118,6 +122,7 @@ class BidDetailsViewModel : ViewModel() {
         deleteBid = deleteBidFunction(body)
         return deleteBid
     }
+
     private fun deleteBidFunction(body: DeletBidBody): MutableLiveData<DeleteBidResponse> {
 
         myBidService.getFarmerDeleteBid(

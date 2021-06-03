@@ -2,6 +2,7 @@ package com.example.mandiexe.viewmodels
 
 import android.app.ProgressDialog
 import android.util.Log
+import androidx.annotation.Keep
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,6 +16,7 @@ import com.example.mandiexe.utils.usables.UIUtils
 import retrofit2.Call
 import retrofit2.Response
 
+@Keep
 class MapViewmodel : ViewModel() {
 
     val TAG = MapViewmodel::class.java.simpleName

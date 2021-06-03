@@ -1,6 +1,7 @@
 package com.example.mandiexe.viewmodels
 
 import android.util.Log
+import androidx.annotation.Keep
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mandiexe.R
@@ -17,6 +18,7 @@ import com.example.mandiexe.utils.usables.ExternalUtils
 import retrofit2.Call
 import retrofit2.Response
 
+@Keep
 class SupplyDetailViewModel : ViewModel() {
 
     val TAG = SupplyDetailViewModel::class.java.simpleName

@@ -1,13 +1,19 @@
 package com.example.mandiexe.interfaces
 
+import androidx.annotation.Keep
 import com.example.mandiexe.models.body.NewDemandSearchBody
-import com.example.mandiexe.models.body.bid.*
-import com.example.mandiexe.models.responses.demand.NewDemandsResponse
+import com.example.mandiexe.models.body.bid.AddBidBody
+import com.example.mandiexe.models.body.bid.DeletBidBody
+import com.example.mandiexe.models.body.bid.UpdateBidBody
+import com.example.mandiexe.models.body.bid.ViewBidBody
 import com.example.mandiexe.models.responses.bids.*
+import com.example.mandiexe.models.responses.demand.NewDemandsResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
+
+@Keep
 
 interface myBidsInterface {
 
@@ -22,7 +28,7 @@ interface myBidsInterface {
     @Headers("Content-Type:application/json")
     @POST("api/farmer/bids")
     fun getFarmerDemands(
-        
+
     ): Call<FamerBidsResponse>
 
 
@@ -31,7 +37,7 @@ interface myBidsInterface {
     @POST("api/farmer/bid/view")
     fun getFarmerViewParticularBid(
         @Body mViewBidBody: ViewBidBody
-        
+
     ): Call<ViewBidResponse>
 
 
@@ -40,7 +46,7 @@ interface myBidsInterface {
     @POST("api/farmer/bid/update")
     fun getFarmerUpdateBid(
         @Body mUpdateBidBody: UpdateBidBody
-        
+
     ): Call<UpdateBidResponse>
 
 
@@ -49,7 +55,7 @@ interface myBidsInterface {
     @POST("api/farmer/bid/delete")
     fun getFarmerDeleteBid(
         @Body mDeleteBidBody: DeletBidBody
-        
+
     ): Call<DeleteBidResponse>
 
 
@@ -58,7 +64,7 @@ interface myBidsInterface {
     @POST("api/farmer/bid/add")
     fun getFarmerAddBid(
         @Body mAddBidBody: AddBidBody
-        
+
     ): Call<AddBidResponse>
 
 
@@ -68,10 +74,6 @@ interface myBidsInterface {
     fun getSearchReq(
         @Body body: NewDemandSearchBody
     ): Call<NewDemandsResponse>
-
-
-
-
 
 
 }
