@@ -1,13 +1,15 @@
 package com.example.mandiexe.utils.auth
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.content.SharedPreferences
-import com.example.mandiexe.utils.ApplicationUtils
-
 /**
  * Shared Pref for key and value
  */
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.SharedPreferences
+import androidx.annotation.Keep
+import com.example.mandiexe.utils.ApplicationUtils
+
+@Keep
 class PreferenceManager {
 
 

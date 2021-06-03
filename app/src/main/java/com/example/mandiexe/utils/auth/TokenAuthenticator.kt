@@ -3,6 +3,7 @@ package com.example.mandiexe.utils.auth
 
 import android.content.Context
 import android.util.Log
+import androidx.annotation.Keep
 import com.example.mandiexe.interfaces.RetrofitClient
 import com.example.mandiexe.models.body.authBody.AccessTokenBody
 import okhttp3.Authenticator
@@ -11,6 +12,7 @@ import okhttp3.Response
 import okhttp3.Route
 import java.io.IOException
 
+@Keep
 class TokenAuthenticator(context: Context) : Authenticator {
 
 

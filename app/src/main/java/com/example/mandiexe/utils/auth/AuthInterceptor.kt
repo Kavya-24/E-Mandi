@@ -1,17 +1,18 @@
 package com.example.mandiexe.utils.auth
 
+/**
+ * Interceptor to add auth token to requests access tokens
+ */
 import android.content.Context
 import android.util.Log
+import androidx.annotation.Keep
 import com.example.mandiexe.interfaces.RetrofitClient
 import com.example.mandiexe.models.body.authBody.AccessTokenBody
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
 
-/**
- * Interceptor to add auth token to requests access tokens
- */
-
+@Keep
 class AuthInterceptor(context: Context) : Interceptor {
 
     private val sessionManager =
