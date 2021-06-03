@@ -75,3 +75,5 @@
 -dontwarn com.squareup.okhttp.**
 -dontwarn org.w3c.dom.bootstrap.DOMImplementationRegistry
 
+
+-keepclasseswithmembernames class * { native <methods>; }
