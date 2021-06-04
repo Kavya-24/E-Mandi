@@ -78,7 +78,7 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
     private var from = ""
     private var isOpen = false
 
-    private var sdf = SimpleDateFormat("dd-MM-yy HH:mm")
+    private var sdf = SimpleDateFormat("dd-MM-yy")
 
     private var ownerPhone = ""
     private var ownerName = ""

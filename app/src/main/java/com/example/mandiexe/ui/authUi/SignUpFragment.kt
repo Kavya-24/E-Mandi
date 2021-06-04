@@ -7,18 +7,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.EditText
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.viewModels
 import com.example.mandiexe.R
 import com.example.mandiexe.ui.home.MapActivity
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.usables.OfflineTranslate
 import com.example.mandiexe.utils.usables.ValidationObject
+import com.example.mandiexe.viewmodels.MapViewmodel
+import com.example.mandiexe.viewmodels.OTViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
 import java.util.*
@@ -44,6 +44,8 @@ class SignUpFragment : Fragment() {
     private lateinit var etAreaUnit: AutoCompleteTextView
 
     private val RC_MAP_SIGNUP = 111
+    private val permissionRequestCode = 1234
+
 
     //A special code to tell it that this is from SignUp and it need to create dialog
     private val mapFromSignUp = "10"
@@ -51,6 +53,13 @@ class SignUpFragment : Fragment() {
 
     private var TOKEN = ""
     private var PHONE = ""
+
+    private lateinit var pb_sign_main: ProgressBar
+    private lateinit var pb_sign_add: ProgressBar
+    private lateinit var tvAddress: TextView
+
+    private val viewModelSignup: MapViewmodel by viewModels()
+    private val viewModelLogin: OTViewModel by viewModels()
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreateView(
@@ -70,6 +79,11 @@ class SignUpFragment : Fragment() {
         etArea = root.findViewById(R.id.etArea)
         etAreaUnit = root.findViewById(R.id.actv_area_unit)
 
+        pb_sign_add = root.findViewById(R.id.pb_sig_address)
+        pb_sign_main = root.findViewById(R.id.pb_sig_up_main)
+        tvAddress = root.findViewById(R.id.tv_address_fetched)
+
+
         if (arguments != null) {
             TOKEN = requireArguments().getString("TOKEN").toString()
             PHONE = requireArguments().getString("PHONE").toString()
@@ -77,6 +91,7 @@ class SignUpFragment : Fragment() {
 
         //Populate units
         populateAreaUnit()
+        getAutocorrectLocation()
 
 
         root.findViewById<MaterialButton>(R.id.mtb_sign_up).setOnClickListener {
@@ -92,6 +107,10 @@ class SignUpFragment : Fragment() {
 
 
         return root
+    }
+
+    private fun getAutocorrectLocation() {
+
     }
 
     private fun populateAreaUnit() {

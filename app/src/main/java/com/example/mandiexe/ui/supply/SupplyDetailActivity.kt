@@ -72,7 +72,7 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
     private var mPrice = ""
     private var mCrop = ""
-    private var sdf = SimpleDateFormat("dd-MM-yy HH:mm")
+    private var sdf = SimpleDateFormat("dd-MM-yy")
     private var numberOfBid = 0
     private var isOpen = false
 
