@@ -11,24 +11,19 @@ import com.example.mandiexe.utils.usables.UIUtils
 
 class LocationHelper(context: Context) {
 
-    lateinit var locationManager: LocationManager
-    private lateinit var locationGPS: Location
-    private lateinit var locationNetwork: Location
 
-    var latGPS: Double = 0.0
-    var longGPS: Double = 0.0
-    var latNetwork: Double = 0.0
-    var longNetwork: Double = 0.0
+    private var locationManager: LocationManager =
+        context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    private var locationGPS: Location? = null
+    private var locationNetwork: Location? = null
 
 
     @SuppressLint("MissingPermission")
     //Returns a location object to be used
-    fun getLocation(context: Context): Location {
+    fun getLocation(context: Context): Location? {
 
         try {
 
-
-            locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0F, object :
                 LocationListener {
@@ -97,19 +92,24 @@ class LocationHelper(context: Context) {
                 "LocationHelper",
                 "LocationHelper and locations are $locationNetwork and $locationGPS"
             )
-            if (locationGPS.accuracy >= locationNetwork.accuracy) {
+            if (locationGPS != null && locationNetwork == null) {
                 return locationGPS
-            } else {
+            } else if (locationGPS == null && locationNetwork != null) {
                 return locationNetwork
+            } else if (locationNetwork != null && locationGPS != null) {
+                if (locationGPS!!.accuracy >= locationNetwork!!.accuracy) {
+                    return locationGPS
+                } else {
+                    return locationNetwork
+                }
             }
 
         } catch (e: Exception) {
-            UIUtils.logExceptions(e, "LocationHelper")
+            UIUtils.logExceptions(e, "Location Helper")
         }
 
         return locationNetwork
 
     }
-
 
 }

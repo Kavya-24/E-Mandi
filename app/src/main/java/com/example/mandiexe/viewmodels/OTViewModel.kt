@@ -1,7 +1,9 @@
 package com.example.mandiexe.viewmodels
 
 import android.util.Log
+import android.widget.ProgressBar
 import androidx.annotation.Keep
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mandiexe.R
@@ -29,7 +31,11 @@ class OTViewModel : ViewModel() {
 
     var mLogin: MutableLiveData<LoginResponse> = MutableLiveData()
 
-    fun lgnFunction(body: LoginBody): MutableLiveData<LoginResponse> {
+    fun lgnFunction(
+        body: LoginBody,
+        pb: ProgressBar,
+        mSnackbarView: ConstraintLayout
+    ): MutableLiveData<LoginResponse> {
 
         Log.e(TAG, "In lgn function")
         mLogin = mLoginFunction(body)

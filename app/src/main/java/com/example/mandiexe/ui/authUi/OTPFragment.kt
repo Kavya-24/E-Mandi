@@ -15,6 +15,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -120,6 +121,7 @@ class OTPFragment : Fragment() {
 
             }
         }
+
 
         getOTP()
 
@@ -416,19 +418,29 @@ class OTPFragment : Fragment() {
 
     private fun makeCall(body: LoginBody, str: String) {
 
-        viewModel.lgnFunction(body).observe(viewLifecycleOwner, Observer { mResponse ->
-            val success = viewModel.successful.value
-            if (success != null) {
-                if (success) {
-                    //Either login or new reg
-                    checkResponse(mResponse, str)
+
+        val mSnackbarView = root.findViewById<ConstraintLayout>(R.id.container_frag_otp)
+        viewModel.lgnFunction(body, pb, mSnackbarView)
+            .observe(viewLifecycleOwner, Observer { mResponse ->
+                val success = viewModel.successful.value
+                if (success != null) {
+                    hideProgress(pb, requireContext())
+                    if (success) {
+                        //Either login or new reg
+                        checkResponse(mResponse, str)
+                    } else {
+                        //Create a snackbar
+                        Log.e(TAG, "In failed login")
+                        createSnackbar(
+                            viewModel.message.value,
+                            requireContext(),
+                            container_frag_otp
+                        )
+                    }
                 } else {
-                    //Create a snackbar
-                    Log.e(TAG, "In failed login")
-                    createSnackbar(viewModel.message.value, requireContext(), container_frag_otp)
+                    showProgress(pb, requireContext())
                 }
-            }
-        })
+            })
     }
 
     private fun checkResponse(mResponse: LoginResponse, str: String) {
@@ -436,6 +448,7 @@ class OTPFragment : Fragment() {
         Log.e(TAG, "In check response and message is " + mResponse.msg + mResponse.user)
         Log.e(TAG, "Firebase Token " + str)
 
+        showProgress(pb, requireContext())
         if (mResponse.msg == "Phone Number not registered.") {
 
             val bundle = bundleOf(
@@ -457,6 +470,7 @@ class OTPFragment : Fragment() {
             successLogin(mResponse)
         }
 
+        hideProgress(pb, requireContext())
 
     }
 
@@ -500,7 +514,6 @@ class OTPFragment : Fragment() {
         timer.cancel()
         viewModel.successful.removeObservers(this)
         viewModel.successful.value = null
-
     }
 
 

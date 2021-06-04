@@ -53,6 +53,7 @@ class MapActivity : AppCompatActivity() {
         fun newInstance() = MapActivity()
     }
 
+
     private var supportMapFragment = SupportMapFragment()
     private lateinit var client: FusedLocationProviderClient
     private val permissionRequestCode = 1234
@@ -74,7 +75,6 @@ class MapActivity : AppCompatActivity() {
     private var fromSignUp = false
 
     private lateinit var d: androidx.appcompat.app.AlertDialog.Builder
-    private lateinit var tempRef: androidx.appcompat.app.AlertDialog
 
     private val viewModel: MapViewmodel by viewModels()
     private val viewmodelLogin: OTViewModel by viewModels()
@@ -325,24 +325,24 @@ class MapActivity : AppCompatActivity() {
         Log.e(TAG, "Firebase Token " + token)
 
 
-        viewmodelLogin.lgnFunction(body).observe(this, Observer { mResponse ->
-
-
-            val success = viewmodelLogin.successful.value
-            if (success != null) {
-                if (success == false) {
-                    createSnackbar(viewmodelLogin.message.value, this, container_map)
-                } else {
-
-
-                    manageLoginResponse(viewmodelLogin.mLogin.value, token)
-                }
-            } else {
-                createSnackbar(resources.getString(R.string.failedLogin), this, container_map)
-            }
-
-        })
-
+//        viewmodelLogin.lgnFunction(body, pb, mSnackbarView).observe(this, Observer { mResponse ->
+//
+//
+//            val success = viewmodelLogin.successful.value
+//            if (success != null) {
+//                if (success == false) {
+//                    createSnackbar(viewmodelLogin.message.value, this, container_map)
+//                } else {
+//
+//
+//                    manageLoginResponse(viewmodelLogin.mLogin.value, token)
+//                }
+//            } else {
+//                createSnackbar(resources.getString(R.string.failedLogin), this, container_map)
+//            }
+//
+//        })
+//
 
     }
 
@@ -484,8 +484,10 @@ class MapActivity : AppCompatActivity() {
 
 
                     //Set Up the marker
-                    val marker = MarkerOptions().position(myCurrentLatLong)
-                        .title(resources.getString(R.string.you_are_here))
+                    val marker = myCurrentLatLong?.let {
+                        MarkerOptions().position(it)
+                            .title(resources.getString(R.string.you_are_here))
+                    }
 
                     val zoomLevel = 16.0f //This goes up to 21
                     gMap?.moveCamera(
@@ -505,8 +507,10 @@ class MapActivity : AppCompatActivity() {
                         //Create a new marker
 
                         gMap.clear()
-                        val newmarker = MarkerOptions().position(myCurrentLatLong)
-                            .title(resources.getString(R.string.you_are_here))
+                        val newmarker = myCurrentLatLong?.let {
+                            MarkerOptions().position(it)
+                                .title(resources.getString(R.string.you_are_here))
+                        }
 
                         gMap.moveCamera(
                             CameraUpdateFactory.newLatLngZoom(
@@ -538,12 +542,15 @@ class MapActivity : AppCompatActivity() {
 
     }
 
-    private fun getMarkerForCurrentPosition(): LatLng {
+    private fun getMarkerForCurrentPosition(): LatLng? {
 
         val myCurrentLocation = LocationHelper(this).getLocation(this)
-        val myCurrentLatLong = LatLng(myCurrentLocation.latitude, myCurrentLocation.longitude)
-        fetchedLocation = getAddress(myCurrentLatLong)
-        getEnglishAddress(myCurrentLatLong)
+        val myCurrentLatLong =
+            myCurrentLocation?.longitude?.let { LatLng(myCurrentLocation.latitude, it) }
+        fetchedLocation = myCurrentLatLong?.let { getAddress(it) }.toString()
+        if (myCurrentLatLong != null) {
+            getEnglishAddress(myCurrentLatLong)
+        }
         Log.e(TAG, "The current location is given by $fetchedLocation")
 
         return myCurrentLatLong
@@ -553,13 +560,20 @@ class MapActivity : AppCompatActivity() {
     private fun getMyExactLocationWhileError(): Address {
 
         val myCurrentLocation = LocationHelper(this).getLocation(this)
-        val myCurrentLatLog = LatLng(myCurrentLocation.latitude, myCurrentLocation.longitude)
+        val myCurrentLatLog =
+            myCurrentLocation?.latitude?.let { LatLng(it, myCurrentLocation.longitude) }
         val locale = Locale("en")
         var myCurrentAddress = Address(Locale("en"))
         val geocoder = Geocoder(this, locale)
         try {
             val addresses: List<Address> =
-                geocoder.getFromLocation(myCurrentLatLog.latitude, myCurrentLatLog.longitude, 1)
+                myCurrentLatLog?.latitude?.let {
+                    geocoder.getFromLocation(
+                        it,
+                        myCurrentLatLog.longitude,
+                        1
+                    )
+                } as List<Address>
             val mAddress = addresses.get(0).getAddressLine(0)
             Log.e(TAG, mAddress.toString())
             myCurrentAddress = addresses.get(0)
