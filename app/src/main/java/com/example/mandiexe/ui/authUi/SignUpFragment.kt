@@ -43,7 +43,10 @@ import com.example.mandiexe.viewmodels.MapViewmodel
 import com.example.mandiexe.viewmodels.OTViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.*
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.tasks.Task
@@ -55,7 +58,7 @@ import kotlinx.android.synthetic.main.sign_up_fragment.*
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class SignUpFragment : Fragment(), OnMapReadyCallback {
+class SignUpFragment : Fragment() {
 
     companion object {
         fun newInstance() = SignUpFragment()
@@ -130,9 +133,16 @@ class SignUpFragment : Fragment(), OnMapReadyCallback {
         pb_sign_main = root.findViewById(R.id.pb_sig_up_main)
         tvAddress = root.findViewById(R.id.tv_address_fetched)
 
-        mapView = root.findViewById(R.id.map_view)
-        mapView.getMapAsync(this)
+        Log.e(TAG, " In befire")
 
+//        mapView = root.findViewById(R.id.map_view)
+//        mapView.getMapAsync { p0 ->
+//            Log.e(TAG, "In on map main ready")
+//            MapReady(p0)
+//        }
+
+
+        Log.e(TAG, "In afert")
 
 
 
@@ -146,7 +156,6 @@ class SignUpFragment : Fragment(), OnMapReadyCallback {
 
         //Populate units
         populateAreaUnit()
-        getAutocorrectLocation()
 
 
         root.findViewById<MaterialButton>(R.id.mtb_sign_up).setOnClickListener {
@@ -510,10 +519,6 @@ class SignUpFragment : Fragment(), OnMapReadyCallback {
         hideProgress(pb_sign_add, requireContext())
     }
 
-    private fun initiateMap(currentLatLng: LatLng?) {
-
-
-    }
 
     private fun errorInCreatingMaps(currentLatLng: LatLng?) {
 
@@ -625,22 +630,6 @@ class SignUpFragment : Fragment(), OnMapReadyCallback {
     }
 
 
-    override fun onResume() {
-        mapView.onResume()
-        super.onResume()
-    }
-
-    override fun onStop() {
-        mapView.onStop()
-        super.onStop()
-    }
-
-
-    override fun onPause() {
-        mapView.onPause()
-        super.onPause()
-    }
-
     override fun onLowMemory() {
         super.onLowMemory()
         mapView.onLowMemory()
@@ -655,14 +644,13 @@ class SignUpFragment : Fragment(), OnMapReadyCallback {
         viewModelLogin.message.value = null
 
         //Destroy map
-        mapView.onDestroy()
         super.onDestroy()
 
     }
 
-    override fun onMapReady(gMap: GoogleMap?) {
+    private fun MapReady(gMap: GoogleMap?) {
         val task: Task<Location> = client.lastLocation
-        val zoomLevel = 16.0f //This goes up to 21
+        val zoomLevel = 20.0f //This goes up to 21
         mapView.visibility = View.VISIBLE
 
         Log.e(TAG, "In map ready")
@@ -672,6 +660,7 @@ class SignUpFragment : Fragment(), OnMapReadyCallback {
             //Get the current location
             //This inflates the fetchedLocation and fetchedEnglishAddress and currentLatLng
             checkSelfPermsissions()
+            Log.e(TAG, "After permissions")
 
             task.addOnSuccessListener { mLocation ->
 
@@ -798,5 +787,27 @@ class SignUpFragment : Fragment(), OnMapReadyCallback {
             Log.e(TAG, "GMap is null in on map ready")
             errorInCreatingMaps(currentLatLng)
         }
+
+
+        task.addOnFailureListener { mFailure ->
+            Log.e(TAG, "Failure")
+            UIUtils.logExceptions(mFailure, TAG)
+
+        }
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.e(TAG, "In view created")
+
+        mapView = view.findViewById(R.id.map_view)
+        mapView.onCreate(savedInstanceState)
+        mapView.onResume()
+        mapView.getMapAsync { p0 ->
+            Log.e(TAG, "In on map main ready")
+            MapReady(p0)
+        }
+
     }
 }

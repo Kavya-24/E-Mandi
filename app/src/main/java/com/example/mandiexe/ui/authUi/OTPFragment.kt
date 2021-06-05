@@ -148,7 +148,7 @@ class OTPFragment : Fragment() {
 
 
                 showProgress(pb, requireContext())
-                if (ValidationObject.validateOTP(mOtp)) {
+                if (ValidationObject.validateOTP(otpTextView.otp ?: "")) {
                     verifyPhoneNumberWithCode(storedVerificationId, mOtp)
                 } else {
                     //Invalid OTP
@@ -157,6 +157,7 @@ class OTPFragment : Fragment() {
                         requireContext(),
                         container_frag_otp
                     )
+                    hideProgress(pb, requireContext())
                 }
             } else {
                 //When the verifucation is progress
@@ -263,7 +264,7 @@ class OTPFragment : Fragment() {
                     )
 
                 }
-
+                hideProgress(pb, requireContext())
                 // Show a message and update the UI
                 // ...
             }
