@@ -158,7 +158,6 @@ class OTPFragment : Fragment() {
                         container_frag_otp
                     )
                 }
-                hideProgress(pb, requireContext())
             } else {
                 //When the verifucation is progress
                 Log.e(TAG, "Button clicked when not yet verified")
@@ -470,7 +469,6 @@ class OTPFragment : Fragment() {
             successLogin(mResponse)
         }
 
-        hideProgress(pb, requireContext())
 
     }
 
@@ -516,5 +514,12 @@ class OTPFragment : Fragment() {
         viewModel.successful.value = null
     }
 
+    override fun onResume() {
+        if (!verificationInProgress) {
+            //Remove progress bars
+            hideProgress(pb, requireContext())
+        }
+        super.onResume()
+    }
 
 }

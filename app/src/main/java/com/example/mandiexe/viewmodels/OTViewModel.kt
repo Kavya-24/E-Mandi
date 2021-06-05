@@ -1,6 +1,7 @@
 package com.example.mandiexe.viewmodels
 
 import android.util.Log
+import android.view.View
 import android.widget.ProgressBar
 import androidx.annotation.Keep
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -13,6 +14,7 @@ import com.example.mandiexe.models.responses.auth.LoginResponse
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.usables.ExternalUtils
 import com.example.mandiexe.utils.usables.UIUtils
+import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import retrofit2.Call
 import retrofit2.Response
 
@@ -38,12 +40,16 @@ class OTViewModel : ViewModel() {
     ): MutableLiveData<LoginResponse> {
 
         Log.e(TAG, "In lgn function")
-        mLogin = mLoginFunction(body)
+        mLogin = mLoginFunction(body, pb, mSnackbarView)
         return mLogin
     }
 
 
-    private fun mLoginFunction(body: LoginBody): MutableLiveData<LoginResponse> {
+    private fun mLoginFunction(
+        body: LoginBody,
+        pb: ProgressBar,
+        mSnackbarView: ConstraintLayout
+    ): MutableLiveData<LoginResponse> {
 
         Log.e(TAG, body.toString())
 
@@ -58,9 +64,10 @@ class OTViewModel : ViewModel() {
                     successful.value = false
                     message.value = ExternalUtils.returnStateMessageForThrowable(t)
                     //Response is null
-                    UIUtils.logThrowables(t,TAG)
+                    UIUtils.logThrowables(t, TAG)
                     mLogin.value = null
-
+                    pb.visibility = View.GONE
+                    createSnackbar(message.value, context, mSnackbarView)
                 }
 
                 override fun onResponse(

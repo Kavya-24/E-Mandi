@@ -106,6 +106,7 @@ class SignUpFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var mapView: MapView
     private lateinit var googleMap: GoogleMap
+    private var currentLatLng: LatLng? = null
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreateView(
@@ -477,176 +478,39 @@ class SignUpFragment : Fragment(), OnMapReadyCallback {
 
         showProgress(pb_sign_add, requireContext())
         val myCurrentLocation = context?.let { LocationHelper(it).getLocation(requireContext()) }
+        currentLatLng = myCurrentLocation?.latitude?.let { LatLng(it, myCurrentLocation.longitude) }
 
-        if (myCurrentLocation != null) {
+        if (currentLatLng != null) {
 
-
-            val currentLatLng = LatLng(myCurrentLocation.latitude, myCurrentLocation.longitude)
 
             //Get the default address and set in the editable text box
 
             val myAddressInLocale = ExternalUtils.getAddress(
                 requireContext(),
                 pref.getLanguageFromPreference() ?: "en",
-                currentLatLng,
+                currentLatLng!!,
             )
 
 
             fetchedLocation = myAddressInLocale.getAddressLine(0)
             fetchedEnglishAddress =
-                ExternalUtils.getAddress(requireContext(), "en", currentLatLng)
+                ExternalUtils.getAddress(requireContext(), "en", currentLatLng!!)
 
             tvAddress.text = myAddressInLocale.getAddressLine(0)
             //etAddress.setText(myAddressInLocale.getAddressLine(0), TextView.BufferType.EDITABLE)
 
             //Use current latlong in the map
-            initiateMap(currentLatLng)
 
         } else {
-            //We will have to use the Google Map GMS Location
-            //Nothing will be set
-            initiateMap(myCurrentLocation)
+            Log.e(TAG, "Null location from fused location provider")
         }
+
+
 
         hideProgress(pb_sign_add, requireContext())
     }
 
     private fun initiateMap(currentLatLng: LatLng?) {
-
-        val task: Task<Location> = client.lastLocation
-        val zoomLevel = 16.0f //This goes up to 21
-        root.findViewById<MapView>(R.id.map_view).visibility = View.VISIBLE
-
-        task.addOnSuccessListener { mLocation ->
-
-            if (mLocation != null) {
-
-
-                supportMapFragment.getMapAsync(object : OnMapReadyCallback {
-
-                    override fun onMapReady(gMap: GoogleMap?) {
-                        //Initialize a latitude and longitude
-
-                        if (gMap != null) {
-                            //use current locatrion attributes
-
-                            showProgress(pb_sign_add, requireContext())
-                            if (currentLatLng != null) {
-                                val marker = currentLatLng.let {
-                                    MarkerOptions().position(it)
-                                        .title(resources.getString(R.string.you_are_here))
-                                }
-
-                                gMap.moveCamera(
-                                    CameraUpdateFactory.newLatLngZoom(
-                                        currentLatLng,
-                                        zoomLevel
-                                    )
-                                )
-                                gMap.addMarker(marker)
-
-                                fetchedLocation = getAddress(
-                                    requireContext(),
-                                    pref.getLanguageFromPreference() ?: "en",
-                                    currentLatLng
-                                ).getAddressLine(0)
-                                fetchedEnglishAddress =
-                                    ExternalUtils.getAddress(requireContext(), "en", currentLatLng)
-                                createSnackbar(fetchedLocation, requireContext(), container_sign_up)
-
-                            }
-
-                            //Use mLocation attributes
-                            else {
-                                //Use mLocation
-                                val latitudeLongitude =
-                                    LatLng(mLocation.latitude, mLocation.longitude)
-                                val marker = MarkerOptions().position(latitudeLongitude)
-                                    .title(resources.getString(R.string.you_are_here))
-
-                                //Marker has changed
-                                gMap.moveCamera(
-                                    CameraUpdateFactory.newLatLngZoom(
-                                        currentLatLng,
-                                        zoomLevel
-                                    )
-                                )
-                                gMap.addMarker(marker)
-
-                                fetchedLocation = getAddress(
-                                    requireContext(),
-                                    pref.getLanguageFromPreference() ?: "en",
-                                    latitudeLongitude
-                                ).getAddressLine(0)
-                                fetchedEnglishAddress =
-                                    ExternalUtils.getAddress(
-                                        requireContext(),
-                                        "en",
-                                        latitudeLongitude
-                                    )
-
-                                createSnackbar(fetchedLocation, requireContext(), container_sign_up)
-                                tvAddress.text = getAddress(
-                                    requireContext(),
-                                    pref.getLanguageFromPreference() ?: "en",
-                                    latitudeLongitude
-                                ).getAddressLine(0)
-
-                            }
-
-                            hideProgress(pb_sign_add, requireContext())
-
-                            gMap.setOnMapClickListener { newLatLong ->
-                                //Create a new marker
-
-                                showProgress(pb_sign_add, requireContext())
-                                gMap.clear()
-                                val newMarker = MarkerOptions()
-                                newMarker.position(newLatLong)
-                                newMarker.title(newLatLong.latitude.toString() + "," + newLatLong.longitude)
-                                //Remove other markers
-                                //Animation and zoom
-                                gMap.moveCamera(
-                                    CameraUpdateFactory.newLatLngZoom(
-                                        currentLatLng,
-                                        zoomLevel
-                                    )
-                                )
-                                gMap.addMarker(newMarker)
-
-                                //Update the location
-                                fetchedLocation = getAddress(
-                                    requireContext(),
-                                    pref.getLanguageFromPreference() ?: "en",
-                                    newLatLong
-                                ).getAddressLine(0)
-
-                                fetchedEnglishAddress =
-                                    ExternalUtils.getAddress(requireContext(), "en", newLatLong)
-
-                                createSnackbar(fetchedLocation, requireContext(), container_sign_up)
-                                tvAddress.text = getAddress(
-                                    requireContext(),
-                                    pref.getLanguageFromPreference() ?: "en",
-                                    newLatLong
-                                ).getAddressLine(0)
-                                hideProgress(pb_sign_add, requireContext())
-                            }
-
-                        } else {
-                            //gMap is null
-                            Log.e(TAG, "GMap is null")
-                            errorInCreatingMaps(currentLatLng)
-
-                        }
-                    }
-
-                })
-            } else {
-                Log.e(TAG, "mLocation is null")
-                errorInCreatingMaps(currentLatLng)
-            }
-        }
 
 
     }
@@ -771,10 +635,6 @@ class SignUpFragment : Fragment(), OnMapReadyCallback {
         super.onStop()
     }
 
-    override fun onStart() {
-        mapView.onStart()
-        super.onStart()
-    }
 
     override fun onPause() {
         mapView.onPause()
@@ -800,7 +660,143 @@ class SignUpFragment : Fragment(), OnMapReadyCallback {
 
     }
 
-    override fun onMapReady(p0: GoogleMap?) {
+    override fun onMapReady(gMap: GoogleMap?) {
+        val task: Task<Location> = client.lastLocation
+        val zoomLevel = 16.0f //This goes up to 21
+        mapView.visibility = View.VISIBLE
 
+        Log.e(TAG, "In map ready")
+        if (gMap != null) {
+            Log.e(TAG, "gmap not null")
+
+            //Get the current location
+            //This inflates the fetchedLocation and fetchedEnglishAddress and currentLatLng
+            checkSelfPermsissions()
+
+            task.addOnSuccessListener { mLocation ->
+
+                if (mLocation != null) {
+
+
+                    //Initialize a latitude and longitude
+
+                    //use current locatrion attributes
+
+                    showProgress(pb_sign_add, requireContext())
+//                    if (currentLatLng != null) {
+//                        val marker = currentLatLng.let {
+//                            if (it != null) {
+//                                MarkerOptions().position(it)
+//                                    .title(resources.getString(R.string.you_are_here))
+//                            }
+//                        }
+//
+//                        gMap.moveCamera(
+//                            CameraUpdateFactory.newLatLngZoom(
+//                                currentLatLng,
+//                                zoomLevel
+//                            )
+//                        )
+//                        gMap.addMarker(marker)
+//
+//                        fetchedLocation = getAddress(
+//                            requireContext(),
+//                            pref.getLanguageFromPreference() ?: "en",
+//                            currentLatLng
+//                        ).getAddressLine(0)
+//                        fetchedEnglishAddress =
+//                            ExternalUtils.getAddress(requireContext(), "en", currentLatLng)
+//                        createSnackbar(fetchedLocation, requireContext(), container_sign_up)
+//
+//                    }
+
+                    //Use mLocation attributes
+
+                    //Use mLocation
+                    val latitudeLongitude =
+                        LatLng(mLocation.latitude, mLocation.longitude)
+                    val marker = MarkerOptions().position(latitudeLongitude)
+                        .title(resources.getString(R.string.you_are_here))
+
+                    //Marker has changed
+                    gMap.moveCamera(
+                        CameraUpdateFactory.newLatLngZoom(
+                            currentLatLng,
+                            zoomLevel
+                        )
+                    )
+                    gMap.addMarker(marker)
+
+                    fetchedLocation = getAddress(
+                        requireContext(),
+                        pref.getLanguageFromPreference() ?: "en",
+                        latitudeLongitude
+                    ).getAddressLine(0)
+                    fetchedEnglishAddress =
+                        ExternalUtils.getAddress(
+                            requireContext(),
+                            "en",
+                            latitudeLongitude
+                        )
+
+                    createSnackbar(fetchedLocation, requireContext(), container_sign_up)
+                    tvAddress.text = getAddress(
+                        requireContext(),
+                        pref.getLanguageFromPreference() ?: "en",
+                        latitudeLongitude
+                    ).getAddressLine(0)
+
+
+
+                    hideProgress(pb_sign_add, requireContext())
+
+                    gMap.setOnMapClickListener { newLatLong ->
+                        //Create a new marker
+
+                        showProgress(pb_sign_add, requireContext())
+                        gMap.clear()
+                        val newMarker = MarkerOptions()
+                        newMarker.position(newLatLong)
+                        newMarker.title(newLatLong.latitude.toString() + "," + newLatLong.longitude)
+                        //Remove other markers
+                        //Animation and zoom
+                        gMap.moveCamera(
+                            CameraUpdateFactory.newLatLngZoom(
+                                currentLatLng,
+                                zoomLevel
+                            )
+                        )
+                        gMap.addMarker(newMarker)
+
+                        //Update the location
+                        fetchedLocation = getAddress(
+                            requireContext(),
+                            pref.getLanguageFromPreference() ?: "en",
+                            newLatLong
+                        ).getAddressLine(0)
+
+                        fetchedEnglishAddress =
+                            ExternalUtils.getAddress(requireContext(), "en", newLatLong)
+
+                        createSnackbar(fetchedLocation, requireContext(), container_sign_up)
+                        tvAddress.text = getAddress(
+                            requireContext(),
+                            pref.getLanguageFromPreference() ?: "en",
+                            newLatLong
+                        ).getAddressLine(0)
+                        hideProgress(pb_sign_add, requireContext())
+                    }
+
+                } else {
+                    Log.e(TAG, "mLocation is null")
+                    errorInCreatingMaps(currentLatLng)
+                }
+            }
+
+
+        } else {
+            Log.e(TAG, "GMap is null in on map ready")
+            errorInCreatingMaps(currentLatLng)
+        }
     }
 }
