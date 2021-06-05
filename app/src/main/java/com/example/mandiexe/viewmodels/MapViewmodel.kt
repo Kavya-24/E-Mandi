@@ -1,7 +1,8 @@
 package com.example.mandiexe.viewmodels
 
-import android.app.ProgressDialog
 import android.util.Log
+import android.view.View
+import android.widget.ProgressBar
 import androidx.annotation.Keep
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.MutableLiveData
@@ -33,7 +34,7 @@ class MapViewmodel : ViewModel() {
     fun signFunction(
         body: SignUpBody,
         containerView: ConstraintLayout,
-        pb: ProgressDialog
+        pb: ProgressBar
     ): MutableLiveData<SignUpResponse> {
 
         Log.e(TAG, "In sign up function")
@@ -45,7 +46,7 @@ class MapViewmodel : ViewModel() {
     fun mSignUpFunction(
         body: SignUpBody,
         containerView: ConstraintLayout,
-        pb: ProgressDialog
+        pb: ProgressBar
     ): MutableLiveData<SignUpResponse> {
 
         Log.e(TAG, body.toString())
@@ -64,7 +65,7 @@ class MapViewmodel : ViewModel() {
                     )
 
                     UIUtils.createSnackbar(message.value, context, containerView)
-                    pb.dismiss()
+                    pb.visibility = View.GONE
                 }
 
                 override fun onResponse(

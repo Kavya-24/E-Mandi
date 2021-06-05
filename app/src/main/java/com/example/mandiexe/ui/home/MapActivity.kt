@@ -15,10 +15,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import com.example.mandiexe.R
 import com.example.mandiexe.models.ProfileObject
 import com.example.mandiexe.models.body.AddressBlock
@@ -243,19 +241,19 @@ class MapActivity : AppCompatActivity() {
 
 
     private fun makeMapCall(body: SignUpBody) {
-        val mView = findViewById<ConstraintLayout>(R.id.container_map)
-        viewModel.signFunction(body, mView, pb).observe(this, Observer { mResponse ->
-            val success = viewModel.successful.value
-            if (success != null) {
-                pb.dismiss()
-                manageSignUpResponse(viewModel.mSignUp.value)
-
-            } else {
-                Log.e(TAG, "Loading.......")
-                pb.show()
-            }
-
-        })
+//        val mView = findViewById<ConstraintLayout>(R.id.container_map)
+//        viewModel.signFunction(body, mView, pb).observe(this, Observer { mResponse ->
+//            val success = viewModel.successful.value
+//            if (success != null) {
+//                pb.dismiss()
+//                manageSignUpResponse(viewModel.mSignUp.value)
+//
+//            } else {
+//                Log.e(TAG, "Loading.......")
+//                pb.show()
+//            }
+//
+//        })
     }
 
     private fun manageSignUpResponse(value: SignUpResponse?) {
@@ -470,6 +468,7 @@ class MapActivity : AppCompatActivity() {
         }
 
     }
+
 
     private fun getLocationInMap() {
 

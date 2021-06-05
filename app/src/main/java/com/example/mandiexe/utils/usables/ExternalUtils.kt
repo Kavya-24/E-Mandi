@@ -3,11 +3,14 @@ package com.example.mandiexe.utils.usables
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.location.Address
+import android.location.Geocoder
 import android.os.Build
 import android.util.DisplayMetrics
 import com.example.mandiexe.R
 import com.example.mandiexe.models.body.LanguageBody
 import com.example.mandiexe.utils.ApplicationUtils
+import com.google.android.gms.maps.model.LatLng
 import retrofit2.HttpException
 import java.io.IOException
 import java.util.*
@@ -128,4 +131,27 @@ object ExternalUtils {
     fun getStringFromResoucrces(context: Context, mRes: Int): String {
         return context.resources.getString(mRes)
     }
+
+    fun getAddress(context: Context, mLocale: String, latLang: LatLng): Address {
+
+        //##Get location
+        val locale = Locale(mLocale)
+        var fetchedAddress = Address(locale)
+
+        val geocoder = Geocoder(context, locale)
+        try {
+            val addresses: List<Address> =
+                geocoder.getFromLocation(latLang.latitude, latLang.longitude, 1)
+            fetchedAddress = addresses.get(0)
+
+        } catch (e: Exception) {
+
+            UIUtils.logExceptions(e, TAG)
+        }
+
+
+        return fetchedAddress
+    }
+
+
 }

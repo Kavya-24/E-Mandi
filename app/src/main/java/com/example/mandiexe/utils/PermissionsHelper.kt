@@ -15,9 +15,10 @@ object PermissionsHelper {
             rxPermissions.request(
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_NETWORK_STATE
+                Manifest.permission.ACCESS_NETWORK_STATE,
 
-            )
+
+                )
                 .compose(
                     rxPermissions.ensureEachCombined(
                         Manifest.permission.ACCESS_FINE_LOCATION,

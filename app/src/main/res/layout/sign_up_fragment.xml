@@ -8,6 +8,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:id="@+id/container_sign_up"
         android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputLayout
@@ -35,7 +36,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/space"
-            android:hint="@string/village"
+            android:hint="@string/address"
             android:padding="@dimen/space"
             app:layout_constraintEnd_toStartOf="@id/pb_sig_address"
             app:layout_constraintStart_toStartOf="parent"
@@ -129,14 +130,17 @@
             tools:text="@tools:sample/lorem/random" />
 
 
-        <fragment
-            android:id="@+id/frag_map_sign_up"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/map_view"
             android:layout_width="@dimen/space_400"
             android:layout_height="@dimen/space_400"
             android:layout_margin="@dimen/space"
+            android:apiKey="@string/map_key"
+            android:clickable="true"
+            android:enabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:focusable="true"
             app:layout_constraintTop_toBottomOf="@id/tv_address_fetched" />
 
 
@@ -150,7 +154,7 @@
             app:backgroundTint="@color/colorAccent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/frag_map_sign_up" />
+            app:layout_constraintTop_toBottomOf="@id/map_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

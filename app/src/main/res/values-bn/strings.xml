@@ -295,5 +295,8 @@
     <string name="num50"></string>
     <string name="distanceKm"></string>
     <string name="noDemandsFoundCrop">No demands found for %s</string>
+    <string name="locationNotDetected">Location not detected</string>
+    <string name="nf">Not found</string>
+    <string name="notAbleToCreateGMap">Unable to launch maps</string>
 
 </resources>

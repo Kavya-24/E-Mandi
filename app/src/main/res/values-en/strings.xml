@@ -368,6 +368,9 @@
     <string name="distanceKm">Distance(Km)</string>
     <string name="noDemandsFoundCrop">No demands found for %s</string>
     <string name="quantity_grown_is_without_date">Quantity grown\n<b>%s %s</b>></string>
+    <string name="locationNotDetected">Location not detected</string>
+    <string name="nf">Not found</string>
+    <string name="notAbleToCreateGMap">Unable to launch maps</string>
 
 
     <!--    Spinners for days and distance-->
