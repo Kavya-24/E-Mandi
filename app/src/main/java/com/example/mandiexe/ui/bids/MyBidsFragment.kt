@@ -116,7 +116,7 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
 
         val mSnackbarView = root.findViewById<ConstraintLayout>(R.id.container_req)
 
-        viewModel.reqFunction(mSnackbarView,pb).observe(viewLifecycleOwner, Observer { mResponse ->
+        viewModel.reqFunction(mSnackbarView, pb).observe(viewLifecycleOwner, Observer { mResponse ->
 
             //Check with the successful of it
             if (viewModel.successful.value != null) {
@@ -159,8 +159,10 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
             if (mResponse.bids.isEmpty()) {
                 empty.visibility = View.VISIBLE
                 doEmptyStates()
+                rv.visibility = View.GONE
 
             } else {
+                rv.visibility = View.VISIBLE
                 empty.visibility = View.GONE
                 tError.visibility = View.GONE
 

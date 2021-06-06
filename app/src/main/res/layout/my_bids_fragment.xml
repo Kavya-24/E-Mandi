@@ -49,6 +49,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_requirement"
                 style="@style/styleRv"
+                android:visibility="invisible"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 tools:listitem="@layout/item_bid" />
 

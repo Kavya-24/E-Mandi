@@ -411,7 +411,7 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
         viewModelCrop.updateFunction(body).observe(this, Observer { mResponse ->
 
-            if (viewModelCrop.successfulUpdate != null) {
+            if (viewModelCrop.successfulUpdate.value != null) {
                 //Check with the sucessful of it
                 hideProgress(pb, this)
                 if (viewModelCrop.successfulUpdate.value == false) {
