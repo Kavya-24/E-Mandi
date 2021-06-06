@@ -365,12 +365,6 @@ class AddStockPage2 : AppCompatActivity() {
         if (etExp.text.isNullOrEmpty()) {
             tilExp.error = resources.getString(R.string.expError)
             isValid = false
-        } else if (TimeConversionUtils.getDateInstanceFromString(etExp.text.toString()) < TimeConversionUtils.getDateInstanceFromString(
-                sow_date
-            )
-        ) {
-            tilExp.error = resources.getString(R.string.expLess)
-            isValid = false
         } else {
             tilExp.error = null
         }
