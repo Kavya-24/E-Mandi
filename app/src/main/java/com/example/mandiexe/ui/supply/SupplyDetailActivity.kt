@@ -219,7 +219,6 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
         })
 
-        hideProgress(pb, this)
 
     }
 
