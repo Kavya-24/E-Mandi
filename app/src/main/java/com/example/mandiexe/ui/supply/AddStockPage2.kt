@@ -4,7 +4,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import android.view.View
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
@@ -240,12 +239,17 @@ class AddStockPage2 : AppCompatActivity() {
 
         var transDesc = cropDes.text.toString()
 
-        if (cropDes.text.toString() != resources.getString(R.string.noDesc)) {
+        if (cropDes.text.toString() != resources.getString(R.string.noDesc) && !cropDes.text.isNullOrEmpty()) {
             //If it has something, use uts translated values
             transDesc = findViewById<TextView>(R.id.tvTempCropDesc).text.toString()
                 .capitalize((Locale("en")))
 
+        } else {
+            transDesc = "NA"
         }
+
+        Log.e(TAG, "Transdec is $transDesc")
+
 
         Log.e(TAG, "Translated values are $transCropName$transCropType$transDesc")
         val body = AddSupplyBody(
@@ -282,22 +286,15 @@ class AddStockPage2 : AppCompatActivity() {
                 val success = viewModel.successfulGrowth.value
                 if (success != null) {
                     hideProgress(pb, this)
-                    Log.e(
-                        TAG,
-                        "In growth function and success is " + success + viewModel.messageGrowth
-                    )
-
-                    if (success == true) {
-                        Log.e(TAG, "In successfully added growth")
-                    } else {
-                        Log.e(TAG, "In failed added growth")
-                    }
-
+                    //When okay
+                    Log.e(TAG, "Growth Response is $mResponse")
                 } else {
                     showProgress(pb, this)
                 }
             })
 
+
+        showProgress(pb, this)
 
         viewModel.addFunction(body, mSnackbar, pb).observe(this, { mResponse ->
 
@@ -311,9 +308,6 @@ class AddStockPage2 : AppCompatActivity() {
 
 
         })
-
-        //Stop Progress bar
-        findViewById<ProgressBar>(R.id.pb_add_stock_page_2).visibility = View.GONE
 
     }
 
@@ -377,13 +371,14 @@ class AddStockPage2 : AppCompatActivity() {
 
     }
 
-     private fun clearObservers(){
+    private fun clearObservers() {
         viewModel.successfulGrowth.removeObservers(this)
         viewModel.successfulGrowth.value = null
         viewModel.successful.removeObservers(this)
         viewModel.successful.value = null
 
     }
+
     override fun onBackPressed() {
 
         clearObservers()

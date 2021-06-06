@@ -47,7 +47,8 @@ class SupplyHistoryAdapter(val itemClick: OnMySupplyHistoryClickListener) :
                 OfflineTranslate.translateToDefault(itemView.context, _listItem.variety, CROP_TYPE)
 
 
-                CROP_QUANTITY.text = _listItem.qty.toString()
+                CROP_QUANTITY.text =
+                    _listItem.qty.toString() + " " + itemView.context.resources.getString(R.string.kg)
                 CROP_EXP.text = TimeConversionUtils.convertTimeToEpoch(_listItem.expiry)
 
                 CROP_CURRENT_BID.text = _listItem.currentBid.toString()
@@ -90,6 +91,10 @@ class SupplyHistoryAdapter(val itemClick: OnMySupplyHistoryClickListener) :
 
                         }
 
+                    } else {
+                        CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.wildColor))
+                        CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.wildColor))
+                        CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightGreenTest))
                     }
 
                 } else {

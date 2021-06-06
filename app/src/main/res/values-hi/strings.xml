@@ -263,8 +263,8 @@
     <string name="invalidOTP"></string>
     <string name="addCropforBidding"></string>
     <string name="confirm"></string>
-    <string name="adding_crop"></string>
-    <string name="adding_bid_date"></string>
+    <string name="adding_crop">Adding crop %s (%s %s)\nInitial expected price %s %s</string>
+    <string name="adding_bid_date">Bid ends on %s</string>
     <string name="unableToAddStock"></string>
     <string name="add"></string>
     <string name="bidRetrivealFailed"></string>
