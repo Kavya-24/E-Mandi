@@ -123,7 +123,6 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
         }
 
 
-        hideProgress(pb, this)
 
         findViewById<ExtendedFloatingActionButton>(R.id.eFab_grow).setOnClickListener {
             addStock()
@@ -230,6 +229,8 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
                     } else {
                         doEmptyStates()
                     }
+                    hideProgress(pb, this@SearchResultActivity)
+
                 }
 
                 override fun onFailure(call: Call<AdvancedSearchResponse>, t: Throwable) {
@@ -237,11 +238,11 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
                     doThrowableState()
                     UIUtils.logThrowables(t, TAG)
                     createSnackbar(message, this@SearchResultActivity, container_search)
+                    hideProgress(pb, this@SearchResultActivity)
 
                 }
             })
 
-        hideProgress(pb, this)
 
     }
 
@@ -339,6 +340,7 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
                     } else {
                         doEmptyStates()
                     }
+                    hideProgress(pb, this@SearchResultActivity)
                 }
 
                 override fun onFailure(call: Call<SearchGlobalCropResponse>, t: Throwable) {
@@ -346,6 +348,7 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
                     UIUtils.logThrowables(t, TAG)
                     createSnackbar(message, this@SearchResultActivity, container_search)
                     doThrowableState()
+                    hideProgress(pb, this@SearchResultActivity)
 
 
                 }

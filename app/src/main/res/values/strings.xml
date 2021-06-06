@@ -364,7 +364,7 @@
     <string name="couldNotLoadAllBids">Could not get bids</string>
     <string name="searchbyCrops">Search</string>
     <string name="kgQuantityValueString">%s %s</string>
-    <string name="quantity_grown_is_without_date">Quantity grown\n<b>%s %s</b>></string>
+    <string name="quantity_grown_is_without_date">Quantity grown\n<b>%s %s</b></string>
 
     <string name="num50">50</string>
     <string name="distanceKm">Distance(Km)</string>
