@@ -661,6 +661,7 @@ class SignUpFragment : Fragment() {
     private fun MapReady(gMap: GoogleMap?) {
 
 
+
         Log.e(TAG, "In map ready")
         if (gMap != null) {
             Log.e(TAG, "gmap not null")
@@ -914,8 +915,11 @@ class SignUpFragment : Fragment() {
         mapView.onResume()
         mapView.getMapAsync { p0 ->
             Log.e(TAG, "In on map main ready")
+            getPermissions()
             MapReady(p0)
+
         }
+
 
     }
 }
