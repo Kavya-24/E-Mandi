@@ -235,7 +235,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
         Log.e(TAG, "In throwable state")
         this.apply {
             llEmptyMySupplies.visibility = View.GONE
-            llErrorThrowableSupply.visibility = View.VISIBLE
+            //llErrorThrowableSupply.visibility = View.VISIBLE
         }
     }
 /*

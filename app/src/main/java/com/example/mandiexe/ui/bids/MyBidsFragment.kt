@@ -212,7 +212,7 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
         Log.e(TAG, "In throwable state")
         this.apply {
             llEmptyMyBids.visibility = View.GONE
-            llErrorThrowableBid.visibility = View.VISIBLE
+            //llErrorThrowableBid.visibility = View.VISIBLE
         }
     }
 
