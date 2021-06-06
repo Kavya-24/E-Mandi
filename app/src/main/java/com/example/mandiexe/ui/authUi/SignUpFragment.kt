@@ -1,7 +1,10 @@
 package com.example.mandiexe.ui.authUi
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Location
 import android.os.Build
@@ -13,6 +16,8 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -64,6 +69,7 @@ class SignUpFragment : Fragment() {
         fun newInstance() = SignUpFragment()
     }
 
+    private val MY_PERMISSIONS_REQUEST_READ_FINE_LOCATION = 100
     private lateinit var root: View
     private val TAG = SignUpFragment::class.java.simpleName
 
@@ -85,6 +91,9 @@ class SignUpFragment : Fragment() {
     private lateinit var client: FusedLocationProviderClient
     private val permissionRequestCode = 1234
     private val RESULT_OK = 111
+
+
+    private val zoomLevel = 20.0f //This goes up to 21
 
 
     //A special code to tell it that this is from SignUp and it need to create dialog
@@ -110,6 +119,7 @@ class SignUpFragment : Fragment() {
     private lateinit var mapView: MapView
     private lateinit var googleMap: GoogleMap
     private var currentLatLng: LatLng? = null
+
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreateView(
@@ -152,11 +162,11 @@ class SignUpFragment : Fragment() {
         }
 
 
-        client = LocationServices.getFusedLocationProviderClient(requireContext())
+        client = requireActivity().let { LocationServices.getFusedLocationProviderClient(it) }
 
         //Populate units
         populateAreaUnit()
-
+        checkSelfPermsissions()
 
         root.findViewById<MaterialButton>(R.id.mtb_sign_up).setOnClickListener {
             if (isValidate()) {
@@ -304,7 +314,7 @@ class SignUpFragment : Fragment() {
                     manageSignUpResponse(viewModelSignup.mSignUp.value, body)
 
                 } else {
-                    Log.e(TAG, "Loading.......")
+                    Log.e(TAG, "Loadstring.......")
                     hideProgress(pb_sign_main, requireContext())
                 }
 
@@ -649,29 +659,127 @@ class SignUpFragment : Fragment() {
     }
 
     private fun MapReady(gMap: GoogleMap?) {
-        val task: Task<Location> = client.lastLocation
-        val zoomLevel = 20.0f //This goes up to 21
-        mapView.visibility = View.VISIBLE
+
 
         Log.e(TAG, "In map ready")
         if (gMap != null) {
             Log.e(TAG, "gmap not null")
 
             //Get the current location
-            //This inflates the fetchedLocation and fetchedEnglishAddress and currentLatLng
-            checkSelfPermsissions()
-            Log.e(TAG, "After permissions")
+            //Check again for permissions
+            getPermissions()
+            doTask(gMap)
 
-            task.addOnSuccessListener { mLocation ->
+        } else {
+            Log.e(TAG, "GMap is null in on map ready")
+            errorInCreatingMaps(currentLatLng)
+        }
 
-                if (mLocation != null) {
+
+    }
 
 
-                    //Initialize a latitude and longitude
+    private fun makeRequest() {
 
-                    //use current locatrion attributes
+        Log.e(TAG, "In make request")
+        ActivityCompat.requestPermissions(
+            context as Activity,
+            arrayOf(
+                android.Manifest.permission.ACCESS_FINE_LOCATION,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION
+            ),
+            permissionRequestCode
+        )
 
-                    showProgress(pb_sign_add, requireContext())
+    }
+
+    private fun getPermissions() {
+
+        Log.e(TAG, "In get permissions")
+
+        val fineLocation = this.let {
+            requireContext().let { it1 ->
+                ContextCompat.checkSelfPermission(
+                    it1,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            }
+        }
+
+        val courseLocation = this.let {
+            requireContext().let { it1 ->
+                ContextCompat.checkSelfPermission(
+                    it1,
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            }
+        }
+
+        Log.e(TAG, "Values of fine and coarse locations $fineLocation $courseLocation")
+
+        if (fineLocation == PackageManager.PERMISSION_GRANTED && courseLocation == PackageManager.PERMISSION_GRANTED) {
+            Log.e(TAG, "Permissions doing task")
+            //doTask(task, gMap)
+        }
+
+
+        if (fineLocation != PackageManager.PERMISSION_GRANTED || courseLocation != PackageManager.PERMISSION_GRANTED) {
+            //Not permitted
+            Log.e(TAG, "Permssions doing fine not found permits")
+            Toast.makeText(
+                requireContext(),
+                resources.getString(R.string.permissionRequired),
+                Toast.LENGTH_SHORT
+            ).show()
+
+
+        }
+
+        val b1 = ActivityCompat.shouldShowRequestPermissionRationale(
+            context as Activity,
+            android.Manifest.permission.ACCESS_FINE_LOCATION
+        )
+
+        val b2 = ActivityCompat.shouldShowRequestPermissionRationale(
+            context as Activity,
+            android.Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+
+        //Tell user what we are going to do with this permission
+        Log.e(TAG, "Permsiiosn bool $b1 and $b2")
+
+        if (b1 || b2) {
+            //Tell user what we are going to do with this permission
+            val b = AlertDialog.Builder(requireContext())
+            b.setMessage(resources.getString(R.string.permissionMessageLocation))
+            b.setTitle(resources.getString(R.string.permissionRequired))
+            b.setPositiveButton(resources.getString(R.string.allow)) { _: DialogInterface?, _: Int ->
+                makeRequest()
+            }
+            val dialog = b.create()
+            dialog.show()
+        } else {
+            makeRequest()
+        }
+
+    }
+
+
+    private fun doTask(gMap: GoogleMap) {
+
+        val task: Task<Location> = client.lastLocation
+        mapView.visibility = View.VISIBLE
+
+        task.addOnSuccessListener { mLocation ->
+
+            if (mLocation != null) {
+
+
+                //Initialize a latitude and longitude
+
+                //use current locatrion attributes
+
+                showProgress(pb_sign_add, requireContext())
 //                    if (currentLatLng != null) {
 //                        val marker = currentLatLng.let {
 //                            if (it != null) {
@@ -699,95 +807,89 @@ class SignUpFragment : Fragment() {
 //
 //                    }
 
-                    //Use mLocation attributes
+                //Use mLocation attributes
 
-                    //Use mLocation
-                    val latitudeLongitude =
-                        LatLng(mLocation.latitude, mLocation.longitude)
-                    val marker = MarkerOptions().position(latitudeLongitude)
-                        .title(resources.getString(R.string.you_are_here))
+                //Use mLocation
+                val latitudeLongitude =
+                    LatLng(mLocation.latitude, mLocation.longitude)
+                val marker = MarkerOptions().position(latitudeLongitude)
+                    .title(resources.getString(R.string.you_are_here))
 
-                    //Marker has changed
+                //Marker has changed
+                gMap.moveCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                        latitudeLongitude,
+                        zoomLevel
+                    )
+                )
+                gMap.addMarker(marker)
+
+                Log.e(TAG, "Lat Lng =")
+                fetchedLocation = getAddress(
+                    requireContext(),
+                    pref.getLanguageFromPreference() ?: "en",
+                    latitudeLongitude
+                ).getAddressLine(0)
+                fetchedEnglishAddress =
+                    ExternalUtils.getAddress(
+                        requireContext(),
+                        "en",
+                        latitudeLongitude
+                    )
+
+                createSnackbar(fetchedLocation, requireContext(), container_sign_up)
+                tvAddress.text = getAddress(
+                    requireContext(),
+                    pref.getLanguageFromPreference() ?: "en",
+                    latitudeLongitude
+                ).getAddressLine(0)
+
+
+
+                hideProgress(pb_sign_add, requireContext())
+
+                gMap.setOnMapClickListener { newLatLong ->
+                    //Create a new marker
+
+                    showProgress(pb_sign_add, requireContext())
+                    gMap.clear()
+                    val newMarker = MarkerOptions()
+                    newMarker.position(newLatLong)
+                    newMarker.title(newLatLong.latitude.toString() + "," + newLatLong.longitude)
+                    //Remove other markers
+                    //Animation and zoomLoca
                     gMap.moveCamera(
                         CameraUpdateFactory.newLatLngZoom(
                             currentLatLng,
                             zoomLevel
                         )
                     )
-                    gMap.addMarker(marker)
+                    gMap.addMarker(newMarker)
 
+                    //Update the location
                     fetchedLocation = getAddress(
                         requireContext(),
                         pref.getLanguageFromPreference() ?: "en",
-                        latitudeLongitude
+                        newLatLong
                     ).getAddressLine(0)
+
                     fetchedEnglishAddress =
-                        ExternalUtils.getAddress(
-                            requireContext(),
-                            "en",
-                            latitudeLongitude
-                        )
+                        ExternalUtils.getAddress(requireContext(), "en", newLatLong)
 
                     createSnackbar(fetchedLocation, requireContext(), container_sign_up)
                     tvAddress.text = getAddress(
                         requireContext(),
                         pref.getLanguageFromPreference() ?: "en",
-                        latitudeLongitude
+                        newLatLong
                     ).getAddressLine(0)
-
-
-
                     hideProgress(pb_sign_add, requireContext())
-
-                    gMap.setOnMapClickListener { newLatLong ->
-                        //Create a new marker
-
-                        showProgress(pb_sign_add, requireContext())
-                        gMap.clear()
-                        val newMarker = MarkerOptions()
-                        newMarker.position(newLatLong)
-                        newMarker.title(newLatLong.latitude.toString() + "," + newLatLong.longitude)
-                        //Remove other markers
-                        //Animation and zoom
-                        gMap.moveCamera(
-                            CameraUpdateFactory.newLatLngZoom(
-                                currentLatLng,
-                                zoomLevel
-                            )
-                        )
-                        gMap.addMarker(newMarker)
-
-                        //Update the location
-                        fetchedLocation = getAddress(
-                            requireContext(),
-                            pref.getLanguageFromPreference() ?: "en",
-                            newLatLong
-                        ).getAddressLine(0)
-
-                        fetchedEnglishAddress =
-                            ExternalUtils.getAddress(requireContext(), "en", newLatLong)
-
-                        createSnackbar(fetchedLocation, requireContext(), container_sign_up)
-                        tvAddress.text = getAddress(
-                            requireContext(),
-                            pref.getLanguageFromPreference() ?: "en",
-                            newLatLong
-                        ).getAddressLine(0)
-                        hideProgress(pb_sign_add, requireContext())
-                    }
-
-                } else {
-                    Log.e(TAG, "mLocation is null")
-                    errorInCreatingMaps(currentLatLng)
                 }
+
+            } else {
+                Log.e(TAG, "mLocation is null")
+                errorInCreatingMaps(currentLatLng)
             }
-
-
-        } else {
-            Log.e(TAG, "GMap is null in on map ready")
-            errorInCreatingMaps(currentLatLng)
         }
-
 
         task.addOnFailureListener { mFailure ->
             Log.e(TAG, "Failure")
@@ -800,6 +902,12 @@ class SignUpFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.e(TAG, "In view created")
+
+
+        getPermissions()
+
+        //This inflates the fetchedLocation and fetchedEnglishAddress and currentLatLng
+        Log.e(TAG, "After permissions")
 
         mapView = view.findViewById(R.id.map_view)
         mapView.onCreate(savedInstanceState)

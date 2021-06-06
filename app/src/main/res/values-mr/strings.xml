@@ -298,5 +298,6 @@
     <string name="locationNotDetected">Location not detected</string>
     <string name="nf">Not found</string>
     <string name="notAbleToCreateGMap">Unable to launch maps</string>
+    <string name="locationPermissionDenied">Location permission denied</string>
 
 </resources>
