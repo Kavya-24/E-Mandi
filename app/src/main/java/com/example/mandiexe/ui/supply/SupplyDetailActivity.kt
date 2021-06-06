@@ -243,18 +243,13 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
         val body = DeleteSupplyBody(SUPPLY_ID)
 
-        val mResponse = viewModelCrop.cancelFunction(body)
 
         viewModelCrop.cancelFunction(body).observe(this, Observer { mResponse ->
             val success = viewModelCrop.successfulCancel.value
             if (success != null) {
                 hideProgress(pb, this)
-                if (success) {
-                    manageCancelResponses(mResponse)
-                } else {
-                    createSnackbar(viewModelCrop.messageCancel.value)
+                manageCancelResponses(mResponse)
 
-                }
             } else {
                 showProgress(pb, this)
             }

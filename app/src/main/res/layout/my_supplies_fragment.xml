@@ -48,6 +48,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_my_stocks"
                 style="@style/styleRv"
+                android:visibility="invisible"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:listitem="@layout/item_supply" />

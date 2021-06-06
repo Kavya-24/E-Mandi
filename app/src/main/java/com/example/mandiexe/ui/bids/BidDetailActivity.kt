@@ -54,7 +54,6 @@ import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.bid_detail_activity.*
 import kotlinx.android.synthetic.main.item_owner_detail.view.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
-import kotlinx.android.synthetic.main.supply_detail_activity.*
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -681,7 +680,7 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
             UIUtils.createSnackbar(
                 resources.getString(R.string.emptyRV),
                 this,
-                container_crop_bids_details
+                container_req_details
             )
         }
 

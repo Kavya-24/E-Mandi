@@ -170,9 +170,11 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
         if (mResponse != null) {
             if (mResponse.supplies.isEmpty()) {
                 empty.visibility = View.VISIBLE
+                rv.visibility = View.GONE
                 doEmptyStates()
 
             } else {
+                rv.visibility = View.VISIBLE
                 empty.visibility = View.GONE
                 tError.visibility = View.GONE
 
