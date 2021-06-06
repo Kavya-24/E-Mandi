@@ -195,7 +195,7 @@ class SignUpFragment : Fragment() {
 
         tvName.text = etName.text.toString()
 
-        if (fetchedLocation == "" || fetchedLocation == resources.getString(R.string.NotFound) || fetchedLocation.isEmpty()) {
+        if (fetchedLocation == "" || fetchedLocation == resources.getString(R.string.NotFound) || fetchedLocation.isEmpty() || fetchedLocation == "ADDRESS_NOT_FOUND") {
             tvAddress.text = etAddress.text.toString()
         } else {
             tvAddress.text =
@@ -220,6 +220,7 @@ class SignUpFragment : Fragment() {
     private fun createUser() {
 
 
+        showProgress(pb_sign_main, requireContext())
         //Transliterate Name
         val name = OfflineTranslate.transliterateToEnglish(etName.text.toString())
             ?: etName.text.toString()
@@ -315,7 +316,7 @@ class SignUpFragment : Fragment() {
 
                 } else {
                     Log.e(TAG, "Loadstring.......")
-                    hideProgress(pb_sign_main, requireContext())
+                    showProgress(pb_sign_main, requireContext())
                 }
 
             })
