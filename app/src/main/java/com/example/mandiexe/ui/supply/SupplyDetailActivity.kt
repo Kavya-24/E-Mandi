@@ -699,7 +699,7 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
         //Create list
         val mBids: MutableList<BidHistoryBody> = mutableListOf()
-
+        Log.e(TAG, "List of bids for rv $bids")
 
         for (element in bids) {
 
