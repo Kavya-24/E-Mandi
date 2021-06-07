@@ -249,7 +249,6 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
     private fun loadAdvancedSearch(body: AdvancedSearchResponse) {
 
         Log.e(TAG, "In adv load")
-        showProgress(pb, this)
 
         try {
             this.apply {
@@ -283,6 +282,8 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
                         R.string.quantity_grown_is_without_date,
                         body.info.qty.toString(),
                         kgLocale.toString()
+                    ) + "\n" + resources.getString(R.string.Last) + " " + mDays.toString() + " " + resources.getString(
+                        R.string.days
                     )
 
 
@@ -305,7 +306,6 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
         }
 
         Log.e(TAG, "Ending with search result adv daya as well")
-        hideProgress(pb, this)
 
     }
 
@@ -354,7 +354,7 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
                 }
             })
 
-        hideProgress(pb, this)
+
     }
 
     private fun doEmptyStates() {

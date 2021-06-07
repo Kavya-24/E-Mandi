@@ -375,6 +375,7 @@
     <string name="locationPermissionDenied">Location permission denied</string>
     <string name="rs_kg">Rs/Kg</string>
     <string name="w">W</string>
+    <string name="Last">Last</string>
 
 
     <!--    Spinners for days and distance-->
