@@ -771,6 +771,7 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
     }
 
     private fun clearObservers() {
+
         viewModelCrop.successfulSupply.removeObservers(this)
         viewModelCrop.successfulSupply.value = null
 
