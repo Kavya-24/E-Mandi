@@ -89,6 +89,7 @@ RecyclerView.Adapter<NewReqAdapter.MyViewHolder>() {
 
                         if (ans > 0) {
 
+
                             CROP_DELTA.text = "+" + ans.toString()
                             CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaGreen))
                             CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaGreen))
@@ -96,12 +97,11 @@ RecyclerView.Adapter<NewReqAdapter.MyViewHolder>() {
 
                         } else if (ans < 0) {
 
-                            CROP_DELTA.text = ans.toString()
+                            CROP_DELTA.text = "-$ans.toString()"
                             CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
                             CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaRed))
                             CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightRedMono))
                             CROP_CURRENT_BID.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
-                            CROP_IOP.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
 
 
                         } else if (ans == 0) {

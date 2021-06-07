@@ -166,7 +166,7 @@
                 android:layout_margin="@dimen/space_half"
                 android:gravity="center"
                 android:text="@string/_1234"
-                android:textColor="@color/deltaGreen"
+                android:textColor="@color/wildColor"
                 android:textSize="24sp"
                 app:layout_constraintEnd_toStartOf="@id/tv_stock_current_bid"
                 app:layout_constraintHorizontal_weight="1"

@@ -75,6 +75,7 @@ class MyRequirementsAdapter(val itemClick: OnMyBidClickListener) :
                     CROP_LAST_UPDATED.text = convertLastModified(_listItem.lastModified)
 
 
+                    //I am a farmer, these are my bids
                     if (currentBid != 0) {
 
                         val currentBid = _listItem.currentBid
@@ -91,17 +92,16 @@ class MyRequirementsAdapter(val itemClick: OnMyBidClickListener) :
 
                         } else if (ans < 0) {
 
-                            CROP_DELTA.text = ans.toString()
+                            CROP_DELTA.text = "-$ans.toString()"
                             CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
                             CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaRed))
                             CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightRedMono))
                             CROP_CURRENT_BID.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
-                            CROP_IOP.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
 
 
                         } else if (ans == 0) {
 
-                            CROP_DELTA.text = ans.toString()
+                            CROP_DELTA.text = itemView.context.resources.getString(R.string.noDesc)
                             CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.wildColor))
                             CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.wildColor))
                             CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightGreenTest))
@@ -110,7 +110,7 @@ class MyRequirementsAdapter(val itemClick: OnMyBidClickListener) :
 
                     } else {
 
-                        CROP_DELTA.text = "-"
+                        CROP_DELTA.text = itemView.context.resources.getString(R.string.noDesc)
                         CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.wildColor))
                         CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.wildColor))
                         CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightGreenTest))

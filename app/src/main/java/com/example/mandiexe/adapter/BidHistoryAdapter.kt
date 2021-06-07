@@ -88,6 +88,9 @@ class BidHistoryAdapter(val itemClick: OnMyBidClickListenerGlobal) :
 
                             if (ans > 0) {
 
+
+                                CROP_DELTA.text = "+$ans"
+                                CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaGreen))
                                 CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaGreen))
                                 CROP_CARD.setCardBackgroundColor(
                                     itemView.context.resources.getColor(
@@ -97,6 +100,8 @@ class BidHistoryAdapter(val itemClick: OnMyBidClickListenerGlobal) :
 
                             } else if (ans < 0) {
 
+                                CROP_DELTA.text = "-$ans.toString()"
+                                CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
                                 CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaRed))
                                 CROP_CARD.setCardBackgroundColor(
                                     itemView.context.resources.getColor(
@@ -104,11 +109,13 @@ class BidHistoryAdapter(val itemClick: OnMyBidClickListenerGlobal) :
                                     )
                                 )
                                 CROP_CURRENT_BID.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
-                                CROP_IOP.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
 
 
                             } else if (ans == 0) {
 
+                                CROP_DELTA.text =
+                                    itemView.context.resources.getString(R.string.noDesc)
+                                CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.wildColor))
                                 CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.wildColor))
                                 CROP_CARD.setCardBackgroundColor(
                                     itemView.context.resources.getColor(
@@ -120,16 +127,19 @@ class BidHistoryAdapter(val itemClick: OnMyBidClickListenerGlobal) :
 
                         } else {
 
+                            CROP_DELTA.text = itemView.context.resources.getString(R.string.noDesc)
+                            CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.wildColor))
                             CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.wildColor))
                             CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightGreenTest))
                         }
 
 
                     } else {
+
                         CROP_DELTA.text = itemView.context.getString(R.string.inactiveBid)
-                        CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
-                        CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaRed))
-                        CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.cardOffWhite))
+                        CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.wildColor))
+                        CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.wildColor))
+                        CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightGreenTest))
 
                     }
 
