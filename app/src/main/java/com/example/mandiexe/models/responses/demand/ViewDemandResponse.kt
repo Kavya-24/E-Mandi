@@ -86,7 +86,6 @@ import com.squareup.moshi.Json
                 val type: String // Point
             )
         }
-
         @Keep data class Location(
             @field:Json(name = "coordinates")
             val coordinates: List<Double>,

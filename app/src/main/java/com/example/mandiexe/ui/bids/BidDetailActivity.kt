@@ -15,6 +15,7 @@ import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -39,7 +40,7 @@ import com.example.mandiexe.utils.usables.OfflineTranslate.transliterateToDefaul
 import com.example.mandiexe.utils.usables.TimeConversionUtils
 import com.example.mandiexe.utils.usables.TimeConversionUtils.convertTimeToEpoch
 import com.example.mandiexe.utils.usables.UIUtils
-import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
+import com.example.mandiexe.utils.usables.UIUtils.createToast
 import com.example.mandiexe.utils.usables.UIUtils.hideProgress
 import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.example.mandiexe.viewmodels.BidDetailsViewModel
@@ -89,6 +90,7 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
     private var mPrice = ""
 
     private lateinit var pb: ProgressBar
+    private lateinit var mSnackbarView: CoordinatorLayout
 
     private var personObject: PersonObject? = null
 
@@ -121,6 +123,7 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
         graph = findViewById(R.id.graphViewReq)
         pb = findViewById(R.id.pb_my_req_details)
         swl = findViewById(R.id.swl_detailsReq)
+        mSnackbarView = findViewById(R.id.container_bid_detail)
         //Set views from 'FROM'
         if (from == MyBidsFragment::class.java.simpleName || from == FarmerBidHistory::class.java.simpleName) {
             //Do nothing
@@ -132,6 +135,10 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
                 mMyBid.visibility =
                     View.VISIBLE
                 tv_requirement_detail_my_bid.visibility = View.VISIBLE
+                tv_view_bid_history_requirement.visibility = View.VISIBLE
+                iv_dropdown_bid_history_req.visibility = View.VISIBLE
+                graphViewReq.visibility = View.VISIBLE
+                tvNoGraph.visibility = View.VISIBLE
 
 
             }
@@ -143,13 +150,19 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
             mMyBid.visibility =
                 View.GONE
             tv_requirement_detail_my_bid.visibility = View.GONE
-
+            //Hide the view bid history, graph, arrow
+            tv_view_bid_history_requirement.visibility = View.GONE
+            iv_dropdown_bid_history_req.visibility = View.GONE
+            graphViewReq.visibility = View.GONE
+            tvNoGraph.visibility = View.GONE
 
         }
 
 
         swl.isRefreshing = true
+
         makeCall()
+
         swl.isRefreshing = false
 
 
@@ -243,8 +256,10 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
             v.apply {
                 this.ownerName.text = personObject!!.name
                 this.ownerPhone.text = personObject!!.phone
-                ownerAddress1.text = personObject!!.address
-                ownerAddress2.text =
+
+                //ownerAddress1.text = personObject!!.address
+                //Remove it
+                ownerAddress1.text =
                     personObject!!.addressLine1 + "\n" + personObject!!.addressLine2
 
             }
@@ -305,18 +320,15 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
         val body = ViewBidBody(BID_ID)
 
         if (from != NewDemandActivity::class.java.simpleName) {
-            viewModel.viewBidFunction(body).observe(this, Observer { mResponse ->
+
+            viewModel.viewBidFunction(body, pb, mSnackbarView).observe(this, Observer { mResponse ->
                 val success = viewModel.successfulBid.value
                 if (success != null) {
-                    if (!success) {
-                        createSnackbar(
-                            resources.getString(R.string.bidRetrivealFailed),
-                            this,
-                            container_req_details
-                        )
-                    } else if (mResponse.msg == "Bid retrieved successfully.") {
-                        mResponse.let { initViews(it) }
-                    }
+                    hideProgress(pb, this)
+                    mResponse.let { initViews(it) }
+
+                } else {
+                    showProgress(pb, this)
                 }
             })
         }
@@ -324,26 +336,21 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
         if (from == NewDemandActivity::class.java.simpleName) {
 
             val body2 = ViewDemandBody(BID_ID)
-            viewModel.viewDemandFunction(body2).observe(this, Observer { mResponse ->
-                val success = viewModel.successfulDemand.value
-                if (success != null) {
-                    if (!success) {
-                        createSnackbar(
-                            viewModel.messageDemand.value,
-                            this,
-                            container_req_details
-                        )
-                    } else if (mResponse.msg == "Demand retrieved successfully.") {
+            viewModel.viewDemandFunction(body2, pb, mSnackbarView)
+                .observe(this, Observer { mResponse ->
+                    val success = viewModel.successfulDemand.value
+                    if (success != null) {
+                        hideProgress(pb, this)
                         mResponse.let { initViewsForNewRequirement(it) }
+
+                    } else {
+                        showProgress(pb, this)
                     }
-                }
-            })
+                })
+
 
         }
 
-
-
-        hideProgress(pb, this@BidDetailActivity)
 
     }
 
@@ -399,7 +406,7 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
                         OfflineTranslate.transliterateToDefault(value.demand.demander.address)
 
                     ans_detail_bid_quanity.text =
-                        value.demand.qty.toString()
+                        value.demand.qty.toString() + " " + resources.getString(R.string.kg)
 
                     ans_detail_bid_exp.text =
                         convertTimeToEpoch(value.demand.expiry)
@@ -431,6 +438,8 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
                 val bidDemander = value.demand.demander
                 val address1 = bidDemander.village + "," + bidDemander.district
                 val address2 = bidDemander.state + "," + bidDemander.country
+
+                //#DEMANDER
                 personObject = PersonObject(
                     bidDemander.name,
                     bidDemander.phone,
@@ -444,8 +453,8 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
                 dialogCurrentBid = currrentBid.toString()
 
                 //Hide
-                //fillRecyclerView(value.demand.bids)
-                //createGraph(value.bid.demand.lastBid)
+//                fillRecyclerViewNew(value.demand.bids)
+//                createGraph(value.bid.demand.lastBid)
 
 
                 this.apply {
@@ -459,6 +468,7 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
         hideProgress(pb, this)
 
     }
+
 
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun createModifyBidDialog() {
@@ -526,18 +536,17 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
         val body = UpdateBidBody(BID_ID, newBid)
 
-        viewModel.updateFunction(body).observe(this, Observer { mResponse ->
+        viewModel.updateFunction(body, pb, mSnackbarView).observe(this, Observer { mResponse ->
             //Check with the sucessful of it
-            if (viewModel.successfulUpdate.value == false) {
-                let {
-                    createSnackbar(
-                        viewModel.messageUpdate.value,
-                        it, container_req_details
-                    )
-                }
-            } else if (mResponse.msg == "Bid updated successfully.") {
+            val sucess = viewModel.successfulUpdate.value
+            if (sucess != null) {
+                hideProgress(pb, this)
                 manageModifyResponses(mResponse)
+            } else {
+                showProgress(pb, this)
             }
+
+
         })
 
 
@@ -574,18 +583,15 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
         val body = DeletBidBody(BID_ID)
 
-        viewModel.deleteFunction(body).observe(this, Observer { mResponse ->
+        viewModel.deleteFunction(body, pb, mSnackbarView).observe(this, Observer { mResponse ->
 
             //Check with the sucessful of it
-            if (viewModel.successfulCancel.value == false) {
-                let {
-                    createSnackbar(
-                        viewModel.messageCancel.value,
-                        it, container_req_details
-                    )
-                }
-            } else if (mResponse.msg == "Bid deleted successfully.") {
+            if (viewModel.successfulCancel.value != null) {
+                hideProgress(pb, this)
+
                 manageCancelResponses(mResponse)
+            } else {
+                showProgress(pb, this)
             }
         })
 
@@ -614,9 +620,9 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
         val tv = v.findViewById<TextView>(R.id.tv_add_bid_current_bid)
 
 
-        tv.text = dialogCurrentBid
+        tv.text = dialogCurrentBid + " " + resources.getString(R.string.rs)
 
-        d.setPositiveButton(resources.getString(R.string.modifyBid)) { dialog, _ ->
+        d.setPositiveButton(resources.getString(R.string.add)) { dialog, _ ->
 
             if (et.text.isEmpty()) {
                 til.error = resources.getString(R.string.offerPriceError)
@@ -640,18 +646,53 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
     private fun confirmAddBid(valueOfBidPrice: String) {
 
         val body = AddBidBody(valueOfBidPrice, BID_ID)
-        showProgress(pb, this)
-        viewModel.addFunction(body).observe(this, Observer { mResponse ->
-            if (mResponse.msg == "Bid added successfully.") {
-                createSnackbar(resources.getString(R.string.bidAdded), this, container_req_details)
-                makeCall()
-                hideProgress(pb, this)
+        clearObservers()
 
+        showProgress(pb, this)
+
+        viewModel.addFunction(body, pb, mSnackbarView).observe(this, Observer { mResponse ->
+
+            val success = viewModel.successfulAdd.value
+            if (success != null) {
+                hideProgress(pb, this)
+                if (mResponse.msg == "Bid added successfully.") {
+                    hideProgress(pb, this)
+                    createToast(
+                        resources.getString(R.string.bidAdded),
+                        this,
+                        container_req_details
+                    )
+                    onBackPressed()
+                }
+            } else {
+                showProgress(pb, this)
             }
+
 
         })
 
-        hideProgress(pb, this)
+
+    }
+
+    private fun clearObservers() {
+        viewModel.successfulBid.removeObservers(this)
+        viewModel.successfulBid.value = null
+
+        //Successfully cancel the bid
+        viewModel.successfulCancel.removeObservers(this)
+        viewModel.successfulCancel.value = null
+
+        //Upate the bid
+        viewModel.successfulUpdate.removeObservers(this)
+        viewModel.successfulUpdate.value = null
+
+        //Add observors
+        viewModel.successfulAdd.removeObservers(this)
+        viewModel.successfulAdd.value = null
+
+        viewModel.successfulDemand.removeObservers(this)
+        viewModel.successfulDemand.value = null
+
     }
 
     private fun closeBidHistory() {
@@ -739,7 +780,7 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
                     OfflineTranslate.transliterateToDefault(value.bid.bidder.address)
 
                 ans_detail_bid_quanity.text =
-                    value.bid.demand.qty.toString()
+                    value.bid.demand.qty.toString() + " " + resources.getString(R.string.kg)
 
                 ans_detail_bid_exp.text =
                     convertTimeToEpoch(value.bid.demand.expiry)
@@ -780,8 +821,10 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
             //Popultae Person object
             val bidDemander = value.bid.bidder
-            val address1 = bidDemander.village + "," + bidDemander.district
-            val address2 = bidDemander.state + "," + bidDemander.country
+            val address1 = bidDemander.village + ", " + bidDemander.district
+            val address2 = bidDemander.state + ", " + bidDemander.country
+
+            //#Demander
             personObject = PersonObject(
                 bidDemander.name,
                 bidDemander.phone,
@@ -811,8 +854,16 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
 
             dialogCurrentBid = currrentBid.toString()
+
+            Log.e(TAG, "The bids are ${value.bid.bids}")
             fillRecyclerView(value.bid)
-            createGraph(value.bid.demand.lastBid)
+            createGraph(
+                value.bid.demand.lastBid,
+                value.bid.currentBid,
+                value.bid.lastModified,
+                value.bid.bids
+            )
+
 
         } catch (e: Exception) {
             Log.e(TAG, "Error" + e.cause + e.message)
@@ -821,10 +872,18 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
         hideProgress(pb, this)
     }
 
-    private fun createGraph(value: List<ViewBidResponse.Bid.Demand.LastBid>) {
+    private fun createGraph(
+        value: List<ViewBidResponse.Bid.Demand.LastBid>, currentBid: Int,
+        lastModified: String,
+        bids: List<ViewBidResponse.Bid.BidDetails>
+    ) {
 
         val mList = value.toMutableList()
         numberOfBids = 0
+        graph.removeAllSeries()
+        graph.visibility = View.GONE
+
+
         if (value.isEmpty()) {
             //When there are no last bids or any bids
             graph.removeAllSeries()
@@ -839,6 +898,16 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
         } else {
 
+            //Add the current last bid
+
+            //#This last modifed is wrong, it can be for the the owner also
+            mList.add(
+                ViewBidResponse.Bid.Demand.LastBid(
+                    bids.get(0).amount,
+                    bids.get(0)._id,
+                    bids.get(0).timestamp
+                )
+            )
             mList.add(
                 ViewBidResponse.Bid.Demand.LastBid(
                     crop_amount_created.toInt(),
@@ -988,24 +1057,7 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
     override fun onBackPressed() {
 
         //Load the bid
-        viewModel.successfulBid.removeObservers(this)
-        viewModel.successfulBid.value = null
-
-        //Successfully cancel the bid
-        viewModel.successfulCancel.removeObservers(this)
-        viewModel.successfulCancel.value = null
-
-        //Upate the bid
-        viewModel.successfulUpdate.removeObservers(this)
-        viewModel.successfulUpdate.value = null
-
-        //Add observors
-        viewModel.successfulAdd.removeObservers(this)
-        viewModel.successfulAdd.value = null
-
-        viewModel.successfulDemand.removeObservers(this)
-        viewModel.successfulDemand.value = null
-
+        clearObservers()
         finish()
         super.onBackPressed()
 

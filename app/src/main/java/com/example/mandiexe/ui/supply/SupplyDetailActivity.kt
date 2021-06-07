@@ -12,6 +12,7 @@ import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -92,6 +93,7 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
     private val pref = com.example.mandiexe.utils.auth.PreferenceUtil
     private lateinit var pb: ProgressBar
+    private lateinit var mSnackbarView: CoordinatorLayout
     private lateinit var swl: SwipeRefreshLayout
 
     private var crop_date_created = ""
@@ -124,6 +126,7 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
         Log.e(TAG, "Supply id is" + SUPPLY_ID + "\nFrom " + from)
 
         pb = findViewById(R.id.pb_my_crops_details)
+        mSnackbarView = findViewById(R.id.container_supply_detail)
         //This gets an id as the argument and makes a call from it
         swl.isRefreshing = true
         makeCall()
@@ -202,7 +205,7 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
 
 
-        viewModelCrop.getFunction(body).observe(this, Observer { mResponse ->
+        viewModelCrop.getFunction(body, pb, mSnackbarView).observe(this, Observer { mResponse ->
             if (viewModelCrop.successfulSupply.value != null) {
 
                 //Hide Progress
@@ -492,7 +495,8 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
             crop_amount_created = value.supply.askPrice.toString()
             crop_date_created = value.supply.supplyCreated
 
-            findViewById<TextView>(R.id.ans_detail_crop_quanity).text = value.supply.qty.toString()
+            findViewById<TextView>(R.id.ans_detail_crop_quanity).text =
+                value.supply.qty.toString() + " " + resources.getString(R.string.kg)
             findViewById<TextView>(R.id.ans_detail_crop_exp).text =
                 TimeConversionUtils.convertTimeToEpoch(value.supply.expiry)
             findViewById<TextView>(R.id.ans_detail_init_date).text =
@@ -559,6 +563,10 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
         val mList = item.toMutableList()
         numberOfBid = 0
+        graph.removeAllSeries()
+        graph.visibility = View.GONE
+
+
         if (item.isEmpty()) {
             //When there are no last bids or any bids
             graph.removeAllSeries()

@@ -16,7 +16,6 @@ import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.usables.OfflineTranslate
 import com.example.mandiexe.utils.usables.TimeConversionUtils
 import com.example.mandiexe.utils.usables.TimeConversionUtils.convertLastModified
-import java.lang.Exception
 
 
 class MyRequirementsAdapter(val itemClick: OnMyBidClickListener) :
@@ -67,7 +66,8 @@ class MyRequirementsAdapter(val itemClick: OnMyBidClickListener) :
 
 
                     //No Translations/Transliterations
-                    CROP_QUANTITY.text = _listItem.qty.toString()
+                    CROP_QUANTITY.text =
+                        _listItem.qty.toString() + " " + itemView.context.resources.getString(R.string.kg)
                     CROP_EXP.text = TimeConversionUtils.convertTimeToEpoch(_listItem.expiry)
                     CROP_CURRENT_BID.text = _listItem.currentBid.toString()
                     CROP_IOP.text = _listItem.offerPrice.toString()

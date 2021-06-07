@@ -124,14 +124,14 @@ class AddStock : AppCompatActivity() {
         mtb = findViewById(R.id.mtb_go_to_bidding)
         pb = findViewById(R.id.pb_add_stock)
 
-        hideProgress(pb, this)
+
         //Populate views
         setUpCropNameSpinner()
 
 
-        // disable dates before today
+
         myCalendar = Calendar.getInstance()
-        myCalendar.add(Calendar.MONTH, 1)
+        myCalendar.add(Calendar.MONTH, -1)
 
         etEst.setOnClickListener {
             TimeConversionUtils.clickOnDateObject(myCalendar, etEst, this)
@@ -243,7 +243,7 @@ class AddStock : AppCompatActivity() {
             mHandler.postDelayed({ makeCallForGrowth() }, 5000)
         }
 
-        hideProgress(pb, this)
+
     }
 
     private fun goToNewSupply() {
@@ -285,6 +285,7 @@ class AddStock : AppCompatActivity() {
         )
 
 
+        clearObservers()
         val mSnackbar = findViewById<CoordinatorLayout>(R.id.container_add_stock)
 
         viewModel.growthFunction(growthBody, mSnackbar, pb).observe(this, Observer { mResponse ->
@@ -308,6 +309,14 @@ class AddStock : AppCompatActivity() {
             }
         })
 
+
+    }
+
+    private fun clearObservers() {
+        viewModel.successfulGrowth.value = null
+        viewModel.messageGrowth.value = null
+        viewModel.successfulGrowth.removeObservers(this)
+        viewModel.messageGrowth.removeObservers(this)
 
     }
 
@@ -459,13 +468,13 @@ class AddStock : AppCompatActivity() {
     override fun onBackPressed() {
         //Now we need to destroy this fragment and on resume of home, go to remove views
         Log.e(TAG, "In on destroy")
+        clearObservers()
         super.onBackPressed()
         finish()
 
     }
 
     override fun onPause() {
-
 
         Log.e(TAG, "On Pause")
         super.onPause()

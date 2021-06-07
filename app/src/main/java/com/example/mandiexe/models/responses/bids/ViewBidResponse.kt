@@ -150,3 +150,4 @@ data class ViewBidResponse(
         }
     }
 }
+

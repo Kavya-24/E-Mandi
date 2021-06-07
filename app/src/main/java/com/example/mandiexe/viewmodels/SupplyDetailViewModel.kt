@@ -1,7 +1,10 @@
 package com.example.mandiexe.viewmodels
 
 import android.util.Log
+import android.view.View
+import android.widget.ProgressBar
 import androidx.annotation.Keep
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mandiexe.R
@@ -15,6 +18,7 @@ import com.example.mandiexe.models.responses.supply.ViewSupplyResponse
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.auth.SessionManager
 import com.example.mandiexe.utils.usables.ExternalUtils
+import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import retrofit2.Call
 import retrofit2.Response
 
@@ -47,13 +51,21 @@ class SupplyDetailViewModel : ViewModel() {
     private var mSupply: MutableLiveData<ViewSupplyResponse> = MutableLiveData()
 
 
-    fun getFunction(body: ViewSupplyBody): MutableLiveData<ViewSupplyResponse> {
+    fun getFunction(
+        body: ViewSupplyBody,
+        pb: ProgressBar,
+        mSnackbarView: CoordinatorLayout
+    ): MutableLiveData<ViewSupplyResponse> {
 
-        mSupply = supplyStockFunction(body)
+        mSupply = supplyStockFunction(body, pb, mSnackbarView)
         return mSupply
     }
 
-    fun supplyStockFunction(body: ViewSupplyBody): MutableLiveData<ViewSupplyResponse> {
+    fun supplyStockFunction(
+        body: ViewSupplyBody,
+        pb: ProgressBar,
+        mSnackbarView: CoordinatorLayout
+    ): MutableLiveData<ViewSupplyResponse> {
 
 
         mySupplyService.getViewCurrentSupply(
@@ -64,6 +76,8 @@ class SupplyDetailViewModel : ViewModel() {
                 override fun onFailure(call: Call<ViewSupplyResponse>, t: Throwable) {
                     successfulSupply.value = false
                     messageSupply.value = ExternalUtils.returnStateMessageForThrowable(t)
+                    pb.visibility = View.GONE
+                    createSnackbar(messageSupply.value, context, mSnackbarView)
                     //Response is null
                 }
 

@@ -2,6 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container_supply_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -41,6 +42,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/space"
                         android:text="@string/variety"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_stock_detail_crop_name" />
 
@@ -69,12 +71,11 @@
                     <TextView
                         android:id="@+id/tv_stock_detail_crop_description"
                         android:layout_width="0dp"
-                        app:layout_constraintEnd_toEndOf="parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:maxLines="4"
                         android:text="@string/description"
-                        app:layout_constraintBottom_toBottomOf="@id/mCropDesc"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/mCropDesc"
                         app:layout_constraintTop_toTopOf="@id/mCropDesc" />
 
@@ -84,6 +85,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/space"
                         android:text="@string/description"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_stock_detail_crop_type" />
 
@@ -94,6 +96,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/space"
                         android:text="@string/quantity2"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_stock_detail_crop_description" />
 
@@ -113,6 +116,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/space"
                         android:text="@string/expiration_date"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_stock_detail_quantity" />
 
@@ -133,6 +137,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/space"
                         android:text="@string/date_of_start"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_stock_detail_expiration" />
 

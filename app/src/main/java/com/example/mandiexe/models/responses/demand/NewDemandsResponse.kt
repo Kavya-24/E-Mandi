@@ -29,7 +29,7 @@ import com.squareup.moshi.Json
         @field:Json(name = "description")
         val description: String, // NA
         @field:Json(name = "distance")
-        val distance: Int, // 0
+        val distance: Double, // 0
         @field:Json(name = "expiry")
         val expiry: String, // 2021-03-01T00:00:00.000Z
         @field:Json(name = "_id")

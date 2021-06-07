@@ -225,7 +225,7 @@ class AddStockPage2 : AppCompatActivity() {
             mHandler.postDelayed({ makeCalls() }, 5000)
         }
 
-        hideProgress(pb, this)
+
     }
 
     private fun makeCalls() {
@@ -376,6 +376,12 @@ class AddStockPage2 : AppCompatActivity() {
         viewModel.successfulGrowth.value = null
         viewModel.successful.removeObservers(this)
         viewModel.successful.value = null
+
+        viewModel.messageGrowth.removeObservers(this)
+        viewModel.messageGrowth.value = null
+        viewModel.message.removeObservers(this)
+        viewModel.message.value = null
+
 
     }
 

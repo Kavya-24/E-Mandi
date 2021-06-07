@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/container_bid_detail"
     android:layout_height="match_parent"
     android:background="@color/bgGreen">
 
@@ -53,6 +54,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/space"
                         android:text="@string/variety"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_requirement_detail_crop_name" />
 
@@ -72,6 +74,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/space"
                         android:text="@string/location"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/mDetQuantity" />
 
@@ -91,6 +94,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/space"
                         android:text="@string/description"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/mDetLocation" />
 
@@ -99,7 +103,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/space"
-                        app:layout_constraintBottom_toBottomOf="@id/mDetDesc"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/mDetDesc"
                         app:layout_constraintTop_toTopOf="@id/mDetDesc"
@@ -111,15 +114,16 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/space"
+                        android:textStyle="bold"
                         android:text="@string/quantity2"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/mDetDesc" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_requirement_detail_crop_description" />
 
                     <TextView
                         android:id="@+id/ans_detail_bid_quanity"
                         android:layout_width="21dp"
                         android:layout_height="15dp"
-                        android:layout_marginStart="@dimen/space"
+                        android:layout_margin="@dimen/space"
                         android:text="@string/_0_kg"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="@id/tv_requirement_detail_quantity"
@@ -131,6 +135,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/space"
+                        android:textStyle="bold"
                         android:text="@string/expiration_date"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_requirement_detail_quantity" />
@@ -151,6 +156,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/space"
+                        android:textStyle="bold"
                         android:text="@string/date_of_start"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_requirement_detail_expiration" />

@@ -63,6 +63,11 @@
 
     </style>
 
+    <style name="SearchSupplyView" parent="Theme.MaterialComponents">
+        <item name="android:editTextColor">@android:color/white</item>
+        <item name="android:textColorHint">@android:color/white</item>
+    </style>
+
     <style name="OutlinedTextBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

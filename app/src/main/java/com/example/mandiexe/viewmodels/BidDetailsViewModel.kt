@@ -1,7 +1,10 @@
 package com.example.mandiexe.viewmodels
 
 import android.util.Log
+import android.view.View
+import android.widget.ProgressBar
 import androidx.annotation.Keep
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mandiexe.R
@@ -61,12 +64,20 @@ class BidDetailsViewModel : ViewModel() {
 
 
     //For viewing the bid
-    fun viewBidFunction(body: ViewBidBody): MutableLiveData<ViewBidResponse> {
-        mBid = bidFunction(body)
+    fun viewBidFunction(
+        body: ViewBidBody,
+        pb: ProgressBar,
+        mSnackbarView: CoordinatorLayout
+    ): MutableLiveData<ViewBidResponse> {
+        mBid = bidFunction(body, pb, mSnackbarView)
         return mBid
     }
 
-    private fun bidFunction(body: ViewBidBody): MutableLiveData<ViewBidResponse> {
+    private fun bidFunction(
+        body: ViewBidBody,
+        pb: ProgressBar,
+        mSnackbarView: CoordinatorLayout
+    ): MutableLiveData<ViewBidResponse> {
 
         myBidService.getFarmerViewParticularBid(
 
@@ -76,8 +87,11 @@ class BidDetailsViewModel : ViewModel() {
                 override fun onFailure(call: Call<ViewBidResponse>, t: Throwable) {
                     successfulBid.value = false
                     messageBid.value = ExternalUtils.returnStateMessageForThrowable(t)
-                    UIUtils.logThrowables(t,TAG)
+                    UIUtils.logThrowables(t, TAG)
                     //Response is null
+                    pb.visibility = View.GONE
+                    UIUtils.createSnackbar(messageBid.value, context, mSnackbarView)
+
                 }
 
                 override fun onResponse(
@@ -117,13 +131,21 @@ class BidDetailsViewModel : ViewModel() {
     }
 
 
-    fun deleteFunction(body: DeletBidBody): MutableLiveData<DeleteBidResponse> {
+    fun deleteFunction(
+        body: DeletBidBody,
+        pb: ProgressBar,
+        mSnackbarView: CoordinatorLayout
+    ): MutableLiveData<DeleteBidResponse> {
 
-        deleteBid = deleteBidFunction(body)
+        deleteBid = deleteBidFunction(body, pb, mSnackbarView)
         return deleteBid
     }
 
-    private fun deleteBidFunction(body: DeletBidBody): MutableLiveData<DeleteBidResponse> {
+    private fun deleteBidFunction(
+        body: DeletBidBody,
+        pb: ProgressBar,
+        mSnackbarView: CoordinatorLayout
+    ): MutableLiveData<DeleteBidResponse> {
 
         myBidService.getFarmerDeleteBid(
             mDeleteBidBody = body,
@@ -133,6 +155,9 @@ class BidDetailsViewModel : ViewModel() {
                     successfulCancel.value = false
                     messageCancel.value = ExternalUtils.returnStateMessageForThrowable(t)
                     //Response is null
+                    pb.visibility = View.GONE
+                    UIUtils.createSnackbar(messageCancel.value, context, mSnackbarView)
+
                 }
 
                 override fun onResponse(
@@ -171,13 +196,21 @@ class BidDetailsViewModel : ViewModel() {
     }
 
 
-    fun updateFunction(body: UpdateBidBody): MutableLiveData<UpdateBidResponse> {
+    fun updateFunction(
+        body: UpdateBidBody,
+        pb: ProgressBar,
+        mSnackbarView: CoordinatorLayout
+    ): MutableLiveData<UpdateBidResponse> {
 
-        modifyBid = updateBidFunction(body)
+        modifyBid = updateBidFunction(body, pb, mSnackbarView)
         return modifyBid
     }
 
-    private fun updateBidFunction(body: UpdateBidBody): MutableLiveData<UpdateBidResponse> {
+    private fun updateBidFunction(
+        body: UpdateBidBody,
+        pb: ProgressBar,
+        mSnackbarView: CoordinatorLayout
+    ): MutableLiveData<UpdateBidResponse> {
 
         myBidService.getFarmerUpdateBid(
             mUpdateBidBody = body,
@@ -187,6 +220,10 @@ class BidDetailsViewModel : ViewModel() {
                     successfulUpdate.value = false
                     messageUpdate.value = ExternalUtils.returnStateMessageForThrowable(t)
                     //Response is null
+                    pb.visibility = View.GONE
+                    UIUtils.createSnackbar(messageUpdate.value, context, mSnackbarView)
+
+
                 }
 
                 override fun onResponse(
@@ -227,13 +264,21 @@ class BidDetailsViewModel : ViewModel() {
     }
 
 
-    fun addFunction(body: AddBidBody): MutableLiveData<AddBidResponse> {
+    fun addFunction(
+        body: AddBidBody,
+        pb: ProgressBar,
+        mSnackbarView: CoordinatorLayout
+    ): MutableLiveData<AddBidResponse> {
 
-        addBid = addBidFunction(body)
+        addBid = addBidFunction(body, pb, mSnackbarView)
         return addBid
     }
 
-    private fun addBidFunction(body: AddBidBody): MutableLiveData<AddBidResponse> {
+    private fun addBidFunction(
+        body: AddBidBody,
+        pb: ProgressBar,
+        mSnackbarView: CoordinatorLayout
+    ): MutableLiveData<AddBidResponse> {
 
         myBidService.getFarmerAddBid(
             mAddBidBody = body,
@@ -245,6 +290,9 @@ class BidDetailsViewModel : ViewModel() {
                     messageAdd.value = ExternalUtils.returnStateMessageForThrowable(t)
                     //Response is null
                     Log.e(TAG, "Throwanble ${t.cause} ${t.message}")
+                    pb.visibility = View.GONE
+                    UIUtils.createSnackbar(messageAdd.value, context, mSnackbarView)
+
                 }
 
                 override fun onResponse(
@@ -285,12 +333,20 @@ class BidDetailsViewModel : ViewModel() {
     }
 
 
-    fun viewDemandFunction(body: ViewDemandBody): MutableLiveData<ViewDemandResponse> {
-        demandStock = demandFunction(body)
+    fun viewDemandFunction(
+        body: ViewDemandBody,
+        pb: ProgressBar,
+        mSnackbarView: CoordinatorLayout
+    ): MutableLiveData<ViewDemandResponse> {
+        demandStock = demandFunction(body, pb, mSnackbarView)
         return demandStock
     }
 
-    private fun demandFunction(body: ViewDemandBody): MutableLiveData<ViewDemandResponse> {
+    private fun demandFunction(
+        body: ViewDemandBody,
+        pb: ProgressBar,
+        mSnackbarView: CoordinatorLayout
+    ): MutableLiveData<ViewDemandResponse> {
 
         myDemandService.getOpenDemand(
 
@@ -302,6 +358,9 @@ class BidDetailsViewModel : ViewModel() {
                     messageDemand.value = ExternalUtils.returnStateMessageForThrowable(t)
                     //Response is null
                     Log.e(TAG, "For the farmer, throawable is ${t.message} ${t.cause}")
+                    pb.visibility = View.GONE
+                    UIUtils.createSnackbar(messageDemand.value, context, mSnackbarView)
+
                 }
 
                 override fun onResponse(

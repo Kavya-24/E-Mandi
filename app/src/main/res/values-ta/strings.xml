@@ -299,5 +299,6 @@
     <string name="nf">Not found</string>
     <string name="notAbleToCreateGMap">Unable to launch maps</string>
     <string name="locationPermissionDenied">Location permission denied</string>
+    <string name="rs_kg">Rs/Kg</string>
 
 </resources>
