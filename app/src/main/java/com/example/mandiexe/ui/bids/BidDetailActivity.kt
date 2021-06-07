@@ -206,17 +206,14 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
             }
 
 
-            iv_req_call_buyer.setOnClickListener {
-                checkCallPermissions()
 
-            }
 
             swl_detailsReq.setOnRefreshListener {
                 makeCall()
                 swl_detailsReq.isRefreshing = false
             }
 
-            tv_req_details_buyer_name.setOnClickListener {
+            mContact.setOnClickListener {
                 viewBuyer()
             }
 
@@ -401,7 +398,8 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
                 this.apply {
 
-                    tv_req_details_buyer_name.text = (ownerName)
+                    tv_contact_name.text = ownerName
+                    tv_contact_initial.text = ownerName.take(1)
                     tv_requirement_detail_crop_location.text =
                         OfflineTranslate.transliterateToDefault(value.demand.demander.address)
 
@@ -775,7 +773,9 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
             this.apply {
 
-                tv_req_details_buyer_name.text = (ownerName)
+                tv_contact_name.text = ownerName
+                tv_contact_initial.text = ownerName.take(1)
+
                 tv_requirement_detail_crop_location.text =
                     OfflineTranslate.transliterateToDefault(value.bid.bidder.address)
 
@@ -881,7 +881,6 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
         val mList = value.toMutableList()
         numberOfBids = 0
         graph.removeAllSeries()
-        graph.visibility = View.GONE
 
 
         if (value.isEmpty()) {

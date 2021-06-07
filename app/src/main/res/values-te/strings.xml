@@ -300,5 +300,6 @@
     <string name="notAbleToCreateGMap">Unable to launch maps</string>
     <string name="locationPermissionDenied">Location permission denied</string>
     <string name="rs_kg">Rs/Kg</string>
+    <string name="w">W</string>
 
 </resources>

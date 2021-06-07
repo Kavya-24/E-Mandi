@@ -118,13 +118,19 @@ class SupplyDetailViewModel : ViewModel() {
     }
 
 
-    fun cancelFunction(body: DeleteSupplyBody): MutableLiveData<DeleteSupplyResponse> {
+    fun cancelFunction(
+        body: DeleteSupplyBody, pb: ProgressBar,
+        mSnackbarView: CoordinatorLayout
+    ): MutableLiveData<DeleteSupplyResponse> {
 
-        deleteStock = deleteStockFunction(body)
+        deleteStock = deleteStockFunction(body, pb, mSnackbarView)
         return deleteStock
     }
 
-    fun deleteStockFunction(body: DeleteSupplyBody): MutableLiveData<DeleteSupplyResponse> {
+    private fun deleteStockFunction(
+        body: DeleteSupplyBody, pb: ProgressBar,
+        mSnackbarView: CoordinatorLayout
+    ): MutableLiveData<DeleteSupplyResponse> {
 
         mySupplyService.getDeleteSupply(
             mDeleteSupply = body,
@@ -134,6 +140,9 @@ class SupplyDetailViewModel : ViewModel() {
                     successfulCancel.value = false
                     messageCancel.value = ExternalUtils.returnStateMessageForThrowable(t)
                     //Response is null
+                    pb.visibility = View.GONE
+                    createSnackbar(messageCancel.value, context, mSnackbarView)
+
                 }
 
                 override fun onResponse(
@@ -171,13 +180,19 @@ class SupplyDetailViewModel : ViewModel() {
 
     }
 
-    fun updateFunction(body: ModifySupplyBody): MutableLiveData<ModifySupplyResponse> {
+    fun updateFunction(
+        body: ModifySupplyBody, pb: ProgressBar,
+        mSnackbarView: CoordinatorLayout
+    ): MutableLiveData<ModifySupplyResponse> {
 
-        modifyStock = updateStockFunction(body)
+        modifyStock = updateStockFunction(body, pb, mSnackbarView)
         return modifyStock
     }
 
-    fun updateStockFunction(body: ModifySupplyBody): MutableLiveData<ModifySupplyResponse> {
+    private fun updateStockFunction(
+        body: ModifySupplyBody, pb: ProgressBar,
+        mSnackbarView: CoordinatorLayout
+    ): MutableLiveData<ModifySupplyResponse> {
 
         mySupplyService.getModifySupply(
             mModifySupply = body,
@@ -187,6 +202,9 @@ class SupplyDetailViewModel : ViewModel() {
                     successfulUpdate.value = false
                     messageUpdate.value = ExternalUtils.returnStateMessageForThrowable(t)
                     //Response is null
+                    pb.visibility = View.GONE
+                    createSnackbar(messageUpdate.value, context, mSnackbarView)
+
                 }
 
                 override fun onResponse(

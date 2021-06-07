@@ -210,11 +210,8 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
                 //Hide Progress
                 hideProgress(pb, this)
-                if (viewModelCrop.successfulSupply.value!! || viewModelCrop.messageSupply.value == "Supply retrieved successfully.") {
-                    initViews(mResponse)
-                } else {
-                    createSnackbar(viewModelCrop.messageCancel.value)
-                }
+                initViews(mResponse)
+
             } else {
                 Log.e(TAG, "Loading")
                 showProgress(pb, this)
@@ -247,7 +244,7 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
         val body = DeleteSupplyBody(SUPPLY_ID)
 
 
-        viewModelCrop.cancelFunction(body).observe(this, Observer { mResponse ->
+        viewModelCrop.cancelFunction(body, pb, mSnackbarView).observe(this, Observer { mResponse ->
             val success = viewModelCrop.successfulCancel.value
             if (success != null) {
                 hideProgress(pb, this)
@@ -412,16 +409,14 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
         tempRef.dismiss()
 
 
-        viewModelCrop.updateFunction(body).observe(this, Observer { mResponse ->
+        viewModelCrop.updateFunction(body, pb, mSnackbarView).observe(this, Observer { mResponse ->
 
             if (viewModelCrop.successfulUpdate.value != null) {
                 //Check with the sucessful of it
                 hideProgress(pb, this)
-                if (viewModelCrop.successfulUpdate.value == false) {
-                    createSnackbar(viewModelCrop.messageUpdate.value)
-                } else {
-                    manageModifyResponse(mResponse)
-                }
+
+                manageModifyResponse(mResponse)
+
             } else {
                 showProgress(pb, this)
             }
@@ -434,7 +429,7 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun manageModifyResponse(mResponse: ModifySupplyResponse?) {
         createSnackbar(mResponse?.msg.toString())
-
+        showProgress(pb, this)
         makeCall()
 
     }
@@ -564,7 +559,7 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
         val mList = item.toMutableList()
         numberOfBid = 0
         graph.removeAllSeries()
-        graph.visibility = View.GONE
+
 
 
         if (item.isEmpty()) {
@@ -760,6 +755,7 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
     }
 
+
     override fun onBackPressed() {
 
         Log.e(TAG, "In on BackPressed")
@@ -767,6 +763,14 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 //        val navController = findNavController()
 //        navController.navigateUp()
 
+        clearObservers()
+
+        super.onBackPressed()
+        finish()
+
+    }
+
+    private fun clearObservers() {
         viewModelCrop.successfulSupply.removeObservers(this)
         viewModelCrop.successfulSupply.value = null
 
@@ -775,9 +779,6 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
         viewModelCrop.successfulUpdate.removeObservers(this)
         viewModelCrop.successfulUpdate.value = null
-
-        super.onBackPressed()
-        finish()
 
     }
 

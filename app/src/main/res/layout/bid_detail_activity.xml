@@ -2,8 +2,8 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:id="@+id/container_bid_detail"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bgGreen">
 
@@ -30,11 +30,11 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/mLayoutReq"
+                    android:visibility="invisible"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/space"
                     android:padding="@dimen/space"
-                    android:visibility="invisible"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
@@ -114,8 +114,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/space"
-                        android:textStyle="bold"
                         android:text="@string/quantity2"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_requirement_detail_crop_description" />
 
@@ -135,8 +135,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/space"
-                        android:textStyle="bold"
                         android:text="@string/expiration_date"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_requirement_detail_quantity" />
 
@@ -156,8 +156,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/space"
-                        android:textStyle="bold"
                         android:text="@string/date_of_start"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_requirement_detail_expiration" />
 
@@ -264,27 +264,47 @@
 
 
                     <!--        //##Add contact-->
-                    <TextView
-                        android:id="@+id/tv_req_details_buyer_name"
-                        android:layout_width="0dp"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/mContact"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/space"
-                        android:layout_marginTop="@dimen/space_2x"
-                        android:layout_marginEnd="@dimen/space"
-                        android:layout_marginBottom="@dimen/space_2x"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_requirement_detail_my_bid"
-                        tools:text="@tools:sample/full_names" />
+                        android:layout_margin="@dimen/space"
+                        app:layout_constraintTop_toBottomOf="@id/tv_requirement_detail_my_bid">
 
-                    <ImageView
-                        android:id="@+id/iv_req_call_buyer"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_call_black_24dp"
-                        app:layout_constraintBottom_toBottomOf="@id/tv_req_details_buyer_name"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/tv_req_details_buyer_name" />        <!--        Add graph-->
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cv_contact_initial"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_margin="@dimen/space"
+                            android:elevation="0dp"
+                            app:cardBackgroundColor="@color/wildColor"
+                            app:cardCornerRadius="20dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/tv_contact_initial"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="@string/w"
+                                android:textColor="@color/white"
+                                android:textStyle="bold" />
+
+                        </androidx.cardview.widget.CardView>
+
+                        <TextView
+                            android:id="@+id/tv_contact_name"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/space"
+                            app:layout_constraintBottom_toBottomOf="@id/cv_contact_initial"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/cv_contact_initial"
+                            app:layout_constraintTop_toTopOf="@id/cv_contact_initial"
+                            tools:text="@tools:sample/full_names" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
                     <!--                <com.github.mikephil.charting.charts.LineChart--><!--                    android:id="@+id/lineChartMyBids"-->
@@ -309,7 +329,7 @@
                         android:text="@string/view_bid_history"
                         android:textColor="@color/wildColor"
                         android:textStyle="bold"
-                        app:layout_constraintTop_toBottomOf="@id/tv_req_details_buyer_name" />
+                        app:layout_constraintTop_toBottomOf="@id/mContact" />
 
                     <ImageView
                         android:id="@+id/iv_dropdown_bid_history_req"
