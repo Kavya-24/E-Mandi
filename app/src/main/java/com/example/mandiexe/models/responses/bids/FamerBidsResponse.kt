@@ -5,11 +5,13 @@ import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
 
- @Keep data class FamerBidsResponse(
+@Keep
+data class FamerBidsResponse(
     @field:Json(name = "bids")
     val bids: List<Bid>
 ) {
-    @Keep data class Bid(
+    @Keep
+    data class Bid(
         @field:Json(name = "active")
         val active: Boolean, // true
         @field:Json(name = "bidDate")
@@ -31,7 +33,8 @@ import com.squareup.moshi.Json
         @field:Json(name = "__v")
         val v: Int // 0
     ) {
-        @Keep data class BidDetails(
+        @Keep
+        data class BidDetails(
             @field:Json(name = "amount")
             val amount: Int, // 10000
             @field:Json(name = "_id")
@@ -40,7 +43,8 @@ import com.squareup.moshi.Json
             val timestamp: String // 2021-02-05T18:10:44.693Z
         )
 
-        @Keep data class Demand(
+        @Keep
+        data class Demand(
             @field:Json(name = "active")
             val active: Boolean, // true
             @field:Json(name = "bids")
@@ -79,7 +83,8 @@ import com.squareup.moshi.Json
             val variety: String // Basmati
 
         ) {
-            @Keep data class LastBid(
+            @Keep
+            data class LastBid(
                 @field:Json(name = "amount")
                 val amount: Int, // 0
                 @field:Json(name = "_id")
@@ -88,7 +93,8 @@ import com.squareup.moshi.Json
                 val timestamp: String // 2021-02-04T18:32:31.389Z
             )
 
-            @Keep data class Location(
+            @Keep
+            data class Location(
                 @field:Json(name = "coordinates")
                 val coordinates: List<Double>,
                 @field:Json(name = "type")
@@ -96,7 +102,8 @@ import com.squareup.moshi.Json
             )
         }
 
-        @Keep data class Demander(
+        @Keep
+        data class Demander(
             @field:Json(name = "address")
             val address: String, // b381, asia
             @field:Json(name = "country")
@@ -118,7 +125,8 @@ import com.squareup.moshi.Json
             @field:Json(name = "village")
             val village: String // greno
         ) {
-            @Keep data class Location(
+            @Keep
+            data class Location(
                 @field:Json(name = "coordinates")
                 val coordinates: List<Double>,
                 @field:Json(name = "type")

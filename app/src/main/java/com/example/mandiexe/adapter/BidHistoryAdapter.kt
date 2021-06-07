@@ -70,77 +70,71 @@ class BidHistoryAdapter(val itemClick: OnMyBidClickListenerGlobal) :
                     CROP_CURRENT_BID.text = _listItem.currentBid.toString()
                     CROP_IOP.text = _listItem.offerPrice.toString()
 
-                    MY_BID.text = _listItem.currentBid.toString()
+                    MY_BID.text = mItem.currentBid.toString()
                     CROP_LAST_UPDATED.text =
                         TimeConversionUtils.convertLastModified(_listItem.lastModified)
 
                     //If the bid is not active,
-                    if (mItem.active) {
-                        CROP_DELTA.text = itemView.context.getString(R.string.activeBid)
-                        CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaGreen))
-
-                        if (currentBid != 0) {
-
-                            val currentBid = _listItem.currentBid
-                            val askBid = _listItem.offerPrice
-                            val ans = askBid - currentBid
+                    val myCurrentBid = mItem.currentBid.toInt()
+                    val askBid = _listItem.offerPrice
+                    if (myCurrentBid <= askBid) {
+                        MY_BID.setTextColor(itemView.context.resources.getColor(R.color.deltaGreen))
+                    } else {
+                        MY_BID.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
+                    }
 
 
-                            if (ans > 0) {
+                    if (currentBid != 0) {
+
+                        val currentBid = _listItem.currentBid
+                        val ans = askBid - currentBid
 
 
-                                CROP_DELTA.text = "+$ans"
-                                CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaGreen))
-                                CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaGreen))
-                                CROP_CARD.setCardBackgroundColor(
-                                    itemView.context.resources.getColor(
-                                        R.color.lightGreenTest
-                                    )
+                        if (ans > 0) {
+
+
+                            CROP_DELTA.text = "+$ans"
+                            CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaGreen))
+                            CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaGreen))
+                            CROP_CARD.setCardBackgroundColor(
+                                itemView.context.resources.getColor(
+                                    R.color.lightGreenTest
                                 )
+                            )
 
-                            } else if (ans < 0) {
+                        } else if (ans < 0) {
 
-                                CROP_DELTA.text = "-$ans.toString()"
-                                CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
-                                CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaRed))
-                                CROP_CARD.setCardBackgroundColor(
-                                    itemView.context.resources.getColor(
-                                        R.color.lightRedMono
-                                    )
+                            CROP_DELTA.text = "$ans"
+                            CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
+                            CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaRed))
+                            CROP_CARD.setCardBackgroundColor(
+                                itemView.context.resources.getColor(
+                                    R.color.lightRedMono
                                 )
-                                CROP_CURRENT_BID.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
+                            )
+                            CROP_CURRENT_BID.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
 
 
-                            } else if (ans == 0) {
+                        } else if (ans == 0) {
 
-                                CROP_DELTA.text =
-                                    itemView.context.resources.getString(R.string.noDesc)
-                                CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.wildColor))
-                                CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.wildColor))
-                                CROP_CARD.setCardBackgroundColor(
-                                    itemView.context.resources.getColor(
-                                        R.color.lightGreenTest
-                                    )
-                                )
-
-                            }
-
-                        } else {
-
-                            CROP_DELTA.text = itemView.context.resources.getString(R.string.noDesc)
+                            CROP_DELTA.text =
+                                itemView.context.resources.getString(R.string.noDesc)
                             CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.wildColor))
                             CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.wildColor))
-                            CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightGreenTest))
-                        }
+                            CROP_CARD.setCardBackgroundColor(
+                                itemView.context.resources.getColor(
+                                    R.color.lightGreenTest
+                                )
+                            )
 
+                        }
 
                     } else {
 
-                        CROP_DELTA.text = itemView.context.getString(R.string.inactiveBid)
+                        CROP_DELTA.text = itemView.context.resources.getString(R.string.noDesc)
                         CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.wildColor))
                         CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.wildColor))
                         CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightGreenTest))
-
                     }
 
 

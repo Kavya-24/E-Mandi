@@ -71,16 +71,24 @@ class MyRequirementsAdapter(val itemClick: OnMyBidClickListener) :
                     CROP_EXP.text = TimeConversionUtils.convertTimeToEpoch(_listItem.expiry)
                     CROP_CURRENT_BID.text = _listItem.currentBid.toString()
                     CROP_IOP.text = _listItem.offerPrice.toString()
-                    MY_BID.text = _listItem.currentBid.toString()
+                    MY_BID.text = mItem.currentBid.toString()
                     CROP_LAST_UPDATED.text = convertLastModified(_listItem.lastModified)
+
+                    val myCurrentBid = mItem.currentBid.toInt()
+                    val askBid = _listItem.offerPrice
+                    if (myCurrentBid <= askBid) {
+                        MY_BID.setTextColor(itemView.context.resources.getColor(R.color.deltaGreen))
+                    } else {
+                        MY_BID.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
+                    }
 
 
                     //I am a farmer, these are my bids
                     if (currentBid != 0) {
 
                         val currentBid = _listItem.currentBid
-                        val askBid = _listItem.offerPrice
-                        val ans = currentBid - askBid
+                        val ans = askBid - currentBid
+
 
 
                         if (ans > 0) {
@@ -92,7 +100,7 @@ class MyRequirementsAdapter(val itemClick: OnMyBidClickListener) :
 
                         } else if (ans < 0) {
 
-                            CROP_DELTA.text = "-$ans.toString()"
+                            CROP_DELTA.text = "$ans"
                             CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
                             CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaRed))
                             CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightRedMono))
@@ -116,8 +124,7 @@ class MyRequirementsAdapter(val itemClick: OnMyBidClickListener) :
                         CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightGreenTest))
                     }
 
-                }
-                catch (e : Exception){
+                } catch (e: Exception) {
 
                 }
                 itemView.setOnClickListener {

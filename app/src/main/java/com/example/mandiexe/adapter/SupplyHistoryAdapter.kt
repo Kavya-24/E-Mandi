@@ -79,7 +79,7 @@ class SupplyHistoryAdapter(val itemClick: OnMySupplyHistoryClickListener) :
 
                         } else if (ans < 0) {
 
-                            CROP_DELTA.text = "-" + ans.toString()
+                            CROP_DELTA.text = ans.toString()
                             CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
                             CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaRed))
                             CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightRedMono))

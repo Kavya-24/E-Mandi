@@ -84,7 +84,7 @@ RecyclerView.Adapter<NewReqAdapter.MyViewHolder>() {
 
                         val currentBid = _listItem.currentBid
                         val askBid = _listItem.offerPrice
-                        val ans = currentBid - askBid
+                        val ans = askBid - currentBid
 
 
                         if (ans > 0) {
@@ -97,7 +97,7 @@ RecyclerView.Adapter<NewReqAdapter.MyViewHolder>() {
 
                         } else if (ans < 0) {
 
-                            CROP_DELTA.text = "-$ans.toString()"
+                            CROP_DELTA.text = "$ans"
                             CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
                             CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaRed))
                             CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightRedMono))
