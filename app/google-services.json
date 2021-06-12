@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "291384452956-1ig9g4tjti17b7frfj79qcaaevd1rggr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.e_manditrader",
+            "certificate_hash": "0eb65f1df33f91dae56a7e602588b4c60bf228b5"
+          }
+        },
+        {
           "client_id": "291384452956-5csg4qfko1nufue2r155g50jfeaevt40.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -43,7 +51,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "291384452956-r66deo1cdrp6lb3cvl70mundpunno4a5.apps.googleusercontent.com",
+          "client_id": "291384452956-5e6m61n5864hg2m3qp1ba9akb2mka80l.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.mandiexe",
