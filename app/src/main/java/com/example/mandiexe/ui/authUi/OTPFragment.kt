@@ -245,12 +245,15 @@ class OTPFragment : Fragment() {
                         container_frag_otp
                     )
 
+                    hideProgress(pb, requireContext())
+
                 } else if (e is FirebaseTooManyRequestsException) {
                     UIUtils.createSnackbar(
                         resources.getString(R.string.quotaRequest),
                         requireContext(),
                         container_frag_otp
                     )
+                    hideProgress(pb, requireContext())
 
                 } else {
 
@@ -262,11 +265,10 @@ class OTPFragment : Fragment() {
                         requireContext(),
                         container_frag_otp
                     )
+                    hideProgress(pb, requireContext())
 
                 }
-                hideProgress(pb, requireContext())
-                // Show a message and update the UI
-                // ...
+
             }
 
             override fun onCodeSent(
