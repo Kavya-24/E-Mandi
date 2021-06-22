@@ -6,11 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import com.example.mandiexe.R
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
-import com.example.mandiexe.viewmodels.LoginViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.PhoneAuthProvider
@@ -22,7 +20,6 @@ class LoginFragment : Fragment() {
         fun newInstance() = LoginFragment()
     }
 
-    private lateinit var viewModel: LoginViewModel
     private lateinit var root: View
 
     //UI elements
@@ -99,9 +96,6 @@ class LoginFragment : Fragment() {
 
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
-    }
+
 
 }

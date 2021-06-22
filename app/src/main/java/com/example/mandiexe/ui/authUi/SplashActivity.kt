@@ -60,12 +60,6 @@ class SplashActivity : AppCompatActivity() {
 
 
 
-        handler = Handler()
-
-        runnable = Runnable {
-            startActivity(intent)
-            finish()
-        }
 
 
     }

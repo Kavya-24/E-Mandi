@@ -2,15 +2,15 @@ package com.example.mandiexe.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentStatePagerAdapter
 import com.example.mandiexe.R
-import com.example.mandiexe.ui.myrequirements.RequirementFragment
+import com.example.mandiexe.ui.bids.MyBidsFragment
 import com.example.mandiexe.ui.supply.MySuppliesFragment
 import com.example.mandiexe.utils.ApplicationUtils
 
 
 class MyViewPagerAdapter(manager: FragmentManager) :
-    FragmentPagerAdapter(manager, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+    FragmentStatePagerAdapter(manager) {
 
 
     private val mCrops = ApplicationUtils.getContext().resources.getString(R.string.str_my_crops)
@@ -26,7 +26,7 @@ class MyViewPagerAdapter(manager: FragmentManager) :
         return when (position) {
 
             0 -> MySuppliesFragment.newInstance()
-            1 -> RequirementFragment.newInstance()
+            1 -> MyBidsFragment.newInstance()
             else -> MySuppliesFragment.newInstance()
         }
     }
@@ -47,27 +47,3 @@ class MyViewPagerAdapter(manager: FragmentManager) :
     }
 
 }
-
-//class PagerAdapter(fm: FragmentManager?, var mNumOfTabs: Int, context: Context) :
-//    FragmentStatePagerAdapter(fm!!) {
-//
-//
-//    private val tabTitles = arrayOf(mCrops, mReq)
-//
-//    override fun getCount(): Int {
-//        return mNumOfTabs
-//    }
-//
-//    override fun getItem(position: Int): Fragment {
-//        return when (position) {
-//            0 -> MySuppliesFragment()
-//            1 -> RequirementFragment()
-//            else -> MySuppliesFragment()
-//        }
-//
-//    }
-//
-//    override fun getPageTitle(position: Int): CharSequence? {
-//        return tabTitles[position]
-//    }
-//}

@@ -1,13 +1,15 @@
 package com.example.mandiexe.utils.auth
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.content.SharedPreferences
-import com.example.mandiexe.utils.ApplicationUtils
-
 /**
  * Shared Pref for key and value
  */
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.SharedPreferences
+import androidx.annotation.Keep
+import com.example.mandiexe.utils.ApplicationUtils
+
+@Keep
 class PreferenceManager {
 
 
@@ -26,7 +28,7 @@ class PreferenceManager {
     @SuppressLint("ApplySharedPref")
     //Cannot use .apply(), it will take time to save the token. We need token ASAP
     fun putAuthToken(authToken: String) {
-        sharedPreferences.edit().putString(AUTH_TOKEN, "Bearer $authToken").commit()
+        sharedPreferences.edit().putString(AUTH_TOKEN, authToken).commit()
     }
 
     val authToken: String?

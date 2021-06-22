@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container_add_stock_page_2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bgGreen">
+
+    <include layout="@layout/layout_toolbar" />
+
+    <ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?attr/actionBarSize">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/space"
+            android:paddingBottom="@dimen/space_3x"
+            tools:context=".ui.supply.AddStockPage2">
+
+            <TextView
+                android:id="@+id/tvTempCropNamePage2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/temp"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvTempCropTypePage2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/temp"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/tvTempCropDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/temp"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/tvAddStockCropName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space"
+                android:padding="@dimen/space"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/rice" />
+
+            <TextView
+                android:id="@+id/tvAddStockCropType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space"
+                android:padding="@dimen/space"
+                app:layout_constraintTop_toBottomOf="@id/tvAddStockCropName"
+                tools:text="@string/rice" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/tvAddStockCropType">
+
+                <EditText
+                    android:id="@+id/etDescription_add_stock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/bgGreen"
+                    android:hint="@string/addDescription"
+                    android:maxLines="4"
+                    app:layout_constraintTop_toBottomOf="@id/tvAddStockCropType" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+
+                android:id="@+id/tilOfferPrice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space"
+                android:hint="@string/offer_price"
+                android:orientation="horizontal"
+                app:endIconMode="none"
+                app:errorEnabled="false"
+                app:layout_constraintEnd_toStartOf="@id/tv_rs"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tilDesc">
+
+
+                <EditText
+                    android:id="@+id/actv_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/bgGreen"
+                    android:inputType="numberDecimal" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_rs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space"
+                android:text="@string/rs"
+                app:layout_constraintBottom_toBottomOf="@id/tilOfferPrice"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tilOfferPrice" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilExpDate"
+                style="@style/OutlinedTextBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@+id/ivExp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tilOfferPrice">
+
+                <EditText
+                    android:id="@+id/etExpDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:hint="@string/expDate" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/ivExp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space"
+                android:src="@drawable/ic_date_range_black_24dp"
+                app:layout_constraintBottom_toBottomOf="@id/tilExpDate"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tilExpDate" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/mtb_add_stock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space"
+                android:layout_marginBottom="@dimen/space_3x"
+                android:backgroundTint="@color/colorAccent"
+                android:text="@string/add_crop"
+                app:backgroundTint="@color/colorAccent"
+                app:icon="@drawable/ic_check_black_24dp"
+                app:iconGravity="textEnd"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tilExpDate" />
+
+            <ProgressBar
+                android:id="@+id/pb_add_stock_page_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

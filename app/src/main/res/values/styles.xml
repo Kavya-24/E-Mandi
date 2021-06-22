@@ -34,7 +34,7 @@
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" >
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light">
         <item name="iconTint">@color/white</item>
     </style>
 
@@ -63,6 +63,11 @@
 
     </style>
 
+    <style name="SearchSupplyView" parent="Theme.MaterialComponents">
+        <item name="android:editTextColor">@android:color/white</item>
+        <item name="android:textColorHint">@android:color/white</item>
+    </style>
+
     <style name="OutlinedTextBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -78,4 +83,36 @@
     </style>
 
 
-</resources>
+    <style name="styleTIL2" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+
+    <style name="ShapeAppearanceOverlay.MyApp.Button.Circle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="MaterialSearchViewStyle" parent="Theme.MaterialComponents">
+        <!-- Background for the search bar -->
+        <item name="searchBackground">@color/white</item>
+        <!-- Change up icon -->
+        <item name="searchBackIcon">@drawable/ic_arrow_back_black_24dp</item>
+
+        <!-- Change icon for the suggestions -->
+        <item name="searchSuggestionIcon">@drawable/ic_call_made_black_24dp</item>
+
+        <!-- Change background for the suggestions list view -->
+        <item name="searchSuggestionBackground">@android:color/white</item>
+        <!-- Change text color for edit text. This will also be the color of the cursor -->
+        <item name="android:textColor">@color/black</item>
+        <!-- Change hint text color for edit text -->
+        <item name="android:textColorHint">@color/grey_hint_color</item>
+
+        <!-- Hint for edit text -->
+        <item name="android:hint">@string/searchHint</item>
+    </style>
+
+    </resources>

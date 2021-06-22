@@ -1,6 +1,10 @@
 package com.example.mandiexe.viewmodels
 
 import android.util.Log
+import android.view.View
+import android.widget.ProgressBar
+import androidx.annotation.Keep
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mandiexe.R
@@ -9,9 +13,11 @@ import com.example.mandiexe.models.responses.supply.FarmerSuppliesResponse
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.auth.SessionManager
 import com.example.mandiexe.utils.usables.ExternalUtils
+import com.example.mandiexe.utils.usables.UIUtils
 import retrofit2.Call
 import retrofit2.Response
 
+@Keep
 class MySuppliesViewmodel : ViewModel() {
 
     val TAG = MySuppliesViewmodel::class.java.simpleName
@@ -26,14 +32,14 @@ class MySuppliesViewmodel : ViewModel() {
 
     private var mSupplies: MutableLiveData<FarmerSuppliesResponse> = MutableLiveData()
 
-    fun supplyFunction(): MutableLiveData<FarmerSuppliesResponse> {
+    fun supplyFunction(container_my_crops: ConstraintLayout, pb: ProgressBar): MutableLiveData<FarmerSuppliesResponse> {
 
-        mSupplies = mSuppliesFunction()
+        mSupplies = mSuppliesFunction(container_my_crops,pb)
         return mSupplies
     }
 
 
-    fun mSuppliesFunction(): MutableLiveData<FarmerSuppliesResponse> {
+    fun mSuppliesFunction(container_my_crops: ConstraintLayout, pb: ProgressBar): MutableLiveData<FarmerSuppliesResponse> {
 
 
         mySupplyService.getFarmerActiveSupplies(
@@ -43,7 +49,9 @@ class MySuppliesViewmodel : ViewModel() {
                     successful.value = false
                     message.value = ExternalUtils.returnStateMessageForThrowable(t)
                     //Response is null
-                    Log.e(TAG, "Throwable " + t.message + t.cause)
+                    UIUtils.logThrowables(t, TAG)
+                    UIUtils.createSnackbar(message.value,context,container_my_crops)
+                    pb.visibility = View.GONE
                 }
 
                 override fun onResponse(
@@ -63,7 +71,7 @@ class MySuppliesViewmodel : ViewModel() {
                     } else {
 
                         successful.value = false
-                        message.value = context.resources.getString(R.string.couldNotLoad)
+                        message.value = context.resources.getString(R.string.couldNotLoadSupplies)
                     }
 
                     mSupplies.value = response.body()

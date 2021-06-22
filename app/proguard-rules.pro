@@ -19,6 +19,25 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-keepattributes Signature
+-keepattributes *Annotation*
+-keepattributes EnclosingMethod
+-keepattributes InnerClasses
+
+-keep class com.google.firebase.quickstart.database.java.viewholder.** {
+    *;
+}
+
+-keepclassmembers class com.google.firebase.quickstart.database.java.models.** {
+    *;
+}
+# This rule will properly ProGuard all the model classes in
+# the package com.yourcompany.models. Modify to fit the structure
+# of your app.
+-keepclassmembers class com.example.mandiexe.models.** {
+  *;
+}
+
 -keep class com.github.aachartmodel.aainfographics.* { *; }
 -keepclasseswithmembers class * {
     native <methods>;
@@ -36,4 +55,25 @@
     **[] values();
 }
 
+#Firebase
+-keep class com.firebase.** { *; }
+-keep class org.apache.** { *; }
+-keepnames class com.fasterxml.jackson.** { *; }
+-keepnames class javax.servlet.** { *; }
+-keepnames class org.ietf.jgss.** { *; }
+-dontwarn org.w3c.dom.**
+-dontwarn org.joda.time.**
+-dontwarn org.shaded.apache.**
+-dontwarn org.ietf.jgss.**
 
+# Only necessary if you downloaded the SDK jar directly instead of from maven.
+-keep class com.shaded.fasterxml.jackson.** { *; }
+-keepnames class com.my.package.beans.** { *; }
+
+-keep class com.google.android.gms.** { *; }
+-dontwarn com.google.android.gms.**
+-dontwarn com.squareup.okhttp.**
+-dontwarn org.w3c.dom.bootstrap.DOMImplementationRegistry
+
+
+-keepclasseswithmembernames class * { native <methods>; }

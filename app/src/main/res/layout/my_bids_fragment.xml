@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container_req"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.supply.MySuppliesFragment">
+
+    <!--    <com.google.android.material.tabs.TabLayout-->
+    <!--        android:id="@+id/tabsBids"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="?android:actionBarSize"-->
+    <!--        android:background="@color/colorPrimary"-->
+    <!--        app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
+    <!--        app:layout_constraintTop_toTopOf="parent"-->
+    <!--        app:tabGravity="fill"-->
+    <!--        app:tabIndicatorColor="@color/white"-->
+    <!--        app:tabMaxWidth="0dp"-->
+    <!--        app:tabTextColor="#ffffff">-->
+
+    <!--        <com.google.android.material.tabs.TabItem-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:focusable="false"-->
+    <!--            android:text="@string/str_my_crops" />-->
+
+    <!--        <com.google.android.material.tabs.TabItem-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:focusable="true"-->
+    <!--            android:text="@string/str_my_bids" />-->
+    <!--    </com.google.android.material.tabs.TabLayout>-->
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/swipeablecslbids"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bgGreen">
+
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swl_bid_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_requirement"
+                style="@style/styleRv"
+                android:visibility="invisible"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                tools:listitem="@layout/item_bid" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/llEmptyMyBids"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ivEmptyListBid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="@dimen/space"
+                android:src="@drawable/nothingimg"
+                app:layout_constraintBottom_toTopOf="@id/tvEmptyListBid"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvEmptyListBid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="?attr/actionBarSize"
+                android:layout_marginEnd="?attr/actionBarSize"
+                android:layout_marginBottom="@dimen/space_4x"
+                android:padding="@dimen/space"
+                android:text="@string/noDemandAct"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/llErrorThrowableBid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <ImageView
+                android:id="@+id/ivEmptyThrowable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="40dp"
+                android:src="@drawable/searchbg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add_requirement"
+            style="@style/styleProgressBar"
+            android:layout_margin="@dimen/space"
+            android:backgroundTint="@color/colorAccent"
+            android:src="@drawable/ic_add"
+            android:tint="@color/white"
+            app:backgroundTint="@color/colorAccent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/white" />
+
+        <ProgressBar
+            android:id="@+id/pb_my_bids"
+            style="@style/styleProgressBar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

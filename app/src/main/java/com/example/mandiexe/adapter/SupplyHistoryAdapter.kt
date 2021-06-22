@@ -47,7 +47,8 @@ class SupplyHistoryAdapter(val itemClick: OnMySupplyHistoryClickListener) :
                 OfflineTranslate.translateToDefault(itemView.context, _listItem.variety, CROP_TYPE)
 
 
-                CROP_QUANTITY.text = _listItem.qty.toString()
+                CROP_QUANTITY.text =
+                    _listItem.qty.toString() + " " + itemView.context.resources.getString(R.string.kg)
                 CROP_EXP.text = TimeConversionUtils.convertTimeToEpoch(_listItem.expiry)
 
                 CROP_CURRENT_BID.text = _listItem.currentBid.toString()
@@ -57,6 +58,7 @@ class SupplyHistoryAdapter(val itemClick: OnMySupplyHistoryClickListener) :
                     TimeConversionUtils.convertLastModified(_listItem.lastModified)
 
                 if (_listItem.active) {
+
                     CROP_DELTA.text = itemView.context.resources.getString(R.string.activeSupply)
                     CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaGreen))
                     //If stock is active show the icon and make it greem
@@ -69,35 +71,44 @@ class SupplyHistoryAdapter(val itemClick: OnMySupplyHistoryClickListener) :
 
                         if (ans > 0) {
 
+                            CROP_DELTA.text = "+" + ans.toString()
+                            CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaGreen))
                             CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaGreen))
                             CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightGreenTest))
+                            CROP_CURRENT_BID.setTextColor(itemView.context.resources.getColor(R.color.deltaGreen))
 
                         } else if (ans < 0) {
 
+                            CROP_DELTA.text = ans.toString()
+                            CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
                             CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaRed))
                             CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightRedMono))
                             CROP_CURRENT_BID.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
-                            CROP_IOP.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
 
 
                         } else if (ans == 0) {
 
-                            CROP_DELTA.text = ans.toString()
-                            CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.blue_A700))
-                            CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.blue_A700))
+                            CROP_DELTA.text = itemView.context.resources.getString(R.string.noDesc)
+                            CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.wildColor))
+                            CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.wildColor))
                             CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightGreenTest))
 
                         }
 
+                    } else {
+                        CROP_DELTA.text = itemView.context.resources.getString(R.string.noDesc)
+                        CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.wildColor))
+                        CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.wildColor))
+                        CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightGreenTest))
                     }
 
                 } else {
                     CROP_DELTA.text = itemView.context.resources.getString(R.string.inactiveSupply)
-                    CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.deltaRed))
-                    CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.deltaRed))
-                    //rEMOVE THE Image
-                   // CROP_CHANGE.visibility = View.GONE
-                    CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.cardOffWhite))
+                    CROP_DELTA.text = itemView.context.resources.getString(R.string.noDesc)
+                    CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.wildColor))
+                    CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.wildColor))
+                    CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightGreenTest))
+
 
                 }
 
@@ -119,7 +130,7 @@ class SupplyHistoryAdapter(val itemClick: OnMySupplyHistoryClickListener) :
 
         val view =
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_stock, parent, false)
+                .inflate(R.layout.item_supply, parent, false)
         return MyViewHolder(view)
 
     }

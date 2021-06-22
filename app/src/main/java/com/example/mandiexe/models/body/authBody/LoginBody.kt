@@ -7,7 +7,7 @@ import com.squareup.moshi.Json
 //Replace Json with @field:Json
 
 
-@Keep data class LoginBody(
+ @Keep data class LoginBody(
 
     @field:Json(name = "token")
     val token: String

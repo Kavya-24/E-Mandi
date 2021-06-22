@@ -1,50 +1,53 @@
 package com.example.mandiexe.ui.supply
 
+import android.app.Activity
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.speech.RecognizerIntent
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.*
-import androidx.annotation.RequiresApi
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import com.example.mandiexe.R
-
 import com.example.mandiexe.libModel.TranslateViewmodel
 import com.example.mandiexe.models.body.supply.AddGrowthBody
-import com.example.mandiexe.models.body.supply.AddSupplyBody
-import com.example.mandiexe.models.responses.supply.AddSupplyResponse
 import com.example.mandiexe.utils.auth.PreferenceUtil
+import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.usables.OfflineTranslate
 import com.example.mandiexe.utils.usables.TimeConversionUtils
 import com.example.mandiexe.utils.usables.UIUtils
+import com.example.mandiexe.utils.usables.UIUtils.hideProgress
+import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.example.mandiexe.utils.usables.ValidationObject
 import com.example.mandiexe.viewmodels.AddStockViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.add_stock_fragment.*
+import kotlinx.android.synthetic.main.layout_toolbar.*
 import java.util.*
 
 
-class AddStock : Fragment() {
+class AddStock : AppCompatActivity() {
 
 
     //Primary constructor
     companion object {
         fun newInstance() = AddStock()
+        lateinit var mActivityInstance: Activity
     }
+
+    //Get an instance for further destruction
+    // public lateinit var
 
     private val viewModel: AddStockViewModel by viewModels()
     private val translateViewModel: TranslateViewmodel by viewModels()
 
-    private lateinit var root: View
+    //private lateinit var root: View
     private lateinit var myCalendar: Calendar
     private val TAG = AddStock::class.java.simpleName
 
@@ -52,153 +55,183 @@ class AddStock : Fragment() {
 
     //UI variables
     private lateinit var etEst: EditText
-    private lateinit var etExp: EditText
-    private lateinit var ivLocation: ImageView
+    private lateinit var etSow: EditText
 
     //private lateinit var etAddress: EditText
     private lateinit var cropName: AutoCompleteTextView
-    private lateinit var cropType: AutoCompleteTextView
-    private lateinit var cropDes: EditText
-
+    private lateinit var cropType: EditText
     private lateinit var cropQuantity: EditText
-    private lateinit var offerPrice: EditText
-    private lateinit var bidSwitch: Switch
+
 
     //TILs
     private lateinit var tilName: TextInputLayout
     private lateinit var tilType: TextInputLayout
     private lateinit var tilQuantity: TextInputLayout
-    private lateinit var tilPrice: TextInputLayout
 
     // private lateinit var tilAddress: TextInputLayout
     private lateinit var tilEst: TextInputLayout
-    private lateinit var tilExp: TextInputLayout
 
 
     private val RC_MAP_STOCK_ADD = 111
 
     private val ACTION_VOICE_SEARCH = "com.google.android.gms.actions.SEARCH_ACTION"
+
     private val RC_NAME = 1
     private val RC_TYPE = 2
     private val pref = PreferenceUtil
 
-    @RequiresApi(Build.VERSION_CODES.Q)
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    private lateinit var args: Bundle
+    private lateinit var mtb: MaterialButton
+    private lateinit var pb: ProgressBar
 
-        root = inflater.inflate(R.layout.add_stock_fragment, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        setAppLocale(pref.getLanguageFromPreference(), this)
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.add_stock_fragment)
+
+
+        mActivityInstance = this
+
+
+        val tb = findViewById<Toolbar>(R.id.toolbarExternal)
+        tb.title = resources.getString(R.string.add_crop)
+        this.apply {
+            tvTitleToolbar.text = resources.getString(R.string.add_crop)
+        }
+        tb.setNavigationOnClickListener {
+            onBackPressed()
+        }
+
+
 
         mHandler = Handler()
         //UI Init
-        etEst = root.findViewById(R.id.etEstDate)
-        etExp = root.findViewById(R.id.etExpDate)
-        //ivLocation = root.findViewById(R.id.iv_location)
-        //  etAddress = root.findViewById(R.id.actv_address)
-        cropName = root.findViewById(R.id.actv_which_crop)
-        cropType = root.findViewById(R.id.actv_crop_type)
-        cropQuantity = root.findViewById(R.id.actv_quantity)
-        cropDes = root.findViewById(R.id.etDescription_add_stock)
-        offerPrice = root.findViewById(R.id.actv_price)
-        //bidSwitch = root.findViewById(R.id.switch_for_bid)
+        etEst = findViewById(R.id.etEstDate)
+        etSow = findViewById<EditText>(R.id.etSowDate)
 
-        tilName = root.findViewById(R.id.tilWhichCrop)
-        tilType = root.findViewById(R.id.tilCropType)
-        tilPrice = root.findViewById(R.id.tilOfferPrice)
-        tilQuantity = root.findViewById(R.id.tilQuantity)
-        //tilAddress = root.findViewById(R.id.tv_address)
-        tilEst = root.findViewById(R.id.tilEstDate)
-        tilExp = root.findViewById(R.id.tilExpDate)
+        //ivLocation = findViewById(R.id.iv_location)
+        //  etAddress = findViewById(R.id.actv_address)
+        cropName = findViewById(R.id.actv_which_crop)
+        cropType = findViewById(R.id.actv_crop_type)
+        cropQuantity = findViewById(R.id.actv_quantity)
+        //bidSwitch = findViewById(R.id.switch_for_bid)
+
+        tilName = findViewById(R.id.tilWhichCrop)
+        tilType = findViewById(R.id.tilCropType)
+        tilQuantity = findViewById(R.id.tilQuantity)
+        //tilAddress = findViewById(R.id.tv_address)
+        tilEst = findViewById(R.id.tilEstDate)
+        mtb = findViewById(R.id.mtb_go_to_bidding)
+        pb = findViewById(R.id.pb_add_stock)
 
 
         //Populate views
         setUpCropNameSpinner()
-        setUpVaietyNameSpinner()
 
 
-        // disable dates before today
+
         myCalendar = Calendar.getInstance()
-        myCalendar.add(Calendar.MONTH, 1)
+        myCalendar.add(Calendar.MONTH, -1)
 
         etEst.setOnClickListener {
-            TimeConversionUtils.clickOnDateObject(myCalendar, etEst, requireContext())
+            TimeConversionUtils.clickOnDateObject(myCalendar, etEst, this)
         }
 
-        //##Requires N
-        etExp.setOnClickListener {
-            TimeConversionUtils.clickOnDateObject(myCalendar, etExp, requireContext())
-        }
 
-        root.findViewById<EditText>(R.id.etSowDate).setOnClickListener {
+        findViewById<EditText>(R.id.etSowDate).setOnClickListener {
             TimeConversionUtils.clickOnDateObject(
                 myCalendar,
-                root.findViewById<EditText>(R.id.etSowDate),
-                requireContext()
+                findViewById<EditText>(R.id.etSowDate),
+                this
             )
         }
 
+        this.apply {
 
-        root.findViewById<MaterialButton>(R.id.mtb_add_stock).setOnClickListener {
-            if (isValidate()) {
+            ivEst.setOnClickListener {
+                TimeConversionUtils.clickOnDateObject(myCalendar, etEst, this)
+            }
 
-                createStock()
+            ivSow.setOnClickListener {
+                TimeConversionUtils.clickOnDateObject(
+                    myCalendar,
+                    findViewById<EditText>(R.id.etSowDate),
+                    this
+                )
+            }
+
+            mic_crop_name.setOnClickListener {
+                makeSearchForItems(RC_NAME)
+            }
+
+            mic_crop_type.setOnClickListener {
+                makeSearchForItems(RC_TYPE)
+            }
+
+
+        }
+
+
+        val bidCheck = findViewById<CheckBox>(R.id.checkbox)
+        bidCheck.setOnCheckedChangeListener { buttonView, isChecked ->
+
+            if (isChecked) {
+                //Then the button says next
+                mtb.text = resources.getString(R.string.next)
+                mtb.icon = resources.getDrawable(R.drawable.ic_arrow_forward, null)
+
+            } else {
+                mtb.text = resources.getString(R.string.add)
+                mtb.icon = resources.getDrawable(R.drawable.ic_check_black_24dp, null)
 
             }
         }
 
-        //Mic units
-        root.findViewById<ImageView>(R.id.mic_crop_name).setOnClickListener {
-            makeSearchForItems(RC_NAME)
+        mtb.setOnClickListener {
+            if (isValidate()) {
+                if (bidCheck.isChecked) {
+                    goToNewSupply()
+                } else {
+                    createGrowth()
+                }
+            }
         }
 
 
-        root.findViewById<ImageView>(R.id.mic_crop_type).setOnClickListener {
-            makeSearchForItems(RC_TYPE)
+        //Get the variables for the bidding
+
+
+        this.apply {
+
+            ivInformation.setOnClickListener {
+                getInformationNormalFilters()
+            }
         }
 
-
-        return root
-
     }
 
-    private fun makeSearchForItems(code: Int) {
-        val Voiceintent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-        Voiceintent.putExtra(
-            RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-        )
+    private fun getInformationNormalFilters() {
 
-        //Put language
-        Voiceintent.putExtra(
-            RecognizerIntent.EXTRA_LANGUAGE,
-            Locale(pref.getLanguageFromPreference() + "-IN")
-        )
-        Voiceintent.putExtra(
-            RecognizerIntent.EXTRA_PROMPT,
-            resources.getString(R.string.searchHead)
-        )
-        startActivityForResult(Voiceintent, code)
+        val kgLocale = resources.getString(R.string.kg)
+        val kmLocale = resources.getString(R.string.kilometeres)
 
+        val d = AlertDialog.Builder(this)
+        d.setTitle(resources.getString(R.string.add_crop))
+        d.setMessage(resources.getString(R.string.addStockProposal))
+        d.setPositiveButton(resources.getString(R.string.ok)) { _, _ -> }
+        d.create().show()
     }
 
-    private fun setUpVaietyNameSpinner() {
-        UIUtils.getSpinnerAdapter(R.array.arr_crop_types, cropType, requireContext())
-    }
-
-    @RequiresApi(Build.VERSION_CODES.Q)
-    private fun createStock() {
+    private fun createGrowth() {
 
 
-        //Start Progress bar
-        root.findViewById<ProgressBar>(R.id.pb_add_stock).visibility = View.VISIBLE
-
-        //Get the translation
+        showProgress(pb, this)
         getTranslations()
+
 
         if (getValidTranslations()) {
 
-            makeCalls()
+            makeCallForGrowth()
 
         } else {
 
@@ -207,193 +240,180 @@ class AddStock : Fragment() {
             //1. Wait for translation to be made (LiveData)
             //Run a handler
             //Make call after 5 seconds with whatever data is there
-            mHandler.postDelayed({ makeCalls() }, 5000)
+            mHandler.postDelayed({ makeCallForGrowth() }, 5000)
         }
 
 
     }
 
-    private fun makeCalls() {
+    private fun goToNewSupply() {
+        val bundle = bundleOf(
+            "NAME" to cropName.text.toString(),
+            "TYPE" to cropType.text.toString(),
+            "QUANTITY" to cropQuantity.text.toString(),
+            "SOW" to etSow.text.toString(),
+            "EST" to etEst.text.toString()
+        )
 
+        val i = Intent(this, AddStockPage2::class.java)
+        i.putExtra("bundle", bundle)
+        startActivity(i)
+
+    }
+
+    private fun makeCallForGrowth() {
 
         //Translate three words
         val transCropName =
-            root.findViewById<TextView>(R.id.tvTempCropName).text.toString()
+            findViewById<TextView>(R.id.tvTempCropName).text.toString()
                 .capitalize(Locale("en"))
         val transCropType =
-            root.findViewById<TextView>(R.id.tvTempCropType).text.toString()
-                .capitalize((Locale("en")))
-        var transDesc = cropDes.text.toString()
-
-        if (cropDes.text.toString() != resources.getString(R.string.noDesc)) {
-            //If it has something, use uts translated values
-            transDesc = root.findViewById<TextView>(R.id.tvTempCropDesc).text.toString()
+            findViewById<TextView>(R.id.tvTempCropType).text.toString()
                 .capitalize((Locale("en")))
 
-        }
-
-        Log.e(TAG, "Translated values are " + transCropName + transCropType + transDesc)
-        val body = AddSupplyBody(
-            offerPrice.text.toString(),
-            transCropName ?: cropName.text.toString().capitalize(Locale.ROOT),
-            TimeConversionUtils.convertDateToReqForm(etEst.text.toString()),
-            transDesc,
-            TimeConversionUtils.convertDateToReqForm(etExp.text.toString()),
-            "0",
-            transCropType ?: cropType.text.toString().capitalize(Locale.ROOT)
-        )
-
-        //Create growth
         val growthBody = AddGrowthBody(
-            transCropName ?: cropName.text.toString().capitalize(Locale.ROOT),
+            transCropName,
             TimeConversionUtils.convertDateToReqForm(etEst.text.toString()),
-            TimeConversionUtils.convertDateToReqForm(root.findViewById<EditText>(R.id.etSowDate).text.toString()),
+            TimeConversionUtils.convertDateToReqForm(findViewById<EditText>(R.id.etSowDate).text.toString()),
             cropQuantity.text.toString(),
-            transCropType ?: cropType.text.toString().capitalize(Locale.ROOT)
+            transCropType
         )
 
         Log.e(
             TAG,
-            "AddSupply Body \n" + body.toString() + "\n Add growth body" + growthBody.toString()
+            "In add growth" + growthBody.toString()
         )
 
 
-        viewModel.growthFunction(growthBody).observe(viewLifecycleOwner, Observer { mResponse ->
+        clearObservers()
+        val mSnackbar = findViewById<CoordinatorLayout>(R.id.container_add_stock)
+
+        viewModel.growthFunction(growthBody, mSnackbar, pb).observe(this, Observer { mResponse ->
             val success = viewModel.successfulGrowth.value
             if (success != null) {
-                Log.e(
-                    TAG,
-                    "In growth function and success is " + success + viewModel.messageGrowth
-                )
+                hideProgress(pb, this)
 
-                if (success == true) {
-                    Log.e(TAG, "In successfully added growth")
-                } else {
-                    Log.e(TAG, "In failed added growth")
-                }
 
-            }
-        })
-
-        viewModel.addFunction(body).observe(viewLifecycleOwner, Observer { mResponse ->
-
-            //Check with the sucessful of it
-            if (viewModel.successful.value == false) {
-                Log.e(TAG, viewModel.message.toString())
-                UIUtils.createSnackbar(
-                    viewModel.message.value,
-                    requireContext(),
+                UIUtils.createToast(
+                    viewModel.messageGrowth.value!!,
+                    this,
                     container_add_stock
+
                 )
-            } else if (viewModel.message.value == "Supply added successfully") {
-                manageStockCreateResponses(viewModel.addStock.value)
+
+                onBackPressed()
+
+
+            } else {
+                showProgress(pb, this)
             }
         })
 
-        //Stop Progress bar
-        root.findViewById<ProgressBar>(R.id.pb_add_stock).visibility = View.GONE
+
+    }
+
+    private fun clearObservers() {
+        viewModel.successfulGrowth.value = null
+        viewModel.messageGrowth.value = null
+        viewModel.successfulGrowth.removeObservers(this)
+        viewModel.messageGrowth.removeObservers(this)
+
+    }
+
+    private fun makeSearchForItems(code: Int) {
+
+        val mLanguage = pref.getLanguageFromPreference() ?: "en"
+        val Voiceintent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+
+        //Put language
+        Voiceintent.putExtra(
+            RecognizerIntent.EXTRA_LANGUAGE,
+            mLanguage
+        )
+
+        Voiceintent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, mLanguage)
+        Voiceintent.putExtra(
+            RecognizerIntent.EXTRA_ONLY_RETURN_LANGUAGE_PREFERENCE,
+            mLanguage
+        )
+
+        Voiceintent.putExtra(
+            RecognizerIntent.EXTRA_PROMPT,
+            resources.getString(R.string.searchHead)
+        )
+        startActivityForResult(Voiceintent, code)
 
     }
 
     private fun getValidTranslations(): Boolean {
 
         return ValidationObject.validateTranslations(
-            root.findViewById<TextView>(R.id.tvTempCropName),
-            requireContext()
+            findViewById<TextView>(R.id.tvTempCropName),
+            this
         ) && ValidationObject.validateTranslations(
-            root.findViewById<TextView>(R.id.tvTempCropType),
-            requireContext()
-        ) && ValidationObject.validateTranslations(
-            root.findViewById<TextView>(R.id.tvTempCropDesc),
-            requireContext()
+            findViewById<TextView>(R.id.tvTempCropType),
+            this
         )
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
     private fun getTranslations() {
+
         //Run an async task to get the values for the three categories
         OfflineTranslate.translateToEnglish(
-            requireContext(),
+            this,
             cropName.text.toString(),
-            root.findViewById<TextView>(R.id.tvTempCropName)
+            findViewById<TextView>(R.id.tvTempCropName)
         )
         OfflineTranslate.translateToEnglish(
-            requireContext(),
+            this,
             cropType.text.toString(),
-            root.findViewById<TextView>(R.id.tvTempCropType)
+            findViewById<TextView>(R.id.tvTempCropType)
         )
-        OfflineTranslate.translateToEnglish(
-            requireContext(),
-            cropDes.text.toString(),
-            root.findViewById<TextView>(R.id.tvTempCropDesc)
-        )
-
-    }
-
-    private fun manageStockCreateResponses(mResponse: AddSupplyResponse?) {
-        //On creating this stock
-        Toast.makeText(
-            requireContext(),
-            resources.getString(R.string.supplyAdded),
-            Toast.LENGTH_SHORT
-        )
-            .show()
-        onDestroy()
     }
 
     private fun setUpCropNameSpinner() {
 
-        UIUtils.getSpinnerAdapter(R.array.arr_crop_names, cropName, requireContext())
+        UIUtils.getSpinnerAdapter(R.array.arr_crop_names, cropName, this)
     }
 
     private fun isValidate(): Boolean {
 
-        val etSow = root.findViewById<EditText>(R.id.etSowDate)
-        val tilSow = root.findViewById<TextInputLayout>(R.id.tilSowDate)
+        val etSow = findViewById<EditText>(R.id.etSowDate)
+        val tilSow = findViewById<TextInputLayout>(R.id.tilSowDate)
 
         return ValidationObject.validateEmptyView(
             cropName,
             tilName,
             R.string.cropNameError,
-            requireContext()
+            this
         )
-                && ValidationObject.validateEmptyView(
+                && ValidationObject.validateEmptyEditText(
             cropType,
             tilType,
             R.string.cropTypeError,
-            requireContext()
+            this
         )
                 && ValidationObject.validateEmptyEditText(
             cropQuantity,
             tilQuantity,
             R.string.cropQuanityError,
-            requireContext()
+            this
         )
-                && ValidationObject.validateEmptyEditText(
-            offerPrice,
-            tilPrice,
-            R.string.offerPriceError,
-            requireContext()
-        )
+
                 && ValidationObject.validateEmptyEditText(
             etSow,
             tilSow,
             R.string.etSowError,
-            requireContext()
+            this
         )
                 && ValidationObject.validateEmptyEditText(
             etEst,
             tilEst,
             R.string.etEstError,
-            requireContext()
+            this
         )
-                && ValidationObject.validateEmptyEditText(
-            etExp,
-            tilExp,
-            R.string.expError,
-            requireContext()
-        )
+
                 && TimeConversionUtils.validateDates(
             etSow,
             etEst,
@@ -401,24 +421,14 @@ class AddStock : Fragment() {
             R.string.etEstLessIncomplete,
             etEst,
             tilEst,
-            requireContext()
-        )
-                && TimeConversionUtils.validateDates(
-            etSow,
-            etExp,
-            R.string.expLess,
-            R.string.expm20,
-            etExp,
-            tilExp,
-            requireContext()
+            this
         )
 
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        //   super.onActivityResult(requestCode, resultCode, data)
+        super.onActivityResult(requestCode, resultCode, data)
 
         //Get the map data result
         Log.e(
@@ -436,8 +446,8 @@ class AddStock : Fragment() {
                 //Put result
                 val res: java.util.ArrayList<String>? =
                     data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
-                val resultInEnglish = res?.get(0)
-                cropName.setText(OfflineTranslate.transliterateToDefault(resultInEnglish))
+                val resultInDefault = res?.get(0)
+                cropName.setText(resultInDefault)
 
 
             }
@@ -447,25 +457,28 @@ class AddStock : Fragment() {
                 val res: java.util.ArrayList<String>? =
                     data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
                 val resultInEnglish = res?.get(0)
-              //  val conversionTable = onversionTable()
-                cropType.setText(OfflineTranslate.transliterateToDefault(resultInEnglish))
+                //  val conversionTable = onversionTable()
+                cropType.setText(resultInEnglish)
 
             }
         }
 
     }
 
-    override fun onDestroy() {
-
+    override fun onBackPressed() {
         //Now we need to destroy this fragment and on resume of home, go to remove views
         Log.e(TAG, "In on destroy")
-        viewModel.successful.removeObservers(this)
-        viewModel.successful.value = null
+        clearObservers()
+        super.onBackPressed()
+        finish()
 
-
-        val navController = findNavController()
-        navController.navigateUp()
-
-        super.onDestroy()
     }
+
+    override fun onPause() {
+
+        Log.e(TAG, "On Pause")
+        super.onPause()
+
+    }
+
 }

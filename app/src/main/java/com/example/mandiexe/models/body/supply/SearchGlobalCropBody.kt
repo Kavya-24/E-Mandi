@@ -5,7 +5,8 @@ import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
 
-@Keep data class SearchGlobalCropBody(
-    @Json(name = "crop")
+@Keep
+data class SearchGlobalCropBody(
+    @field:Json(name = "crop")
     val crop: String // Wheat
 )

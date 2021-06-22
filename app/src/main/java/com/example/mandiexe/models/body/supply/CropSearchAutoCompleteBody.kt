@@ -5,7 +5,7 @@ import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
 
-@Keep data class CropSearchAutoCompleteBody(
-    @Json(name = "search")
+ @Keep data class CropSearchAutoCompleteBody(
+    @field:Json(name = "search")
     val search: String // e
 )

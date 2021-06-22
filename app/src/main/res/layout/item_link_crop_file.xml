@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/space_half"
+    android:background="@color/white"
+    android:elevation="@dimen/space"
+    app:cardCornerRadius="@dimen/space_half">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ivyt"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="@dimen/space"
+            android:src="@drawable/ic_launch_black_24dp"
+            android:tint="@color/colorAccent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvHeadingLink"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space"
+            android:text="@string/nav_header_title"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/tvURLLink"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivyt"
+            app:layout_constraintTop_toTopOf="@id/ivyt" />
+
+        <TextView
+            android:id="@+id/tvURLLink"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space"
+            android:text="@string/nav_header_title"
+            android:textColor="@color/wildColor"
+            app:layout_constraintBottom_toBottomOf="@id/ivyt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivyt"
+            app:layout_constraintTop_toBottomOf="@id/tvHeadingLink" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

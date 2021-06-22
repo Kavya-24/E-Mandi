@@ -5,10 +5,12 @@ import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
 
+
 @Keep data class FarmerSuppliesResponse(
     @field:Json(name = "supplies")
     val supplies: List<Supply>
 ) {
+
 
     @Keep data class Supply(
         @field:Json(name = "askPrice")
