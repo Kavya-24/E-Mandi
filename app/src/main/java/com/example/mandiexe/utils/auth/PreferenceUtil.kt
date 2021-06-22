@@ -1,6 +1,7 @@
 package com.example.mandiexe.utils.auth
 
 import android.preference.PreferenceManager
+import android.util.Log
 import com.example.mandiexe.R
 import com.example.mandiexe.models.ProfileObject
 import com.example.mandiexe.models.body.AddressBlock
@@ -37,6 +38,9 @@ object PreferenceUtil {
 
     private val QUANTITY_UNIT = "quantity_unit"
     private val HAS_SEEN_WALKTHROUGH = "hasSeenWalkthrough"
+
+
+    private val SEARCHHISTORY = "history"
 
     var _id: String?
         get() = pm.getString(ID, "")
@@ -140,6 +144,13 @@ object PreferenceUtil {
         get() = pm.getString(LONGITUDE, " ")
         set(value) {
             pm.edit().putString(LONGITUDE, value).apply()
+        }
+
+    //Search History
+    var history: MutableSet<String>?
+        get() = pm.getStringSet(SEARCHHISTORY, mutableSetOf())
+        set(value) {
+            pm.edit().putStringSet(SEARCHHISTORY, value).apply()
         }
 
 
@@ -264,6 +275,45 @@ object PreferenceUtil {
             getAddressFromPreference()!!
         )
     }
+
+
+    /**
+     *  Set history. Limit it to 4
+     */
+
+    fun setHistorySet(mNewQuery: String) {
+
+        val pref = PreferenceUtil
+
+        //Make the queey a set so that it doesnt overlap
+        val mSet = mutableSetOf<String>(mNewQuery)
+
+        Log.e("pref", "For quey $mNewQuery previously history is ${pref.history}")
+        if (pref.history.isNullOrEmpty() || pref.history!!.size < 4) {
+            //We will difrectly add the string
+
+            pref.history = pref.history!!.union(mSet) as MutableSet<String>
+
+        } else if (pref.history!!.size >= 4) {
+
+            //1. Get the first element
+            val firstElement = pref.history?.elementAt(0)
+            //2. Pop one element
+            pref.history?.remove(firstElement!!)
+            //3. Add the lemenet
+            pref.history = pref.history!!.union(mSet) as MutableSet<String>
+        }
+
+        Log.e("pref", "For quey $mNewQuery now history is ${pref.history}")
+
+    }
+
+
+    fun getHistorySet(): MutableSet<String> {
+        val pref = PreferenceUtil
+        return pref.history!!
+    }
+
 
     fun clearPrefData() {
         pm.edit().clear().apply()

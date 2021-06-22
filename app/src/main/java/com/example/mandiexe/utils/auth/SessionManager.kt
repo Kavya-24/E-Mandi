@@ -2,10 +2,11 @@ package com.example.mandiexe.utils.auth
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.annotation.Keep
 import com.example.mandiexe.R
 import com.example.mandiexe.utils.ApplicationUtils
 
-
+@Keep
 class SessionManager(context: Context) {
 
 

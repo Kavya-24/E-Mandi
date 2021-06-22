@@ -1,13 +1,16 @@
 package com.example.mandiexe.interfaces
 
+import androidx.annotation.Keep
+import com.example.mandiexe.models.body.AdvancedSearchBody
 import com.example.mandiexe.models.body.supply.*
+import com.example.mandiexe.models.responses.AdvancedSearchResponse
 import com.example.mandiexe.models.responses.supply.*
 import retrofit2.Call
 import retrofit2.http.Body
-import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
+@Keep
 interface mySupplyInterface {
 
     //Get the active stocks
@@ -60,6 +63,14 @@ interface mySupplyInterface {
     fun getSearchCropGlobally(
         @Body body: SearchGlobalCropBody
     ): Call<SearchGlobalCropResponse>
+
+    //Advanced search
+    @Headers("Content-Type:application/json")
+    @POST("api/farmer/crop/advsearch")
+    fun getAdvancedSearch(
+        @Body body: AdvancedSearchBody
+    ): Call<AdvancedSearchResponse>
+
 
     //Crop autocomplete
     @Headers("Content-Type:application/json")

@@ -1,26 +1,31 @@
 package com.example.mandiexe.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.mandiexe.R
 import com.example.mandiexe.adapter.BidHistoryAdapter
-import com.example.mandiexe.adapter.OnMyBidHistoryGlobalClickListener
+import com.example.mandiexe.adapter.OnMyBidClickListenerGlobal
 import com.example.mandiexe.models.responses.bids.BidHistoryResponse
+import com.example.mandiexe.ui.bids.BidDetailActivity
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.usables.UIUtils
+import com.example.mandiexe.viewmodels.FarmerBidHistoryViewModel
 import kotlinx.android.synthetic.main.farmer_bid_history_fragment.*
 
-class FarmerBidHistory : Fragment(), OnMyBidHistoryGlobalClickListener {
+class FarmerBidHistory : Fragment(), OnMyBidClickListenerGlobal {
 
     companion object {
         fun newInstance() = FarmerBidHistory()
@@ -28,19 +33,30 @@ class FarmerBidHistory : Fragment(), OnMyBidHistoryGlobalClickListener {
 
     private val viewModel: FarmerBidHistoryViewModel by viewModels()
     private lateinit var root: View
+    private lateinit var pb: ProgressBar
+    private lateinit var swl: SwipeRefreshLayout
+
+    override fun onResume() {
+        loadHistory()
+        super.onResume()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         root = inflater.inflate(R.layout.farmer_bid_history_fragment, container, false)
-        root.findViewById<ProgressBar>(R.id.pb_history_bid).visibility = View.VISIBLE
+        pb = root.findViewById(R.id.pb_history_bid)
+        swl = root.findViewById(R.id.swl_bid_history)
+
+
 
         loadHistory()
 
-        root.findViewById<ProgressBar>(R.id.pb_history_bid).visibility = View.GONE
-
-
+        swl.setOnRefreshListener {
+            loadHistory()
+            swl.isRefreshing = false
+        }
 
 
         return root
@@ -48,10 +64,15 @@ class FarmerBidHistory : Fragment(), OnMyBidHistoryGlobalClickListener {
 
     private fun loadHistory() {
 
-        viewModel.BidStockFunction().observe(viewLifecycleOwner, Observer { mResponse ->
+        swl.isRefreshing = true
+        val mSnackbarView = root.findViewById<ConstraintLayout>(R.id.container_bid_history)
+
+        viewModel.BidFunction(mSnackbarView, pb).observe(viewLifecycleOwner, Observer { mResponse ->
             val success = viewModel.successful.value
 
             if (success != null) {
+                UIUtils.hideProgress(pb, requireContext())
+
                 if (success) {
                     loadItemsInRV(mResponse)
                 } else {
@@ -61,14 +82,15 @@ class FarmerBidHistory : Fragment(), OnMyBidHistoryGlobalClickListener {
                         container_bid_history
                     )
                 }
+            } else {
+                UIUtils.showProgress(pb, requireContext())
             }
 
 
         })
 
-        root.findViewById<ProgressBar>(R.id.pb_history_bid).visibility = View.GONE
 
-
+        swl.isRefreshing = false
     }
 
     private fun loadItemsInRV(mResponse: BidHistoryResponse) {
@@ -76,22 +98,19 @@ class FarmerBidHistory : Fragment(), OnMyBidHistoryGlobalClickListener {
         val rv = root.findViewById<RecyclerView>(R.id.rv_history_bid)
         rv.layoutManager = LinearLayoutManager(requireContext())
         val adapter = BidHistoryAdapter(this)
+        rv.adapter = adapter
 
-        if (mResponse.bids.size == 0) {
-            root.findViewById<AppCompatTextView>(R.id.tvEmptyListBid).visibility = View.VISIBLE
-            root.findViewById<AppCompatTextView>(R.id.tvEmptyListBid).text =
-                context?.resources?.getString(R.string.noDemand)
+        val empty = root.findViewById<ConstraintLayout>(R.id.llEmptyBidHistory)
+
+        if (mResponse.bids.isEmpty()) {
+            empty.visibility = View.VISIBLE
 
 
         } else {
+            empty.visibility = View.GONE
             adapter.lst = mResponse.bids
+            adapter.notifyDataSetChanged()
         }
-
-        rv.adapter = adapter
-
-    }
-
-    override fun viewMyStockDetails(_listItem: BidHistoryResponse.Bid) {
 
     }
 
@@ -107,6 +126,18 @@ class FarmerBidHistory : Fragment(), OnMyBidHistoryGlobalClickListener {
         super.onDestroy()
 
 
+    }
+
+    override fun viewMyBidDetails(_listItem: BidHistoryResponse.Bid) {
+
+        val bundle = bundleOf(
+            "BID_ID" to _listItem._id,
+            "FROM" to FarmerBidHistory::class.java.simpleName
+        )
+
+        val i = Intent(requireContext(), BidDetailActivity::class.java)
+        i.putExtra("bundle", bundle)
+        startActivity(i)
     }
 
 

@@ -7,12 +7,57 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:291384452956:android:549ff343dbf940b787c399",
+        "android_client_info": {
+          "package_name": "com.example.e_manditrader"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "291384452956-1ig9g4tjti17b7frfj79qcaaevd1rggr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.e_manditrader",
+            "certificate_hash": "0eb65f1df33f91dae56a7e602588b4c60bf228b5"
+          }
+        },
+        {
+          "client_id": "291384452956-5csg4qfko1nufue2r155g50jfeaevt40.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBl5-UKT59eekwlxKFfrWYJ-rxsTjP2sfE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "291384452956-5csg4qfko1nufue2r155g50jfeaevt40.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:291384452956:android:18a5ec144113213287c399",
         "android_client_info": {
           "package_name": "com.example.mandiexe"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "291384452956-5e6m61n5864hg2m3qp1ba9akb2mka80l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mandiexe",
+            "certificate_hash": "0eb65f1df33f91dae56a7e602588b4c60bf228b5"
+          }
+        },
         {
           "client_id": "291384452956-5csg4qfko1nufue2r155g50jfeaevt40.apps.googleusercontent.com",
           "client_type": 3

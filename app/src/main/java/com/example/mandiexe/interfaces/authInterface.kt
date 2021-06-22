@@ -1,5 +1,8 @@
 package com.example.mandiexe.interfaces
 
+
+import androidx.annotation.Keep
+import com.example.mandiexe.models.body.authBody.AccessTokenBody
 import com.example.mandiexe.models.body.authBody.LoginBody
 import com.example.mandiexe.models.body.authBody.SignUpBody
 import com.example.mandiexe.models.responses.auth.FarmerProfileResponse
@@ -10,6 +13,7 @@ import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
+@Keep
 interface authInterface {
 
 
@@ -17,7 +21,7 @@ interface authInterface {
     @POST("api/farmer/accesstoken")
     fun getAccessToken(
         //USe Refresh token here            //Passed as String
-        @Body refreshToken: String
+        @Body body: AccessTokenBody
     ): Call<LoginResponse>
 
 

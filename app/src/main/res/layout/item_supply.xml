@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_item_stock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/space"
+        android:elevation="@dimen/space"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardBackgroundColor="@color/bgCard"
+        app:cardCornerRadius="@dimen/space_half">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/space"
+            android:padding="@dimen/space_half">
+
+
+            <TextView
+                android:id="@+id/tv_stock_crop_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Rice" />
+
+            <ImageView
+                android:id="@+id/iv_stock_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space"
+                android:src="@drawable/ic_above"
+                app:layout_constraintBottom_toBottomOf="@id/tv_stock_crop_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_my_crop_delta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space"
+                android:text="@string/delta"
+                android:textColor="@color/deltaGreen"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_stock_image" />
+
+            <TextView
+                android:id="@+id/mType"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space"
+                android:text="@string/crop_type"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_stock_crop_name" />
+
+
+            <TextView
+                android:id="@+id/tv_stock_crop_type"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space"
+                app:layout_constraintBottom_toBottomOf="@id/mType"
+                app:layout_constraintStart_toEndOf="@id/mType"
+                app:layout_constraintTop_toTopOf="@id/mType"
+                tools:text="Basmati" />
+
+            <TextView
+                android:id="@+id/tv_stock_quantity"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space"
+                android:text="@string/quantity2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_stock_crop_type" />
+
+            <TextView
+                android:id="@+id/ans_crop_quanity"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space"
+                android:text="@string/_0_kg"
+                app:layout_constraintBottom_toBottomOf="@id/tv_stock_quantity"
+                app:layout_constraintStart_toEndOf="@id/tv_stock_quantity"
+                app:layout_constraintTop_toTopOf="@id/tv_stock_quantity" />
+
+            <TextView
+                android:id="@+id/tv_stock_expiration"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space"
+                android:text="@string/expiration_date"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_stock_quantity" />
+
+            <TextView
+                android:id="@+id/ans_crop_exp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space"
+                android:text="@string/_12_4_2005"
+                app:layout_constraintBottom_toBottomOf="@id/tv_stock_expiration"
+                app:layout_constraintStart_toEndOf="@id/tv_stock_expiration"
+                app:layout_constraintTop_toTopOf="@id/tv_stock_expiration" />
+
+            <View
+                android:id="@+id/v"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="@dimen/space"
+                android:layout_marginBottom="@dimen/space"
+                android:background="@color/black"
+                app:layout_constraintTop_toBottomOf="@id/tv_stock_expiration" />
+
+            <TextView
+                android:id="@+id/mCurrentBid"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space_half"
+                android:gravity="center"
+                android:text="@string/current_bid"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@id/mOfferPrice"
+                app:layout_constraintTop_toBottomOf="@id/v" />
+
+
+            <TextView
+                android:id="@+id/tv_stock_current_bid"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space_half"
+                android:gravity="center"
+                android:text="@string/_1234"
+                android:textColor="@color/deltaGreen"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@id/tv_stock_initial_offer_price"
+                app:layout_constraintTop_toBottomOf="@id/mCurrentBid" />
+
+            <TextView
+                android:id="@+id/mOfferPrice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space_half"
+                android:gravity="center"
+                android:text="@string/initial_expected_price"
+                app:layout_constraintEnd_toStartOf="@id/mCurrentBid"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/v" />
+
+
+            <TextView
+                android:id="@+id/tv_stock_initial_offer_price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space_half"
+                android:gravity="center"
+                android:text="@string/_1234"
+                android:textColor="@color/wildColor"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toStartOf="@id/tv_stock_current_bid"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mOfferPrice" />
+
+
+            <TextView
+                android:id="@+id/tvLastUpdated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space_half"
+                android:gravity="end"
+                android:text="@string/lastModified"
+                app:layout_constraintEnd_toStartOf="@id/tv_stock_last_upadted"
+                app:layout_constraintTop_toBottomOf="@id/tv_stock_initial_offer_price" />
+
+            <TextView
+                android:id="@+id/tv_stock_last_upadted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space_half"
+                android:gravity="end"
+                android:text="@string/_12_4_2005"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_stock_initial_offer_price" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginBottom="@dimen/space_half"
+                android:background="@color/black"
+                app:layout_constraintTop_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">ई-मंडी।</string>
+<resources>
+    <string name="app_name">ई-मंडी</string>
     <string name="navigation_drawer_open">खुली नेविगेशन दराज</string>
     <string name="navigation_drawer_close">नेविगेशन दराज बंद करें</string>
     <string name="nav_header_title">एंड्रॉइड स्टूडियो</string>
@@ -8,35 +8,35 @@
     <string name="nav_header_desc">नेविगेशन हेडर</string>
     <string name="action_settings">समायोजन</string>
     <string name="menu_home">घर</string>
-    <string name="Mandi">स्नान की कीमतें</string>
+    <string name="Mandi">मंडी</string>
     <string name="stocks">शेयरों</string>
-    <string name="crop">काटना</string>
+    <string name="crop">फसल</string>
     <string name="quantity">मात्रा</string>
     <string name="location">स्थान</string>
     <string name="price">कीमत</string>
-    <string name="expected_ready">अपेक्षित तैयार तिथि</string>
+    <string name="expected_ready">फसल की अपेक्षित तिथि</string>
     <string name="date_posted">निर्माण की तिथि</string>
     <string name="contact">संपर्क करें</string>
-    <string name="crop_value">SORF_VALUE</string>
+    <string name="crop_value">फसल का मूल्य</string>
     <string name="location_value">स्थान</string>
-    <string name="which_crop">कौन सी फसल</string>
+    <string name="which_crop">फसल का नाम</string>
     <string name="str_my_crops">मेरी फसलें</string>
-    <string name="str_my_req">खरीदार</string>
+    <string name="str_my_req">मेरी बोलियां</string>
     <string name="crop_type">विविधता:</string>
     <string name="expiration_date">समाप्ति तिथि:</string>
-    <string name="estimated_time_of_completion">पूरा होने का अनुमानित समय</string>
-    <string name="offer_price">ऑफर किया गया मूल्य</string>
+    <string name="estimated_time_of_completion">हार्वेस्ट की अपेक्षित तिथि</string>
+    <string name="offer_price">प्रारंभिक मूल्य</string>
     <string name="rs">रुपये</string>
     <string name="available_for_bidding">बोली लगाने के लिए उपलब्ध है</string>
-    <string name="expDate">बोली की समाप्ति तिथि</string>
-    <string name="add_stock">स्टॉक जोड़ें</string>
+    <string name="expDate">बोली लगाने के लिए समाप्ति तिथि</string>
+    <string name="add_stock">फसलें जोड़ें</string>
     <string name="_0_kg">0 किलो</string>
     <string name="quantity2">मात्रा:</string>
     <string name="_12_4_2005">12/4/2005</string>
     <string name="_1234">1234</string>
     <string name="error_please_check_internet">कृपया अपने इंटरनेट कनेक्शन की जाँच करें</string>
     <string name="error_request_timed_out">अनुरोध का समय समाप्त</string>
-    <string name="error_something_went_wrong">कुछ गलत हो गया</string>
+    <string name="error_something_went_wrong">कुछ गलत हो गया। कृपया पुन: प्रयास करें</string>
     <string name="you_are_here">आप यहाँ हैं</string>
     <string name="maddress_and_lorem">मैड्रेस और लोरेम</string>
     <string name="multi">यह मेरा होम नंबर है \ N यह gnoida \ n ठीक है</string>
@@ -44,18 +44,18 @@
     <string name="cropTypeError">कृपया एक प्रकार निर्दिष्ट करें</string>
     <string name="cropQuanityError">यह शून्य नहीं हो सकता</string>
     <string name="offerPriceError">यह शून्य नहीं हो सकता</string>
-    <string name="etEstError">पूरा होने का अनुमानित समय जोड़ें</string>
+    <string name="etEstError">कृपया फसल की अपेक्षित तिथि जोड़ें</string>
     <string name="addressError">स्थान खाली नहीं हो सकता</string>
     <string name="expError">बोली की समाप्ति तिथि जोड़ें</string>
-    <string name="date_of_start">प्रारंभ की तारीख:</string>
+    <string name="date_of_start">बुवाई की तारीख:</string>
     <string name="view_bid_history">बोली इतिहास देखें</string>
-    <string name="cancel_stock">स्टॉक हटाएं</string>
+    <string name="cancel_stock">फसल हटाएं</string>
     <string name="_918">918</string>
     <string name="hello_world_person">हेलो वर्ल्ड इंसान</string>
     <string name="rs_45602">45602 रुपये</string>
     <string name="rank">पद</string>
     <string name="name">नाम</string>
-    <string name="date">दिनांक</string>
+    <string name="date">तारीख</string>
     <string name="price_rs">कीमत (रुपये)</string>
     <string name="cancel_bid">बोली हटाएं</string>
     <string name="bid">बोली</string>
@@ -65,27 +65,134 @@
     <string name="choose_language">भाषा चुनें</string>
     <string name="english">अंग्रेज़ी</string>
     <string name="hindi">नहीं।</string>
-    <string name="next">आगे</string>
+    <string name="next">अगला</string>
     <string name="phone_number">फ़ोन नंबर</string>
     <string name="get_otp">ओटीपी प्राप्त करें</string>
     <string name="verify_otp">OTP को सत्यापित करें</string>
-    <string name="invalidOtp">अमान्य ओटीपी</string>
-    <string name="invalidPhoneError">अवैध फोन नंबर</string>
+    <string name="invalidOtp">ओटीपी अमान्य है</string>
+    <string name="invalidPhoneError">फोन नंबर अमान्य है</string>
     <string name="address">पता</string>
-    <string name="area">क्षेत्र</string>
+    <string name="area">खेत का क्षेत्रफल</string>
     <string name="emptyName">नाम खाली नहीं हो सकता</string>
-    <string name="invalidName">गलत नाम</string>
+    <string name="invalidName">नाम अमान्य है</string>
     <string name="emptyAreaError">क्षेत्र खाली नहीं हो सकता</string>
     <string name="cancel">रद्द करना</string>
     <string name="Login">लॉग इन करें</string>
-    <string name="changeLanguage">LANGAUGE बदलें</string>
+    <string name="changeLanguage">भाषा बदलें</string>
     <string name="changeCurrentLanguage">भाषा बदलें</string>
-    <string name="helpForPage">वॉकथ्रू प्राप्त करें</string>
+    <string name="helpForPage">टहलना</string>
     <string name="Notifications">अधिसूचनाएं</string>
     <string name="search">खोज</string>
     <string name="bigha">बीघा</string>
-    <string name="searchHint">सर्च फसल</string>
+    <string name="searchHint">फसलों की खोज करें</string>
     <string name="details">विवरण</string>
+    <string name="hello_blank_fragment">हेल्लो रिक्त खंड</string>
+    <string name="searchBuyers">खरीदारों को खोजें</string>
+    <string name="delta">डेल्टा</string>
+    <string name="modifyBid">बोली संशोधित करें</string>
+    <string name="myBid">मेरी बोली मूल्य:</string>
+    <string name="bidAPrice">मूल्य दर्ज करें</string>
+    <string name="confirmation">पुष्टीकरण</string>
+    <string name="tvDesc">कृपया बोली जोड़ने से पहले निम्नलिखित परिवर्तनों को ध्यान दें।</string>
+    <string name="initPrice">फसल की मांग की गई कीमत:</string>
+    <string name="myBidPrice">आप जो भी जोड़ रहे हैं</string>
+    <string name="noChangeInBid">बोली में कोई बदलाव नहीं</string>
+    <string name="modifyStock">फसल संशोधित करें</string>
+    <string name="supplyDeleted">फसल सफलतापूर्वक हटा दी गई</string>
+    <string name="supplyUpdated">सफलतापूर्वक अद्यतन</string>
+    <string name="cancelStock">फसल हटाएं</string>
+    <string name="no">नहीं न</string>
+    <string name="description">विवरण:</string>
+    <string name="modifyCrop">फसल संशोधित करें</string>
+    <string name="supplyAdded">सफलतापूर्वक जोड़ा गया</string>
+    <string name="couldNotLoadSupplies">फसलों को लोड नहीं कर सका</string>
+    <string name="couldNotLoadBids">सक्रिय बोलियां लोड नहीं कर सका</string>
+    <string name="suppliesLoaded">स्टॉक सफलतापूर्वक लोड किया गया</string>
+    <string name="noSupplyAct">आपके पास अभी तक बोली लगाने के लिए कोई सक्रिय फसल नहीं है</string>
+    <string name="noDemandAct">आपके पास अभी तक कोई सक्रिय बोलियां नहीं हैं</string>
+    <string name="noSupply">आपने अभी तक बोली लगाने के लिए कोई फसल नहीं जोड़ा है</string>
+    <string name="demanndLoaded">मेरी मांग लोड हो गई</string>
+    <string name="noDemand">आपने अभी तक किसी भी फसल पर बोली नहीं ली है</string>
+    <string name="cancelBid">बोली हटाएं?</string>
+    <string name="bidUpdated">बोली सफलतापूर्वक अद्यतन</string>
+    <string name="BidDeleted">बोली सफलतापूर्वक हटा दी गई।</string>
+    <string name="newBidPrice">नई बोली मूल्य:</string>
+    <string name="invalidRequest">अनुरोध अमान्य है।</string>
+    <string name="quotaRequest">अनुरोधों का कोटा पार हो गया। </string>
+    <string name="loginSuceed">सफलतापूर्ण प्रवेश</string>
+    <string name="loginNew">फोन नंबर पंजीकृत नहीं है।</string>
+    <string name="_91">+91</string>
+    <string name="otpSend">ओटीपी को भेजा गया है:</string>
+    <string name="otpResend">ओटीपी पुनः भेजें</string>
+    <string name="otpResendInit">ट्रिगर नहीं</string>
+    <string name="resendIn">ओटीपी फिर से भेजें</string>
+    <string name="invalidCredentials">अमान्य ओटीपी</string>
+    <string name="addNumber">अपना नंबर जोड़ें</string>
+    <string name="please_enter_your_mobile_number_to_receive_a_verification_code">सत्यापन कोड प्राप्त करने के लिए कृपया अपना मोबाइल नंबर दर्ज करें</string>
+    <string name="pleaseOtp">। \ N कृपया यहां ओटीपी दर्ज करें</string>
+    <string name="loggingIn">प्रवेश किया</string>
+    <string name="signUpSuccess">पंजीकरण सफल।</string>
+    <string name="failedLogin">लॉग इन करने में विफल। कृपया बाद में पुनः प्रयास करें।</string>
+    <string name="kg">किलोग्राम</string>
+    <string name="NotFound">नहीं मिला</string>
+    <string name="graphTitle">बोली इतिहास</string>
+    <string name="graphError">ग्राफ उपलब्ध नहीं है</string>
+    <string name="howMuchGrown">कितना उगाया जाता है?</string>
+    <string name="InVillage">गाँव में:</string>
+    <string name="InVDistrict">जिले में:</string>
+    <string name="InState">राज्य में:</string>
+    <string name="InCountry">देश में:</string>
+    <string name="currentBid">वर्तमान बोली:</string>
+    <string name="successfullBidAdd">बोली सफलतापूर्वक जोड़ा गया</string>
+    <string name="i_also_want_to_grow_crop">इसे जोड़ो?</string>
+    <string name="village">गाँव</string>
+    <string name="numberVerifed">फोन नंबर सत्यापित</string>
+    <string name="searchHead">सर्च फसल</string>
+    <string name="emptyRV">कोई बोलियां नहीं मिलीं।</string>
+    <string name="mySupplyHistory">आपूर्ति इतिहास</string>
+    <string name="myBidHistory">बोली इतिहास</string>
+    <string name="current_bid">वर्तमान बोली</string>
+    <string name="initial_expected_price">प्रारंभिक मूल्य</string>
+    <string name="initial_offer_price">प्रारंभिक प्रस्ताव मूल्य</string>
+    <string name="graphDataSet">मूल्य बनाम समय ग्राफ</string>
+    <string name="supplyHistorySuccess">आपूर्ति इतिहास सफलतापूर्वक पुनर्प्राप्त</string>
+    <string name="lastPrice">अंतिम मूल्य</string>
+    <string name="activeSupply">स्टॉक सक्रिय है</string>
+    <string name="inactiveSupply">स्टॉक निष्क्रिय है</string>
+    <string name="bidHistorySucess">पुनर्प्राप्त बोली इतिहास सफलतापूर्वक</string>
+    <string name="activeBid">बोली सक्रिय है</string>
+    <string name="inactiveBid">बोली निष्क्रिय है</string>
+    <string name="dateOfSowing">बुवाई की तारीख</string>
+    <string name="etSowError">कृपया बुवाई की तारीख जोड़ें</string>
+    <string name="GrowthAdded">विकास सफलतापूर्वक जोड़ा गया</string>
+    <string name="add_growth">विकास जोड़ें</string>
+    <string name="lastModified">अंतिम बार संशोधित:</string>
+    <string name="variety">"विविधता:"</string>
+    <string name="time">समय</string>
+    <string name="i">मैं</string>
+    <string name="call">कॉल</string>
+    <string name="canNotCall">कॉल नहीं कर सकते</string>
+    <string name="permissionPhone">इस ऐप से कॉल डायल करने की अनुमति।</string>
+    <string name="permissionHead">अनुमति की जरूरत है</string>
+    <string name="ok">अच्छा जी</string>
+    <string name="sendingOTp">"Otp भेजना"</string>
+    <string name="num_000000000">9090909090</string>
+    <string name="otpSent">ओटीपी भेजा गया</string>
+    <string name="successOTP">ओटीपी सफलतापूर्वक पुनर्प्राप्त</string>
+    <string name="permissionRequired">अनुमति आवश्यक है</string>
+    <string name="permissionMessageLocation">स्थान तक पहुँचने की अनुमति आवश्यक है।</string>
+    <string name="allow">अनुमति</string>
+    <string name="unableToOpenMaps">नक्शे खोलने में असमर्थ</string>
+    <string name="register">रजिस्टर करें</string>
+    <string name="creatinguser">उपयोगकर्ता बनाना</string>
+    <string name="eMandi">ई-मंडी।</string>
+    <string name="desc">फसल विवरण अपडेट करें</string>
+    <string name="no_bids_founds">कोई बोलियां नहीं मिलीं</string>
+    <string name="noDesc">-</string>
+    <string name="etEstLessThanSow">बोने से पहले फसल काटा नहीं जा सकता</string>
+    <string name="etEstLessIncomplete">फसल की फसल की तारीख कम से कम 20 दिनों की बुवाई के बाद होनी चाहिए</string>
+    <string name="expLess">बोली की समाप्ति तिथि बुवाई की तारीख से पहले नहीं हो सकती है</string>
+    <!--    Crops-->
     <string name="rice">चावल</string>
     <string name="wheat">गेहूँ</string>
     <string name="maize">मक्का</string>
@@ -104,7 +211,7 @@
     <string name="cauliflower">गोभी</string>
     <string name="pumpkin">कद्दू</string>
     <string name="peas">मटर</string>
-    <string name="ladyfinger">भिन्डी</string>
+    <string name="ladyfinger">भिंडी</string>
     <string name="bottleguard">बोतल गार्ड</string>
     <string name="bitterguard">करेला</string>
     <string name="spongeguard">स्पंजगार्ड</string>
@@ -113,121 +220,132 @@
     <string name="ginger">अदरक</string>
     <string name="lemon">नींबू</string>
     <string name="garlic">लहसुन</string>
-    <string name="turdal">यात्रा घाटी</string>
-    <string name="arhardal">अरहर दल</string>
+    <string name="turdal">तूर दाल</string>
+    <string name="arhardal">अरहर दाल</string>
     <string name="uraddal">कार्यालय दिया</string>
-    <string name="massor">Masoor Dal</string>
+    <string name="massor">मसूर दाल</string>
     <string name="gram">ग्राम</string>
-    <string name="chole">Kabuli Chane</string>
+    <string name="chole">काबुली चना</string>
     <string name="rajma">राज़में</string>
     <string name="cropvarietyNull">कोई विविधता नहीं मिली</string>
-    <string name="Hectare">> हेक्टेयर</string>
-    <string name="acres">Acres</string>
-    <string name="sqrmetres">> वर्ग मीटर</string>
-    <string name="hello_blank_fragment">हेल्लो रिक्त खंड</string>
-    <string name="searchBuyers">खरीदारों को खोजें</string>
-    <string name="delta">डेल्टा</string>
-    <string name="modifyBid">बोली संशोधित करें</string>
-    <string name="myBid">मेरी बोली:</string>
-    <string name="bidAPrice">मूल्य दर्ज करें</string>
-    <string name="confirmation">पुष्टीकरण</string>
-    <string name="tvDesc">कृपया बोली जोड़ने से पहले निम्नलिखित परिवर्तनों को ध्यान दें</string>
-    <string name="initPrice">फसल की कीमत पूछें:</string>
-    <string name="myBidPrice">आप जो भी जोड़ रहे हैं</string>
-    <string name="noChangeInBid">बोली में कोई बदलाव नहीं</string>
-    <string name="modifyStock">संशोधित स्टॉक</string>
-    <string name="supplyDeleted">फसल सफलतापूर्वक हटा दी गई</string>
-    <string name="supplyUpdated">सफलतापूर्वक अद्यतन</string>
-    <string name="cancelStock">फसल हटाएं</string>
-    <string name="no">नहीं</string>
-    <string name="description">विवरण:</string>
-    <string name="modifyCrop">फसल संशोधित करें</string>
-    <string name="supplyAdded">नया फसल स्टॉक सफलतापूर्वक बनाया गया</string>
-    <string name="couldNotLoad">स्टॉक लोड नहीं कर सका</string>
-    <string name="suppliesLoaded">स्टॉक सफलतापूर्वक लोड किया गया</string>
-    <string name="noSupply">आपके पास अभी तक कोई आपूर्ति नहीं है।</string>
-    <string name="demanndLoaded">मेरी मांग लोड हो गई</string>
-    <string name="noDemand">आपके पास कोई मांग नहीं है</string>
-    <string name="cancelBid">बोली रद्द करें?</string>
-    <string name="bidUpdated">बोली सफलतापूर्वक अद्यतन</string>
-    <string name="BidDeleted">बोली सफलतापूर्वक हटा दी गई।</string>
-    <string name="newBidPrice">नई बोली मूल्य</string>
-    <string name="invalidRequest">अनुरोध अमान्य है</string>
-    <string name="quotaRequest">अनुरोधों का कोटा पार हो गया</string>
-    <string name="loginSuceed">सफलतापूर्ण प्रवेश</string>
-    <string name="loginNew">फोन नंबर पंजीकृत नहीं है।</string>
-    <string name="_91">+91</string>
-    <string name="otpSend">ओटीपी को भेजा गया है:</string>
-    <string name="otpResend">ओटीपी पुनः भेजें</string>
-    <string name="otpResendInit">ट्रिगर नहीं</string>
-    <string name="resendIn">ओटीपी पुनः भेजें</string>
-    <string name="invalidCredentials">अवैध प्रत्यय पत्र</string>
-    <string name="addNumber">अपना नंबर जोड़ें</string>
-    <string name="please_enter_your_mobile_number_to_receive_a_verification_code">सत्यापन कोड प्राप्त करने के लिए कृपया अपना मोबाइल नंबर दर्ज करें</string>
-    <string name="pleaseOtp">कृपया यहां ओटीपी दर्ज करें</string>
-    <string name="loggingIn">प्रवेश किया</string>
-    <string name="signUpSuccess">पंजीकरण सफल।</string>
-    <string name="failedLogin">लॉग इन करने में विफल। कृपया बाद में पुनः प्रयास करें।</string>
-    <string name="kg">किलोग्राम</string>
-    <string name="NotFound">नहीं मिला</string>
-    <string name="graphTitle">बोली इतिहास</string>
-    <string name="graphError">ग्राफ उपलब्ध नहीं है</string>
-    <string name="howMuchGrown">कितना उगाया जाता है?</string>
-    <string name="InVillage">गाँव में:</string>
-    <string name="InVDistrict">जिले में:</string>
-    <string name="InState">राज्य में:</string>
-    <string name="InCountry">देश में:</string>
-    <string name="currentBid">वर्तमान बोली:</string>
-    <string name="successfullBidAdd">बोली सफलतापूर्वक जोड़ा गया</string>
-    <string name="i_also_want_to_grow_crop">मैं भी फसल उगाना चाहता हूं</string>
-    <string name="village">गाँव</string>
-    <string name="numberVerifed">फोन नंबर सत्यापित</string>
-    <string name="searchHead">सर्च फसल</string>
-    <string name="emptyRV">कोई बोलियां नहीं मिलीं।</string>
-    <string name="mySupplyHistory">आपूर्ति इतिहास</string>
-    <string name="myBidHistory">बोली इतिहास</string>
-    <string name="current_bid">वर्तमान बोली</string>
-    <string name="initial_offer_price">प्रारंभिक प्रस्ताव मूल्य</string>
-    <string name="graphDataSet">मूल्य बनाम समय ग्राफ</string>
-    <string name="supplyHistorySuccess">आपूर्ति इतिहास सफलतापूर्वक पुनर्प्राप्त</string>
-    <string name="lastPrice">अंतिम मूल्य</string>
-    <string name="activeSupply">स्टॉक सक्रिय है</string>
-    <string name="inactiveSupply">स्टॉक निष्क्रिय है</string>
-    <string name="bidHistorySucess">पुनर्प्राप्त बोली इतिहास सफलतापूर्वक</string>
-    <string name="activeBid">बोली सक्रिय है</string>
-    <string name="inactiveBid">बोली निष्क्रिय है</string>
-    <string name="dateOfSowing">बुवाई की तारीख</string>
-    <string name="etSowError">कृपया बुवाई की तारीख जोड़ें</string>
-    <string name="GrowthAdded">विकास सफलतापूर्वक जोड़ा गया</string>
-    <string name="add_growth">विकास जोड़ें</string>
-    <string name="lastModified">अंतिम बार संशोधित:</string>
-    <string name="variety">"विविधता:"</string>
-    <string name="time">समय</string>
-    <string name="call">कॉल</string>
-    <string name="canNotCall">कॉल नहीं कर सकते</string>
-    <string name="permissionPhone">इस ऐप से कॉल डायल करने की अनुमति।</string>
-    <string name="permissionHead">अनुमति की जरूरत है</string>
-    <string name="ok">ठीक है</string>
-    <string name="sendingOTp">"OTP भेजना"</string>
-    <string name="num_000000000">9090909090</string>
-    <string name="otpSent">ओटीपी भेजा गया</string>
-    <string name="successOTP">ओटीपी सफलतापूर्वक पुनर्प्राप्त</string>
-    <string name="permissionRequired">अनुमति आवश्यक है</string>
-    <string name="permissionMessageLocation">स्थान तक पहुँचने की अनुमति आवश्यक है।</string>
-    <string name="allow">अनुमति</string>
-    <string name="unableToOpenMaps">नक्शे खोलने में असमर्थ</string>
-    <string name="register">रजिस्टर करें</string>
-    <string name="creatinguser">उपयोगकर्ता बनाना</string>
-    <string name="desc">फसल विवरण अपडेट करें</string>
-    <string name="no_bids_founds">कोई बोलियां नहीं मिलीं</string>
-    <string name="noDesc">-</string>
-    <string name="etEstLessThanSow">पूर्णता तिथि बुवाई की तारीख से पहले नहीं हो सकती है</string>
-    <string name="etEstLessIncomplete">फसल फसल की तारीख बुवाई के 20 दिनों के पहले नहीं हो सकती है।</string>
-    <string name="expLess">बोली की समाप्ति तिथि बुवाई की तारीख से पहले नहीं हो सकती है</string>
-    <string name="NoNewReqFound">कोई आवश्यकता नहीं मिली</string>
-    <string name="asia">asia</string>
-    <string name="temp">temp</string>
-    <string name="expm20">Expiry of bid should be after at least 20 days from sowing date</string>
+    <string name="Hectare">हैक्टर</string>
+    <string name="acres">एकड़</string>
+    <string name="sqrmetres">वर्ग मीटर</string>
+    <string name="NoNewReqFound">कोई आवश्यकता नहीं मिली।</string>
+    <string name="NoLoadNewReq">नई आवश्यकताओं को लोड नहीं कर सका</string>
+    <string name="asia">एशिया</string>
+    <string name="temp">अस्थायी</string>
+    <string name="expm20">बोली की समाप्ति की तारीख से कम से कम 20 दिनों के बाद होनी चाहिए</string>
+    <string name="unableMaps">स्थान प्राप्त करने में असमर्थ।</string>
+    <string name="placeBid">बोली लगाना</string>
+    <string name="doDeleteBid">क्या आप इस मांग पर अपनी बोली हटाना चाहते हैं?</string>
+    <string name="logout">लॉग आउट</string>
+    <string name="unableToGetSearch">फसल की तलाश में असमर्थ।</string>
+    <string name="addThisInBidding">बोली लगाने के लिए इस फसल को जोड़ें</string>
+    <string name="addCropGrowthOnly">केवल इस फसल के विकास को जोड़ें</string>
+    <string name="add_crop">फसल जोड़ें</string>
+    <string name="addMissingCrop">यह फसल नहीं मिली है। </string>
+    <string name="addVariety">विविधता जोड़ें</string>
+    <string name="addDescription">अपनी फसल के लिए विवरण</string>
+    <string name="failAccessToken">लॉगिन करने में विफल।</string>
+    <string name="noon_has_bid">इस फसल पर अभी तक कोई बोलियां नहीं की गई हैं।</string>
+    <string name="my_bid">मेरी बोली</string>
+    <string name="Uttar">उत्तर</string>
+    <string name="bidInactive">यह बोली अब सक्रिय नहीं है।</string>
+    <string name="addBidPrice">बोली मूल्य जोड़ें</string>
+    <string name="bidAdded">बोली सफलतापूर्वक जोड़ा गया।</string>
+    <string name="logoutCnf">क्या आप लॉग आउट करना चाहते हैं?</string>
+    <string name="myCurrentBid">वर्तमान बोली</string>
+    <string name="updateBid">अद्यतन बोली</string>
+    <string name="incDec">% S से% s तक बढ़ती बोली</string>
+    <string name="decreasing">% S से% s तक की बोली लगाना</string>
+    <string name="searchCrops">फसलों की खोज</string>
+    <string name="emptyReq">इस फसल के लिए कोई मांग नहीं मिली।</string>
+    <string name="invalidOTP">अमान्य ओटीपी</string>
+    <string name="addCropforBidding">बोली के लिए जोड़ना</string>
+    <string name="confirm">पुष्टि करें</string>
+    <string name="adding_crop">फसल% s (% s% s) जोड़ने \ Ninitial अपेक्षित मूल्य% s% s</string>
+    <string name="adding_bid_date">बोली% s पर समाप्त होती है</string>
+    <string name="unableToAddStock">फसल जोड़ने में असमर्थ। </string>
+    <string name="add">जोड़ना</string>
+    <string name="bidRetrivealFailed">बोली को पुनः प्राप्त करने में विफल</string>
+    <string name="noDemandsFound">इस फसल के लिए कोई मांग नहीं मिली</string>
+    <string name="start_searchinhg">ऑर्डर के लिए खोज शुरू करें</string>
+    <string name="mango">आम</string>
+    <string name="days">दिन</string>
+    <string name="distance">दूरी</string>
+    <string name="n_30">30</string>
+    <string name="km">किमी</string>
+    <string name="infoHowMuchGrown">इससे पता चलता है कि विभिन्न स्तरों पर% s में कितना% बढ़ाया जाता है। </string>
+    <string name="quantity_grown_is">मात्रा बढ़ी \ N\ N</string>
+    <string name="within">% S% s के भीतर</string>
+    <string name="kilometeres">किलोमीटर की दूरी पर</string>
+    <string name="infoHowMuchGrownFilter">यह पिछले% दिनों की अवधि के बीच आपके वर्तमान स्थान के% s% s के भीतर बढ़ी% की मात्रा को दिखाता है और अगले% s दिनों में उगाया जाता है।</string>
+    <string name="retry">पुन: प्रयास</string>
+    <string name="addStockProposal">आप अपनी फसलों को सूचीबद्ध करने और अपनी मात्रा जोड़ने में सक्षम होंगे। </string>
+    <string name="addBidProposal">प्रारंभिक अपेक्षित मूल्य वह कीमत है जिस पर आप अपना पूरा उत्पादन बेचना चाहते हैं। </string>
+    <string name="cropDetail">आप यहां संभावित खरीदारों द्वारा बोलियां देख सकते हैं। </string>
+    <string name="cropDetailtitle">विवरण</string>
+    <string name="bidDetailInfo">ये उपभोक्ताओं, कंपनियों और खरीदारों द्वारा फसलों की मांग हैं। अपनी बोली लगाने के लिए। </string>
+    <string name="bidDetailInfoMy">आप उपज की मांग पर अन्य लोगों की बोलियां देख सकते हैं। </string>
+    <string name="str_my_bids">मेरी बोलियां</string>
+    <string name="couldNotLoadAllBids">बोलियां नहीं मिल सकीं</string>
+    <string name="searchbyCrops">खोज</string>
+    <string name="kgQuantityValueString">% s% s</string>
+    <string name="quantity_grown_is_without_date">मात्रा बढ़ी \ N</string>
+    <string name="num50">50</string>
+    <string name="distanceKm">दूरी (किमी)</string>
+    <string name="noDemandsFoundCrop">% S के लिए कोई मांग नहीं मिली</string>
+    <string name="locationNotDetected">स्थान का पता नहीं चला</string>
+    <string name="nf">नहीं मिला</string>
+    <string name="notAbleToCreateGMap">नक्शे लॉन्च करने में असमर्थ</string>
+    <string name="locationPermissionDenied">स्थान अनुमति अस्वीकृत</string>
+    <string name="rs_kg">रुपये / किग्रा</string>
+    <string name="w">में</string>
+    <string name="Last">पिछले</string>
+
+    <string-array name="arr_days_limit">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+        <item>60</item>
+        <item>80</item>
+        <item>90</item>
+        <item>100</item>
+        <item>110</item>
+        <item>120</item>
+        <item>130</item>
+        <item>140</item>
+        <item>150</item>
+        <item>160</item>
+        <item>170</item>
+        <item>180</item>
+    </string-array>
+
+    <string-array name="arr_distance_limit">
+        <item>50</item>
+        <item>100</item>
+        <item>150</item>
+        <item>200</item>
+        <item>250</item>
+        <item>300</item>
+        <item>350</item>
+        <item>400</item>
+        <item>450</item>
+        <item>500</item>
+        <item>550</item>
+        <item>600</item>
+        <item>650</item>
+        <item>700</item>
+        <item>750</item>
+        <item>800</item>
+        <item>850</item>
+        <item>900</item>
+        <item>950</item>
+        <item>1000</item>
+    </string-array>
 
     <string-array name="arr_crop_names">
         <item>@string/rice</item>
@@ -264,16 +382,9 @@
         <item>@string/gram</item>
         <item>@string/chole</item>
         <item>@string/rajma</item>
+        <item>@string/mango</item>
 
     </string-array>
-
-    <string-array name="arr_crop_types" tools:ignore="InconsistentArrays">
-        <item>Grey Wheat</item>
-        <item>Basmati Rice</item>
-        <item>@string/cropvarietyNull</item>
-        <item>Kala Chana</item>
-    </string-array>
-
 
     <string-array name="arr_area_units">
         <item>@string/Hectare</item>
@@ -281,8 +392,6 @@
         <item>@string/acres</item>
         <item>@string/sqrmetres</item>
     </string-array>
-
-
 
 
 </resources>

@@ -56,6 +56,7 @@ object TimeConversionUtils {
 
     }
 
+    //Get the form from reverse of what is required to send in date objects
     @SuppressLint("SimpleDateFormat")
     fun reverseToReq(timestamp: String): String {
 
@@ -136,14 +137,15 @@ object TimeConversionUtils {
 
         val dateObject =
             DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                //View is the date picker object
 
-
-                view.setMinDate(System.currentTimeMillis() - 1000);
+                view.minDate = System.currentTimeMillis() - 1000
                 myCalendar.set(Calendar.YEAR, year)
                 myCalendar.set(Calendar.MONTH, monthOfYear)
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
                 updateLabelOfDate(etInstance, context, myCalendar)
             }
+
 
         return dateObject
     }
@@ -162,6 +164,7 @@ object TimeConversionUtils {
 
         val mDateObect = getDateObject(myCalendar, etInstance, context)
         context.let { it1 ->
+            //it1 is the datepicker object
             DatePickerDialog(
                 it1, mDateObect, myCalendar[Calendar.YEAR],
                 myCalendar[Calendar.MONTH],

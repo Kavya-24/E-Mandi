@@ -1,306 +1,239 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container_add_stock"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:actionBarNavMode="standard">
+    android:background="@color/bgGreen">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <include layout="@layout/layout_toolbar" />
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/space_3x"
-        android:paddingBottom="@dimen/space_3x"
-        tools:context=".ui.supply.AddStock">
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        tools:actionBarNavMode="standard">
 
-        <TextView
-            android:id="@+id/tvTempCropName"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/temp"
-            android:visibility="gone"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tvTempCropType"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/temp"
-            android:visibility="gone"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tvTempCropDesc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/temp"
-            android:visibility="gone"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.textfield.TextInputLayout
-
-            android:id="@+id/tilWhichCrop"
-            style="@style/styleTIL"
-            android:hint="@string/which_crop"
-            app:layout_constraintEnd_toStartOf="@id/mic_crop_name"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-
-            <AutoCompleteTextView
-                android:id="@+id/actv_which_crop"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/space_half"
-                android:inputType="none" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <ImageView
-            android:id="@+id/mic_crop_name"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/space"
-            android:src="@drawable/ic_mic_black_24dp"
-            android:tint="@color/red_A700"
-            app:layout_constraintBottom_toBottomOf="@id/tilWhichCrop"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tilWhichCrop" />
+            android:paddingBottom="@dimen/space_3x"
+            tools:context=".ui.supply.AddStock">
 
-        <ProgressBar
-            android:id="@+id/pb_add_stock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.textfield.TextInputLayout
-
-            android:id="@+id/tilCropType"
-            style="@style/styleTIL"
-            android:hint="@string/crop_type"
-            app:layout_constraintEnd_toStartOf="@id/mic_crop_type"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilWhichCrop">
-
-
-            <AutoCompleteTextView
-                android:id="@+id/actv_crop_type"
+            <TextView
+                android:id="@+id/tvTempCropName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/space_half"
-                android:inputType="none" />
+                android:text="@string/temp"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <ImageView
-            android:id="@+id/mic_crop_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/space"
-            android:src="@drawable/ic_mic_black_24dp"
-            android:tint="@color/red_A700"
-            app:layout_constraintBottom_toBottomOf="@id/tilCropType"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tilCropType" />
-
-
-        <com.google.android.material.textfield.TextInputLayout
-
-            android:id="@+id/tilQuantity"
-            style="@style/OutlinedTextBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/space"
-            android:hint="@string/quantity"
-            android:orientation="horizontal"
-            app:endIconMode="none"
-            app:layout_constraintEnd_toStartOf="@id/tv_kg"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilCropType">
-
-
-            <EditText
-                android:id="@+id/actv_quantity"
+            <TextView
+                android:id="@+id/tvTempCropType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="numberDecimal" />
+                android:text="@string/temp"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/tv_kg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/space"
-            android:text="@string/kg"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="@id/tilQuantity"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tilQuantity" />
+            <com.google.android.material.textfield.TextInputLayout
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilDescription"
-            style="@style/OutlinedTextBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilQuantity">
+                android:id="@+id/tilWhichCrop"
+                style="@style/styleTIL"
+                android:hint="@string/which_crop"
+                app:layout_constraintEnd_toStartOf="@id/mic_crop_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <EditText
-                android:id="@+id/etDescription_add_stock"
+
+                <AutoCompleteTextView
+                    android:id="@+id/actv_which_crop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/space_half"
+                    android:inputType="none" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/mic_crop_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space"
+                android:src="@drawable/ic_mic_black_24dp"
+                android:tint="@color/deltaRed"
+                app:layout_constraintBottom_toBottomOf="@id/tilWhichCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tilWhichCrop" />
+
+            <ProgressBar
+                android:id="@+id/pb_add_stock"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+
+                android:id="@+id/tilCropType"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space"
+                android:layout_marginEnd="@dimen/space"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toStartOf="@id/mic_crop_type"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tilWhichCrop">
+
+
+                <EditText
+                    android:id="@+id/actv_crop_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/bgGreen"
+                    android:hint="@string/addVariety"
+                    android:inputType="none" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/mic_crop_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space"
+                android:src="@drawable/ic_mic_black_24dp"
+                android:tint="@color/deltaRed"
+                app:layout_constraintBottom_toBottomOf="@id/tilCropType"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tilCropType" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+
+                android:id="@+id/tilQuantity"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space"
+                android:layout_marginEnd="@dimen/space"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toStartOf="@id/tv_kg"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tilCropType">
+
+
+                <EditText
+                    android:id="@+id/actv_quantity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/bgGreen"
+                    android:hint="@string/quantity"
+                    android:inputType="numberDecimal"
+                    android:textColor="@color/grey_hint_color" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_kg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space"
+                android:text="@string/kg"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@id/tilQuantity"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tilQuantity" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilEstDate"
+                style="@style/OutlinedTextBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@id/ivEst"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tilSowDate">
+
+                <EditText
+                    android:id="@+id/etEstDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:hint="@string/estimated_time_of_completion" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilSowDate"
+                style="@style/OutlinedTextBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@id/ivSow"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tilQuantity">
+
+                <EditText
+                    android:id="@+id/etSowDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:hint="@string/dateOfSowing" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/ivEst"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space"
+                android:src="@drawable/ic_date_range_black_24dp"
+                app:layout_constraintBottom_toBottomOf="@id/tilEstDate"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tilEstDate" />
+
+            <ImageView
+                android:id="@+id/ivSow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space"
+                android:src="@drawable/ic_date_range_black_24dp"
+                app:layout_constraintBottom_toBottomOf="@id/tilSowDate"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tilSowDate" />
+
+            <CheckBox
+                android:id="@+id/checkbox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/description"
-                android:maxLines="4" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_margin="@dimen/space"
+                android:checked="true"
+                android:contentDescription="@string/available_for_bidding"
+                android:padding="@dimen/space"
+                android:text="@string/available_for_bidding"
+                app:layout_constraintTop_toBottomOf="@id/tilEstDate" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilEstDate"
-            style="@style/OutlinedTextBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilSowDate">
-
-            <EditText
-                android:id="@+id/etEstDate"
-                android:layout_width="match_parent"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/mtb_go_to_bidding"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:focusable="false"
-                android:hint="@string/estimated_time_of_completion" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilSowDate"
-            style="@style/OutlinedTextBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilDescription">
-
-            <EditText
-                android:id="@+id/etSowDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:hint="@string/dateOfSowing" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-
-            android:id="@+id/tilOfferPrice"
-            style="@style/OutlinedTextBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/space"
-            android:hint="@string/offer_price"
-            android:orientation="horizontal"
-            app:endIconMode="none"
-            app:errorEnabled="false"
-            app:layout_constraintEnd_toStartOf="@id/tv_rs"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilEstDate">
+                android:layout_marginStart="@dimen/space"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="@dimen/space"
+                android:backgroundTint="@color/colorAccent"
+                android:text="@string/next"
+                app:backgroundTint="@color/colorAccent"
+                app:icon="@drawable/ic_arrow_forward"
+                app:iconGravity="end"
+                app:iconTint="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/checkbox" />
 
 
-            <EditText
-                android:id="@+id/actv_price"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <TextView
-            android:id="@+id/tv_rs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/space"
-            android:text="@string/rs"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="@id/tilOfferPrice"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tilOfferPrice" />
-
-        <!--        <com.google.android.material.textfield.TextInputLayout-->
-        <!--            android:id="@+id/tv_address"-->
-        <!--            style="@style/OutlinedTextBox"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_margin="@dimen/space"-->
-        <!--            android:orientation="horizontal"-->
-        <!--            app:endIconMode="none"-->
-        <!--            app:layout_constraintEnd_toStartOf="@id/tilQUnit"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/tilOfferPrice">-->
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        <!--            <EditText-->
-        <!--                android:id="@+id/actv_address"-->
-        <!--                android:layout_width="match_parent"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:inputType="none"-->
-        <!--                android:text="@string/multi" />-->
-
-        <!--        </com.google.android.material.textfield.TextInputLayout>-->
-
-        <!--        <ImageView-->
-        <!--            android:id="@+id/iv_location"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_margin="@dimen/space"-->
-        <!--            android:padding="@dimen/space"-->
-        <!--            android:src="@drawable/ic_location_on_black_24dp"-->
-        <!--            app:layout_constraintBottom_toBottomOf="@id/tv_address"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintTop_toTopOf="@id/tv_address" />-->
-
-
-        <!--        <Switch-->
-        <!--            android:id="@+id/switch_for_bid"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_margin="@dimen/space"-->
-        <!--            android:checked="true"-->
-        <!--            android:enabled="true"-->
-        <!--            android:padding="@dimen/space"-->
-        <!--            android:text="@string/available_for_bidding"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/tilOfferPrice" />-->
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilExpDate"
-            style="@style/OutlinedTextBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilOfferPrice">
-
-            <EditText
-                android:id="@+id/etExpDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:hint="@string/expDate" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/mtb_add_stock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space"
-            android:layout_marginBottom="@dimen/space_3x"
-            android:text="@string/add_stock"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilExpDate" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-</ScrollView>
+    </ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

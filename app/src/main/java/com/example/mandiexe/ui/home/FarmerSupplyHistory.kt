@@ -1,12 +1,14 @@
 package com.example.mandiexe.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -17,7 +19,11 @@ import com.example.mandiexe.R
 import com.example.mandiexe.adapter.OnMySupplyHistoryClickListener
 import com.example.mandiexe.adapter.SupplyHistoryAdapter
 import com.example.mandiexe.models.responses.supply.SupplyHistoryResponse
+import com.example.mandiexe.ui.supply.SupplyDetailActivity
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
+import com.example.mandiexe.utils.usables.UIUtils.hideProgress
+import com.example.mandiexe.utils.usables.UIUtils.showProgress
+import com.example.mandiexe.viewmodels.FarmerSupplyHistoryViewModel
 import kotlinx.android.synthetic.main.farmer_supply_history_fragment.*
 
 class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {
@@ -28,6 +34,16 @@ class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {
 
     private val viewModel: FarmerSupplyHistoryViewModel by viewModels()
     private lateinit var root: View
+    private lateinit var pb: ProgressBar
+
+
+    private lateinit var swl: SwipeRefreshLayout
+
+    override fun onResume() {
+        loadHistory()
+        super.onResume()
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,12 +51,11 @@ class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {
     ): View? {
 
         root = inflater.inflate(R.layout.farmer_supply_history_fragment, container, false)
+        pb = root.findViewById(R.id.pb_history_supply)
+        swl = root.findViewById<SwipeRefreshLayout>(R.id.swl_supply_history)
 
-        root.findViewById<ProgressBar>(R.id.pb_history_supply).visibility = View.VISIBLE
 
         loadHistory()
-        val swl = root.findViewById<SwipeRefreshLayout>(R.id.swl_supply_history)
-        root.findViewById<ProgressBar>(R.id.pb_history_supply).visibility = View.GONE
 
         swl.setOnRefreshListener {
             loadHistory()
@@ -55,26 +70,33 @@ class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {
 
     private fun loadHistory() {
 
-        viewModel.supplyFunction().observe(viewLifecycleOwner, Observer { mResponse ->
-            val success = viewModel.successful.value
+        swl.isRefreshing = true
 
-            if (success != null) {
-                if (success) {
-                    loadItemsInRV(mResponse)
+        val mSnapbarView = root.findViewById<ConstraintLayout>(R.id.container_supply_history)
+        viewModel.supplyFunction(mSnapbarView, pb)
+            .observe(viewLifecycleOwner, Observer { mResponse ->
+                val success = viewModel.successful.value
+
+                if (success != null) {
+                    hideProgress(pb, requireContext())
+
+                    if (success) {
+                        loadItemsInRV(mResponse)
+                    } else {
+                        createSnackbar(
+                            viewModel.message.value,
+                            requireContext(),
+                            container_supply_history
+                        )
+                    }
                 } else {
-                    createSnackbar(
-                        viewModel.message.value,
-                        requireContext(),
-                        container_supply_history
-                    )
+                    showProgress(pb, requireContext())
                 }
-            }
 
 
-        })
+            })
 
-        root.findViewById<ProgressBar>(R.id.pb_history_supply).visibility = View.GONE
-
+        swl.isRefreshing = false
 
     }
 
@@ -82,15 +104,17 @@ class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {
         val rv = root.findViewById<RecyclerView>(R.id.rv_history_supply)
         rv.layoutManager = LinearLayoutManager(requireContext())
         val adapter = SupplyHistoryAdapter(this)
-        val mTv = root.findViewById<AppCompatTextView>(R.id.tvEmptyListSupply)
+        val empty = root.findViewById<ConstraintLayout>(R.id.llEmptySupplyHistory)
+
         if (mResponse.supplies.size == 0) {
-            mTv.visibility = View.VISIBLE
-            mTv.text =
-                context?.resources?.getString(R.string.noSupply)
+            empty.visibility = View.VISIBLE
 
 
         } else {
             adapter.lst = mResponse.supplies
+            empty.visibility = View.GONE
+            //Notify adapter
+            adapter.notifyDataSetChanged()
         }
 
         rv.adapter = adapter
@@ -98,6 +122,18 @@ class FarmerSupplyHistory : Fragment(), OnMySupplyHistoryClickListener {
     }
 
     override fun viewMyStockDetails(_listItem: SupplyHistoryResponse.Supply) {
+
+        val from = FarmerSupplyHistory::class.java.simpleName
+        val bundle = bundleOf(
+            "SUPPLY_ID" to _listItem._id,
+            "FROM" to from
+        )
+
+        //   val supply = _listItem._id
+        val i = Intent(requireContext(), SupplyDetailActivity::class.java)
+        i.putExtra("bundle", bundle)
+        startActivity(i)
+
 
     }
 
