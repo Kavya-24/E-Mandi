@@ -221,6 +221,7 @@ class MyBidHistoryAdapter(val itemClick: OnBidHistoryClickListener) :
                 .inflate(R.layout.item_bid_history, parent, false)
         return MyBidHistoryAdapter.MyViewHolder(view)
 
+
     }
 
     override fun getItemCount(): Int {
