@@ -513,14 +513,21 @@ class NewDemandActivity : AppCompatActivity(), OnClickNewRequirement {
                 adapter.notifyDataSetChanged()
 
 
-                snack.show()
+                Snackbar.make(
+                    container_search_supply,
+                    resources.getString(R.string.noDemandsFoundCrop, searchView.query.toString()),
+                    Snackbar.LENGTH_LONG
+                ).setAction(resources.getString(R.string.add_crop)) { mListener ->
+                    val i = Intent(this@NewDemandActivity, AddStock::class.java)
+                    startActivity(i)
+                }.show()
 
 
             }
 
 
         } else {
-            snack.dismiss()
+
             try {
 
                 this.apply {
