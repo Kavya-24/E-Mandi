@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container_supply_detail"
     android:layout_width="match_parent"
+
     android:layout_height="match_parent">
 
     <include layout="@layout/layout_toolbar" />
@@ -301,7 +302,8 @@
                         android:padding="@dimen/space"
                         android:text="@string/noon_has_bid"
                         android:visibility="invisible"
-                        app:layout_constraintTop_toBottomOf="@id/graphView" />
+                        app:layout_constraintBottom_toBottomOf="@id/graphView"
+                        app:layout_constraintTop_toTopOf="@id/graphView" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/mtb_cancel_stock"
@@ -326,6 +328,15 @@
                         app:layout_constraintStart_toEndOf="@id/mtb_cancel_stock"
                         app:layout_constraintTop_toBottomOf="@id/tvNoGraphCrop" />
 
+                    <TextView
+                        android:id="@+id/tvLastUpdatedSupplyDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_3x"
+                        android:gravity="center"
+                        android:text="@string/lastupdated"
+                        android:textColor="@color/black"
+                        app:layout_constraintTop_toBottomOf="@id/mtb_modify_stock" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

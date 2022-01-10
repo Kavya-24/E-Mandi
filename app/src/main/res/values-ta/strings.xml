@@ -307,5 +307,6 @@
     <string name="bidEndsOn">Bid ends on %s</string>
     <string name="expectedHarvest">Expected to harvest</string>
     <string name="cropSownOn">Crop sown on:</string>
+    <string name="lastupdated">Last updated: %s</string>
 
 </resources>

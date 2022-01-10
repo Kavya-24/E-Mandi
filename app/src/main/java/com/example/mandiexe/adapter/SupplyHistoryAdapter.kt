@@ -96,6 +96,7 @@ class SupplyHistoryAdapter(val itemClick: OnMySupplyHistoryClickListener) :
                         }
 
                     } else {
+
                         CROP_DELTA.text = itemView.context.resources.getString(R.string.noDesc)
                         CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.wildColor))
                         CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.wildColor))
@@ -103,6 +104,7 @@ class SupplyHistoryAdapter(val itemClick: OnMySupplyHistoryClickListener) :
                     }
 
                 } else {
+
                     CROP_DELTA.text = itemView.context.resources.getString(R.string.inactiveSupply)
                     CROP_DELTA.text = itemView.context.resources.getString(R.string.noDesc)
                     CROP_DELTA.setTextColor(itemView.context.resources.getColor(R.color.wildColor))

@@ -8,8 +8,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/space"
-        android:elevation="@dimen/space"
         android:clickable="true"
+        android:elevation="@dimen/space"
         android:focusable="true"
         app:cardBackgroundColor="@color/bgCard"
         app:cardCornerRadius="@dimen/space_half">
@@ -26,6 +26,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space"
+                android:textColor="@color/black"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"

@@ -512,6 +512,15 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
                     TimeConversionUtils.convertTimeToEpoch(value.supply.expiry)
                 )
 
+            findViewById<TextView>(R.id.tvLastUpdatedSupplyDetails).text =
+                resources.getString(
+                    R.string.lastupdated,
+                    TimeConversionUtils.convertTimeToEpoch(value.supply.lastModified)
+                )
+
+
+
+
             findViewById<TextView>(R.id.tv_stock_detail_current_bid).text =
                 value.supply.currentBid.toString()
             if (value.supply.currentBid < value.supply.askPrice) {
@@ -523,9 +532,15 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
                     .setTextColor(resources.getColor(R.color.wildColor))
 
             }
-
             //Else the color is green
+            else {
+                findViewById<TextView>(R.id.tv_stock_detail_current_bid)
+                    .setTextColor(resources.getColor(R.color.colorPrimary))
 
+            }
+
+
+            //Populate Modify Body
             findViewById<TextView>(R.id.tv_stock_detail_initial_offer_price).text =
                 value.supply.askPrice.toString()
             mPrice = value.supply.askPrice.toString()
@@ -580,7 +595,7 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
         if (item.isEmpty()) {
             //When there are no last bids or any bids
             graph.removeAllSeries()
-            graph.visibility = View.GONE
+            graph.visibility = View.INVISIBLE
             findViewById<TextView>(R.id.tvNoGraphCrop).visibility = View.VISIBLE
 
             //Also, make this open
