@@ -380,6 +380,8 @@
     <string name="rs_kg">Rs/Kg</string>
     <string name="w">W</string>
     <string name="Last">Last</string>
+    <string name="add_a_new_crop">Add a new crop</string>
+    <string name="sowAndEstAddStock">The crop will be sown on %s and is expected to be harvested by on around %s</string>
 
 
     <!--    Spinners for days and distance-->

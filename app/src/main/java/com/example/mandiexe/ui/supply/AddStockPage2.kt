@@ -18,17 +18,18 @@ import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.usables.OfflineTranslate
 import com.example.mandiexe.utils.usables.TimeConversionUtils
+import com.example.mandiexe.utils.usables.UIUtils
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import com.example.mandiexe.utils.usables.UIUtils.hideProgress
 import com.example.mandiexe.utils.usables.UIUtils.showProgress
 import com.example.mandiexe.utils.usables.ValidationObject
 import com.example.mandiexe.viewmodels.AddStockViewModel
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_add_stock_page2.*
 import kotlinx.android.synthetic.main.layout_add_stock.view.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import java.util.*
+
 
 class AddStockPage2 : AppCompatActivity() {
 
@@ -45,9 +46,12 @@ class AddStockPage2 : AppCompatActivity() {
     private lateinit var tilPrice: TextInputLayout
     private lateinit var tilExp: TextInputLayout
 
+
     private val pref = PreferenceUtil
     private lateinit var args: Bundle
     private lateinit var pb: ProgressBar
+
+    private lateinit var ivImage: ImageView
 
 
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -71,6 +75,14 @@ class AddStockPage2 : AppCompatActivity() {
         //Set name and type
         findViewById<TextView>(R.id.tvAddStockCropName).text = args.getString("NAME")
         findViewById<TextView>(R.id.tvAddStockCropType).text = args.getString("TYPE")
+        findViewById<TextView>(R.id.tvAddStockCropQuanity).text =
+            args.getString("QUANTITY") + resources.getString(R.string.kg)
+        findViewById<TextView>(R.id.tvSowAndEst).text = resources.getString(
+            R.string.sowAndEstAddStock,
+            args.getString("SOW"),
+            args.getString("EST")
+        )
+
 
         //UI Init
         etExp = findViewById(R.id.etExpDate)
@@ -80,6 +92,11 @@ class AddStockPage2 : AppCompatActivity() {
         //TIL
         tilPrice = findViewById(R.id.tilOfferPrice)
         tilExp = findViewById(R.id.tilExpDate)
+        ivImage = findViewById(R.id.ivCropImage)
+
+
+
+        populateImage()
 
         // disable dates before today
         myCalendar = Calendar.getInstance()
@@ -87,19 +104,6 @@ class AddStockPage2 : AppCompatActivity() {
 
 
 
-        etExp.setOnClickListener {
-            TimeConversionUtils.clickOnDateObject(myCalendar, etExp, this)
-        }
-
-        findViewById<ImageView>(R.id.ivExp).setOnClickListener {
-            TimeConversionUtils.clickOnDateObject(myCalendar, etExp, this)
-        }
-
-        findViewById<MaterialButton>(R.id.mtb_add_stock).setOnClickListener {
-            if (isValidate()) {
-                createConfirmDialog()
-            }
-        }
 
 
         this.apply {
@@ -107,6 +111,56 @@ class AddStockPage2 : AppCompatActivity() {
             ivInformation.setOnClickListener {
                 getInformationNormalFilters()
             }
+
+
+            ivExp.setOnClickListener {
+                TimeConversionUtils.clickOnDateObject(myCalendar, etExp, this)
+            }
+
+
+            etExp.setOnClickListener {
+                TimeConversionUtils.clickOnDateObject(myCalendar, etExp, this)
+            }
+
+
+            mtb_add_stock.setOnClickListener {
+                if (isValidate()) {
+                    createConfirmDialog()
+                }
+            }
+        }
+
+    }
+
+    private fun populateImage() {
+
+        val c_name = args.getString("NAME")
+
+        if (c_name != null) {
+            //Parse the c_name
+            val check_name = c_name.toLowerCase().filter { !it.isWhitespace() }
+
+
+            val check_uri =
+                "@drawable/" + check_name // where myresource (without the extension) is the file
+
+            Log.e(TAG, "Checking for image name $check_name and URI $check_uri")
+
+
+            val imageResource = resources.getIdentifier(check_uri, null, packageName)
+            val res = resources.getDrawable(imageResource)
+
+            try {
+                ivImage.setImageDrawable(res)
+
+            } catch (e: Exception) {
+                UIUtils.logExceptions(e, TAG)
+                ivImage.setImageDrawable(resources.getDrawable(R.drawable.nf))
+            }
+
+
+        } else {
+            ivImage.setImageDrawable(resources.getDrawable(R.drawable.nf))
         }
 
     }

@@ -117,6 +117,7 @@
             style="@style/styleProgressBar"
             android:layout_margin="@dimen/space"
             android:backgroundTint="@color/colorAccent"
+            android:contentDescription="@string/add_a_new_crop"
             android:src="@drawable/ic_add"
             android:tint="@color/white"
             app:backgroundTint="@color/colorAccent"

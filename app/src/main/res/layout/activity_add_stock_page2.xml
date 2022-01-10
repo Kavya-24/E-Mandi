@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container_add_stock_page_2"
     android:layout_width="match_parent"
@@ -8,7 +9,7 @@
 
     <include layout="@layout/layout_toolbar" />
 
-    <ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="?attr/actionBarSize">
@@ -19,6 +20,17 @@
             android:layout_margin="@dimen/space"
             android:paddingBottom="@dimen/space_3x"
             tools:context=".ui.supply.AddStockPage2">
+
+
+            <ImageView
+                android:id="@+id/ivCropImage"
+                android:layout_width="@dimen/space_220"
+                android:layout_height="@dimen/space_220"
+                android:layout_margin="@dimen/space"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
 
             <TextView
                 android:id="@+id/tvTempCropNamePage2"
@@ -48,23 +60,53 @@
 
             <TextView
                 android:id="@+id/tvAddStockCropName"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/space"
+                android:layout_marginStart="@dimen/space"
+                android:layout_marginTop="@dimen/space"
+                android:layout_marginEnd="@dimen/space"
                 android:padding="@dimen/space"
+                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ivCropImage"
                 tools:text="@string/rice" />
 
             <TextView
                 android:id="@+id/tvAddStockCropType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/space"
+                android:layout_marginStart="@dimen/space"
+                android:layout_marginEnd="@dimen/space"
                 android:padding="@dimen/space"
                 app:layout_constraintTop_toBottomOf="@id/tvAddStockCropName"
                 tools:text="@string/rice" />
+
+            <TextView
+                android:id="@+id/tvAddStockCropQuanity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space"
+                android:padding="@dimen/space"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/tvAddStockCropName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvAddStockCropName"
+                tools:text="@string/num50" />
+
+
+            <TextView
+                android:id="@+id/tvSowAndEst"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space"
+                android:fontFamily="sans-serif"
+                android:padding="@dimen/space"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvAddStockCropType"
+                tools:text="@string/sowAndEstAddStock" />
+
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilDesc"
@@ -72,7 +114,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space"
                 android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/tvAddStockCropType">
+                app:layout_constraintTop_toBottomOf="@id/tvSowAndEst">
 
                 <EditText
                     android:id="@+id/etDescription_add_stock"

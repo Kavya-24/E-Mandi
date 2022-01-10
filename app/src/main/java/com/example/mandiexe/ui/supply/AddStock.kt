@@ -124,6 +124,8 @@ class AddStock : AppCompatActivity() {
         mtb = findViewById(R.id.mtb_go_to_bidding)
         pb = findViewById(R.id.pb_add_stock)
 
+        cropQuantity.setText(resources.getString(R.string.num50), TextView.BufferType.EDITABLE)
+
 
         //Populate views
         setUpCropNameSpinner()
@@ -133,20 +135,17 @@ class AddStock : AppCompatActivity() {
         myCalendar = Calendar.getInstance()
         myCalendar.add(Calendar.MONTH, -1)
 
-        etEst.setOnClickListener {
-            TimeConversionUtils.clickOnDateObject(myCalendar, etEst, this)
-        }
 
-
-        findViewById<EditText>(R.id.etSowDate).setOnClickListener {
-            TimeConversionUtils.clickOnDateObject(
-                myCalendar,
-                findViewById<EditText>(R.id.etSowDate),
-                this
-            )
-        }
 
         this.apply {
+
+            etEst.setOnClickListener {
+                TimeConversionUtils.clickOnDateObject(myCalendar, etEst, this)
+            }
+
+            etSow.setOnClickListener {
+                TimeConversionUtils.clickOnDateObject(myCalendar, etSow, this)
+            }
 
             ivEst.setOnClickListener {
                 TimeConversionUtils.clickOnDateObject(myCalendar, etEst, this)
@@ -155,9 +154,13 @@ class AddStock : AppCompatActivity() {
             ivSow.setOnClickListener {
                 TimeConversionUtils.clickOnDateObject(
                     myCalendar,
-                    findViewById<EditText>(R.id.etSowDate),
+                    etSow,
                     this
                 )
+            }
+
+            ivInformation.setOnClickListener {
+                getInformationNormalFilters()
             }
 
             mic_crop_name.setOnClickListener {
@@ -197,16 +200,6 @@ class AddStock : AppCompatActivity() {
             }
         }
 
-
-        //Get the variables for the bidding
-
-
-        this.apply {
-
-            ivInformation.setOnClickListener {
-                getInformationNormalFilters()
-            }
-        }
 
     }
 

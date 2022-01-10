@@ -2,10 +2,10 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cvItemDemandSuggestion"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/space_half"
-    android:id="@+id/cvItemDemandSuggestion"
     android:elevation="@dimen/space_half"
     app:cardCornerRadius="@dimen/space_half">
 
@@ -18,9 +18,9 @@
         android:padding="@dimen/space_half">
 
         <TextView
+            android:id="@+id/tvItemDemandSuggestion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tvItemDemandSuggestion"
             android:layout_gravity="center"
             android:layout_margin="@dimen/space_half"
             tools:text="@string/rice" />
@@ -29,8 +29,8 @@
             android:id="@+id/ivItemDemandSuggestion"
             android:layout_width="@dimen/space_6x"
             android:layout_height="@dimen/space_6x"
-            android:layout_margin="@dimen/space_half"
             android:layout_gravity="center"
+            android:layout_margin="@dimen/space_half"
             tools:src="@drawable/rice" />
 
     </LinearLayout>
