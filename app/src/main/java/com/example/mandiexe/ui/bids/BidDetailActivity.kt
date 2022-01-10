@@ -374,6 +374,7 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
                         convertTimeToEpoch(value.demand.lastModified)
                     )
 
+                    tvLastUpdatedBidDetail.visibility = View.GONE
                     if (currrentBid > initialOfferPrice) {
                         tv_requirement_detail_current_bid.setTextColor(
                             resources.getColor(
@@ -850,7 +851,8 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
         } else {
 
             //Add the current last bid
-
+            graph.visibility = View.VISIBLE
+            findViewById<TextView>(R.id.tvNoGraphCrop).visibility = View.GONE
             //#This last modifed is wrong, it can be for the the owner also
             mList.add(
                 ViewBidResponse.Bid.Demand.LastBid(
