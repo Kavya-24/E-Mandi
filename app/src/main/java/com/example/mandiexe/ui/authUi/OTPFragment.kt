@@ -3,6 +3,7 @@ package com.example.mandiexe.ui.authUi
 import `in`.aabhasjindal.otptextview.OTPListener
 import `in`.aabhasjindal.otptextview.OtpTextView
 import android.app.Activity
+
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -17,7 +18,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
+
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
@@ -44,7 +45,7 @@ import kotlinx.android.synthetic.main.o_t_fragment.*
 import java.util.concurrent.TimeUnit
 
 
-class OTPFragment : Fragment() {
+class OTPFragment : androidx.fragment.app.Fragment() {
 
     companion object {
         fun newInstance() = OTPFragment()
@@ -150,6 +151,7 @@ class OTPFragment : Fragment() {
                 showProgress(pb, requireContext())
                 if (ValidationObject.validateOTP(otpTextView.otp ?: "")) {
                     verifyPhoneNumberWithCode(storedVerificationId, mOtp)
+
                 } else {
                     //Invalid OTP
                     createSnackbar(
@@ -187,12 +189,14 @@ class OTPFragment : Fragment() {
     ) {
 
         Log.e(TAG, "In resend OTP")
-        //Pause the timer
 
         tvTimer.visibility = View.GONE
         timer.onFinish()
         timer.cancel()
 
+
+        //Show Progress bar
+        pb.visibility = View.VISIBLE
 
         val optionsBuilder = PhoneAuthOptions.newBuilder(auth)
             .setPhoneNumber(phoneNumber)       // Phone number to verify
@@ -208,6 +212,8 @@ class OTPFragment : Fragment() {
         } catch (e: Exception) {
             Log.e(TAG, "Resend exception ${e.cause} ad ${e.message}")
         }
+
+        pb.visibility = View.GONE
     }
 
 
@@ -227,8 +233,13 @@ class OTPFragment : Fragment() {
                 //     user action.
 
                 hideProgress(pb, requireContext())
-                Log.e(TAG, "on ver comp " + credential.toString())
+                Log.e(TAG, "on ver comp $credential")
                 verificationInProgress = false
+
+                //Set sms code in the OTP Placeholder
+                otpTextView.setOTP(credential.smsCode.toString())
+                mOtp = credential.smsCode.toString()
+
                 signInWithPhoneAuthCredential(credential)
             }
 
@@ -327,6 +338,7 @@ class OTPFragment : Fragment() {
 
     private fun verifyPhoneNumberWithCode(verificationId: String?, code: String) {
 
+        Log.e(TAG, "In auto filling")
         val credential = PhoneAuthProvider.getCredential(verificationId!!, code)
         signInWithPhoneAuthCredential(credential)
     }
@@ -421,6 +433,8 @@ class OTPFragment : Fragment() {
     private fun makeCall(body: LoginBody, str: String) {
 
 
+        clearObservers()
+
         val mSnackbarView = root.findViewById<ConstraintLayout>(R.id.container_frag_otp)
         viewModel.lgnFunction(body, pb, mSnackbarView)
             .observe(viewLifecycleOwner, Observer { mResponse ->
@@ -510,11 +524,11 @@ class OTPFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        clearObservers()
         verificationInProgress = false
         timer.onFinish()
         timer.cancel()
-        viewModel.successful.removeObservers(this)
-        viewModel.successful.value = null
+
     }
 
     override fun onResume() {
@@ -523,6 +537,16 @@ class OTPFragment : Fragment() {
             hideProgress(pb, requireContext())
         }
         super.onResume()
+    }
+
+
+    private fun clearObservers() {
+        viewModel.successful.removeObservers(this)
+        viewModel.successful.value = null
+
+        viewModel.message.removeObservers(this)
+        viewModel.message.value = null
+
     }
 
 }

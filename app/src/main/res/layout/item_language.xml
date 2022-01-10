@@ -1,19 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.google.android.material.button.MaterialButton xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/mtb_item_language"
+    xmlns:tool="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/space_10x"
-    android:layout_margin="@dimen/space_half"
-    android:autoSizeMaxTextSize="24sp"
-    android:autoSizeMinTextSize="18sp"
-    android:backgroundTint="@color/colorAccent"
-    android:gravity="center"
-    android:text="@string/english"
-    android:textColor="@color/white"
-    android:textSize="20sp"
-    app:backgroundTint="@color/colorAccent"
-    app:iconGravity="textEnd" />
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/space"
+    android:elevation="@dimen/space"
+    app:cardCornerRadius="@dimen/space">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/csl_language"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/card_language_neutral"
+        android:padding="@dimen/space">
+
+        <TextView
+            android:id="@+id/tvLanguage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="@dimen/space"
+            android:layout_marginTop="@dimen/space"
+            android:padding="@dimen/space"
+            android:textSize="16sp"
+            app:layout_constraintTop_toTopOf="parent"
+            tool:text="English" />
+
+        <TextView
+            android:id="@+id/tvLetter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/space"
+            android:gravity="center"
+            android:padding="@dimen/space_2x"
+            android:textColor="@color/black"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/tvLanguage"
+            tool:text="A" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
 
 

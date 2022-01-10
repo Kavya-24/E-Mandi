@@ -379,6 +379,8 @@
     <string name="rs_kg">Rs/Kg</string>
     <string name="w">W</string>
     <string name="Last">Last</string>
+    <string name="welcome">Welcome</string>
+    <string name="please_enter_your_details_below">Please enter your details below</string>
 
 
     <!--    Spinners for days and distance-->

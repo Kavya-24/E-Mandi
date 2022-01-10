@@ -4,11 +4,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mandiexe.R
 import com.example.mandiexe.models.body.LanguageBody
 import com.example.mandiexe.utils.auth.PreferenceUtil
-import com.google.android.material.button.MaterialButton
 
 class LanguagesAdapter(
     val itemClick: OnMyLanguageListener
@@ -22,7 +23,11 @@ class LanguagesAdapter(
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         //Use other items you want the layout to inflate
-        val CARD = itemView.findViewById<MaterialButton>(R.id.mtb_item_language)
+
+        val _language = itemView.findViewById<TextView>(R.id.tvLanguage)
+        val _letter = itemView.findViewById<TextView>(R.id.tvLetter)
+        val _csl = itemView.findViewById<ConstraintLayout>(R.id.csl_language)
+
 
         //The shared prefernece is empty first
         private val pref = PreferenceUtil
@@ -31,21 +36,21 @@ class LanguagesAdapter(
         fun bindPost(_listItem: LanguageBody, itemClick: OnMyLanguageListener, position: Int) {
             with(_listItem) {
 
-                CARD.text = _listItem.language
+                _language.text = _listItem.language
+                _letter.text = _listItem.mLetter
 
 
                 if (_listItem.mLocale == pref.getLanguageFromPreference()) {
                     //Then add the button
                     Log.e("In language adapter", "With tick")
-                    CARD.icon =
-                        itemView.context.resources.getDrawable(R.drawable.ic_check_black_24dp)
-
+                    _csl.setBackgroundResource(R.drawable.card_language_glow)
                 }
 
                 //If this is notthe selected lagage
                 else {
 
-                    CARD.setTextColor(itemView.context.resources.getColor(R.color.black))
+                    _csl.setBackgroundResource(R.drawable.card_language_neutral)
+
                 }
 
 

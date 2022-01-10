@@ -200,6 +200,8 @@ class SignUpFragment : Fragment() {
         } else {
             tvAddress.text =
                 fetchedLocation        //This is the address that we have got from the map
+            etAddress.setText(tvAddress.text, TextView.BufferType.EDITABLE)
+
         }
 
 
@@ -660,7 +662,6 @@ class SignUpFragment : Fragment() {
     }
 
     private fun MapReady(gMap: GoogleMap?) {
-
 
 
         Log.e(TAG, "In map ready")

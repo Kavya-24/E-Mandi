@@ -72,22 +72,22 @@ object ExternalUtils {
         val mLanguages: MutableList<LanguageBody> = mutableListOf()
 
         //0
-        mLanguages.add(LanguageBody("English", "en"))
+        mLanguages.add(LanguageBody("English", "en", "A"))
 
         //1
-        mLanguages.add(LanguageBody("हिंदी", "hi"))
+        mLanguages.add(LanguageBody("हिंदी", "hi", "अ"))
 
-        //2
-        mLanguages.add(LanguageBody("বাংলা", "bn"))
+        //2 383737
+        mLanguages.add(LanguageBody("বাংলা", "bn", "অ"))
 
         //3
-        mLanguages.add(LanguageBody("मराठी", "mr"))
+        mLanguages.add(LanguageBody("मराठी", "mr", "आ"))
 
         //4 Tamil
-        mLanguages.add(LanguageBody("தமிழ்", "ta"))
+        mLanguages.add(LanguageBody("தமிழ்", "ta", "அ"))
 
         //5 Telugu
-        mLanguages.add(LanguageBody("తెలుగు", "te"))
+        mLanguages.add(LanguageBody("తెలుగు", "te", "అ"))
 
         return mLanguages
     }

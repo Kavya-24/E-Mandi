@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.mandiexe.R
 import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
@@ -25,15 +24,12 @@ class LoginActivity : AppCompatActivity() {
 
         val navControllerLogin = findNavController(R.id.nav_host_fragment_login)
 
-        val toolbar = supportActionBar
-        toolbar?.title = resources.getString(R.string.app_name)
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_login, R.id.nav_otp, R.id.nav_signup
             )
         )
-        setupActionBarWithNavController(navControllerLogin, appBarConfiguration)
 
 
     }

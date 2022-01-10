@@ -125,7 +125,7 @@
     <string name="otpSend">ओटीपी को भेजा गया है:</string>
     <string name="otpResend">ओटीपी पुनः भेजें</string>
     <string name="otpResendInit">ट्रिगर नहीं</string>
-    <string name="resendIn">ओटीपी फिर से भेजें</string>
+    <string name="resendIn">ओटीपी फिर से भेजें <b>%s s</b></string>
     <string name="invalidCredentials">अमान्य ओटीपी</string>
     <string name="addNumber">अपना नंबर जोड़ें</string>
     <string name="please_enter_your_mobile_number_to_receive_a_verification_code">सत्यापन कोड प्राप्त करने के लिए कृपया अपना मोबाइल नंबर दर्ज करें</string>

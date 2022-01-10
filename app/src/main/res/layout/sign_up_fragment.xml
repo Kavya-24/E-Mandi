@@ -4,158 +4,199 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:actionBarNavMode="standard">
+    android:background="@color/ivory">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:id="@+id/container_sign_up"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="@dimen/space"
+        app:cardBackgroundColor="@color/ivoryDark"
+        app:cardCornerRadius="@dimen/space">
 
-        <com.google.android.material.textfield.TextInputLayout
-
-            android:id="@+id/tilUSerName"
-            style="@style/OutlinedTextBox"
-            android:hint="@string/name"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-
-            <EditText
-                android:id="@+id/etUserName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/space_half"
-                android:inputType="none" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-
-            android:id="@+id/tilUserAddress"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/space"
-            android:hint="@string/address"
-            android:padding="@dimen/space"
-            app:layout_constraintEnd_toStartOf="@id/pb_sig_address"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilArea">
-
-
-            <EditText
-                android:id="@+id/etUserAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/space_half"
-                android:inputType="none"
-                android:maxLines="4" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <ProgressBar
-            android:id="@+id/pb_sig_up_main"
-            android:layout_width="wrap_content"
-            android:visibility="invisible"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ProgressBar
-            android:id="@+id/pb_sig_address"
-            style="@android:style/Widget.ProgressBar.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/space"
-            android:progressTint="@color/colorAccent"
-            app:layout_constraintBottom_toBottomOf="@id/tilUserAddress"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tilUserAddress"
-            app:layout_constraintTop_toTopOf="@id/tilUserAddress" />
-
-        <com.google.android.material.textfield.TextInputLayout
-
-            android:id="@+id/tilArea"
-            style="@style/OutlinedTextBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/space"
-            android:hint="@string/area"
-            android:orientation="horizontal"
-            app:endIconMode="none"
-            app:layout_constraintEnd_toStartOf="@id/tilAUnit"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilUSerName">
-
-
-            <EditText
-                android:id="@+id/etArea"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-
-            android:id="@+id/tilAUnit"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/space"
-            android:orientation="horizontal"
-            android:padding="@dimen/space_half"
-            app:layout_constraintBottom_toBottomOf="@id/tilArea"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tilArea">
-
-
-            <AutoCompleteTextView
-                android:id="@+id/actv_area_unit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="none" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <TextView
-            android:id="@+id/tv_address_fetched"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_sign_up"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/space"
-            android:maxLines="5"
-            android:padding="@dimen/space"
-            app:layout_constraintTop_toBottomOf="@id/tilUserAddress"
-            tools:text="@tools:sample/lorem/random" />
+            android:padding="@dimen/space">
+
+            <TextView
+                android:id="@+id/tvwelc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space"
+                android:fontFamily="sans-serif"
+                android:padding="@dimen/space"
+                android:text="@string/welcome"
+                android:textColor="@color/black"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/map_view"
-            android:layout_width="@dimen/space_400"
-            android:layout_height="@dimen/space_400"
-            android:layout_margin="@dimen/space"
-            android:apiKey="@string/map_key"
-            android:clickable="true"
-            android:enabled="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:focusable="true"
-            app:layout_constraintTop_toBottomOf="@id/tv_address_fetched" />
+            <TextView
+                android:id="@+id/tvdesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space"
+                android:layout_marginEnd="@dimen/space"
+                android:fontFamily="sans-serif"
+                android:paddingStart="@dimen/space"
+                android:paddingEnd="@dimen/space"
+                android:text="@string/please_enter_your_details_below"
+                app:layout_constraintTop_toBottomOf="@id/tvwelc" />
 
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/mtb_sign_up"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/space"
-            android:backgroundTint="@color/colorAccent"
-            android:text="@string/next"
-            app:backgroundTint="@color/colorAccent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/map_view" />
+            <com.google.android.material.textfield.TextInputLayout
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                android:id="@+id/tilUSerName"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space"
+                android:hint="@string/name"
+                android:padding="@dimen/space"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvdesc">
+
+
+                <EditText
+                    android:id="@+id/etUserName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/space_half"
+                    android:inputType="none" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+
+                android:id="@+id/tilUserAddress"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space"
+                android:hint="@string/address"
+                android:padding="@dimen/space"
+                app:layout_constraintEnd_toStartOf="@id/pb_sig_address"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tilArea">
+
+
+                <EditText
+                    android:id="@+id/etUserAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/space_half"
+                    android:inputType="none"
+                    android:maxLines="4" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ProgressBar
+                android:id="@+id/pb_sig_up_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ProgressBar
+                android:id="@+id/pb_sig_address"
+                style="@android:style/Widget.ProgressBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space"
+                android:progressTint="@color/colorAccent"
+                app:layout_constraintBottom_toBottomOf="@id/tilUserAddress"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tilUserAddress"
+                app:layout_constraintTop_toTopOf="@id/tilUserAddress" />
+
+            <com.google.android.material.textfield.TextInputLayout
+
+                android:id="@+id/tilArea"
+                style="@style/OutlinedTextBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space"
+                android:hint="@string/area"
+                android:orientation="horizontal"
+                app:endIconMode="none"
+                app:layout_constraintEnd_toStartOf="@id/tilAUnit"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tilUSerName">
+
+
+                <EditText
+                    android:id="@+id/etArea"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+
+                android:id="@+id/tilAUnit"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space"
+                android:orientation="horizontal"
+                android:padding="@dimen/space_half"
+                app:layout_constraintBottom_toBottomOf="@id/tilArea"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tilArea">
+
+
+                <AutoCompleteTextView
+                    android:id="@+id/actv_area_unit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_address_fetched"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space"
+                android:fontFamily="sans-serif"
+                android:maxLines="5"
+                android:padding="@dimen/space"
+                app:layout_constraintTop_toBottomOf="@id/tilUserAddress"
+                tools:text="@tools:sample/lorem/random" />
+
+
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/map_view"
+                android:layout_width="@dimen/space_400"
+                android:layout_height="@dimen/space_400"
+                android:layout_margin="@dimen/space_2x"
+                android:apiKey="@string/map_key"
+                android:clickable="true"
+                android:enabled="true"
+                android:focusable="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_address_fetched" />
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/mtb_sign_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space"
+                android:backgroundTint="@color/colorAccent"
+                android:text="@string/next"
+                app:backgroundTint="@color/colorAccent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/map_view" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 </ScrollView>

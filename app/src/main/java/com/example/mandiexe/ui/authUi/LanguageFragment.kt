@@ -39,6 +39,7 @@ class LanguageFragment : AppCompatActivity(), OnMyLanguageListener {
         mAdapter.lst = mLanguages
         rv.adapter = mAdapter
 
+        mAdapter.notifyDataSetChanged()
 
     }
 
@@ -47,8 +48,6 @@ class LanguageFragment : AppCompatActivity(), OnMyLanguageListener {
         ExternalUtils.setAppLocale(pref.getLanguageFromPreference().toString(), this)
         setContentView(R.layout.language_fragment)
 
-        //Change the language of the toolbar
-        setTitle(R.string.choose_language)
 
         createLanguageList()
     }
@@ -57,22 +56,20 @@ class LanguageFragment : AppCompatActivity(), OnMyLanguageListener {
         //Use keys
         val newLocale = ExternalUtils.getLocaleFromAdapterIndex(position)
         setLocale(newLocale)
-        recreateModel(newLocale)
-        //Naviagte to the new ACTRIVTY
+
+        //Navigate to the new ACTIVITY
         val i = Intent(this, LoginActivity::class.java)
         startActivity(i)
         finish()
 
     }
 
-    private fun recreateModel(s: String) {
-        //Do nothing here
-    }
-
-
     private fun setLocale(s: String) {
+
+        //Get the Locale from string
         val locale = Locale(s)
         Locale.setDefault(locale)
+
 
         val config = Configuration()
         config.locale = locale
@@ -85,7 +82,7 @@ class LanguageFragment : AppCompatActivity(), OnMyLanguageListener {
         pref.setLanguageFromPreference(s)
 
 
-        //Now for the system
+        //Save in Shared Preference
         val editor: SharedPreferences.Editor = getSharedPreferences(
             "Settings",
             MODE_PRIVATE
@@ -99,6 +96,7 @@ class LanguageFragment : AppCompatActivity(), OnMyLanguageListener {
     override fun onBackPressed() {
         super.onBackPressed()
         finish()
+        finishAffinity()
     }
 
 
