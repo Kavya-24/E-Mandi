@@ -115,55 +115,31 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
         val tb = findViewById<Toolbar>(R.id.toolbarExternal)
         tb.title = resources.getString(R.string.details)
+
         this.apply {
             tvTitleToolbar.text = resources.getString(R.string.details)
         }
+
         tb.setNavigationOnClickListener {
             onBackPressed()
         }
 
-        swl = findViewById(R.id.swl_detailsSupply)
+
         Log.e(TAG, "Supply id is" + SUPPLY_ID + "\nFrom " + from)
 
-        pb = findViewById(R.id.pb_my_crops_details)
-        mSnackbarView = findViewById(R.id.container_supply_detail)
+        //Initialization
+        this.apply {
+            swl = swl_detailsSupply
+            pb = pb_my_crops_details
+            mSnackbarView = container_supply_detail
+        }
+
+
         //This gets an id as the argument and makes a call from it
         swl.isRefreshing = true
         makeCall()
         swl.isRefreshing = false
 
-        //initViews
-        findViewById<TextView>(R.id.tv_view_bid_history_stocks).setOnClickListener {
-
-            //Open the history
-            if (!isOpen) {
-                openBidHistory()
-            }
-
-        }
-
-        findViewById<ImageView>(R.id.iv_dropdown_bid_history).setOnClickListener {
-
-            //Open the history
-            if (isOpen) {
-                closeBidHistory()
-            } else {
-                openBidHistory()
-            }
-
-        }
-
-
-
-        findViewById<MaterialButton>(R.id.mtb_cancel_stock).setOnClickListener {
-            cancelStock()
-        }
-
-
-
-        findViewById<MaterialButton>(R.id.mtb_modify_stock).setOnClickListener {
-            modifyStock()
-        }
 
 
         swl.setOnRefreshListener {
@@ -172,13 +148,47 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
         }
 
 
-
+        //OnClicks
         this.apply {
+
+            tv_view_bid_history_stocks.setOnClickListener {
+
+                //Open the history
+                if (!isOpen) {
+                    openBidHistory()
+                }
+
+            }
+
+
+            iv_dropdown_bid_history.setOnClickListener {
+
+                //Open the history
+                if (isOpen) {
+                    closeBidHistory()
+                } else {
+                    openBidHistory()
+                }
+
+            }
+
+
+            mtb_cancel_stock.setOnClickListener {
+                cancelStock()
+            }
+
+
+            mtb_modify_stock
+                .setOnClickListener {
+                    modifyStock()
+                }
 
             ivInformation.setOnClickListener {
                 getInformationNormalFilters()
             }
+
         }
+
 
     }
 
@@ -354,35 +364,6 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    private fun getTranslations() {
-
-        OfflineTranslate.translateToEnglish(
-            this,
-            cropType.text.toString(),
-            v.findViewById<TextView>(R.id.tvTempCropTypeModify)
-        )
-        OfflineTranslate.translateToEnglish(
-            this,
-            desc.text.toString(),
-            v.findViewById<TextView>(R.id.tvTempCropDescModify)
-        )
-
-    }
-
-    private fun getValidTranslations(): Boolean {
-
-        return ValidationObject.validateTranslations(
-            v.findViewById<TextView>(R.id.tvTempCropTypeModify),
-            this
-        ) && ValidationObject.validateTranslations(
-            v.findViewById<TextView>(R.id.tvTempCropDescModify),
-            this
-        )
-
-    }
-
-
-    @RequiresApi(Build.VERSION_CODES.Q)
     private fun makeModifyCalls() {
 
         val transCropType =
@@ -425,6 +406,35 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
 
     }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun getTranslations() {
+
+        OfflineTranslate.translateToEnglish(
+            this,
+            cropType.text.toString(),
+            v.findViewById<TextView>(R.id.tvTempCropTypeModify)
+        )
+        OfflineTranslate.translateToEnglish(
+            this,
+            desc.text.toString(),
+            v.findViewById<TextView>(R.id.tvTempCropDescModify)
+        )
+
+    }
+
+    private fun getValidTranslations(): Boolean {
+
+        return ValidationObject.validateTranslations(
+            v.findViewById<TextView>(R.id.tvTempCropTypeModify),
+            this
+        ) && ValidationObject.validateTranslations(
+            v.findViewById<TextView>(R.id.tvTempCropDescModify),
+            this
+        )
+
+    }
+
 
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun manageModifyResponse(mResponse: ModifySupplyResponse?) {
@@ -493,9 +503,14 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
             findViewById<TextView>(R.id.ans_detail_crop_quanity).text =
                 value.supply.qty.toString() + " " + resources.getString(R.string.kg)
             findViewById<TextView>(R.id.ans_detail_crop_exp).text =
-                TimeConversionUtils.convertTimeToEpoch(value.supply.expiry)
+                TimeConversionUtils.convertTimeToEpoch(value.supply.supplyCreated)
             findViewById<TextView>(R.id.ans_detail_init_date).text =
                 TimeConversionUtils.convertTimeToEpoch(value.supply.supplyCreated)
+            findViewById<TextView>(R.id.mBidEnds).text =
+                resources.getString(
+                    R.string.bidEndsOn,
+                    TimeConversionUtils.convertTimeToEpoch(value.supply.expiry)
+                )
 
             findViewById<TextView>(R.id.tv_stock_detail_current_bid).text =
                 value.supply.currentBid.toString()
@@ -754,7 +769,6 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 //        }
 
     }
-
 
     override fun onBackPressed() {
 
