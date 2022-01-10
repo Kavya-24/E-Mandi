@@ -30,11 +30,12 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/mLayoutReq"
-                    android:visibility="invisible"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/space"
                     android:padding="@dimen/space"
+                    android:visibility="invisible"
+
                     app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
@@ -42,6 +43,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/space"
+                        android:textColor="@color/black"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
@@ -123,22 +125,12 @@
                         android:id="@+id/ans_detail_bid_quanity"
                         android:layout_width="21dp"
                         android:layout_height="15dp"
-                        android:layout_margin="@dimen/space"
-                        android:text="@string/_0_kg"
+                        android:layout_marginStart="@dimen/space"
+                        android:text="@string/qkg"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="@id/tv_requirement_detail_quantity"
                         app:layout_constraintStart_toEndOf="@id/tv_requirement_detail_quantity"
                         app:layout_constraintTop_toTopOf="@id/tv_requirement_detail_quantity" />
-
-                    <TextView
-                        android:id="@+id/tv_requirement_detail_expiration"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/space"
-                        android:text="@string/expiration_date"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_requirement_detail_quantity" />
 
 
                     <TextView
@@ -146,20 +138,20 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/space"
-                        android:text="@string/_12_4_2005"
-                        app:layout_constraintBottom_toBottomOf="@id/tv_requirement_detail_expiration"
-                        app:layout_constraintStart_toEndOf="@id/tv_requirement_detail_expiration"
-                        app:layout_constraintTop_toTopOf="@id/tv_requirement_detail_expiration" />
+                        android:text="@string/bidEndsOn"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_requirement_detail_my_bid" />
 
                     <TextView
                         android:id="@+id/tv_requirement_detail_init_date"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/space"
-                        android:text="@string/date_of_start"
+                        android:text="@string/bidAddedOn"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_requirement_detail_expiration" />
+                        app:layout_constraintTop_toBottomOf="@id/ans_detail_bid_quanity" />
 
 
                     <TextView
@@ -269,7 +261,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/space"
-                        app:layout_constraintTop_toBottomOf="@id/tv_requirement_detail_my_bid">
+                        app:layout_constraintTop_toBottomOf="@id/ans_detail_bid_exp">
 
                         <androidx.cardview.widget.CardView
                             android:id="@+id/cv_contact_initial"
@@ -369,8 +361,8 @@
                         android:layout_margin="@dimen/space"
                         android:gravity="center"
                         android:text="@string/no_bids_founds"
-                        android:visibility="gone"
-                        app:layout_constraintTop_toBottomOf="@id/graphViewReq" />
+                        app:layout_constraintBottom_toBottomOf="@id/graphViewReq"
+                        app:layout_constraintTop_toTopOf="@id/graphViewReq" />
 
 
                     <com.google.android.material.button.MaterialButton
@@ -380,9 +372,10 @@
                         android:layout_marginTop="@dimen/space_4x"
                         android:text="@string/cancel_bid"
                         app:backgroundTint="@color/deltaRed"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/mtb_Modify_bid"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvNoGraph" />
+                        app:layout_constraintTop_toBottomOf="@id/graphViewReq" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/mtb_Modify_bid"
@@ -391,9 +384,10 @@
                         android:layout_marginTop="@dimen/space_4x"
                         android:text="@string/modifyBid"
                         app:backgroundTint="@color/colorAccent"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/mtb_cancel_bid"
-                        app:layout_constraintTop_toBottomOf="@id/tvNoGraph" />
+                        app:layout_constraintTop_toBottomOf="@id/graphViewReq" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/mtb_add_bid"
@@ -403,9 +397,23 @@
                         android:text="@string/placeBid"
                         android:visibility="gone"
                         app:backgroundTint="@color/colorAccent"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvNoGraph" />
+                        app:layout_constraintTop_toBottomOf="@id/graphViewReq" />
+
+
+                    <TextView
+                        android:id="@+id/tvLastUpdatedBidDetail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_2x"
+                        android:gravity="center"
+                        android:text="@string/lastupdated"
+                        android:textColor="@color/black"
+                        android:visibility="gone"
+                        app:layout_constraintTop_toBottomOf="@id/mtb_Modify_bid" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

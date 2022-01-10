@@ -15,8 +15,8 @@ import com.example.mandiexe.utils.auth.PreferenceUtil
 import com.example.mandiexe.utils.usables.OfflineTranslate
 import com.example.mandiexe.utils.usables.TimeConversionUtils
 
-class NewReqAdapter (val itemClick: OnClickNewRequirement) :
-RecyclerView.Adapter<NewReqAdapter.MyViewHolder>() {
+class NewReqAdapter(val itemClick: OnClickNewRequirement) :
+    RecyclerView.Adapter<NewReqAdapter.MyViewHolder>() {
 
 
     //Initialize an empty list of the dataclass T
@@ -120,8 +120,6 @@ RecyclerView.Adapter<NewReqAdapter.MyViewHolder>() {
                         CROP_CHANGE.drawable.setTint(itemView.context.resources.getColor(R.color.wildColor))
                         CROP_CARD.setCardBackgroundColor(itemView.context.resources.getColor(R.color.lightGreenTest))
                     }
-
-
 
 
                 } catch (e: Exception) {

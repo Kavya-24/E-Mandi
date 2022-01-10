@@ -308,5 +308,7 @@
 	<string name="expectedHarvest">Expected to harvest</string>
 	<string name="cropSownOn">Crop sown on:</string>
     <string name="lastupdated">Last updated: %s</string>
+    <string name="qkg">%s %s</string>
+    <string name="bidAddedOn">"Bid added: "</string>
 
 </resources>

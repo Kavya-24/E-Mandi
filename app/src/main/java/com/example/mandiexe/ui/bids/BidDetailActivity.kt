@@ -95,8 +95,8 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
     private var personObject: PersonObject? = null
 
     private lateinit var swl: SwipeRefreshLayout
-    private var crop_date_created = ""
-    private var crop_amount_created = ""
+    private var bid_date_created = ""
+    private var bid_amount_created = ""
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -105,9 +105,9 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
         setContentView(R.layout.bid_detail_activity)
 
         args = intent?.getBundleExtra("bundle")!!
-        //Set the address in the box trimmed
-        BID_ID = args.getString("BID_ID").toString()
 
+
+        BID_ID = args.getString("BID_ID").toString()
         from = args.getString("FROM").toString()
 
         Log.e(TAG, "BID ID  " + BID_ID + "from is $from")
@@ -120,13 +120,16 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
         tb.setNavigationOnClickListener {
             onBackPressed()
         }
+
+        //Initialization
         graph = findViewById(R.id.graphViewReq)
         pb = findViewById(R.id.pb_my_req_details)
         swl = findViewById(R.id.swl_detailsReq)
         mSnackbarView = findViewById(R.id.container_bid_detail)
+
         //Set views from 'FROM'
         if (from == MyBidsFragment::class.java.simpleName || from == FarmerBidHistory::class.java.simpleName) {
-            //Do nothing
+
             this.apply {
 
                 mtb_add_bid.visibility = View.GONE
@@ -134,9 +137,11 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
                 mtb_Modify_bid.visibility = View.VISIBLE
                 mMyBid.visibility =
                     View.VISIBLE
+
                 tv_requirement_detail_my_bid.visibility = View.VISIBLE
                 tv_view_bid_history_requirement.visibility = View.VISIBLE
                 iv_dropdown_bid_history_req.visibility = View.VISIBLE
+
                 graphViewReq.visibility = View.VISIBLE
                 tvNoGraph.visibility = View.VISIBLE
 
@@ -144,15 +149,18 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
             }
 
         } else if (from == NewDemandActivity::class.java.simpleName) {
+
             mtb_add_bid.visibility = View.VISIBLE
             mtb_cancel_bid.visibility = View.GONE
             mtb_Modify_bid.visibility = View.GONE
             mMyBid.visibility =
                 View.GONE
+
             tv_requirement_detail_my_bid.visibility = View.GONE
             //Hide the view bid history, graph, arrow
             tv_view_bid_history_requirement.visibility = View.GONE
             iv_dropdown_bid_history_req.visibility = View.GONE
+
             graphViewReq.visibility = View.GONE
             tvNoGraph.visibility = View.GONE
 
@@ -160,10 +168,13 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
 
         swl.isRefreshing = true
-
         makeCall()
-
         swl.isRefreshing = false
+
+        swl.setOnRefreshListener {
+            makeCall()
+            swl_detailsReq.isRefreshing = false
+        }
 
 
         //initViews
@@ -206,25 +217,14 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
             }
 
 
-
-
-            swl_detailsReq.setOnRefreshListener {
-                makeCall()
-                swl_detailsReq.isRefreshing = false
-            }
-
             mContact.setOnClickListener {
                 viewBuyer()
             }
 
-        }
-
-
-        this.apply {
-
             ivInformation.setOnClickListener {
                 getInformationNormalFilters()
             }
+
         }
 
     }
@@ -233,7 +233,6 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
         val d = androidx.appcompat.app.AlertDialog.Builder(this)
         d.setTitle(resources.getString(R.string.cropDetailtitle))
-
         if (from == NewDemandActivity::class.java.simpleName) {
             d.setMessage(resources.getString(R.string.bidDetailInfo))
         } else {
@@ -243,81 +242,15 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
         d.create().show()
     }
 
-
-    private fun viewBuyer() {
-        val dialog = AlertDialog.Builder(this)
-        val v = layoutInflater.inflate(R.layout.item_owner_detail, null)
-        dialog.setView(v)
-
-        if (personObject != null) {
-            v.apply {
-                this.ownerName.text = personObject!!.name
-                this.ownerPhone.text = personObject!!.phone
-
-                //ownerAddress1.text = personObject!!.address
-                //Remove it
-                ownerAddress1.text =
-                    personObject!!.addressLine1 + "\n" + personObject!!.addressLine2
-
-            }
-        }
-
-        dialog.setPositiveButton(resources.getString(R.string.call)) { dialog, _ ->
-            checkCallPermissions()  //For calling
-            dialog.dismiss()
-        }
-        dialog.setNegativeButton(resources.getString(R.string.ok)) { _, _ -> }
-
-
-        dialog.create()
-        dialog.show()
-    }
-
-    private fun checkCallPermissions() {
-
-        PermissionsHelper.requestCallsAndMessagePermissions(this)
-            .subscribeOn(AndroidSchedulers.mainThread())
-            .observeOn(AndroidSchedulers.mainThread())
-            .debounce(1, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onNext = { callback ->
-                    Log.e(TAG, "In on next and call back is $callback")
-                    if (callback) {
-                        //Done
-                        callBuyer()
-                    }
-                },
-                onError = {
-                    Log.e(TAG, "Error for permissions and ${it.message} ${it.cause}")
-                },
-                onComplete = {
-                    Log.e(TAG, "In complete")
-                    callBuyer()
-
-                }
-            )
-
-    }
-
-    private fun callBuyer() {
-        try {
-            val i = Intent(Intent.ACTION_CALL, Uri.fromParts("tel", ownerPhone, null))
-            startActivity(i)
-
-        } catch (e: Exception) {
-            Log.e(TAG, "In except" + e)
-        }
-    }
-
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun makeCall() {
 
         showProgress(pb, this@BidDetailActivity)
 
-        val body = ViewBidBody(BID_ID)
+
 
         if (from != NewDemandActivity::class.java.simpleName) {
-
+            val body = ViewBidBody(BID_ID)
             viewModel.viewBidFunction(body, pb, mSnackbarView).observe(this, Observer { mResponse ->
                 val success = viewModel.successfulBid.value
                 if (success != null) {
@@ -328,9 +261,7 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
                     showProgress(pb, this)
                 }
             })
-        }
-
-        if (from == NewDemandActivity::class.java.simpleName) {
+        } else if (from == NewDemandActivity::class.java.simpleName) {
 
             val body2 = ViewDemandBody(BID_ID)
             viewModel.viewDemandFunction(body2, pb, mSnackbarView)
@@ -359,7 +290,7 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
         try {
             if (value != null) {
-                Log.e(TAG, "\nREsposne \nis $value")
+
                 //Translate
                 OfflineTranslate.translateToDefault(
                     this,
@@ -379,12 +310,8 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
                     findViewById<TextView>(R.id.tv_requirement_detail_crop_description)
                 )
 
-                crop_amount_created = value.demand.offerPrice.toString()
-                crop_date_created = value.demand.demandCreated
-
-                //Owner Details
-                ownerPhone = value.demand.demander.phone
-                ownerName = transliterateToDefault(value.demand.demander.name)
+                bid_amount_created = value.demand.offerPrice.toString()
+                bid_date_created = value.demand.demandCreated
 
 
                 val currrentBid = value.demand.currentBid
@@ -396,43 +323,10 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
                     "Current is $currrentBid and init is $initialOfferPrice"
                 )
 
-                this.apply {
+                //Owner Details
+                ownerPhone = value.demand.demander.phone
+                ownerName = transliterateToDefault(value.demand.demander.name)
 
-                    tv_contact_name.text = ownerName
-                    tv_contact_initial.text = ownerName.take(1)
-                    tv_requirement_detail_crop_location.text =
-                        OfflineTranslate.transliterateToDefault(value.demand.demander.address)
-
-                    ans_detail_bid_quanity.text =
-                        value.demand.qty.toString() + " " + resources.getString(R.string.kg)
-
-                    ans_detail_bid_exp.text =
-                        convertTimeToEpoch(value.demand.expiry)
-                    this.ans_detail_bid_init_date.text =
-                        convertTimeToEpoch(value.demand.demandCreated)
-
-                    tv_requirement_detail_current_bid.text = currrentBid.toString()
-
-                    tv_requirement_detail_initial_offer_price.text =
-                        initialOfferPrice.toString()
-
-                    if (currrentBid > initialOfferPrice) {
-                        tv_requirement_detail_current_bid.setTextColor(
-                            resources.getColor(
-                                R.color.deltaRed,
-                                null
-                            )
-                        )
-
-                    }
-                    //Add in the bidding fragment
-                    tv_requirement_detail_my_bid.visibility = View.GONE
-                    this.mMyBid.visibility = View.GONE
-
-
-                }
-
-                //Popultae Person object
                 val bidDemander = value.demand.demander
                 val address1 = bidDemander.village + "," + bidDemander.district
                 val address2 = bidDemander.state + "," + bidDemander.country
@@ -447,17 +341,61 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
                 )
 
 
+                this.apply {
+
+
+                    tv_contact_name.text = ownerName
+                    tv_contact_initial.text = ownerName.take(1)
+                    tv_requirement_detail_crop_location.text =
+                        OfflineTranslate.transliterateToDefault(value.demand.demander.address)
+
+                    ans_detail_bid_quanity.text =
+                        resources.getString(
+                            R.string.qkg,
+                            value.demand.qty.toString(),
+                            resources.getString(R.string.kg)
+                        )
+
+                    ans_detail_bid_exp.text =
+                        resources.getString(
+                            R.string.bidEndsOn,
+                            convertTimeToEpoch(value.demand.expiry)
+                        )
+                    ans_detail_bid_init_date.text =
+                        convertTimeToEpoch(value.demand.demandCreated)
+
+                    tv_requirement_detail_current_bid.text = currrentBid.toString()
+
+                    tv_requirement_detail_initial_offer_price.text =
+                        initialOfferPrice.toString()
+
+                    tvLastUpdatedBidDetail.text = resources.getString(
+                        R.string.lastupdated,
+                        convertTimeToEpoch(value.demand.lastModified)
+                    )
+
+                    if (currrentBid > initialOfferPrice) {
+                        tv_requirement_detail_current_bid.setTextColor(
+                            resources.getColor(
+                                R.color.deltaRed,
+                                null
+                            )
+                        )
+
+                    }
+
+
+                    //Add in the bidding fragment
+                    tv_requirement_detail_my_bid.visibility = View.GONE
+                    mMyBid.visibility = View.GONE
+
+
+                }
+
 
                 dialogCurrentBid = currrentBid.toString()
 
-                //Hide
-//                fillRecyclerViewNew(value.demand.bids)
-//                createGraph(value.bid.demand.lastBid)
 
-
-                this.apply {
-
-                }
             }
         } catch (e: Exception) {
             Log.e(TAG, "Error" + e.cause + e.message)
@@ -672,6 +610,7 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
     }
 
+
     private fun clearObservers() {
         viewModel.successfulBid.removeObservers(this)
         viewModel.successfulBid.value = null
@@ -759,8 +698,8 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
             ownerName = transliterateToDefault(value.bid.bidder.name)
             mPrice = value.bid.currentBid.toString()
 
-            crop_amount_created = value.bid.demand.offerPrice.toString()
-            crop_date_created = value.bid.demand.demandCreated.toString()
+            bid_amount_created = value.bid.demand.offerPrice.toString()
+            bid_date_created = value.bid.demand.demandCreated.toString()
 
             val currrentBid = value.bid.demand.currentBid
             val initialOfferPrice = value.bid.demand.offerPrice
@@ -779,11 +718,19 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
                 tv_requirement_detail_crop_location.text =
                     OfflineTranslate.transliterateToDefault(value.bid.bidder.address)
 
-                ans_detail_bid_quanity.text =
-                    value.bid.demand.qty.toString() + " " + resources.getString(R.string.kg)
+                ans_detail_bid_quanity.text = resources.getString(
+                    R.string.qkg,
+                    value.bid.demand.qty.toString(),
+                    resources.getString(R.string.kg)
+                )
 
                 ans_detail_bid_exp.text =
-                    convertTimeToEpoch(value.bid.demand.expiry)
+                    resources.getString(
+                        R.string.bidEndsOn,
+                        convertTimeToEpoch(value.bid.demand.expiry)
+                    )
+
+
                 this.ans_detail_bid_init_date.text =
                     convertTimeToEpoch(value.bid.demand.demandCreated)
 
@@ -791,6 +738,11 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
                 tv_requirement_detail_initial_offer_price.text =
                     initialOfferPrice.toString()
+
+                tvLastUpdatedBidDetail.text = resources.getString(
+                    R.string.lastupdated,
+                    convertTimeToEpoch(value.bid.demand.lastModified)
+                )
 
                 if (currrentBid > initialOfferPrice) {
                     tv_requirement_detail_current_bid.setTextColor(
@@ -909,9 +861,9 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
             )
             mList.add(
                 ViewBidResponse.Bid.Demand.LastBid(
-                    crop_amount_created.toInt(),
+                    bid_amount_created.toInt(),
                     "",
-                    crop_date_created,
+                    bid_date_created,
                 )
             )
             mList.sortBy { it.timestamp }
@@ -964,7 +916,7 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
                 //Start x will be the initial price of the item
 
 
-                TimeConversionUtils.convertDateTimestampUtil(crop_date_created)?.time?.toDouble()
+                TimeConversionUtils.convertDateTimestampUtil(bid_date_created)?.time?.toDouble()
                     ?.let {
                         graph.viewport.setMinX(
                             it
@@ -1053,6 +1005,7 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
     }
 
+
     override fun onBackPressed() {
 
         //Load the bid
@@ -1064,6 +1017,72 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
     override fun viewBidDetails(_listItem: BidHistoryBody) {
 
+    }
+
+    //Call buyer
+    private fun viewBuyer() {
+        val dialog = AlertDialog.Builder(this)
+        val v = layoutInflater.inflate(R.layout.item_owner_detail, null)
+        dialog.setView(v)
+
+        if (personObject != null) {
+            v.apply {
+                this.ownerName.text = personObject!!.name
+                this.ownerPhone.text = personObject!!.phone
+
+                //ownerAddress1.text = personObject!!.address
+                //Remove it
+                ownerAddress1.text =
+                    personObject!!.addressLine1 + "\n" + personObject!!.addressLine2
+
+            }
+        }
+
+        dialog.setPositiveButton(resources.getString(R.string.call)) { dialog, _ ->
+            checkCallPermissions()  //For calling
+            dialog.dismiss()
+        }
+        dialog.setNegativeButton(resources.getString(R.string.ok)) { _, _ -> }
+
+
+        dialog.create()
+        dialog.show()
+    }
+
+    private fun checkCallPermissions() {
+
+        PermissionsHelper.requestCallsAndMessagePermissions(this)
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .debounce(1, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = { callback ->
+                    Log.e(TAG, "In on next and call back is $callback")
+                    if (callback) {
+                        //Done
+                        callBuyer()
+                    }
+                },
+                onError = {
+                    Log.e(TAG, "Error for permissions and ${it.message} ${it.cause}")
+                },
+                onComplete = {
+                    Log.e(TAG, "In complete")
+                    callBuyer()
+
+                }
+            )
+
+    }
+
+    private fun callBuyer() {
+        try {
+            val i = Intent(Intent.ACTION_CALL, Uri.fromParts("tel", ownerPhone, null))
+            startActivity(i)
+
+        } catch (e: Exception) {
+            Log.e(TAG, "In except" + e)
+        }
     }
 
 }

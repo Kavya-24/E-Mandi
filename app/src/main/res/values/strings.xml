@@ -361,7 +361,7 @@
     <string name="addBidProposal">The initial expected price is price on which you want to sell your complete produce. Note that you can change this price anytime you want. Also, add the date when you wish to close the bidding on the crop.</string>
     <string name="cropDetail">You can view the bids by the prospective buyers here. You can also update and delete the information about your crop if you want to. You can contact the potentials buyers as well.</string>
     <string name="cropDetailtitle">Details</string>
-    <string name="bidDetailInfo">These are the demands of crops by consumers, companies and buyers. Click on <b>ADD BID</b> to place your bid. You can change and alter your bid anytime.</string>
+    <string name="bidDetailInfo">These are the demands of crops by consumers, companies and buyers. Click on <b>PLACE BID</b> to place your bid. You can change and alter your bid anytime.</string>
     <string name="bidDetailInfoMy">You can see the bids of other people on the demand of the produce. You can modify and delete your bid if you want. You can contact the buyer as well.</string>
     <string name="str_my_bids">My bids</string>
     <string name="couldNotLoadAllBids">Could not get bids</string>
@@ -387,6 +387,8 @@
     <string name="expectedHarvest">Expected to harvest</string>
     <string name="cropSownOn">Crop sown on:</string>
     <string name="lastupdated">Last updated: %s</string>
+    <string name="qkg">%s %s</string>
+    <string name="bidAddedOn">"Bid added: "</string>
 
 
     <!--    Spinners for days and distance-->
