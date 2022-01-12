@@ -276,7 +276,7 @@
     <string name="distance">दूरी</string>
     <string name="n_30">30</string>
     <string name="km">किमी</string>
-    <string name="infoHowMuchGrown">इससे पता चलता है कि विभिन्न स्तरों पर% s में कितना% बढ़ाया जाता है। </string>
+    <string name="infoHowMuchGrown">इससे पता चलता है कि विभिन्न स्तरों पर  %s %s में कितना% बढ़ाया जाता है। </string>
     <string name="quantity_grown_is">मात्रा बढ़ी \ N\ N</string>
     <string name="within">% S% s के भीतर</string>
     <string name="kilometeres">किलोमीटर की दूरी पर</string>
@@ -311,6 +311,7 @@
     <string name="lastupdated">Last updated: %s</string>
     <string name="qkg">%s %s</string>
     <string name="bidAddedOn">"Bid added: "</string>
+    <string name="filter">Filter</string>
 
     <string-array name="arr_days_limit">
         <item>10</item>

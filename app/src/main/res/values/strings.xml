@@ -389,6 +389,7 @@
     <string name="lastupdated">Last updated: %s</string>
     <string name="qkg">%s %s</string>
     <string name="bidAddedOn">"Bid added: "</string>
+    <string name="filter">Filter</string>
 
 
     <!--    Spinners for days and distance-->

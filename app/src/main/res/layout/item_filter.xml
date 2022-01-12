@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_filter"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/space"
+    android:paddingTop="@dimen/space"
+    android:paddingEnd="@dimen/space"
+    android:paddingBottom="@dimen/space_3x">
+
+    <TextView
+        android:id="@+id/tv1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/space"
+        android:padding="@dimen/space"
+        android:text="@string/days"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <com.warkiz.widget.IndicatorSeekBar
+        android:id="@+id/sb_days"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/space"
+        android:padding="@dimen/space"
+        app:isb_indicator_color="@color/colorAccent"
+        app:isb_max="180"
+        app:isb_min="30"
+        app:isb_progress="60"
+        app:isb_show_indicator="circular_bubble"
+        app:isb_show_tick_marks_type="oval"
+        app:isb_show_tick_texts="true"
+        app:isb_thumb_color="@color/colorAccent"
+        app:isb_thumb_size="16dp"
+        app:isb_tick_marks_color="@color/colorPrimary"
+        app:isb_tick_texts_color="@color/colorPrimaryDark"
+        app:isb_ticks_count="6"
+        app:isb_track_progress_color="@color/empty_seek"
+        app:layout_constraintTop_toBottomOf="@id/tv1" />
+
+
+    <TextView
+        android:id="@+id/tv2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/space"
+        android:padding="@dimen/space"
+        android:text="@string/distanceKm"
+        app:layout_constraintTop_toBottomOf="@id/sb_days" />
+
+
+    <com.warkiz.widget.IndicatorSeekBar
+        android:id="@+id/sb_distance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/space"
+        android:padding="@dimen/space"
+        app:isb_indicator_color="@color/colorAccent"
+        app:isb_max="450"
+        app:isb_min="100"
+        app:isb_progress="100"
+        app:isb_show_indicator="circular_bubble"
+        app:isb_show_tick_marks_type="oval"
+        app:isb_show_tick_texts="true"
+        app:isb_thumb_color="@color/colorAccent"
+        app:isb_thumb_size="16dp"
+        app:isb_tick_marks_color="@color/colorPrimary"
+        app:isb_tick_texts_color="@color/colorPrimaryDark"
+        app:isb_ticks_count="8"
+        app:isb_track_progress_color="@color/empty_seek"
+        app:layout_constraintTop_toBottomOf="@id/tv2" />
+
+
+    <Button
+        android:id="@+id/mtb_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/space_4x"
+        android:background="@color/colorAccent"
+        android:text="@string/filter"
+        app:backgroundTint="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sb_distance" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

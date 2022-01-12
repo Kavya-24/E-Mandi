@@ -222,6 +222,9 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:2.2.9'
     implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
 
+
+    implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
+
     implementation('com.daveanthonythomas.moshipack:moshipack:1.0.1') {
         exclude group: 'org.jetbrains.kotlin', module: 'kotlin-reflect'
     }

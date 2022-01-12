@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.AutoCompleteTextView
 import android.widget.ProgressBar
@@ -64,6 +65,8 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
     private lateinit var actvDistance: AutoCompleteTextView
     private lateinit var mtbFilter: MaterialButton
 
+    private var advDays = 60
+    private var advDistance = 100
 
     private val TAG = SearchResultActivity::class.java.simpleName
 
@@ -134,15 +137,16 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
          */
         mtbFilter.setOnClickListener {
 
+            createFilterDialog()
             //When no filter is selected
-            if (actvDays.text.isNullOrEmpty() and actvDistance.text.isNullOrEmpty()) {
-                //Drop down the days spinner
-                actvDays.showDropDown()
-
-            } else {
-                doAdvancedSearch()
-
-            }
+//            if (actvDays.text.isNullOrEmpty() and actvDistance.text.isNullOrEmpty()) {
+//                //Drop down the days spinner
+//                actvDays.showDropDown()
+//
+//            } else {
+//                doAdvancedSearch()
+//
+//            }
         }
 
         this.apply {
@@ -151,6 +155,19 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
                 getInformationNormalFilters()
             }
         }
+
+    }
+
+    private fun createFilterDialog() {
+
+        val d = AlertDialog.Builder(this)
+        val lI = LayoutInflater.from(ApplicationUtils.getContext())
+        val v = lI.inflate(R.layout.item_filter, null)
+        d.setView(v)
+
+
+        d.create()
+        d.show()
 
     }
 

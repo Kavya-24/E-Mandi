@@ -852,7 +852,7 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
             //Add the current last bid
             graph.visibility = View.VISIBLE
-            findViewById<TextView>(R.id.tvNoGraphCrop).visibility = View.GONE
+            findViewById<TextView>(R.id.tvNoGraph).visibility = View.GONE
             //#This last modifed is wrong, it can be for the the owner also
             mList.add(
                 ViewBidResponse.Bid.Demand.LastBid(
