@@ -170,7 +170,7 @@ class AddStockPage2 : AppCompatActivity() {
         val kgLocale = resources.getString(R.string.kg)
         val d = AlertDialog.Builder(this)
         d.setTitle(resources.getString(R.string.addCropforBidding))
-        d.setMessage(resources.getString(R.string.addBidProposal))
+        d.setMessage(resources.getString(R.string.infoAddStock))
         d.setPositiveButton(resources.getString(R.string.ok)) { _, _ -> }
         d.create().show()
     }

@@ -196,7 +196,7 @@ class SupplyDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
         val d = androidx.appcompat.app.AlertDialog.Builder(this)
         d.setTitle(resources.getString(R.string.cropDetailtitle))
-        d.setMessage(resources.getString(R.string.cropDetail))
+        d.setMessage(resources.getString(R.string.infoSupplyDetail))
         d.setPositiveButton(resources.getString(R.string.ok)) { _, _ -> }
         d.create().show()
     }

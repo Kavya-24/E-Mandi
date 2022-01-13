@@ -210,7 +210,7 @@ class AddStock : AppCompatActivity() {
 
         val d = AlertDialog.Builder(this)
         d.setTitle(resources.getString(R.string.add_crop))
-        d.setMessage(resources.getString(R.string.addStockProposal))
+        d.setMessage(resources.getString(R.string.infoAddGrowth))
         d.setPositiveButton(resources.getString(R.string.ok)) { _, _ -> }
         d.create().show()
     }
