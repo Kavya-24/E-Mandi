@@ -79,6 +79,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/llErrorThrowable"
                 android:layout_width="match_parent"
@@ -102,7 +103,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-            <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/clVis"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -235,64 +236,59 @@
                         app:layout_constraintTop_toBottomOf="@id/tvInState" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/madvcard"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cslCards"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/space"
-                    android:padding="@dimen/space_half"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardCornerRadius="@dimen/space_half"
+                    android:layout_marginTop="@dimen/space_2x"
+                    android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@id/cslNormalSearchData">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/cslAdvancedSearch"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/space_half"
-                        android:background="@color/white"
+
+                    <!--  Add green gradient squares-->
+                    <TextView
+                        android:id="@+id/tvAmt"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/space_150"
+                        android:layout_margin="@dimen/space"
+                        android:background="@drawable/green_gradient"
+                        android:fontFamily="sans-serif-black"
+                        android:gravity="center"
+                        android:maxLines="2"
                         android:padding="@dimen/space_half"
-                        app:layout_constraintTop_toBottomOf="@id/cslNormalSearchData">
+                        android:text="@string/qkg"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@id/tvParams"
+                        app:layout_constraintHorizontal_weight="1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="900 Kg" />
 
 
-                        <TextView
-                            android:id="@+id/tvAdvData"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/space"
-                            android:lineSpacingMultiplier="1.5"
-                            android:maxLines="5"
-                            android:text="@string/quantity_grown_is"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textSize="16sp"
-                            app:layout_constraintBottom_toBottomOf="@id/ivAdvData"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/ivAdvData" />
+                    <TextView
+                        android:id="@+id/tvParams"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/space_150"
+                        android:layout_margin="@dimen/space"
+                        android:background="@drawable/green_gradient"
+                        android:fontFamily="sans-serif-black"
+                        android:gravity="center"
+                        android:maxLines="4"
+                        android:padding="@dimen/space_half"
+                        android:text="@string/withinkmdays"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_weight="1"
+                        app:layout_constraintStart_toEndOf="@id/tvAmt"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="Within 450 Km in last 180 days" />
 
-                        <ImageView
-                            android:id="@+id/ivAdvData"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:layout_margin="@dimen/space"
-                            android:src="@drawable/landitem"
-                            app:layout_constraintBottom_toTopOf="@id/tvAdvDistance"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-                        <TextView
-                            android:id="@+id/tvAdvDistance"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/space"
-                            android:text="@string/within"
-                            android:textColor="@color/darkBlue"
-                            android:textStyle="bold"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/ivAdvData" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.cardview.widget.CardView>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_youtubeLinks"
@@ -300,8 +296,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_2x"
                     android:layout_marginBottom="@dimen/space_4x"
-                    app:layout_constraintTop_toBottomOf="@id/madvcard"
+                    app:layout_constraintTop_toBottomOf="@id/cslCards"
                     tools:listitem="@layout/item_link_crop_file" />
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

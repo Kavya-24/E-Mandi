@@ -1,12 +1,12 @@
 package com.example.mandiexe.ui.home
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.AutoCompleteTextView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toolbar
@@ -26,7 +26,6 @@ import com.example.mandiexe.ui.supply.AddStock
 import com.example.mandiexe.utils.ApplicationUtils
 import com.example.mandiexe.utils.Constants.defaultDaysAndDistance
 import com.example.mandiexe.utils.auth.PreferenceUtil
-import com.example.mandiexe.utils.auth.SessionManager
 import com.example.mandiexe.utils.usables.ExternalUtils
 import com.example.mandiexe.utils.usables.ExternalUtils.setAppLocale
 import com.example.mandiexe.utils.usables.OfflineTranslate
@@ -34,23 +33,22 @@ import com.example.mandiexe.utils.usables.UIUtils
 import com.example.mandiexe.utils.usables.UIUtils.createSnackbar
 import com.example.mandiexe.utils.usables.UIUtils.hideProgress
 import com.example.mandiexe.utils.usables.UIUtils.showProgress
-import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.warkiz.widget.IndicatorSeekBar
+import com.warkiz.widget.OnSeekChangeListener
+import com.warkiz.widget.SeekParams
 import kotlinx.android.synthetic.main.activity_search_result.*
 import kotlinx.android.synthetic.main.layout_filter.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import retrofit2.Call
 import retrofit2.Response
-import java.text.SimpleDateFormat
-import java.util.*
 
+@SuppressLint("SetTextI18n")
 class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
 
     private val pref = PreferenceUtil
     private lateinit var args: Bundle
 
-    private val sessionManager = SessionManager(ApplicationUtils.getContext())
 
     private var crop = ""
     private var title = ""
@@ -61,14 +59,15 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
 
     private var englishFinalQuery = ""
 
-    private lateinit var actvDays: AutoCompleteTextView
-    private lateinit var actvDistance: AutoCompleteTextView
+    private lateinit var tvDays: TextView
+    private lateinit var tvDistance: TextView
     private lateinit var mtbFilter: MaterialButton
 
     private var advDays = 60
     private var advDistance = 100
 
     private val TAG = SearchResultActivity::class.java.simpleName
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,13 +80,19 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
 
         //Process the crop here
         this.apply {
-            actvDays = actv_days
-            actvDistance = actv_distance
+            tvDays = tvTagDay
+            tvDistance = tvTagDistance
             mtbFilter = mtb_filter
+            pb = pb_searchCrop
+
         }
 
         crop = args.getString("crop")!!
         title = args.getString("title").toString()
+
+        tvDays.text = advDays.toString() + " " + resources.getString(R.string.days)
+        tvDistance.text = advDistance.toString() + " " + resources.getString(R.string.km)
+
 
         val tb = findViewById<Toolbar>(R.id.toolbarExternal)
         tb.title = title
@@ -98,11 +103,28 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
             onBackPressed()
         }
 
-        pb = findViewById(R.id.pb_searchCrop)
 
-        val aBar = findViewById<AppBarLayout>(R.id.appbarlayoutExternal)
-        setUpFilterSpinners()
+        this.apply {
 
+            eFab_grow.setOnClickListener {
+                addStock()
+            }
+
+            ivInformation.setOnClickListener {
+                getInformationNormalFilters()
+            }
+
+            mtbFilter.setOnClickListener {
+                createFilterDialog()
+            }
+
+            tvDays.setOnClickListener {
+                createFilterDialog()
+            }
+            tvDistance.setOnClickListener {
+                createFilterDialog()
+            }
+        }
         showProgress(pb, this)
 
         val t = findViewById<TextView>(R.id.tempTv)
@@ -126,36 +148,6 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
         }
 
 
-
-        findViewById<ExtendedFloatingActionButton>(R.id.eFab_grow).setOnClickListener {
-            addStock()
-        }
-
-
-        /*
-        For the filter layout
-         */
-        mtbFilter.setOnClickListener {
-
-            createFilterDialog()
-            //When no filter is selected
-//            if (actvDays.text.isNullOrEmpty() and actvDistance.text.isNullOrEmpty()) {
-//                //Drop down the days spinner
-//                actvDays.showDropDown()
-//
-//            } else {
-//                doAdvancedSearch()
-//
-//            }
-        }
-
-        this.apply {
-
-            ivInformation.setOnClickListener {
-                getInformationNormalFilters()
-            }
-        }
-
     }
 
     private fun createFilterDialog() {
@@ -166,8 +158,53 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
         d.setView(v)
 
 
+        //Get the seekbars and buttons
+        val sbDays = v.findViewById<IndicatorSeekBar>(R.id.sb_days)
+        val sbDistance = v.findViewById<IndicatorSeekBar>(R.id.sb_distance)
+
+
+        //On click and on change listeners
+        sbDays.onSeekChangeListener = object : OnSeekChangeListener {
+            override fun onSeeking(seekParams: SeekParams) {
+            }
+
+            override fun onStartTrackingTouch(seekBar: IndicatorSeekBar) {
+
+            }
+
+
+            override fun onStopTrackingTouch(seekBar: IndicatorSeekBar) {
+                advDays = seekBar.progress
+                Log.e(TAG, "Seeked days, progress now = $advDays")
+                tvDays.text = advDays.toString() + " " + resources.getString(R.string.days)
+
+            }
+        }
+
+        sbDistance.onSeekChangeListener = object : OnSeekChangeListener {
+            override fun onSeeking(seekParams: SeekParams) {
+            }
+
+            override fun onStartTrackingTouch(seekBar: IndicatorSeekBar) {}
+
+
+            override fun onStopTrackingTouch(seekBar: IndicatorSeekBar) {
+                advDistance = seekBar.progress
+                Log.e(TAG, "Seeked distane, progress now = $advDistance")
+                tvDistance.text = advDistance.toString() + " " + resources.getString(R.string.km)
+            }
+        }
+
+        d.setPositiveButton(resources.getString(R.string.filter)) { mdialog, mint ->
+            mdialog.dismiss()
+            doAdvancedSearch()
+        }
+        d.setNegativeButton(resources.getString(R.string.cancel)) { _, _ ->
+        }
+
         d.create()
         d.show()
+
 
     }
 
@@ -176,44 +213,18 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
         val kgLocale = resources.getString(R.string.kg)
         val d = AlertDialog.Builder(this)
         d.setTitle(resources.getString(R.string.howMuchGrown))
-        d.setMessage(resources.getString(R.string.infoHowMuchGrown, title, kgLocale))
+        d.setMessage(String.format(resources.getString(R.string.infoHowMuchGrown), title, kgLocale))
         d.setPositiveButton(resources.getString(R.string.ok)) { _, _ -> }
         d.create().show()
     }
 
-    private fun setUpFilterSpinners() {
-
-        //Null at first
-        actvDays.setText(
-            resources.getString(R.string.num50).toString(),
-            TextView.BufferType.EDITABLE
-        )
-        actvDistance.setText(resources.getString(R.string.num50), TextView.BufferType.EDITABLE)
-
-
-        UIUtils.getSpinnerAdapter(R.array.arr_days_limit, actvDays, this)
-        UIUtils.getSpinnerAdapter(R.array.arr_distance_limit, actvDistance, this)
-
-    }
 
     private fun doAdvancedSearch() {
 
-        val numDays = actvDays.text.toString()
-        val numDistance = actvDistance.text.toString()
-
-        //Default
-        var newBody =
-            AdvancedSearchBody(englishFinalQuery, defaultDaysAndDistance, defaultDaysAndDistance)
-
-        if (numDays.isEmpty()) {
-            newBody =
-                AdvancedSearchBody(englishFinalQuery, defaultDaysAndDistance, numDistance.toInt())
-        } else if (numDistance.isEmpty()) {
-            newBody =
-                AdvancedSearchBody(englishFinalQuery, numDays.toInt(), defaultDaysAndDistance)
-        } else {
-            newBody = AdvancedSearchBody(englishFinalQuery, numDays.toInt(), numDistance.toInt())
-        }
+        val numDays = advDays
+        val numDistance = advDistance
+        val newBody =
+            AdvancedSearchBody(englishFinalQuery, numDays.toInt(), numDistance.toInt())
 
         makeAdvcall(newBody)
 
@@ -269,53 +280,19 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
 
         try {
             this.apply {
-                cslAdvancedSearch.visibility = View.VISIBLE
+
+
+                cslCards.visibility = View.VISIBLE
 
                 val kgLocale = resources.getString(R.string.kg)
                 val kmLocale = resources.getString(R.string.kilometeres)
 
-                val mCalendar = Calendar.getInstance()
-                val myFormat = "dd MMM yyyy" //In which you need put here
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-
-                var mDays = actvDays.text.toString()
-                if (mDays.isEmpty()) {
-                    mDays = defaultDaysAndDistance.toString()
-                }
-
-                var mDistance = actvDistance.text.toString()
-                if (mDistance.isEmpty()) {
-                    mDistance = defaultDaysAndDistance.toString()
-                }
-
-                val currentDayMark = mDays.toString()
-                mCalendar.add(Calendar.DATE, currentDayMark.toInt())
-                val afterDate = sdf.format(mCalendar.time)
-                mCalendar.add(Calendar.DATE, -(2 * currentDayMark.toInt()))
-                val beforeDate = sdf.format(mCalendar.time)
-
-                tvAdvData.text =
-                    resources.getString(
-                        R.string.quantity_grown_is_without_date,
-                        body.info.qty.toString(),
-                        kgLocale.toString()
-                    ) + "\n" + resources.getString(R.string.Last) + " " + mDays.toString() + " " + resources.getString(
-                        R.string.days
-                    )
+                tvAmt.text =
+                    String.format(resources.getString(R.string.qkg), body.info.qty, kgLocale)
+                tvParams.text =
+                    String.format(resources.getString(R.string.withinkmdays), advDistance, advDays)
 
 
-                //Load
-//                tvAdvData.text =
-//                    resources.getString(
-//                        R.string.quantity_grown_is,
-//                        body.info.qty.toString(),
-//                        kgLocale.toString(),
-//                        beforeDate.toString(),
-//                        afterDate.toString()
-//                    )
-
-                tvAdvDistance.text =
-                    resources.getString(R.string.within, mDistance, kmLocale)
             }
         } catch (e: Exception) {
             UIUtils.logExceptions(e, TAG)
@@ -404,7 +381,6 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
                 Log.e("SEARCH RES", "response " + response.toString())
 
                 clVis.visibility = View.VISIBLE
-                cslAdvancedSearch.visibility = View.GONE
                 cslNormalSearchData.visibility = View.VISIBLE
 
                 val kgLocale = resources.getString(R.string.kg)
@@ -463,9 +439,19 @@ class SearchResultActivity : AppCompatActivity(), OnYoutubeClickListener {
         rv.layoutManager = LinearLayoutManager(this)
 
         val adapter = YoutubeAdapter(this)
+        adapter.ctype = englishFinalQuery
         adapter.lst = links
+
         rv.adapter = adapter
 
     }
+
+
+    override fun onResume() {
+        super.onResume()
+        Log.e(TAG, "Resumed activity")
+        doAdvancedSearch()
+    }
+
 
 }

@@ -38,7 +38,8 @@ object DefaultListOfCrops {
             "Masoor Dal",
             "Gram",
             "Kabuli Chane",
-            "Kidney Beans"
+            "Kidney Beans",
+            "Mango"
         )
 
 

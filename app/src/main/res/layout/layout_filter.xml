@@ -1,51 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-
-    <com.google.android.material.textfield.TextInputLayout
-
-        android:id="@+id/tilDays"
-        style="@style/styleTIL2"
-        android:layout_margin="@dimen/space_half"
-        android:hint="@string/days"
-        app:layout_constraintEnd_toStartOf="@id/tilDistance"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvDays"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/space"
+        android:elevation="@dimen/space_half"
+        app:cardBackgroundColor="@color/colorAccent"
+        app:cardCornerRadius="@dimen/space"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
-        <AutoCompleteTextView
-            android:id="@+id/actv_days"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="none" />
+            android:layout_height="match_parent"
+            android:padding="@dimen/space_half">
+
+            <TextView
+                android:id="@+id/tvTagDay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/space"
+                android:padding="@dimen/space"
+                android:textColor="@color/ivory"
+                tools:text="500 km" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
 
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <com.google.android.material.textfield.TextInputLayout
-
-        android:id="@+id/tilDistance"
-        style="@style/styleTIL2"
-        android:layout_margin="@dimen/space_half"
-        android:hint="@string/distance"
-        app:layout_constraintEnd_toStartOf="@id/mtb_filter"
-        app:layout_constraintStart_toEndOf="@id/tilDays"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/space"
+        android:elevation="@dimen/space_half"
+        app:cardBackgroundColor="@color/colorAccent"
+        app:cardCornerRadius="@dimen/space"
+        app:layout_constraintStart_toEndOf="@id/cvDays"
         app:layout_constraintTop_toTopOf="parent">
 
-
-        <AutoCompleteTextView
-            android:id="@+id/actv_distance"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="none" />
+            android:layout_height="match_parent"
+            android:padding="@dimen/space_half">
 
-        <requestFocus />
-    </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:id="@+id/tvTagDistance"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/space"
+                android:padding="@dimen/space"
+                android:textColor="@color/ivory"
+                tools:text="500 km" />
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/mtb_filter"
@@ -56,10 +71,10 @@
         android:elevation="0dp"
         app:elevation="0dp"
         app:iconTint="@color/colorAccent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/cvDistance"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tilDistance"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/cvDistance"
+        app:layout_constraintTop_toTopOf="@id/cvDistance"
         app:rippleColor="@color/grey" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

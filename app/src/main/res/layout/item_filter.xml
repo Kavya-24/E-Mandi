@@ -72,17 +72,4 @@
         app:isb_track_progress_color="@color/empty_seek"
         app:layout_constraintTop_toBottomOf="@id/tv2" />
 
-
-    <Button
-        android:id="@+id/mtb_check"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/space_4x"
-        android:background="@color/colorAccent"
-        android:text="@string/filter"
-        app:backgroundTint="@color/colorAccent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sb_distance" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
