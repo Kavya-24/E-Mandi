@@ -35,18 +35,14 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
 
     private val viewModel: MySuppliesViewmodel by viewModels()
     private lateinit var root: View
-
     private val TAG = MySuppliesFragment::class.java.simpleName
-
     private lateinit var swl: SwipeRefreshLayout
     private lateinit var mSwipeable: ConstraintLayout
-
-
     private lateinit var pb: ProgressBar
+
 
     override fun onResume() {
         super.onResume()
-        Log.e(TAG, "In on resume")
         loadItems()
 
     }
@@ -56,14 +52,12 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
         savedInstanceState: Bundle?
     ): View? {
 
-        Log.e(TAG, "In on create")
         root = inflater.inflate(R.layout.my_supplies_fragment, container, false)
         swl = root.findViewById<SwipeRefreshLayout>(R.id.swl_supplies_fragment)
         mSwipeable = root.findViewById<ConstraintLayout>(R.id.swipeablecslsuuplies)
         pb = root.findViewById(R.id.pb_my_crops)
 
 
-        Log.e(TAG, "In load requirements")
         swl.isRefreshing = true
         clearObservers()
 
@@ -80,43 +74,12 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
         }
 
         swl.setOnRefreshListener {
-            Log.e(TAG, "In on swipe refresh")
+
             loadItems()
             swl.isRefreshing = false
         }
 
 
-//        //For the tab
-//        val tabLayout = root.findViewById<TabLayout>(R.id.tabsSupplies)
-//        val tab = tabLayout.getTabAt(0)
-//        tab!!.select()
-//
-//        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-//            override fun onTabSelected(tab: TabLayout.Tab?) {
-//
-//            }
-//
-//            override fun onTabUnselected(tab: TabLayout.Tab?) {
-//                //The other tab is selected
-//                root.findNavController().navigate(R.id.action_nav_supply_to_nav_bids)
-//            }
-//
-//            override fun onTabReselected(tab: TabLayout.Tab?) {
-//                //Do nothing
-//            }
-//        })
-//
-//        val newSwipeListener = SwipeGestureDetector(mSwipeable)
-//
-//
-////        gestureDetector = GestureDetector(SwipeGestureDetector())
-////        gestureListener = OnTouchListener { v, event ->
-////            Log.e(TAG, "In gesture luistener")
-////            gestureDetector!!.onTouchEvent(event)
-////        }
-////
-////        mSwipeable.setOnTouchListener(gestureListener)
-//
 
         return root
     }
@@ -174,6 +137,8 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
                 doEmptyStates()
 
             } else {
+
+                doResponseStates()
                 rv.visibility = View.VISIBLE
                 empty.visibility = View.GONE
                 tError.visibility = View.GONE
@@ -190,6 +155,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
         swl.isRefreshing = false
 
     }
+
 
     override fun viewMyStockDetails(_listItem: FarmerSuppliesResponse.Supply) {
 
@@ -230,6 +196,7 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
         this.apply {
             llEmptyMySupplies.visibility = View.VISIBLE
             llErrorThrowableSupply.visibility = View.GONE
+
         }
     }
 
@@ -237,91 +204,18 @@ class MySuppliesFragment : Fragment(), OnMyStockClickListener {
         Log.e(TAG, "In throwable state")
         this.apply {
             llEmptyMySupplies.visibility = View.GONE
-            //llErrorThrowableSupply.visibility = View.VISIBLE
+            llErrorThrowableSupply.visibility = View.VISIBLE
+
         }
     }
-/*
 
-    private fun onSwipeLeftToMyBids() {
-        Log.e(TAG, "In left swipe")
-        goToMyBids()
+
+    private fun doResponseStates() {
+        Log.e(TAG, "In response state")
+        this.apply {
+            llEmptyMySupplies.visibility = View.GONE
+            llErrorThrowableSupply.visibility = View.GONE
+
+        }
     }
-
-    private fun onSwipeRight() {
-        Log.e(TAG, "In right swipe")
-    }
-*/
-
-//
-//    private class SwipeGestureDetector// Left swipe
-//        () : View.OnTouchListener {
-//
-//        private lateinit var swipegestureDetector: GestureDetector
-//
-//        private val TAG = SwipeGestureDetector::class.java.simpleName
-//        private val ctx = ApplicationUtils.getContext()
-//        private val SWIPE_MIN_DISTANCE = 100
-//        private val SWIPE_MAX_OFF_PATH = 200
-//        private val SWIPE_THRESHOLD_VELOCITY = 100
-//
-//
-//        constructor(view: View) : this() {
-//
-//            val listener = (object : GestureDetector.SimpleOnGestureListener() {
-//                override fun onDown(e: MotionEvent?): Boolean {
-//                    Log.e(TAG, "In down")
-//                    return true
-//                }
-//
-//                override fun onFling(
-//                    e1: MotionEvent?,
-//                    e2: MotionEvent?,
-//                    velocityX: Float,
-//                    velocityY: Float
-//                ): Boolean {
-//                    try {
-//
-//                        val diffAbs = abs((e1?.y!!) - e2?.y!!)
-//                        val diff = (e1.x) - e2.x
-//                        if (diffAbs > SWIPE_MAX_OFF_PATH) return false
-//
-//                        // Left swipe
-//                        if (diff > SWIPE_MIN_DISTANCE
-//                            && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY
-//                        ) {
-//
-//                            Log.e("SWIPE", "In left swipe")
-//                            MySuppliesFragment.newInstance().onSwipeLeftToMyBids()
-//
-//
-//                        } else if (-diff > SWIPE_MIN_DISTANCE
-//                            && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY
-//                        ) {
-//                            Log.e("SWIPE", "In right swipe")
-//                            MySuppliesFragment.newInstance().onSwipeRight()
-//
-//
-//                        }
-//                    } catch (e: Exception) {
-//                        UIUtils.logExceptions(e, "SWIPE")
-//                    }
-//                    return false
-//                }
-//            })
-//
-//            swipegestureDetector = GestureDetector(listener)
-//            view.setOnTouchListener(this)
-//
-//        }
-//
-//
-//        override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-//
-//            return swipegestureDetector.onTouchEvent(event)
-//        }
-//
-//
-//    }
-
-
 }

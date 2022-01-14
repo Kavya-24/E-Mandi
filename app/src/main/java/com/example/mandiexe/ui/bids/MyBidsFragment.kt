@@ -162,6 +162,8 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
                 rv.visibility = View.GONE
 
             } else {
+
+                doResponseStates()
                 rv.visibility = View.VISIBLE
                 empty.visibility = View.GONE
                 tError.visibility = View.GONE
@@ -207,6 +209,7 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
         this.apply {
             llEmptyMyBids.visibility = View.VISIBLE
             llErrorThrowableBid.visibility = View.GONE
+
         }
     }
 
@@ -214,9 +217,19 @@ class MyBidsFragment : Fragment(), OnMyBidClickListener {
         Log.e(TAG, "In throwable state")
         this.apply {
             llEmptyMyBids.visibility = View.GONE
-            //llErrorThrowableBid.visibility = View.VISIBLE
+            llErrorThrowableBid.visibility = View.VISIBLE
+
         }
     }
 
+
+    private fun doResponseStates() {
+        Log.e(TAG, "In response state")
+        this.apply {
+            llEmptyMyBids.visibility = View.GONE
+            llErrorThrowableBid.visibility = View.GONE
+
+        }
+    }
 
 }

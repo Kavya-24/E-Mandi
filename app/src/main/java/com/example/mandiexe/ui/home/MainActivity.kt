@@ -139,15 +139,7 @@ class MainActivity : AppCompatActivity(), OnMyLanguageListener,
         search_view.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 //Do some magic
-                if (!query.isNullOrEmpty()) {
-                    Log.e("MAIN", "In on query submit")
 
-                    searchCrop(
-                        query,
-                        "e-mandi-farmer-null-query"
-                    )
-
-                }
                 return false
 
             }
@@ -201,7 +193,6 @@ class MainActivity : AppCompatActivity(), OnMyLanguageListener,
 
 
         search_view.setOnItemClickListener { parent, view, position, id ->
-
 
             val q = parent.getItemAtPosition(position).toString()
 

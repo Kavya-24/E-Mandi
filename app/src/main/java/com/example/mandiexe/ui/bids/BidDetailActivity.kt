@@ -150,20 +150,21 @@ class BidDetailActivity : AppCompatActivity(), OnBidHistoryClickListener {
 
         } else if (from == NewDemandActivity::class.java.simpleName) {
 
-            mtb_add_bid.visibility = View.VISIBLE
-            mtb_cancel_bid.visibility = View.GONE
-            mtb_Modify_bid.visibility = View.GONE
-            mMyBid.visibility =
-                View.GONE
+            this.apply {
+                mtb_add_bid.visibility = View.VISIBLE
+                mtb_cancel_bid.visibility = View.GONE
+                mtb_Modify_bid.visibility = View.GONE
+                mMyBid.visibility =
+                    View.GONE
 
-            tv_requirement_detail_my_bid.visibility = View.GONE
-            //Hide the view bid history, graph, arrow
-            tv_view_bid_history_requirement.visibility = View.GONE
-            iv_dropdown_bid_history_req.visibility = View.GONE
+                tv_requirement_detail_my_bid.visibility = View.GONE
+                //Hide the view bid history, graph, arrow
+                tv_view_bid_history_requirement.visibility = View.GONE
+                iv_dropdown_bid_history_req.visibility = View.GONE
 
-            graphViewReq.visibility = View.GONE
-            tvNoGraph.visibility = View.GONE
-
+                graphViewReq.visibility = View.GONE
+                tvNoGraph.visibility = View.GONE
+            }
         }
 
 

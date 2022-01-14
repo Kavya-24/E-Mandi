@@ -35,7 +35,6 @@
                     android:layout_margin="@dimen/space"
                     android:padding="@dimen/space"
                     android:visibility="invisible"
-
                     app:layout_constraintTop_toTopOf="parent">
 
                     <TextView

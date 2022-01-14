@@ -105,7 +105,7 @@ class OTPFragment : androidx.fragment.app.Fragment() {
             @RequiresApi(Build.VERSION_CODES.M)
             override fun onTick(millisUntilFinished: Long) {
                 val timeValue = (millisUntilFinished / 1000).toString()
-                tvTimer.text = resources.getString(R.string.resendIn, timeValue)
+                tvTimer.text = String.format(resources.getString(R.string.resendIn), timeValue)
                 tvTimer.visibility = View.VISIBLE
                 tvTimer.setTextColor(resources.getColor(R.color.black, null))
 
